@@ -29,7 +29,7 @@ void init(){
 	GPIOA->PUPDR &= ~(0x00000c00UL); // 2.3c Set PA5 to No Pull-Up, No Pull-Down
 
 	GPIOC->MODER &= ~(0x0c000000UL); // 2.4a Set mode of pin PC13 to Input
-	GPIOA->PUPDR &= ~(0x0c000000UL); // 2.4b Set PC13 to no pull-up and no pull-down
+	GPIOC->PUPDR &= ~(0x0c000000UL); // 2.4b Set PC13 to no pull-up and no pull-down
 
 	// Turn on Green LED
 	GPIOA->ODR |= 1UL<<5;
