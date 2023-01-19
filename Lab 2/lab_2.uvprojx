@@ -385,6 +385,16 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
+              <FileName>Button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\2A\Button.c</FilePath>
+            </File>
+            <File>
+              <FileName>Button.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\2A\Button.h</FilePath>
+            </File>
+            <File>
               <FileName>EXTI.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\2A\EXTI.c</FilePath>
@@ -428,16 +438,6 @@
               <FileName>SysClock.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\2A\SysClock.h</FilePath>
-            </File>
-            <File>
-              <FileName>Button.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\2A\Button.c</FilePath>
-            </File>
-            <File>
-              <FileName>Button.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\2A\Button.h</FilePath>
             </File>
           </Files>
         </Group>

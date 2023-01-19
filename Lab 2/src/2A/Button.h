@@ -11,9 +11,6 @@
 
 #include "stm32l476xx.h"
 
-enum button_state {pressed, released};
-static enum button_state btn;
-
 void Button_Init(void);
 
 #endif

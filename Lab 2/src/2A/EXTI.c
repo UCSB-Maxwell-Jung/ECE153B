@@ -8,14 +8,12 @@
 
 #include "EXTI.h"
 #include "LED.h"
-#include "Button.h"
-#include <stdbool.h>
 
 void EXTI_Init(void) {
 	// Connect External Line to the GPIO
 	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
-	SYSCFG->EXTICR[0] &= ~SYSCFG_EXTICR4_EXTI13;
-	SYSCFG->EXTICR[0] |= SYSCFG_EXTICR4_EXTI13_PC;
+	SYSCFG->EXTICR[3] &= ~SYSCFG_EXTICR4_EXTI13;
+	SYSCFG->EXTICR[3] |= SYSCFG_EXTICR4_EXTI13_PC;
 
 	// Rising trigger selection
 	// 0 = trigger disabled, 1 = trigger enabled
@@ -35,28 +33,9 @@ void EXTI_Init(void) {
 void EXTI15_10_IRQHandler(void) {
 	// Clear interrupt pending bit
 	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0) {
-		// LED
-		Green_LED_On();
 		// PC13 button is default HIGH for some reason
-		bool btn_pressed = ((GPIOC->IDR & (1UL << 13)) >> 13) == 0UL;
-		bool btn_released = !btn_pressed;
-
-		// state machine for detecting if button is going down or up
-		switch (btn) {
-		case released:
-			if (btn_pressed)
-				btn = pressed;
-			break;
-		case pressed:
-			if (btn_released)
-			{
-				btn = released;
-				update_LED();
-			}
-			break;
-		}
-
-	// Cleared flag by writing 1
+		update_LED();
+		// Cleared flag by writing 1
  		EXTI->PR1 |= EXTI_PR1_PIF13;
 	}
 }

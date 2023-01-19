@@ -27,23 +27,17 @@ Project File Date:  01/18/2023
 <h2>Output:</h2>
 *** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
-src/2A/EXTI.c(9): warning: In file included from...
-src/2A/EXTI.h(12): warning: In file included from...
+src/2A/LED.c(9): warning: In file included from...
+src/2A/LED.h(12): warning: In file included from...
 src/2A/stm32l476xx.h(12): warning: invalid UTF-8 in comment [-Winvalid-utf8]
   *           - Macros to access peripheral<92>s registers hardware
                                            ^
-src/2A/EXTI.c(41): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
-                bool btn_pressed = ((GPIOC->IDR & (1UL << 13)) >> 13) == 0UL;
-                     ^
-src/2A/EXTI.c(62): warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-3 warnings generated.
-compiling EXTI.c...
+1 warning generated.
+compiling LED.c...
 linking...
-Program Size: Code=1108 RO-data=408 RW-data=0 ZI-data=1640  
+Program Size: Code=972 RO-data=408 RW-data=0 ZI-data=1632  
 FromELF: creating hex file...
-".\Objects\lab_2.axf" - 0 Error(s), 3 Warning(s).
+".\Objects\lab_2.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -66,7 +60,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.6.0
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

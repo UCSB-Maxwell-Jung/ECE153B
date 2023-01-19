@@ -12,6 +12,7 @@ void Button_Init(void)
 {
     // Enable GPIO Clock
     RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN;
+    
     // GPIO Mode: Input(00), Output (01),
     // AF(10), Analog (11)
     GPIOC->MODER &= ~3U << 26; // Reset to 00
