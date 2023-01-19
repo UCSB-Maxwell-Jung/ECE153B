@@ -1,3 +1,25 @@
+##### Keil ignore #####
+# DebugConfig/
+# Listings/
+Objects/
+# RTE/
+*.uvguix.*
+
+##### vscode ignore #####
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+###### c/cpp ignores ######
 # Prerequisites
 *.d
 

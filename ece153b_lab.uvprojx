@@ -456,77 +456,77 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\lab1\main.c</FilePath>
+              <FilePath>.\src\lab1\main.c</FilePath>
             </File>
             <File>
               <FileName>startup_stm32l476xx.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\src\lab1\startup_stm32l476xx.s</FilePath>
+              <FilePath>.\src\lab1\startup_stm32l476xx.s</FilePath>
             </File>
             <File>
               <FileName>stm32l476xx.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\src\lab1\stm32l476xx.h</FilePath>
+              <FilePath>.\src\lab1\stm32l476xx.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>lab2a</GroupName>
+          <GroupName>lab2</GroupName>
           <Files>
             <File>
               <FileName>Button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\lab2a\Button.c</FilePath>
+              <FilePath>.\src\lab2a\Button.c</FilePath>
             </File>
             <File>
               <FileName>Button.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\src\lab2a\Button.h</FilePath>
+              <FilePath>.\src\lab2a\Button.h</FilePath>
             </File>
             <File>
               <FileName>EXTI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\lab2a\EXTI.c</FilePath>
+              <FilePath>.\src\lab2a\EXTI.c</FilePath>
             </File>
             <File>
               <FileName>EXTI.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\src\lab2a\EXTI.h</FilePath>
+              <FilePath>.\src\lab2a\EXTI.h</FilePath>
             </File>
             <File>
               <FileName>LED.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\lab2a\LED.c</FilePath>
+              <FilePath>.\src\lab2a\LED.c</FilePath>
             </File>
             <File>
               <FileName>LED.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\src\lab2a\LED.h</FilePath>
+              <FilePath>.\src\lab2a\LED.h</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\lab2a\main.c</FilePath>
+              <FilePath>.\src\lab2a\main.c</FilePath>
             </File>
             <File>
               <FileName>startup_stm32l476xx.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\src\lab2a\startup_stm32l476xx.s</FilePath>
+              <FilePath>.\src\lab2a\startup_stm32l476xx.s</FilePath>
             </File>
             <File>
               <FileName>stm32l476xx.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\src\lab2a\stm32l476xx.h</FilePath>
+              <FilePath>.\src\lab2a\stm32l476xx.h</FilePath>
             </File>
             <File>
               <FileName>SysClock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\lab2a\SysClock.c</FilePath>
+              <FilePath>.\src\lab2a\SysClock.c</FilePath>
             </File>
             <File>
               <FileName>SysClock.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\src\lab2a\SysClock.h</FilePath>
+              <FilePath>.\src\lab2a\SysClock.h</FilePath>
             </File>
           </Files>
         </Group>
