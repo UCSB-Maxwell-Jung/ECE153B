@@ -2,7 +2,7 @@
 # DebugConfig/
 # Listings/
 Objects/
-# RTE/
+RTE/
 *.uvguix.*
 
 ##### vscode ignore #####
