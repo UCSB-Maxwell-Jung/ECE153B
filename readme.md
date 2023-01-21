@@ -1,7 +1,9 @@
 ECE153B
 ===========
 
-Repository for Winter 2023 UCSB ECE 153B (Sensor and Peripheral Interface Design) labs and projects .
+Authors: Maxwell Jung, Baron Young
+
+Labs and projects for Winter 2023 UCSB ECE 153B (Sensor and Peripheral Interface Design).
 
 [src](./src/) contains source codes for each lab/project.
 
