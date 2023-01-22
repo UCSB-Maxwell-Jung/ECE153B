@@ -19,8 +19,23 @@ Installation
     git clone https://github.com/MaxwellJung/ECE153B.git
     ```
 
-3. Install [Keil Assistant](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant) extension on VScode and follow setup instructions (translate the page to English using Google Chrome if needed)
+3. Open the cloned repo on VScode
 
-4. Open the cloned repo on VScode
+4. Install [Keil Assistant](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant) extension on VScode and follow setup instructions (translate the page to English using Google Chrome if needed)
 
 5. Build and Flash the board using the extension
+
+Creating new lab/project
+----------------
+
+1. Open Keil
+
+2. Right click on the target folder (should be called 'release')
+
+3. Click `Add Group...`
+
+4. Rename the newly created folder to the lab/project name
+
+5. Add files from src to the newly created folder
+
+6. Disable all other labs from getting compiled by: a) right clicking on the lab folder, b) clicking `Options for Group '{folder name}'`, and c) unchecking `include in Target Build`
