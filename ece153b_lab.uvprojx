@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include;..\..\..\AppData\Local\Arm\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include</IncludePath>
+              <IncludePath>..\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include;..\AppData\Local\Arm\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
