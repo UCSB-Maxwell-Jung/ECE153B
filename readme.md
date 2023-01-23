@@ -28,9 +28,9 @@ Installation
 Creating new lab/project
 ----------------
 
-1. Open Keil
+1. Open Keil IDE by opening the `ece153b_lab.uvprojx` file
 
-2. Right click on the target folder (should be called 'release')
+2. Right click on the target folder (should be called 'release') displayed inside Keil IDE
 
 3. Click `Add Group...`
 
