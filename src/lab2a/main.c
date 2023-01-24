@@ -14,12 +14,12 @@
 
 int main(void) {
 	// Initialization
-	System_Clock_Init();
-	LED_Init();
-	Button_Init();
-	EXTI_Init();
+	// System_Clock_Init();
+	// LED_Init();
+	// Button_Init();
+	// EXTI_Init();
 	
-	while(1);
+	// while(1);
 	
-	return 0;
+	// return 0;
 }
