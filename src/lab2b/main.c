@@ -35,6 +35,8 @@ int main() {
 	LED_Init();
 	
 	while(1) {
-		// [TODO] Write Simple Program here...
+		// toggle LED every 1000ms
+		delay(1000);
+		Green_LED_Toggle();
 	}
 }
