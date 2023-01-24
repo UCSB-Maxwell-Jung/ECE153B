@@ -471,7 +471,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lab2</GroupName>
+          <GroupName>lab2a</GroupName>
           <GroupOption>
             <CommonProperty>
               <UseCPPCompiler>0</UseCPPCompiler>
@@ -596,6 +596,46 @@
               <FileName>SysClock.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\lab2a\SysClock.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lab2b</GroupName>
+          <Files>
+            <File>
+              <FileName>LED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab2b\LED.c</FilePath>
+            </File>
+            <File>
+              <FileName>LED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab2b\LED.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab2b\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32l476xx.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\lab2b\startup_stm32l476xx.s</FilePath>
+            </File>
+            <File>
+              <FileName>stm32l476xx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab2b\stm32l476xx.h</FilePath>
+            </File>
+            <File>
+              <FileName>SysTimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab2b\SysTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>SysTimer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab2b\SysTimer.h</FilePath>
             </File>
           </Files>
         </Group>
