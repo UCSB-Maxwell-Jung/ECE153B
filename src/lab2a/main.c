@@ -13,7 +13,7 @@
 #include "SysClock.h"
 
 int main(void) {
-	Initialization
+	// Initialization
 	System_Clock_Init();
 	LED_Init();
 	Button_Init();
