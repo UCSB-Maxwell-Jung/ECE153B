@@ -32,7 +32,7 @@ void LED_Init(void) {
 }
 
 void update_LED(void) {
-	GPIOA->ODR ^= 1UL<<5;
+	Green_LED_Toggle();
 }
 
 void Green_LED_Off(void) {
