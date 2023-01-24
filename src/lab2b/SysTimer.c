@@ -43,7 +43,8 @@ void SysTick_Handler(void) {
 }
 
 void delay(uint32_t T) {
-	uint32_t currentTicks; // Hint: It may be helpful to keep track of what the current tick count is
-	
+	uint32_t startingTicks = msTicks; // Hint: It may be helpful to keep track of what the current tick count is
+
 	// [TODO] - Implement function that waits until a time specified by argument T
+	while (msTicks-startingTicks < T);
 }
