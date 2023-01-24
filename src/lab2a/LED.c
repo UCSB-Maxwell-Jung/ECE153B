@@ -31,10 +31,6 @@ void LED_Init(void) {
 	Green_LED_Off();
 }
 
-void update_LED(void) {
-	GPIOA->ODR ^= 1UL<<5;
-}
-
 void Green_LED_Off(void) {
 	GPIOA->ODR &= ~1U << 5;
 }
