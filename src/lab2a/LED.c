@@ -27,12 +27,8 @@ void LED_Init(void) {
 	GPIOA->PUPDR |= 0U << 10; // set to 00
 
 	// Initialize Green LED
-	// Green_LED_Off();
+	// Green_LED_On();
 	Green_LED_Off();
-}
-
-void update_LED(void) {
-	GPIOA->ODR ^= 1UL<<5;
 }
 
 void Green_LED_Off(void) {
