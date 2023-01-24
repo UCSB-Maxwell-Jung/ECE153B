@@ -13,7 +13,8 @@ Installation
 
 1. Install Keil using the [set up manual](./lab_manuals/ECE153B_Labs_Getting_Started_W23.pdf)
 
-2. Clone this repository
+2. Clone this repository to your home user folder  
+   (You can clone to other locations, but syntax highlighting might not work)
 
     ```console
     git clone https://github.com/MaxwellJung/ECE153B.git
