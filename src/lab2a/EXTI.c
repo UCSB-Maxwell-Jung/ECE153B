@@ -34,7 +34,7 @@ void EXTI15_10_IRQHandler(void) {
 	// Clear interrupt pending bit
 	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0) {
 		// PC13 button is default HIGH for some reason
-		Green_LED_Toggle();
+		Green_LED_On();
 		// Cleared flag by writing 1
  		EXTI->PR1 |= EXTI_PR1_PIF13;
 	}
