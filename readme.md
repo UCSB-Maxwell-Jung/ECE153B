@@ -1,5 +1,4 @@
-ECE153B
-===========
+# ECE153B
 
 Authors: Maxwell Jung, Baron Young
 
@@ -7,13 +6,12 @@ Labs and projects for Winter 2023 UCSB ECE 153B (Sensor and Peripheral Interface
 
 [src](./src/) contains source codes for each lab/project.
 
-
-Installation
-----------
+## Installation
 
 1. Install Keil using the [set up manual](./lab_manuals/ECE153B_Labs_Getting_Started_W23.pdf)
 
-2. Clone this repository
+2. Clone this repository to your home user folder  
+   (You can clone to other locations, but syntax highlighting might not work)
 
     ```console
     git clone https://github.com/MaxwellJung/ECE153B.git
@@ -25,8 +23,7 @@ Installation
 
 5. Build and Flash the board using the extension
 
-Creating new lab/project
-----------------
+## Creating new lab/project
 
 1. Open Keil IDE by opening the `ece153b_lab.uvprojx` file
 
