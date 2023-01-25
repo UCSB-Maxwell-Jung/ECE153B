@@ -13,7 +13,6 @@
 
 void LED_Init(void);
 
-void update_LED(void);
 void Green_LED_Off(void);
 void Green_LED_On(void);
 void Green_LED_Toggle(void);
