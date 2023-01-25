@@ -10,11 +10,7 @@
 enum button_state {pressed, released};
 static enum button_state btn;
 
-void init(void);
-bool is_button_clicked(void);
-void update_led(void);
-
-void init(void){
+void init(){
 	// Enable HSI
 	RCC->CR |= ((uint32_t)RCC_CR_HSION);
 	while ( (RCC->CR & (uint32_t) RCC_CR_HSIRDY) == 0 );
@@ -42,7 +38,7 @@ void init(void){
 	btn = released;
 }
 
-bool is_button_clicked(void){
+bool is_button_clicked(){
 	// PC13 button is default HIGH for some reason
 	bool btn_pressed = ((GPIOC->IDR & (1UL<<13))>>13) == 0UL;
 	bool btn_released = !btn_pressed;
@@ -64,7 +60,7 @@ bool is_button_clicked(void){
 	return false;
 }
 
-void update_led(void){
+void update_led(){
 	GPIOA->ODR ^= 1UL<<5;
 }
 
@@ -77,6 +73,8 @@ int main(void){
 		if (is_button_clicked())
 			update_led();
 	}
+	
+	//
 
 	return 0;
 }

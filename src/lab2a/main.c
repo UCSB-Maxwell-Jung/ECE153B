@@ -12,7 +12,7 @@
 #include "Button.h"
 #include "SysClock.h"
 
-int main() {
+int main(void) {
 	// Initialization
 	System_Clock_Init();
 	LED_Init();
