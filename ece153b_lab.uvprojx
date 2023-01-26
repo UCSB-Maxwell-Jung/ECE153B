@@ -471,7 +471,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lab2</GroupName>
+          <GroupName>lab2a</GroupName>
           <Files>
             <File>
               <FileName>Button.c</FileName>
