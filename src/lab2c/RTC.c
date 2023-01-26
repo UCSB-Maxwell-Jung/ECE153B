@@ -160,39 +160,33 @@ void RTC_Enable_Write_Protection(void) {
 	RTC->WPR |= 0x00;
 }
 
-uint32_t RTC_TIME_GetHour(void) {
-	// [TODO]
-	return 0;
+uint32_t RTC_TIME_GetHour(void){
+	return __RTC_CONVERT_BCD2BIN(((RTC->TR) & (RTC_TR_HT | RTC_TR_HU)) >> RTC_POSITION_TR_HU);
 }
 
-uint32_t RTC_TIME_GetMinute(void) {
-	// [TODO]
-	return 0;
+uint32_t RTC_TIME_GetMinute(void)
+{
+	return __RTC_CONVERT_BCD2BIN(((RTC->TR) & (RTC_TR_MNT | RTC_TR_MNU)) >> RTC_POSITION_TR_MU);
 }
 
 uint32_t RTC_TIME_GetSecond(void) {
-	// [TODO]
-	return 0;
+	return __RTC_CONVERT_BCD2BIN((RTC->TR) & (RTC_TR_ST | RTC_TR_SU)) >> RTC_POSITION_TR_SU;
 }
 
 uint32_t RTC_DATE_GetMonth(void) {
-	// [TODO]
-	return 0;
+	return __RTC_CONVERT_BCD2BIN(((RTC->DR) & (RTC_DR_MT | RTC_DR_MU)) >> RTC_POSITION_DR_MU);
 }
 
 uint32_t RTC_DATE_GetDay(void) {
-	// [TODO]
-	return 0;
+	return __RTC_CONVERT_BCD2BIN(((RTC->DR) & (RTC_DR_DT | RTC_DR_DU)) >> RTC_POSITION_DR_DU);
 }
 
 uint32_t RTC_DATE_GetYear(void) {
-	// [TODO]
-	return 0;
+	return __RTC_CONVERT_BCD2BIN(((RTC->DR) & (RTC_DR_YT | RTC_DR_YU)) >> RTC_POSITION_DR_YU);
 }
 
 uint32_t RTC_DATE_GetWeekDay(void) {
-	// [TODO]
-	return 0;
+	return __RTC_CONVERT_BCD2BIN(((RTC->DR) & (RTC_DR_WDU)) >> RTC_POSITION_DR_WDU);
 }
 
 void Get_RTC_Calendar(char * strTime, char * strDate) {
