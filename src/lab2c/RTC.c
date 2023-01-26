@@ -87,26 +87,27 @@ void RTC_Init(void) {
 }
 
 #define POSITION_VAL(VAL)     (__CLZ(__RBIT(VAL)))
-#define RTC_POSITION_TR_HT    (uint32_t)POSITION_VAL(RTC_TR_HT)
-#define RTC_POSITION_TR_HU    (uint32_t)POSITION_VAL(RTC_TR_HU)
-#define RTC_POSITION_TR_MT    (uint32_t)POSITION_VAL(RTC_TR_MNT)
-#define RTC_POSITION_TR_MU    (uint32_t)POSITION_VAL(RTC_TR_MNU)
-#define RTC_POSITION_TR_ST    (uint32_t)POSITION_VAL(RTC_TR_ST)
-#define RTC_POSITION_TR_SU    (uint32_t)POSITION_VAL(RTC_TR_SU)
-#define RTC_POSITION_DR_YT    (uint32_t)POSITION_VAL(RTC_DR_YT)
-#define RTC_POSITION_DR_YU    (uint32_t)POSITION_VAL(RTC_DR_YU)
-#define RTC_POSITION_DR_MT    (uint32_t)POSITION_VAL(RTC_DR_MT)
-#define RTC_POSITION_DR_MU    (uint32_t)POSITION_VAL(RTC_DR_MU)
-#define RTC_POSITION_DR_DT    (uint32_t)POSITION_VAL(RTC_DR_DT)
-#define RTC_POSITION_DR_DU    (uint32_t)POSITION_VAL(RTC_DR_DU)
-#define RTC_POSITION_DR_WDU   (uint32_t)POSITION_VAL(RTC_DR_WDU)
+#define RTC_POSITION_TR_HT    (uint32_t)POSITION_VAL(RTC_TR_HT) // Hour
+#define RTC_POSITION_TR_HU    (uint32_t)POSITION_VAL(RTC_TR_HU) // Hour
+#define RTC_POSITION_TR_MT    (uint32_t)POSITION_VAL(RTC_TR_MNT) // Minute
+#define RTC_POSITION_TR_MU    (uint32_t)POSITION_VAL(RTC_TR_MNU) // Minute
+#define RTC_POSITION_TR_ST    (uint32_t)POSITION_VAL(RTC_TR_ST) // Second
+#define RTC_POSITION_TR_SU    (uint32_t)POSITION_VAL(RTC_TR_SU) // Second
+#define RTC_POSITION_DR_YT    (uint32_t)POSITION_VAL(RTC_DR_YT) // Year
+#define RTC_POSITION_DR_YU    (uint32_t)POSITION_VAL(RTC_DR_YU) // Year
+#define RTC_POSITION_DR_MT    (uint32_t)POSITION_VAL(RTC_DR_MT) // Month
+#define RTC_POSITION_DR_MU    (uint32_t)POSITION_VAL(RTC_DR_MU) // Month
+#define RTC_POSITION_DR_DT    (uint32_t)POSITION_VAL(RTC_DR_DT) // Day
+#define RTC_POSITION_DR_DU    (uint32_t)POSITION_VAL(RTC_DR_DU) // Day
+#define RTC_POSITION_DR_WDU   (uint32_t)POSITION_VAL(RTC_DR_WDU) // Weekday
 
 void RTC_Set_Calendar_Date(uint32_t WeekDay, uint32_t Day, uint32_t Month, uint32_t Year) {
-	// [TODO] Write the date values in the correct place within the RTC Date Register
+	// Write the date values in the correct place within the RTC Date Register
+	RTC->DR = Year << RTC_POSITION_DR_YU | WeekDay << RTC_POSITION_DR_WDU | Month << RTC_POSITION_DR_MU | Day << RTC_POSITION_DR_DU;
 }
 
 void RTC_Set_Time(uint32_t Format12_24, uint32_t Hour, uint32_t Minute, uint32_t Second) {
-	// [TODO] Write the time values in the correct place within the RTC Time Register
+	// Write the time values in the correct place within the RTC Time Register
 }
 
 void RTC_Clock_Init(void) {
