@@ -12,8 +12,8 @@
 #include "RTC.h"
 #include "SysClock.h"
 
-char strTime[12] = {0};
-char strDate[12] = {0};
+static char strTime[12] = {0};
+static char strDate[12] = {0};
 
 void RTC_Set_Alarm(void) {
 	RTC->CR &= ~(RTC_CR_ALRAE | RTC_CR_ALRBE); // disables both alarms
@@ -62,12 +62,12 @@ void RTC_Alarm_Enable(void) {
 
 void RTC_Alarm_IRQHandler(void) {
 	// Clear interrupt pending bit
-	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0)
+	if ((EXTI->PR1 & EXTI_PR1_PIF18) != 0)
 	{
 		// PC13 button is default HIGH for some reason
 		Green_LED_Toggle();
 		// Cleared flag by writing 1
-		EXTI->PR1 |= EXTI_PR1_PIF13;
+		EXTI->PR1 |= EXTI_PR1_PIF18;
 	}
 }
 
