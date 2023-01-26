@@ -16,7 +16,21 @@ char strTime[12] = {0};
 char strDate[12] = {0};
 
 void RTC_Set_Alarm(void) {
+	RTC->CR &= ~(RTC_CR_ALRAE | RTC_CR_ALRBE); // disables both alarms
+	RTC_Disable_Write_Protection(); // remove RTC write protect
+	RTC->CR &= ~(RTC_CR_ALRAE | RTC_CR_ALRBE); // clear alarm enable for A and B
+	RTC->CR &= ~(RTC_CR_ALRAIE | RTC_CR_ALRBIE); // clear interrupt enable for A and B
+	while (((RTC->ISR & RTC_ISR_ALRAWF) == 0) && ((RTC->ISR & RTC_ISR_ALRBWF) == 0)); // wait until
 
+	RTC->ALRMAR &= ~(0xFFFFFFFF);
+	RTC->ALRMAR |= 0x30; // set alarm A to 30 seconds
+	RTC->ALRMAR |= RTC_ALRMAR_MSK1;
+	RTC->ALRMBR &= ~(0xFFFFFFFF);
+	RTC->ALRMBR |= 0x01; // set alarm B to 1 second
+	RTC->ALRMBR |= RTC_ALRMBR_MSK1;
+
+	RTC->CR |= (RTC_CR_ALRAIE | RTC_CR_ALRBIE); // clear interrupt enable for A and B
+	RTC_Enable_Write_Protection();
 }
 
 void RTC_Alarm_Enable(void) {
