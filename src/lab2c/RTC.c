@@ -86,7 +86,8 @@ void RTC_Init(void) {
 	RTC_BAK_SetRegister(1, 0x32F2);
 }
 
-#define POSITION_VAL(VAL)     (__CLZ(__RBIT(VAL)))
+#define POSITION_VAL(VAL)     (__CLZ(__RBIT(VAL))) // count number of trailing zeroes
+#define RTC_POSITION_TR_PM    (uint32_t)POSITION_VAL(RTC_TR_PM) // am/pm
 #define RTC_POSITION_TR_HT    (uint32_t)POSITION_VAL(RTC_TR_HT) // Hour
 #define RTC_POSITION_TR_HU    (uint32_t)POSITION_VAL(RTC_TR_HU) // Hour
 #define RTC_POSITION_TR_MT    (uint32_t)POSITION_VAL(RTC_TR_MNT) // Minute
@@ -108,6 +109,7 @@ void RTC_Set_Calendar_Date(uint32_t WeekDay, uint32_t Day, uint32_t Month, uint3
 
 void RTC_Set_Time(uint32_t Format12_24, uint32_t Hour, uint32_t Minute, uint32_t Second) {
 	// Write the time values in the correct place within the RTC Time Register
+	RTC->TR = Format12_24 << RTC_POSITION_TR_PM | Hour << RTC_POSITION_TR_HU | Minute << RTC_POSITION_TR_MU | Second << RTC_POSITION_TR_SU;
 }
 
 void RTC_Clock_Init(void) {
