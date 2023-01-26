@@ -147,13 +147,14 @@ void RTC_Clock_Init(void) {
 }
 
 void RTC_Disable_Write_Protection(void) {
-	// [TODO]
-	return 0;
+	// write two bytes (0xCA and 0x53) sequentially
+	RTC->WPR |= 0xCA;
+	RTC->WPR |= 0x53;
 }
 	
 void RTC_Enable_Write_Protection(void) {
-	// [TODO]
-	return 0;
+	// write any byte
+	RTC->WPR |= 0x00;
 }
 
 uint32_t RTC_TIME_GetHour(void) {
