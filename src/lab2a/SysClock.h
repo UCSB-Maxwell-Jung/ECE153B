@@ -1,8 +1,8 @@
 /*
  * ECE 153B - Winter 2021
  *
- * Name(s): Maxwell Jung, Baron Young
- * Section: Wed 7pm
+ * Name(s):
+ * Section:
  * Lab: 2A
  */
 

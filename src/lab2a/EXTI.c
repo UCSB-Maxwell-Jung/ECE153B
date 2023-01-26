@@ -1,8 +1,8 @@
 /*
  * ECE 153B - Winter 2021
  *
- * Name(s): Maxwell Jung, Baron Young
- * Section: Wed 7pm
+ * Name(s):
+ * Section:
  * Lab: 2A
  */
 
@@ -34,7 +34,7 @@ void EXTI15_10_IRQHandler(void) {
 	// Clear interrupt pending bit
 	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0) {
 		// PC13 button is default HIGH for some reason
-		Green_LED_Toggle();
+		update_LED();
 		// Cleared flag by writing 1
  		EXTI->PR1 |= EXTI_PR1_PIF13;
 	}
