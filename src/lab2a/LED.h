@@ -1,8 +1,8 @@
 /*
  * ECE 153B - Winter 2021
  *
- * Name(s): Maxwell Jung, Baron Young
- * Section: Wed 7pm
+ * Name(s):
+ * Section:
  * Lab: 2A
  */
 
@@ -13,6 +13,7 @@
 
 void LED_Init(void);
 
+void update_LED(void);
 void Green_LED_Off(void);
 void Green_LED_On(void);
 void Green_LED_Toggle(void);
