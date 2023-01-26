@@ -24,12 +24,16 @@ void RTC_Set_Alarm(void) {
 
 	RTC->ALRMAR &= ~(0xFFFFFFFF);
 	RTC->ALRMAR |= 0x30; // set alarm A to 30 seconds
-	RTC->ALRMAR |= RTC_ALRMAR_MSK1;
+	RTC->ALRMAR |= (RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK4);
+	RTC->ALRMAR &= ~RTC_ALRMAR_MSK1;
 	RTC->ALRMBR &= ~(0xFFFFFFFF);
-	RTC->ALRMBR |= 0x01; // set alarm B to 1 second
-	RTC->ALRMBR |= RTC_ALRMBR_MSK1;
+	// RTC->ALRMBR |= 0x01; // set alarm B to 1 second
+	RTC->ALRMBR |= (RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK4 | RTC_ALRMBR_MSK1);
 
 	RTC->CR |= (RTC_CR_ALRAIE | RTC_CR_ALRBIE); // clear interrupt enable for A and B
+
+	RTC->CR |= (RTC_CR_ALRAE | RTC_CR_ALRBE); // disables both alarms
+
 	RTC_Enable_Write_Protection();
 }
 
@@ -61,14 +65,16 @@ void RTC_Alarm_Enable(void) {
 }
 
 void RTC_Alarm_IRQHandler(void) {
-	// Clear interrupt pending bit
-	if ((EXTI->PR1 & EXTI_PR1_PIF18) != 0)
-	{
-		// PC13 button is default HIGH for some reason
-		Green_LED_Toggle();
-		// Cleared flag by writing 1
-		EXTI->PR1 |= EXTI_PR1_PIF18;
-	}
+	Green_LED_Toggle();
+	// // Clear interrupt pending bit
+	// if ((EXTI->PR1 & EXTI_PR1_PIF18) != 0)
+	// {
+	// 	// PC13 button is default HIGH for some reason
+	// 	Green_LED_Toggle();
+	// 	// Cleared flag by writing 1
+	EXTI->PR1 |= EXTI_PR1_PIF18;
+	RTC->ISR &= ~(RTC_ISR_ALRAF | RTC_ISR_ALRBF);
+	// }
 }
 
 int main(void) {	
@@ -82,5 +88,6 @@ int main(void) {
 	
 	while(1) {
 		// [TODO]
+		Get_RTC_Calendar(strTime, strDate);
 	}
 }
