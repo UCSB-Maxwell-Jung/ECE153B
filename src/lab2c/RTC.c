@@ -1,12 +1,11 @@
 /*
  * ECE 153B - Winter 2021
  *
- * Name(s):
- * Section:
+ * Name(s): Baron Young, Maxwell Jung
+ * Section: Wed 7pm
  * Lab: 2C
  */
- 
- 
+
 #include "RTC.h"
 
 // Use the 32.768 kHz low-speed external clock as RTC clock source
