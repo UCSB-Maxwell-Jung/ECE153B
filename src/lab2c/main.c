@@ -65,16 +65,21 @@ void RTC_Alarm_Enable(void) {
 }
 
 void RTC_Alarm_IRQHandler(void) {
-	Green_LED_Toggle();
-	// // Clear interrupt pending bit
-	// if ((EXTI->PR1 & EXTI_PR1_PIF18) != 0)
-	// {
-	// 	// PC13 button is default HIGH for some reason
-	// 	Green_LED_Toggle();
-	// 	// Cleared flag by writing 1
-	EXTI->PR1 |= EXTI_PR1_PIF18;
-	RTC->ISR &= ~(RTC_ISR_ALRAF | RTC_ISR_ALRBF);
-	// }
+	if ((EXTI->PR1 & EXTI_PR1_PIF18) != 0) // check interrupt flag
+	{
+		if (RTC->ISR & RTC_ISR_ALRAF) {
+			// alarm A triggered
+			// Green_LED_Toggle();
+		}
+		else if (RTC->ISR & RTC_ISR_ALRBF) {
+			// alarm B triggered
+			Green_LED_Toggle();
+		}
+
+		// Clear flags
+		EXTI->PR1 |= EXTI_PR1_PIF18;
+		RTC->ISR &= ~(RTC_ISR_ALRAF | RTC_ISR_ALRBF);
+	}
 }
 
 int main(void) {	
