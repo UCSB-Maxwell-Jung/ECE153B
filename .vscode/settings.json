@@ -2,6 +2,7 @@
     "files.associations": {
         "stm32l476xx.h": "c",
         "led.h": "c",
-        "exti.h": "c"
+        "exti.h": "c",
+        "sysclock.h": "c"
     }
 }

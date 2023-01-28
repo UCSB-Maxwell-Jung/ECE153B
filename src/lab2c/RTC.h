@@ -1,11 +1,10 @@
 /*
  * ECE 153B - Winter 2021
  *
- * Name(s):
- * Section:
+ * Name(s): Baron Young, Maxwell Jung
+ * Section: Wed 7pm
  * Lab: 2C
  */
-
 
 #ifndef __STM32L476G_NUCLEO_RTC_H
 #define __STM32L476G_NUCLEO_RTC_H
