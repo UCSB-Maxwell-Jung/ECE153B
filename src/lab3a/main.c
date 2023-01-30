@@ -9,15 +9,32 @@
 #include "stm32l476xx.h"
  
 void PWM_Init() {
+	// Initialize Green LED
+	// Green_LED_Off();
+	Green_LED_Off();
+
 	// Enable GPIO Port A Clock
-	// [TODO]
-	
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+
 	// Enable TIM2 Clock
-	// [TODO]
-	
+	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
+
 	// Configure PA5
-	// [TODO]
-	
+	// GPIO Mode: Input(00), Output (01),
+	// AF(10), Analog (11)
+	GPIOA->MODER &= ~0b11U << 10; // reset to 00
+	GPIOA->MODER |= 0b10U << 10;  // set to AF
+
+	// GPIO Output Speed: Low (00), Medium (01), 
+	// High (10), Very High (11)
+	GPIOA->OSPEEDR &= ~0b11U << 10; // reset to 00
+	GPIOA->OSPEEDR |= 0b11u << 10;	// set to Very High
+
+	// GPIO Push-Pull: No pull-up, pull-down (00),
+	// Pull-up (01), Pull-down (10), Reserved (11)
+	GPIOA->PUPDR &= ~0b11U << 10; // reset to 00
+	GPIOA->PUPDR |= 0b00U << 10;  // set to No Pull-Up, No Pull-Down
+
 	// Configure PWM Output for TIM2 CH 1
 	// [TODO]
 }
