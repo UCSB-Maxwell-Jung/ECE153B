@@ -13,7 +13,7 @@ void PWM_Init() {
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
 
 	// Enable TIM2 Clock
-	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
+	RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;
 
 	// Configure PA5
 	uint8_t pin_number = 5;
