@@ -41,10 +41,30 @@ void PWM_Init() {
 	GPIOA->AFR[0] |= ~0b0001 << (pin_number * 4); // set to AF1 (TIM2_CH1)
 
 	// Configure PWM Output for TIM2 CH 1
-	TIM2->CR1 |= TIM_CR1_CEN; // enable timer
+	// 7a
 	TIM2->CR1 &= ~TIM_CR1_DIR; // set counter direction: upcounter (up = 0, down = 1)
-	TIM2->PSC = 3; // set prescalar value: 4 Mhz/(3 + 1) = 1 Mhz (1 tick/us)
-	TIM2->ARR = 1000; // set auto-reload value: reset timer every 1000 ticks @ 1us/tick = 1000us = 1ms
+	// 7b
+	TIM2->PSC = 3; // set prescalar value
+				   // Explanation: downscale 4 Mhz clock input to 1 Mhz by dividing by PSC + 1: 4 MHz/(3+1) = 1 Mhz
+	// 7c
+	TIM2->ARR = 999; // set auto-reload value
+					  // Explanation: reset timer every 1ms (1000 ticks @ 1us/tick)
+	// below 2 lines might be unnecessary
+	TIM2->CCMR1 &= ~TIM_CCMR1_CC1S; // reset capture/compare 1 selection
+	TIM2->CCMR1 |= 0b00;			// configure CC1 channel as output
+	// 7d
+	TIM2->CCMR1 &= ~TIM_CCMR1_OC1M; // clear output compare mode bits
+	TIM2->CCMR1 |= (TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1); // set output compare mode bits to PWM mode 1 (0110)
+	TIM2->CCMR1 |= TIM_CCMR1_OC1PE; // enable output preload
+	// 7e
+	TIM2->CCER |= TIM_CCER_CC1P; // Set the output polarity for compare 1 to active high
+	// 7f
+	TIM2->CCER |= TIM_CCER_CC1E; // Enable the channel 1 output
+	// 7g
+	float duty_cycle = 0.5;
+	TIM2->CCR1 = (uint32_t)(duty_cycle * (TIM2->ARR+1));
+	// 7h
+	TIM2->CR1 |= TIM_CR1_CEN; // enable timer
 }
  
 int main() {
