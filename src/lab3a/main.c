@@ -34,7 +34,7 @@ void PWM_Init() {
 
 	// Write alternate function 1 (Timer 2 Channel 1) into AFR
 	GPIOA->AFR[0] &= ~0b1111 << (pin_number * 4); // reset to 0000
-	GPIOA->AFR[0] |= ~0b0001 << (pin_number * 4); // set to AF1 (TIM2_CH1)
+	GPIOA->AFR[0] |= 0b0001 << (pin_number * 4); // set to AF1 (TIM2_CH1)
 
 	// Configure PWM Output for TIM2 CH 1
 	// 7a
