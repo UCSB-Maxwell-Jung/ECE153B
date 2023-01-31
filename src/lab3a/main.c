@@ -20,20 +20,25 @@ void PWM_Init() {
 	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
 
 	// Configure PA5
+	uint8_t pin_number = 5;
 	// GPIO Mode: Input(00), Output (01),
 	// AF(10), Analog (11)
-	GPIOA->MODER &= ~0b11U << 10; // reset to 00
-	GPIOA->MODER |= 0b10U << 10;  // set to AF
+	GPIOA->MODER &= ~0b11U << (pin_number * 2); // reset to 00
+	GPIOA->MODER |= 0b10U << (pin_number * 2);	// set to AF
 
 	// GPIO Output Speed: Low (00), Medium (01), 
 	// High (10), Very High (11)
-	GPIOA->OSPEEDR &= ~0b11U << 10; // reset to 00
-	GPIOA->OSPEEDR |= 0b11u << 10;	// set to Very High
+	GPIOA->OSPEEDR &= ~0b11U << (pin_number * 2); // reset to 00
+	GPIOA->OSPEEDR |= 0b11u << (pin_number * 2);  // set to Very High
 
 	// GPIO Push-Pull: No pull-up, pull-down (00),
 	// Pull-up (01), Pull-down (10), Reserved (11)
-	GPIOA->PUPDR &= ~0b11U << 10; // reset to 00
-	GPIOA->PUPDR |= 0b00U << 10;  // set to No Pull-Up, No Pull-Down
+	GPIOA->PUPDR &= ~0b11U << (pin_number * 2); // reset to 00
+	GPIOA->PUPDR |= 0b00U << (pin_number * 2);	// set to No Pull-Up, No Pull-Down
+
+	// Write alternate function 1 (Timer 2 Channel 1) into AFR
+	GPIOA->AFR[0] &= ~0b1111 << (pin_number * 4); // reset to 0000
+	GPIOA->AFR[0] |= ~0b0001 << (pin_number * 4); // set to AF1 (TIM2_CH1)
 
 	// Configure PWM Output for TIM2 CH 1
 	// [TODO]
