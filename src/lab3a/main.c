@@ -41,7 +41,10 @@ void PWM_Init() {
 	GPIOA->AFR[0] |= ~0b0001 << (pin_number * 4); // set to AF1 (TIM2_CH1)
 
 	// Configure PWM Output for TIM2 CH 1
-	// [TODO]
+	TIM2->CR1 |= TIM_CR1_CEN; // enable timer
+	TIM2->CR1 &= ~TIM_CR1_DIR; // set counter direction: upcounter (up = 0, down = 1)
+	TIM2->PSC = 3; // set prescalar value: 4 Mhz/(3 + 1) = 1 Mhz (1 tick/us)
+	TIM2->ARR = 1000; // set auto-reload value: reset timer every 1000 ticks @ 1us/tick = 1000us = 1ms
 }
  
 int main() {
