@@ -9,10 +9,6 @@
 #include "stm32l476xx.h"
  
 void PWM_Init() {
-	// Initialize Green LED
-	// Green_LED_Off();
-	Green_LED_Off();
-
 	// Enable GPIO Port A Clock
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
 
