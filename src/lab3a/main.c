@@ -44,7 +44,7 @@ void PWM_Init() {
 				   // Explanation: downscale 4 Mhz clock input to 1 Mhz by dividing by PSC + 1: 4 MHz/(3+1) = 1 Mhz
 	// 7c
 	TIM2->ARR = 999; // set auto-reload value
-					  // Explanation: reset timer every 1ms (1000 ticks @ 1us/tick)
+					  // Explanation: reset timer every 1ms (999+1 ticks @ 1us/tick)
 	// below 2 lines might be unnecessary
 	TIM2->CCMR1 &= ~TIM_CCMR1_CC1S; // reset capture/compare 1 selection
 	TIM2->CCMR1 |= 0b00;			// configure CC1 channel as output
@@ -53,7 +53,7 @@ void PWM_Init() {
 	TIM2->CCMR1 |= (TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1); // set output compare mode bits to PWM mode 1 (0110)
 	TIM2->CCMR1 |= TIM_CCMR1_OC1PE; // enable output preload
 	// 7e
-	TIM2->CCER |= TIM_CCER_CC1P; // Set the output polarity for compare 1 to active high
+	TIM2->CCER &= ~TIM_CCER_CC1P; // Set the output polarity for compare 1 to active high (high = 0, low = 1)
 	// 7f
 	TIM2->CCER |= TIM_CCER_CC1E; // Enable the channel 1 output
 	// 7g
