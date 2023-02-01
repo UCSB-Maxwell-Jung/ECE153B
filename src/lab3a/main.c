@@ -69,10 +69,16 @@ int main() {
 	
 	// Periodic Dimming
 	int i;
+	int max_brightness = 1000;
+	int brightness = max_brightness;
+	float duty_cycle;
 	while(1) {
-		// [TODO] (changing duty cycle, etc.)
-		
-		for(i=0; i<1000; ++i); // Some Delay
+		duty_cycle = (float)brightness/max_brightness;
+		TIM2->CCR1 = (uint32_t)(duty_cycle * (TIM2->ARR + 1));
+		for(i=0; i<300; ++i); // Some Delay
+		brightness--;
+		if (brightness < 0)
+			brightness += max_brightness+1;
 	}
 	
 	return 0;
