@@ -13,7 +13,9 @@
 uint32_t volatile currentValue = 0;
 uint32_t volatile lastValue = 0;
 uint32_t volatile overflowCount = 0;
-uint32_t volatile timeInterval = 0;
+uint32_t volatile timeIntervalInMicrosec = 0;
+uint32_t volatile clockPeriodInMicrosec = 1; // 1us per tick
+uint8_t volatile edge = 0;
 
 void Input_Capture_Setup() {
 	/**____Input_Capture___ for TIM4 CH1**/
@@ -62,12 +64,28 @@ void Input_Capture_Setup() {
 }
 
 void TIM4_IRQHandler(void) {
-	if(TIM4->SR & TIM_SR_UIF) { 			// UIF Interrupt
-		TIM4->SR &= ~TIM_SR_UIF; 			// Clear interrupt flag
-	} else if (TIM4->SR & TIM_SR_CC1IF) { 	// Channel #1
-		TIM4->SR &= ~ TIM_SR_CC1IF; 		// Clear interrupt flag
-	} else if (TIM4->SR & TIM_SR_CC2IF) { 	// Channel #2
-		TIM4->SR &= ~ TIM_SR_CC2IF; 	// Clear interrupt flag
+	if(TIM4->SR & TIM_SR_UIF) { 						// UIF Interrupt
+		TIM4->SR &= ~TIM_SR_UIF; 						// Clear interrupt flag
+
+	} else if (TIM4->SR & TIM_SR_CC1IF) { 				// interrupt on channel 1 capture
+		TIM4->SR &= ~ TIM_SR_CC1IF; 					// Clear interrupt flag
+		edge++;
+		if (edge%2 == 1) {								// rising edge (every odd edge is assumed to be rising)
+			lastValue = TIM4->CCR1;						// save value of counter to lastValue
+			return;
+		}
+
+		if (edge%2 == 0) {								// falling edge (every even edge is assumed to be falling)
+			currentValue = TIM4->CCR1;					//save value of counter to currentValue
+			timeIntervalInMicrosec = clockPeriodInMicrosec * (((1 + TIM4->ARR)* overflowCount + currentValue) - (lastValue)); // time = frequency * (final_tick - inital_tick)
+			return;
+		}
+		
+									
+	} else if (TIM4->SR & TIM_SR_CC1OF) { 	// interrupt on channel 1 overflow
+		overflowCount++; 
+		TIM4->SR &= ~ TIM_SR_CC1OF; 		// Clear interrupt flag
+		return;
 	}
 }
 
@@ -115,7 +133,7 @@ void Trigger_Setup() {
 	
 	TIM1->EGR |= TIM_EGR_UG;								// 9. Enable update generation in the event generation register
 
-	TIM1->DIER |= TIM_DIER_UIE;								// 10. Enable update interrupt in the DMA/Interrupt enable registe
+	TIM1->DIER |= TIM_DIER_UIE;								// 10. Enable update interrupt in the DMA/Interrupt enable register
 
 	TIM1->SR = 0; 											// 10. clear the update interrupt flag in the status register
 
@@ -142,9 +160,10 @@ int main(void) {
 	// Trigger Setup
 	Trigger_Setup();
 
+	float distanceInCm = 0;
 	
 	while(1) {
 		// [TODO] Store your measurements on Stack
-		
+		float distanceInCm = timeIntervalInMicrosec/58.0;
 	}
 }
