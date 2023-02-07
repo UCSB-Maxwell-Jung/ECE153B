@@ -35,8 +35,8 @@ void Input_Capture_Setup() {
 	GPIOA->PUPDR |= 0b00U << (pin_number * 2);				// set to No Pull-Up, No Pull-Down
 
 	// Write alternate function 1 (Timer 2 Channel 1) into AFR
-	GPIOA->AFR[0] &= ~0b1111 << (pin_number * 4); 			// reset to 0000
-	GPIOA->AFR[0] |= 0b0001 << (pin_number * 4);  			// set to AF1 (TIM1_CH2)
+	GPIOA->AFR[1] &= ~0b1111 << ((pin_number-8) * 4); 			// reset to 0000
+	GPIOA->AFR[1] |= 0b0001 << ((pin_number-8) * 4);  			// set to AF1 (TIM1_CH2)
 
 	// Configure PWM Output for TIM1 CH 2
 	RCC->APB2ENR |= RCC_APB2ENR_TIM1EN;						// 2. Enable TIM1 Clock
@@ -63,7 +63,7 @@ void Input_Capture_Setup() {
 
 	TIM1->SR = 0; 											// 10. clear the update interrupt flag in the status register
 
-	TIM1->CR1 &= ~TIM_CR1_DIR;								// 11. Set the direction of the counter as up counting
+	TIM1->CR1 &= ~TIM_CR1_DIR;								// 11. Set the direction of the counter as up counting (0)
 
 	TIM1->CCER &= ~TIM_CCER_CC2P;							// Set the output polarity for compare 2 to active high (high = 0, low = 1)
 
