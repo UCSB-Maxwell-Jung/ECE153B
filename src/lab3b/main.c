@@ -15,7 +15,8 @@ uint32_t volatile lastValue = 0;
 uint32_t volatile overflowCount = 0;
 uint32_t volatile timeIntervalInMicrosec = 0;
 uint32_t volatile clockPeriodInMicrosec = 1; // 1us per tick
-uint8_t volatile edge = 0;
+uint32_t volatile edge = 0;
+volatile float distanceInCm = 0;
 
 void Input_Capture_Setup() {
 	/**____Input_Capture___ for TIM4 CH1**/
@@ -27,8 +28,8 @@ void Input_Capture_Setup() {
 	GPIOB->MODER &= ~0b11U << (pin_number * 2);				// 1.b reset mode
 	GPIOB->MODER |= 0b10U << (pin_number * 2);				// set to AF
 
-	GPIOB->AFR[1] &= ~0b1111 << ((pin_number) * 4); 		// reset to 0000
-	GPIOB->AFR[1] |= 0b0010 << ((pin_number) * 4);  		// AF2 (TIM4_CH1)
+	GPIOB->AFR[0] &= ~0b1111 << ((pin_number) * 4); 		// reset to 0000
+	GPIOB->AFR[0] |= 0b0010 << ((pin_number) * 4);  		// AF2 (TIM4_CH1)
 
 	// GPIO Push-Pull: No pull-up, pull-down (00),
 	// Pull-up (01), Pull-down (10), Reserved (11)
@@ -38,7 +39,7 @@ void Input_Capture_Setup() {
 	RCC->APB1ENR1 |= RCC_APB1ENR1_TIM4EN;					// 2. Enable Timer 4 in RCC APB1ENRx
 
 	TIM4->PSC = 15;											// 3. Set prescalar value to 15
-				   											// Explanation: downscale 4 Mhz clock input to 1 Mhz by dividing by PSC + 1: 4 MHz/(3+1) = 1 Mhz
+				   											// Explanation: downscale 16 Mhz clock input to 1 Mhz by dividing by PSC + 1: 16 MHz/(15+1) = 1 Mhz
 
 	TIM4->CR1 |= TIM_CR1_ARPE;								// 4. Enable auto reload preload
 	TIM4->ARR = 0xFFFF; 									// 4. Set auto-reload value to max value
@@ -66,31 +67,30 @@ void Input_Capture_Setup() {
 void TIM4_IRQHandler(void) {
 	if(TIM4->SR & TIM_SR_UIF) { 						// UIF Interrupt
 		TIM4->SR &= ~TIM_SR_UIF; 						// Clear interrupt flag
-
-	} else if (TIM4->SR & TIM_SR_CC1IF) { 				// interrupt on channel 1 capture
-		TIM4->SR &= ~ TIM_SR_CC1IF; 					// Clear interrupt flag
+		overflowCount++;
+		return;
+	}
+	
+	if (TIM4->SR & TIM_SR_CC1IF) { 				// interrupt on channel 1 capture
+		TIM4->SR &= ~TIM_SR_CC1IF; 					// Clear interrupt flag
 		edge++;
 		if (edge%2 == 1) {								// rising edge (every odd edge is assumed to be rising)
 			lastValue = TIM4->CCR1;						// save value of counter to lastValue
+			overflowCount = 0;
 			return;
 		}
 
 		if (edge%2 == 0) {								// falling edge (every even edge is assumed to be falling)
-			currentValue = TIM4->CCR1;					//save value of counter to currentValue
-			timeIntervalInMicrosec = clockPeriodInMicrosec * (((1 + TIM4->ARR)* overflowCount + currentValue) - (lastValue)); // time = frequency * (final_tick - inital_tick)
+			currentValue = TIM4->CCR1;					// save value of counter to currentValue
+			timeIntervalInMicrosec = clockPeriodInMicrosec * (((1 + TIM4->ARR)*overflowCount + currentValue) - (lastValue)); // time = frequency * (final_tick - inital_tick)
 			return;
 		}
-		
-									
-	} else if (TIM4->SR & TIM_SR_CC1OF) { 	// interrupt on channel 1 overflow
-		overflowCount++; 
-		TIM4->SR &= ~ TIM_SR_CC1OF; 		// Clear interrupt flag
 		return;
-	}
+	} 
 }
 
 void Trigger_Setup() {
-	// Configure PA9
+	// Configure PA9 Timer 1 channel 2
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;					// Enable GPIO Port A Clock
 	uint8_t pin_number = 9;
 	// GPIO Mode: Input(00), Output (01),
@@ -123,9 +123,9 @@ void Trigger_Setup() {
 	TIM1->CCR2 = 10;										// 5. Set the CCR value to 10
 															// Explanation: 10 ticks @ 1 Mhz = 10 us
 
-	TIM1->CCMR1 &= ~TIM_CCMR1_OC1M;						 	// 6. clear output compare mode bits
-	TIM1->CCMR1 |= (TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1);	// 6. set output compare mode bits to PWM mode 1 (0110)
-	TIM1->CCMR1 |= TIM_CCMR1_OC1PE;						 	// 6. enable output preload
+	TIM1->CCMR1 &= ~TIM_CCMR1_OC2M;						 	// 6. clear output compare mode bits
+	TIM1->CCMR1 |= (TIM_CCMR1_OC2M_2 | TIM_CCMR1_OC2M_1);	// 6. set output compare mode bits to PWM mode 1 (0110)
+	TIM1->CCMR1 |= TIM_CCMR1_OC2PE;						 	// 6. enable output preload
 
 	TIM1->CCER |= TIM_CCER_CC2E; 							// 7. Enable channel 2 output
 
@@ -135,7 +135,7 @@ void Trigger_Setup() {
 
 	TIM1->DIER |= TIM_DIER_UIE;								// 10. Enable update interrupt in the DMA/Interrupt enable register
 
-	TIM1->SR = 0; 											// 10. clear the update interrupt flag in the status register
+	TIM1->SR  &= ~TIM_SR_UIF;								// 10. clear the update interrupt flag in the status register
 
 	TIM1->CR1 &= ~TIM_CR1_DIR;								// 11. Set the direction of the counter as up counting (0)
 
@@ -160,10 +160,8 @@ int main(void) {
 	// Trigger Setup
 	Trigger_Setup();
 
-	float distanceInCm = 0;
-	
 	while(1) {
-		// [TODO] Store your measurements on Stack
-		float distanceInCm = timeIntervalInMicrosec/58.0;
+		// Store your measurements on Stack
+		distanceInCm = timeIntervalInMicrosec/58.0;
 	}
 }
