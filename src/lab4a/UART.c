@@ -11,27 +11,23 @@ void UART2_Init(void) {
 	RCC->CCIPR  |= 0b01 << (SEL_size * 1); 			// 1.b select the sys clk as USART2 clk src 
 }
 
-void UART1_GPIO_Init(void) {
+void configure_PA(int pin_number) {
 	uint8_t pin_size = 2;
-	GPIOA->OSPEEDR &=  ~0b11 << (pin_size * 2); 
-	GPIOA->OSPEEDR |=  0b11 << (pin_size * 2); 		// 2.a PA2 set High speed
-	
-	GPIOA->OSPEEDR &=  ~0b11 << (pin_size * 3);
-	GPIOA->OSPEEDR |=  0b11 << (pin_size * 3);		// 2.a PA3 set High speed
+	GPIOA->OSPEEDR &=  ~0b11 << (pin_size * pin_number); 
+	GPIOA->OSPEEDR |=  0b11 << (pin_size * pin_number); 		// 2.a pins set to High speed
 
 	pin_size = 1; 
-	GPIOA->OTYPER &= ~0b0 << (pin_size * 2);
-	GPIOA->OTYPER |= 0b0 << (pin_size * 2);			// 2.b pins set to push-pull
+	GPIOA->OTYPER &= ~0b0 << (pin_size * pin_number);
+	GPIOA->OTYPER |= 0b0 << (pin_size * pin_number);			// 2.b pins set to push-pull
 	
-	GPIOA->OTYPER &= ~0b0 << (pin_size * 3);		
-	GPIOA->OTYPER |= 0b0 << (pin_size * 3);			// 2.b pins set to push-pull
-
 	pin_size = 2; 
-	GPIOA->PUPDR &= ~0b01 << (pin_size * 2);
-	GPIOA->PUPDR |= 0b01 << (pin_size * 2);			// 2.c  pins set using pull-up resistor
-	
-	GPIOA->PUPDR &= ~0b01 << (pin_size * 3);		
-	GPIOA->PUPDR |= 0b01 << (pin_size * 3);			// 2.c  pins set using pull-up resistor
+	GPIOA->PUPDR &= ~0b01 << (pin_size * pin_number);
+	GPIOA->PUPDR |= 0b01 << (pin_size * pin_number);			// 2.c pins set to pull-up resistor
+}
+
+void UART1_GPIO_Init(void) {
+	configure_PA(2);
+	configure_PA(3);
 }
 
 void UART2_GPIO_Init(void) {
