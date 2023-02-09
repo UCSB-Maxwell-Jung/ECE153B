@@ -5,11 +5,23 @@ void UART1_Init(void) {
 }
 
 void UART2_Init(void) {
-	// [TODO]
+	uint8_t SEL = 2;
+	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;		//1.a enable USART2 clock in peripheral clk reg
+	RCC->CCRIPR  |= 0b01 << (SEL * 1); 			//1.b select the sys clk as USART2 clk src 
 }
 
 void UART1_GPIO_Init(void) {
-	// [TODO]
+	unit8 pin_size = 2;
+	GPIOA->OSPEEDR |=  0b11 << (pin_size * 2); 		//2.a PA2 set High speed
+	GPIOA->OSPEEDR |=  0b11 << (pin_size * 3);		//	  PA3 set High speed
+
+	pin_size = 1; 
+	GPIOA->OTYPER |= 0b0 << (pin_size * 2);		//2.b	pins set to push-pull
+	GPIOA->OTYPER |= 0b0 << (pin_size * 3);		
+
+	pin_size = 2; 
+	GPIOA->PUPDR |= 0b01 << (pin_size * 2);		//2.c  pins set using pull-up resistor
+	GPIOA->PUPDR |= 0b01 << (pin_size * 3);		
 }
 
 void UART2_GPIO_Init(void) {
