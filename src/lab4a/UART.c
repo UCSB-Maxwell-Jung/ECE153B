@@ -12,17 +12,17 @@ void UART2_Init(void) {
 }
 
 void configure_PA(int pin_number) {
-	uint8_t pin_size = 2;
-	GPIOA->OSPEEDR &=  ~0b11 << (pin_size * pin_number); 
-	GPIOA->OSPEEDR |=  0b11 << (pin_size * pin_number); 		// 2.a pins set to High speed
+	uint8_t width = 2;
+	GPIOA->OSPEEDR &=  ~0b11 << (width * pin_number); 
+	GPIOA->OSPEEDR |=  0b11 << (width * pin_number); 		// 2.a pins set to High speed
 
-	pin_size = 1; 
-	GPIOA->OTYPER &= ~0b0 << (pin_size * pin_number);
-	GPIOA->OTYPER |= 0b0 << (pin_size * pin_number);			// 2.b pins set to push-pull
+	width = 1; 
+	GPIOA->OTYPER &= ~0b0 << (width * pin_number);
+	GPIOA->OTYPER |= 0b0 << (width * pin_number);			// 2.b pins set to push-pull
 	
-	pin_size = 2; 
-	GPIOA->PUPDR &= ~0b01 << (pin_size * pin_number);
-	GPIOA->PUPDR |= 0b01 << (pin_size * pin_number);			// 2.c pins set to pull-up resistor
+	width = 2; 
+	GPIOA->PUPDR &= ~0b01 << (width * pin_number);
+	GPIOA->PUPDR |= 0b01 << (width * pin_number);			// 2.c pins set to pull-up resistor
 }
 
 void UART1_GPIO_Init(void) {
