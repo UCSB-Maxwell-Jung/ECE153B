@@ -40,27 +40,21 @@ void UART2_GPIO_Init(void) {
 
 void USART_Init(USART_TypeDef* USARTx) {
 	uint8_t SEL_size = 1;
-	USARTx->CR1 |= 0b1 << (SEL_size * 0); // USART diabled before modifying regs
+	USARTx->CR1 &= ~USART_CR1_UE; 					// disable USART before modifying regs
 
-	//3.a 1 start, 8 data bits, n stop bits
-	USARTx->CR1 |= 0b0 << (SEL_size * 28); // M1
-	USARTx->CR1 |= 0b0 << (SEL_size * 12); // M0
-	
-	//oversamle mode by 16
-	USARTx->CR1 |= 0b0 <<(SEL_size * 15);	
+	USARTx->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); 	// 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
+	USARTx->CR1 &= ~USART_CR1_OVER8;				// 0 = oversampling by 16
+	USARTx->CR2 &= ~USART_CR2_STOP;					// 00 = 1 stop bit
 
 	//3.b set USARTDIV in BRR[3:0] (*note: BRR[3:0] == USARTDIV[3:0] when USARTx->CR1 bit 16 (line 50) is 0)
-	USARTx->BRR &= ~0xFFFF; //clear [3:0] 
+	USARTx->BRR &= ~0xFFFF; //clear [15:0] 
 	USARTx->BRR |= ~0x208D;	//BaudRate = f_clk/(USARTDIV) = 8333.333 ~ 8333 = 0x208D
 
 	//3.c enable transmitter and receiver 
-	USARTx->CR3 &= ~0b1 << (SEL_size * 6);	//enable transmitter
-	USARTx->CR3 |= 	0b1 << (SEL_size * 6);
+	USARTx->CR1 |= USART_CR1_TE;					//enable transmitter
+	USARTx->CR1 |= USART_CR1_RE;					//enable receiver
 
-	USARTx->CR3 &= ~0b1 << (SEL_size * 5);	//enable receiver
-	USARTx->CR3 |=  0b1 << (SEL_size * 5);
-
-	USARTx->CR1 |= 0b0 << (SEL_size * 0); // USART diabled before modifying regs
+	USARTx->CR1 |= USART_CR1_UE; 					// EnablUSART diabled 
 }
 
 uint8_t USART_Read (USART_TypeDef * USARTx) {
