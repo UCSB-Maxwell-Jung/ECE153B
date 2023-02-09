@@ -12,7 +12,7 @@ void UART2_Init(void) {
 }
 
 void UART1_GPIO_Init(void) {
-	unit8 pin_size = 2;
+	uint8_t pin_size = 2;
 	GPIOA->OSPEEDR &=  ~0b11 << (pin_size * 2); 
 	GPIOA->OSPEEDR |=  0b11 << (pin_size * 2); 		// 2.a PA2 set High speed
 	
@@ -50,8 +50,8 @@ void USART_Init(USART_TypeDef* USARTx) {
 	USARTx->CR1 |= 0b0 <<(SEL_size * 15);	
 
 	//3.b set USARTDIV in BRR[3:0] (*note: BRR[3:0] == USARTDIV[3:0] when USARTx->CR1 bit 16 (line 50) is 0)
-	USARTx->BRR &= ~0xFFFF //clear [3:0] 
-	USARTx->BRR |= ~0x208D	//BaudRate = f_clk/(USARTDIV) = 8333.333 ~ 8333 = 0x208D
+	USARTx->BRR &= ~0xFFFF; //clear [3:0] 
+	USARTx->BRR |= ~0x208D;	//BaudRate = f_clk/(USARTDIV) = 8333.333 ~ 8333 = 0x208D
 
 	//3.c enable transmitter and receiver 
 	USARTx->CR3 &= ~0b1 << (SEL_size * 6);	//enable transmitter
