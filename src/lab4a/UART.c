@@ -7,8 +7,8 @@ void UART1_Init(void) {
 void UART2_Init(void) {
 	uint8_t SEL_size = 2;
 	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;		//1.a enable USART2 clock in peripheral clk reg
-	RCC->CCRIPR  &= ~0b01 << (SEL_size * 1); 	
-	RCC->CCRIPR  |= 0b01 << (SEL_size * 1); 			//1.b select the sys clk as USART2 clk src 
+	RCC->CCIPR  &= ~0b01 << (SEL_size * 1); 	
+	RCC->CCIPR  |= 0b01 << (SEL_size * 1); 			//1.b select the sys clk as USART2 clk src 
 }
 
 void UART1_GPIO_Init(void) {
