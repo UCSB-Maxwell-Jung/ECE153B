@@ -7,6 +7,7 @@ void LED_Init(void)
 
 	//GPIO mode for green LED
 	GPIOA->MODER &= ~GPIO_MODER_MODE5_1;
+	
 }
 
 void Green_LED_Off(void)

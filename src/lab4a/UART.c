@@ -47,9 +47,9 @@ void UART2_GPIO_Init(void) {
 	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR3;	//pin3
 	
 	GPIOA->OTYPER &= ~GPIO_OTYPER_OT2;
-	GPIOA->OTYPER &= ~GPIO_OTYPER_OT3;			// 2.b pins set to push-pull//
+	GPIOA->OTYPER &= ~GPIO_OTYPER_OT3;			// 2.b pins set to push-pull
 	
-	GPIOA->PUPDR |= (GPIO_PUPDR_PUPD2_0) | (GPIO_PUPDR_PUPD3_0);			// 2.c pins set to pull-up resistor//
+	GPIOA->PUPDR |= (GPIO_PUPDR_PUPD2_0) | (GPIO_PUPDR_PUPD3_0);			// 2.c pins set to pull-up resistor
 	
 	//MODER//
 	GPIOA->MODER &= ~GPIO_MODER_MODE2;	//pin 2

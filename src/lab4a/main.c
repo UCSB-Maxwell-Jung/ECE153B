@@ -39,19 +39,21 @@ int main(void) {
 	LED_Init();
 	char rxByte;
 	while(1) {
+		
 		printf("Please Enter a command:");
 		scanf("%c", &rxByte);
+
 		if((rxByte == 'Y') || (rxByte == 'y')){
-			printf("LED ON\n");
+			printf("LED ON \n");
 			Green_LED_On();
 		}
 		else if((rxByte == 'N') || (rxByte == 'n')){
-			printf("LED OFF\n");
+			printf("LED OFF \n");
 			Green_LED_Off();
 		}
 		else
 		{
-			printf("Please input valid character: 'y'/'Y' or 'n'/'N'\n");
+			printf("Please input valid character: 'y'/'Y' or 'n'/'N' \n");
 		}
 	}
 }
