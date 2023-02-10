@@ -5,37 +5,69 @@ void UART1_Init(void) {
 }
 
 void UART2_Init(void) {
-	uint8_t SEL_size = 2;
 	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;			// 1.a enable USART2 clock in peripheral clk reg
-	RCC->CCIPR  &= ~0b01 << (SEL_size * 1); 	
-	RCC->CCIPR  |= 0b01 << (SEL_size * 1); 			// 1.b select the sys clk as USART2 clk src 
-}
-
-void configure_PA(int pin_number) {
-	uint8_t width = 2;
-	GPIOA->OSPEEDR &=  ~0b11 << (width * pin_number); 
-	GPIOA->OSPEEDR |=  0b11 << (width * pin_number); 		// 2.a pins set to High speed
-
-	width = 1; 
-	GPIOA->OTYPER &= ~0b0 << (width * pin_number);
-	GPIOA->OTYPER |= 0b0 << (width * pin_number);			// 2.b pins set to push-pull
 	
-	width = 2; 
-	GPIOA->PUPDR &= ~0b01 << (width * pin_number);
-	GPIOA->PUPDR |= 0b01 << (width * pin_number);			// 2.c pins set to pull-up resistor
+	RCC->CCIPR &= ~RCC_CCIPR_USART2SEL;
+	RCC->CCIPR |= RCC_CCIPR_USART2SEL_0;		// 1.b select the sys clk as USART2 clk src 
 }
 
 void UART1_GPIO_Init(void) {
-	// [TODO]
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
+
+	//pins set to High speed 
+	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR6;	//6
+	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR7;	//7
+
+	GPIOA->OTYPER &= ~GPIO_OTYPER_OT6;
+	GPIOA->OTYPER &= ~GPIO_OTYPER_OT7;			//pins set to push-pull
+	
+	GPIOA->PUPDR |= (GPIO_PUPDR_PUPD6_0) | (GPIO_PUPDR_PUPD7_0);			//pins set to pull-up resistor
+	
+	//MODER//
+	GPIOA->MODER &= ~GPIO_MODER_MODE6;	//pin 6
+	GPIOA->MODER |= GPIO_MODER_MODE6_1; 
+	
+	GPIOA->MODER &= ~GPIO_MODER_MODE7;	//pin 7
+	GPIOA->MODER |= GPIO_MODER_MODE7_1;							
+	
+	//set to AF//
+	GPIOA->AFR[0] &= ~GPIO_AFRL_AFSEL6;		//pin 6
+	GPIOA->AFR[0] |= (GPIO_AFRL_AFSEL6_2 | GPIO_AFRL_AFSEL6_1 | GPIO_AFRL_AFSEL6_0);
+
+	GPIOA->AFR[0] &= ~GPIO_AFRL_AFSEL7;		//pin 7
+	GPIOA->AFR[0] |= (GPIO_AFRL_AFSEL7_2 | GPIO_AFRL_AFSEL7_1 | GPIO_AFRL_AFSEL7_0);
 }
 
 void UART2_GPIO_Init(void) {
-	configure_PA(2);
-	configure_PA(3);
+	//part a 
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; //clk enabled
+
+	// 2.a pins set to High speed//
+	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR2;	//pin2
+	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR3;	//pin3
+	
+	GPIOA->OTYPER &= ~GPIO_OTYPER_OT2;
+	GPIOA->OTYPER &= ~GPIO_OTYPER_OT3;			// 2.b pins set to push-pull//
+	
+	GPIOA->PUPDR |= (GPIO_PUPDR_PUPD2_0) | (GPIO_PUPDR_PUPD3_0);			// 2.c pins set to pull-up resistor//
+	
+	//MODER//
+	GPIOA->MODER &= ~GPIO_MODER_MODE2;	//pin 2
+	GPIOA->MODER |= GPIO_MODER_MODE2_1; 
+	
+	GPIOA->MODER &= ~GPIO_MODER_MODE3;	//pin 3
+	GPIOA->MODER |= GPIO_MODER_MODE3_1;							
+	
+	//set to AF//
+	GPIOA->AFR[0] &= ~GPIO_AFRL_AFSEL2;		//pin 2
+	GPIOA->AFR[0] |= (GPIO_AFRL_AFSEL2_2 | GPIO_AFRL_AFSEL2_1 | GPIO_AFRL_AFSEL2_0);
+
+	GPIOA->AFR[0] &= ~GPIO_AFRL_AFSEL3;		//pin 3
+	GPIOA->AFR[0] |= (GPIO_AFRL_AFSEL3_2 | GPIO_AFRL_AFSEL3_1 | GPIO_AFRL_AFSEL3_0);
+
 }
 
 void USART_Init(USART_TypeDef* USARTx) {
-	uint8_t SEL_size = 1;
 	USARTx->CR1 &= ~USART_CR1_UE; 					// disable USART before modifying regs
 
 	USARTx->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); 	// 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
@@ -44,7 +76,7 @@ void USART_Init(USART_TypeDef* USARTx) {
 
 	//3.b set USARTDIV in BRR[3:0] (*note: BRR[3:0] == USARTDIV[3:0] when USARTx->CR1 bit 16 (line 50) is 0)
 	USARTx->BRR &= ~0xFFFF; //clear [15:0] 
-	USARTx->BRR |= ~0x208D;	//BaudRate = f_clk/(USARTDIV) = 8333.333 ~ 8333 = 0x208D
+	USARTx->BRR = 8333;	//BaudRate = f_clk/(USARTDIV) = 8333.333 ~ 8333 = 0x208D
 
 	//3.c enable transmitter and receiver 
 	USARTx->CR1 |= USART_CR1_TE;					//enable transmitter
