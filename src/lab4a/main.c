@@ -31,7 +31,6 @@ void Init_USARTx(int x) {
 	}
 }
 
-
 int main(void) {
 	System_Clock_Init(); // Switch System Clock = 80 MHz
 	// Initialize UART -- change the argument depending on the part you are working on
