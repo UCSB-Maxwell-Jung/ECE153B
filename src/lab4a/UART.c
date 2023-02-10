@@ -26,12 +26,12 @@ void configure_PA(int pin_number) {
 }
 
 void UART1_GPIO_Init(void) {
-	configure_PA(2);
-	configure_PA(3);
+	// [TODO]
 }
 
 void UART2_GPIO_Init(void) {
-	// [TODO]
+	configure_PA(2);
+	configure_PA(3);
 }
 
 void USART_Init(USART_TypeDef* USARTx) {
