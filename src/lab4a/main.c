@@ -37,17 +37,16 @@ int main(void) {
 	// Initialize UART -- change the argument depending on the part you are working on
 	Init_USARTx(2);
 	LED_Init();
-	char rxByte;
+	char command[64]; // assume command typed by the user is at most 63 characters (63 + 1 null character)
 	while(1) {
+		printf("Please enter a command:");
+		scanf("%s", command);
 		
-		printf("Please Enter a command:");
-		scanf("%c", &rxByte);
-
-		if((rxByte == 'Y') || (rxByte == 'y')){
+		if((strcmp(command, "Y") == 0) || (strcmp(command, "y") == 0)){
 			printf("LED ON \n");
 			Green_LED_On();
 		}
-		else if((rxByte == 'N') || (rxByte == 'n')){
+		else if((strcmp(command, "N") == 0) || (strcmp(command, "n") == 0)){
 			printf("LED OFF \n");
 			Green_LED_Off();
 		}
