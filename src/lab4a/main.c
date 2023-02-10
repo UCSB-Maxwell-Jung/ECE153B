@@ -31,15 +31,28 @@ void Init_USARTx(int x) {
 	}
 }
 
+
 int main(void) {
 	System_Clock_Init(); // Switch System Clock = 80 MHz
-	LED_Init();
-	
 	// Initialize UART -- change the argument depending on the part you are working on
 	Init_USARTx(2);
-	
+	LED_Init();
 	char rxByte;
 	while(1) {
-		// [TODO]
+		
+		printf("Please Enter a command:");
+		scanf("%c", &rxByte);
+
+		if((rxByte == 'Y') || (rxByte == 'y')){
+			printf("LED ON \n");
+			Green_LED_On();
+		}
+		else if((rxByte == 'N') || (rxByte == 'n')){
+			printf("LED OFF \n");
+			Green_LED_Off();
+		}
+		else {
+			printf("Please input valid character: 'y'/'Y' or 'n'/'N' \n");
+		}
 	}
 }
