@@ -81,7 +81,7 @@ void USART_Init(USART_TypeDef* USARTx) {
 
 	//3.b set USARTDIV in BRR[3:0] (*note: BRR[3:0] == USARTDIV[3:0] when USARTx->CR1 bit 16 (line 50) is 0)
 	USARTx->BRR &= ~0xFFFF; //clear [15:0] 
-	USARTx->BRR = 8333;	//BaudRate = f_clk/(USARTDIV) = 8333.333 ~ 8333 = 0x208D
+	USARTx->BRR |= 0x208D;	//BaudRate = f_clk/(USARTDIV) = 8333.333 ~ 8333 = 0x208D
 
 	//3.c enable transmitter and receiver 
 	USARTx->CR1 |= USART_CR1_TE;					//enable transmitter
