@@ -51,8 +51,7 @@ int main(void) {
 			printf("LED OFF \n");
 			Green_LED_Off();
 		}
-		else
-		{
+		else {
 			printf("Please input valid character: 'y'/'Y' or 'n'/'N' \n");
 		}
 	}
