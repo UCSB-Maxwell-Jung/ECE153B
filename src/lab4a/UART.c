@@ -1,7 +1,11 @@
 #include "UART.h"
 
 void UART1_Init(void) {
-	// [TODO]
+	// part a 2.3 (step 1)
+	RCC->APB2ENR |= RCC_APB2ENR_USART1EN;			// enable USART1 clock in peripheral clk reg
+	
+	RCC->CCIPR &= ~RCC_CCIPR_USART1SEL;				// 1.b select the sys clk as USART1 clk src 
+	RCC->CCIPR |= RCC_CCIPR_USART1SEL_0;
 }
 
 void UART2_Init(void) {
@@ -12,6 +16,7 @@ void UART2_Init(void) {
 }
 
 void UART1_GPIO_Init(void) {
+	// part a 2.3 (step 2)
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
 
 	//pins set to High speed 
