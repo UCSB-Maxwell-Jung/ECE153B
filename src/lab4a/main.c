@@ -35,7 +35,7 @@ void Init_USARTx(int x) {
 int main(void) {
 	System_Clock_Init(); // Switch System Clock = 80 MHz
 	// Initialize UART -- change the argument depending on the part you are working on
-	Init_USARTx(2);
+	Init_USARTx(1);
 	LED_Init();
 	char command[64]; // assume command typed by the user is at most 63 characters (63 + 1 null character)
 	while(1) {
