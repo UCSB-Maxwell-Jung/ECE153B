@@ -26,8 +26,8 @@ int main(void){
 	
 	LED_Init();
 	
-	SPI2_GPIO_Init();
-	SPI2_Init();
+	SPI_GPIO_Init();
+	SPI_Init();
 	
 	while(1) {
 		// TODO
