@@ -24,9 +24,9 @@ void SysTick_Init(void){
 
 	SysTick->LOAD = (10*1000000)*0.001-1; // set auto reload value to (10Mhz * 1ms) - 1
 
-  SysTick->VAL = 0; // set starting value to 0
+	SysTick->VAL = 0; // set starting value to 0
 
-  // Configure and Enable SysTick interrupt in NVIC
+	// Configure and Enable SysTick interrupt in NVIC
 	NVIC_EnableIRQ(SysTick_IRQn);
 	NVIC_SetPriority(SysTick_IRQn, 1); // Set Priority to 1
 
@@ -48,10 +48,10 @@ void SysTick_Handler(void){
 // Delay in ms
 //******************************************************************************************
 void delay (uint32_t T){
-  uint32_t curTicks;
+	uint32_t curTicks;
 
-  curTicks = msTicks;
-  while ((msTicks - curTicks) < T);
-	
-  msTicks = 0;
+	curTicks = msTicks;
+	while ((msTicks - curTicks) < T);
+		
+	msTicks = 0;
 }
