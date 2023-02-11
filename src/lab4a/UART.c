@@ -2,7 +2,7 @@
 
 void UART1_Init(void) {
 	// part a 2.3 (step 1)
-	RCC->APB1ENR2 |= RCC_APB2ENR_USART1EN;			// enable USART1 clock in peripheral clk reg
+	RCC->APB2ENR |= RCC_APB2ENR_USART1EN;			// enable USART1 clock in peripheral clk reg
 	
 	RCC->CCIPR &= ~RCC_CCIPR_USART1SEL;				// 1.b select the sys clk as USART1 clk src 
 	RCC->CCIPR |= RCC_CCIPR_USART1SEL_0;
