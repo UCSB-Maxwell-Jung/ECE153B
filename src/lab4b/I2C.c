@@ -70,10 +70,10 @@ void I2C_Initialization(void){
 	t_SCLDEL = (SCLDEL + 1) * t_PRESC = (0 + 1)*10us = 10us Condition: [t_SCLDEL > 1us] 
 	SDADEL = 0
 	t_SDADEL = (SDADEL + 1) * t_PRESC = (0 + 1)*10us = 10us	     	 [t_SDADEL > 1.25us]
-	SCLL = 	
+	SCLL = 	0
 	t_SCLL = (SCLL + 1) * t_PRESC = (0 + 1)*10us =	10us		         [t_SCLL > 4.7us]
-	SCLL = 	
-	t_SCLL = (SCLL + 1) * t_PRESC = (0 + 1)*10us =	10us		         [t_SCLL > 4.0us]
+	SCLH = 	0
+	t_SCLH = (SCLH + 1) * t_PRESC = (0 + 1)*10us =	10us		         [t_SCLH > 4.0us]
 
 	
 	*/
