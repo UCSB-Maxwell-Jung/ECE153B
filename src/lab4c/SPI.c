@@ -73,7 +73,45 @@ void SPI_Init(void){
 	// initialize SPI
 	// SPI1
 	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN; // enable SPI1 clock
+
+	RCC->APB2RSTR |= RCC_APB2RSTR_SPI1RST; // set, then reset to clear SPI1
+	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST; 
+
+	SPI1->CR1 &= ~SPI_CR1_SPE; // disable SPI1
+
+	SPI1->CR1 &= ~SPI_CR1_RXONLY; // set to full-duplex (0)
+
+	SPI1->CR1 &= ~SPI_CR1_BIDIMODE; // set to 2-line unidirectional data mode (0)
+
+	SPI1->CR1 &= ~SPI_CR1_BIDIOE; // disable output in bidirectional mode (0)
+
+	SPI1->CR1 &= ~SPI_CR1_LSBFIRST; // MSB first (0)
+
+	SPI1->CR2 &= ~SPI_CR2_DS; // reset data size bits to 0000;
+	SPI1->CR2 |= (SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0); // set data size to 8 (strangely, 8 corresponds to 0111 in the datasheet)
+
+	SPI1->CR2 &= ~SPI_CR2_FRF; // use motorola SPI mode (0)
+
+	SPI1->CR1 &= ~SPI_CR1_CPOL; // set clock to low polarity (0)
+
+	SPI1->CR1 &= ~SPI_CR1_CPHA; // set clock to first clock transition (0)
+
+	SPI1->CR1 &= ~SPI_CR1_BR; // reset baud rate control bits to 000
+	SPI1->CR1 |= (SPI_CR1_BR_1 | SPI_CR1_BR_0); // set to 011 (prescalar value 16)
+
+	SPI1->CR1 &= ~SPI_CR1_CRCEN; // disable hardware CRC calculation (0)
+
+	SPI1->CR1 |= SPI_CR1_MSTR; // set to master (1)
+
+	SPI1->CR1 |= SPI_CR1_SSM; // enable SSM (software slave management) (1)
+
+	SPI1->CR2 |= SPI_CR2_NSSP; // enable NSS pulse generation (1)
 	
+	SPI1->CR1 |= SPI_CR1_SSI; // set internal slave select bit (1)
+
+	SPI1->CR2 |= SPI_CR2_FRXTH; // set FIFO threshold to 1/4 (1)
+
+	SPI1->CR1 |= SPI_CR1_SPE; // enable SPI1
 
 	// SPI2	
 }
