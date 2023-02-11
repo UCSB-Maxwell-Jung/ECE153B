@@ -4,7 +4,7 @@
 // It mistakenly send two bytes out because SPIx->DR has 16 bits. To solve the program,
 // we should use "*((volatile uint8_t*)&SPIx->DR) = byte_data";
 
-void SPI2_GPIO_Init(void) {
+void SPI_GPIO_Init(void) {
 	// initialize SPI2 GPIO pins
 
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
@@ -69,8 +69,13 @@ void SPI2_GPIO_Init(void) {
 	                  GPIO_PUPDR_PUPD15);
 }
 
-void SPI2_Init(void){
-	// TODO: initialize SPI2 peripheral
+void SPI_Init(void){
+	// initialize SPI
+	// SPI1
+	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN; // enable SPI1 clock
+	
+
+	// SPI2	
 }
  
 void SPI_Transfer_Byte(SPI_TypeDef* SPIx, uint8_t write_data, uint8_t* read_data) {
