@@ -12,5 +12,5 @@
 #include "stm32l476xx.h"
 
 void LED_Init(void);
-
+void Green_LED_Toggle(void);
 #endif
