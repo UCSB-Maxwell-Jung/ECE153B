@@ -84,21 +84,21 @@ void I2C_Initialization(void){
 					 |(0<<I2C_TIMINGR_SCLH_POS)
 					 |(0<<I2C_TIMINGR_SCLL_POS));
 	
-	// disable own address
-	I2C1->OAR1 &= ~I2C_OAR1_OA1EN;
+	// part 3 disable own address
+	I2C1->OAR1 &= ~I2C_OAR1_OA1EN; 
 	I2C1->OAR2 &= ~I2C_OAR2_OA2EN;
 	
 	//address set to 7 bit mode
-	I2C1->OAR1 &= ~I2C_OAR1_OA1MODE;
+	I2C1->OAR1 &= ~I2C_OAR1_OA1MODE; //3.a
 	
 	// Set Address to OwnAddr
-	I2C1->OAR1 |= OwnAddr;
+	I2C1->OAR1 |= OwnAddr; //3.b
 	
 	// Enable Own1 Address
-	I2C1->OAR1 |= I2C_OAR1_OA1EN;
+	I2C1->OAR1 |= I2C_OAR1_OA1EN; //3.c
 	
 	// Enable I2C1
-	I2C1->CR1 |= I2C_CR1_PE;
+	I2C1->CR1 |= I2C_CR1_PE; //4
 }
 
 //===============================================================================
