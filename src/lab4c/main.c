@@ -35,6 +35,6 @@ int main(void){
 		if (receive == transmit-1) // SPI1 received value == SPI2 transmitted value
 			Green_LED_Toggle();
 
-		transmit++;
+		transmit++; // cycle from 0 to 0xff (overflow will cycle back to 0)
 	}
 }
