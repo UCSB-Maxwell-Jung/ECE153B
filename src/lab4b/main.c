@@ -47,14 +47,15 @@ int main(void) {
 		// Determine Slave Address
 		//
 		// Note the "<< 1" must be present because bit 0 is treated as a don't care in 7-bit addressing mode
-		SlaveAddress = 0b1111111 << 1; // STUB - Fill in correct address 
+		SlaveAddress = 0b1001000 << 1; // A0 sensor
 		
 		// [TODO] - Get Temperature
-		// 
 		// First, send a command to the sensor for reading the temperature
+		I2C_SendData(I2C1, SlaveAddress, &Data_Send, 1);
 		// Next, get the measurement
-		
+		I2C_ReceiveData(I2C1, SlaveAddress, &Data_Receive, 1);
 		// [TODO] - Print Temperature to Termite
+		printf("Temperature: %dC\n",Data_Receive);
 		
 		// Some delay
 		for(i = 0; i < 50000; ++i); 
