@@ -12,20 +12,20 @@ void SPI_GPIO_Init(void) {
 
 	// set to alternate function mode (10)
 	// explanation: default is 11, so use mask &~(01) to set second bit to 0
-	GPIOB->MODER &= ~(GPIO_MODER_MODER3_0 | \
-					  GPIO_MODER_MODER4_0 | \
-					  GPIO_MODER_MODER5_0 | \
-					  GPIO_MODER_MODER13_0 | \
-					  GPIO_MODER_MODER14_0 | \
+	GPIOB->MODER &= ~(GPIO_MODER_MODER3_0 | 
+					  GPIO_MODER_MODER4_0 | 
+					  GPIO_MODER_MODER5_0 | 
+					  GPIO_MODER_MODER13_0 | 
+					  GPIO_MODER_MODER14_0 | 
 					  GPIO_MODER_MODER15_0);
 
 	//set to AF//
 	// reset AF for pin 3, 4, 5, 13, 14, 15
-	GPIOB->AFR[0] &= ~(GPIO_AFRL_AFSEL3 | \
-	                   GPIO_AFRL_AFSEL4 | \
+	GPIOB->AFR[0] &= ~(GPIO_AFRL_AFSEL3 | 
+	                   GPIO_AFRL_AFSEL4 | 
 	                   GPIO_AFRL_AFSEL5);
-	GPIOB->AFR[1] &= ~(GPIO_AFRH_AFSEL13 | \
-	                   GPIO_AFRH_AFSEL14 | \
+	GPIOB->AFR[1] &= ~(GPIO_AFRH_AFSEL13 | 
+	                   GPIO_AFRH_AFSEL14 | 
 	                   GPIO_AFRH_AFSEL15);
 
 	// set pin 3, 4, 5, 13, 14, 15 to AF5
@@ -45,27 +45,27 @@ void SPI_GPIO_Init(void) {
 	GPIOB->AFR[1] |= (af_num << ((pin_num%8)*4));
 
 	// set to push-pull (0)
-	GPIOB->OTYPER &= ~(GPIO_OTYPER_OT3 | \
-	                   GPIO_OTYPER_OT4 | \
-	                   GPIO_OTYPER_OT5 | \
-	                   GPIO_OTYPER_OT13 | \
-	                   GPIO_OTYPER_OT14 | \
+	GPIOB->OTYPER &= ~(GPIO_OTYPER_OT3 | 
+	                   GPIO_OTYPER_OT4 | 
+	                   GPIO_OTYPER_OT5 | 
+	                   GPIO_OTYPER_OT13 | 
+	                   GPIO_OTYPER_OT14 | 
 	                   GPIO_OTYPER_OT15);
 
 	// set to very high (11)
-	GPIOB->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR3 | \
-	                   GPIO_OSPEEDER_OSPEEDR4 | \
-	                   GPIO_OSPEEDER_OSPEEDR5 | \
-	                   GPIO_OSPEEDER_OSPEEDR13 | \
-	                   GPIO_OSPEEDER_OSPEEDR14 | \
+	GPIOB->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR3 | 
+	                   GPIO_OSPEEDER_OSPEEDR4 | 
+	                   GPIO_OSPEEDER_OSPEEDR5 | 
+	                   GPIO_OSPEEDER_OSPEEDR13 | 
+	                   GPIO_OSPEEDER_OSPEEDR14 | 
 	                   GPIO_OSPEEDER_OSPEEDR15);
 	
 	// set to no pull-up, pull-down (00)
-	GPIOB->PUPDR &= ~(GPIO_PUPDR_PUPD3 | \
-	                  GPIO_PUPDR_PUPD4 | \
-	                  GPIO_PUPDR_PUPD5 | \
-	                  GPIO_PUPDR_PUPD13 | \
-	                  GPIO_PUPDR_PUPD14 | \
+	GPIOB->PUPDR &= ~(GPIO_PUPDR_PUPD3 | 
+	                  GPIO_PUPDR_PUPD4 | 
+	                  GPIO_PUPDR_PUPD5 | 
+	                  GPIO_PUPDR_PUPD13 | 
+	                  GPIO_PUPDR_PUPD14 | 
 	                  GPIO_PUPDR_PUPD15);
 }
 
