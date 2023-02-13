@@ -16,7 +16,29 @@ extern void Error_Handler(void);
 //                        I2C GPIO Initialization
 //===============================================================================
 void I2C_GPIO_Init(void) {
-	// [TODO]
+
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
+	// configure PB6 for I2C1_SCL, PB7 for I2C1_SDA
+
+	// set both pins to alternate function mode (10)
+	// explanation: default is 11, so use mask &~(01) to set second bit to 0
+	GPIOB->MODER &= ~(GPIO_MODER_MODER6_0 | GPIO_MODER_MODER7_0);
+
+	// set pin 6,7 to AF4
+	int afWidth = 4;
+	GPIOB->AFR[0] &= ~(GPIO_AFRL_AFSEL6 | GPIO_AFRL_AFSEL7); // reset to AF0
+	GPIOB->AFR[0] |= (4 << (6*afWidth)); // pin 6 to AF4
+	GPIOB->AFR[0] |= (4 << (7*afWidth)); // pin 7 to AF4
+
+	// set both pins to open-drain (1)
+	GPIOB->OTYPER |= (GPIO_OTYPER_OT6 | GPIO_OTYPER_OT7);
+
+	// set both pins to very high (11)
+	GPIOB->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR6 | GPIO_OSPEEDER_OSPEEDR7);
+	
+	// set both pins to pull-up (01)
+	GPIOB->PUPDR &= ~(GPIO_PUPDR_PUPD6 | GPIO_PUPDR_PUPD7);
+	GPIOB->PUPDR |= (GPIO_PUPDR_PUPD6_0 | GPIO_PUPDR_PUPD7_0);
 }
 	
 #define I2C_TIMINGR_PRESC_POS	28
@@ -48,8 +70,8 @@ void I2C_Initialization(void){
 
 	//2.a
 	//enable error interrupts
-	I2C1->CR1 |= (I2C_CR1_ERRIE)	
-	//enable analog noise fileter, digital noise filter, clk stretching
+	I2C1->CR1 |= I2C_CR1_ERRIE;
+	//enable analog noise fileter, disable digital noise filter, clk stretching
 	I2C1->CR1 &= ~(I2C_CR1_ANFOFF | I2C_CR1_DNF | I2C_CR1_NOSTRETCH); 
 	
 	//set master to operate in 7-bit addressing
