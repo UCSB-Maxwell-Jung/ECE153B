@@ -121,5 +121,16 @@ void SPI_Init(void){
 }
  
 void SPI_Transfer_Byte(SPI_TypeDef* SPIx, uint8_t write_data, uint8_t* read_data) {
-	// TODO: perform SPI transfer
+	// perform SPI transfer
+	while (SPIx->SR & SPI_SR_TXE == 0); // wait for Transmit Buffer Empty flag to be set
+
+	// TODO: cast to volatile uint8_t*
+	SPIx->DR = write_data; // write data to data register
+
+	while (SPIx->SR & SPI_SR_BSY == 1); // wait for busy to be unset
+
+	while (SPIx->SR & SPI_SR_RXNE == 0) // wait for receive not empty to be set
+
+	// TODO: cast to volatile uint8_t*
+	*read_data = (volatile uint8_t) SPIx->DR; // read data from data register
 }

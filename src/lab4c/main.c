@@ -28,11 +28,13 @@ int main(void){
 	
 	SPI_GPIO_Init();
 	SPI_Init();
-	
+
 	while(1) {
-		// TODO
-		
-		// delay between SPI transfers to observe LED behavior
-	    delay(1000);
+		SPI_Transfer_Byte(SPI1, transmit, &receive); // Transmit message from SPI1 and receive message from SPI2
+	    delay(1000); // delay between SPI transfers to observe LED behavior
+		if (receive == transmit-1) // SPI1 received value == SPI2 transmitted value
+			Green_LED_Toggle();
+
+		transmit++; // cycle from 0 to 0xff (overflow will cycle back to 0)
 	}
 }
