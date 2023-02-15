@@ -1,10 +1,11 @@
 /*
  * ECE 153B - Winter 2023
  *
- * Name(s):
- * Section:
+ * Name(s): Baron Young, Maxwell Jung
+ * Section: Wed 7pm
  * Lab: 4B
  */
+#define RTR 0x00
 
 #include "stm32l476xx.h"
 #include "I2C.h"
@@ -42,7 +43,7 @@ int main(void) {
 	int i;
 	uint8_t SlaveAddress;
 	uint8_t Data_Receive;
-	uint8_t Data_Send;
+	uint8_t command = RTR; // Read Temperature Register
 	while(1) {	
 		// Determine Slave Address
 		//
@@ -51,11 +52,15 @@ int main(void) {
 		
 		// [TODO] - Get Temperature
 		// First, send a command to the sensor for reading the temperature
-		I2C_SendData(I2C1, SlaveAddress, &Data_Send, 1);
+		I2C_SendData(I2C1, SlaveAddress, &command, 8);
 		// Next, get the measurement
-		I2C_ReceiveData(I2C1, SlaveAddress, &Data_Receive, 1);
+		I2C_ReceiveData(I2C1, SlaveAddress, &Data_Receive, 8);
 		// [TODO] - Print Temperature to Termite
-		printf("Temperature: %dC\n", Data_Receive);
+		// convert unsigned 8 bit to signed 8 bit
+		// for 8 bit binary, 2's complement is equal to
+		// value of magnitude bits - 2^(n-1) * sign bit
+		int8_t temperature = (0x7f & Data_Receive) - (0x80 & Data_Receive);
+		printf("Temperature: %dC\n", temperature);
 		
 		// Some delay
 		for(i = 0; i < 50000; ++i); 
