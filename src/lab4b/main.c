@@ -59,7 +59,7 @@ int main(void) {
 		// convert unsigned 8 bit to signed 8 bit
 		// for 8 bit binary, 2's complement is equal to
 		// value of magnitude bits - 2^(n-1) * sign bit
-		int8_t temperature = (0x7f & Data_Receive) - (0x80 & Data_Receive);
+		int temperature = (int)(0x7f & Data_Receive) - (int)(0x80 & Data_Receive);
 		printf("Temperature: %dC\n", temperature);
 		
 		// Some delay
