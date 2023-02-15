@@ -1,8 +1,8 @@
 /*
  * ECE 153B - Winter 2023
  *
- * Name(s):
- * Section:
+ * Name(s): Maxwell Jung, Baron Young
+ * Section: Wed 7pm
  * Lab: 4C
  */
 
@@ -14,9 +14,6 @@
 #include "SysTimer.h"
 #include <stdio.h>
 
-#define SPI_MASTER SPI2
-#define SPI_SLAVE SPI3
-
 uint8_t transmit = 0;
 uint8_t receive = 0;
 
@@ -26,15 +23,22 @@ int main(void){
 	
 	LED_Init();
 	
-	SPI_GPIO_Init();
-	SPI_Init();
-
+	SPI1_GPIO_Init();
+	SPI2_GPIO_Init();
+	SPI1_Init();
+	SPI2_Init();
+	
 	while(1) {
-		SPI_Transfer_Byte(SPI1, transmit, &receive); // Transmit message from SPI1 and receive message from SPI2
-	    delay(1000); // delay between SPI transfers to observe LED behavior
-		if (receive == transmit-1) // SPI1 received value == SPI2 transmitted value
+		SPI_Send_Byte(SPI1, transmit);
+		SPI_Receive_Byte(SPI2, &receive);
+		
+		if (transmit == receive) {
 			Green_LED_Toggle();
-
-		transmit++; // cycle from 0 to 0xff (overflow will cycle back to 0)
+		}
+		
+		transmit++;
+		
+		// delay between SPI transfers to observe LED behavior
+	    delay(1000);
 	}
 }
