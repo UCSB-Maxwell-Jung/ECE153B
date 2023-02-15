@@ -70,7 +70,7 @@ void I2C_Initialization(void){
 	//2.a
 	//enable error interrupts
 	I2C1->CR1 |= I2C_CR1_ERRIE;
-	//enable analog noise fileter, disable digital noise filter, clk stretching
+	//enable analog noise fileter, disable digital noise filter, enable clk stretching
 	I2C1->CR1 &= ~(I2C_CR1_ANFOFF | I2C_CR1_DNF | I2C_CR1_NOSTRETCH); 
 	
 	//set master to operate in 7-bit addressing
