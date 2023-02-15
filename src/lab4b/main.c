@@ -55,7 +55,7 @@ int main(void) {
 		// Next, get the measurement
 		I2C_ReceiveData(I2C1, SlaveAddress, &Data_Receive, 1);
 		// [TODO] - Print Temperature to Termite
-		printf("Temperature: %dC\n",Data_Receive);
+		printf("Temperature: %dC\n", Data_Receive);
 		
 		// Some delay
 		for(i = 0; i < 50000; ++i); 
