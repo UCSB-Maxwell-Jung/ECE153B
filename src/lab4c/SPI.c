@@ -5,8 +5,10 @@
 // we should use "*((volatile uint8_t*)&SPIx->DR) = byte_data";
 
 void SPI_GPIO_Init(void) {
-	// initialize SPI2 GPIO pins
+	uint32_t af_num;
+	uint32_t pin_num;
 
+	// initialize SPI2 GPIO pins
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
 	// configure PB3, PB4, PB5, PB13, PB14, PB15
 
@@ -29,8 +31,7 @@ void SPI_GPIO_Init(void) {
 	                   GPIO_AFRH_AFSEL15);
 
 	// set pin 3, 4, 5, 13, 14, 15 to AF5
-	int af_num = 5;
-	int pin_num;
+	af_num = 5;
 	pin_num = 3;
 	GPIOB->AFR[0] |= (af_num << (pin_num*4));
 	pin_num = 4;
@@ -121,16 +122,19 @@ void SPI_Init(void){
 }
  
 void SPI_Transfer_Byte(SPI_TypeDef* SPIx, uint8_t write_data, uint8_t* read_data) {
+	volatile uint8_t* byteDR;
 	// perform SPI transfer
-	while (SPIx->SR & SPI_SR_TXE == 0); // wait for Transmit Buffer Empty flag to be set
+	while ((SPIx->SR & SPI_SR_TXE) == 0); // wait for Transmit Buffer Empty flag to be set
 
 	// TODO: cast to volatile uint8_t*
-	SPIx->DR = write_data; // write data to data register
+	byteDR = (volatile uint8_t*) SPIx->DR;
+	*byteDR = write_data; // write data to data register
 
-	while (SPIx->SR & SPI_SR_BSY == 1); // wait for busy to be unset
+	while ((SPIx->SR & SPI_SR_BSY) == 1); // wait for busy to be unset
 
-	while (SPIx->SR & SPI_SR_RXNE == 0) // wait for receive not empty to be set
+	while ((SPIx->SR & SPI_SR_RXNE) == 0) // wait for receive not empty to be set
 
 	// TODO: cast to volatile uint8_t*
-	*read_data = (volatile uint8_t) SPIx->DR; // read data from data register
+	byteDR = (volatile uint8_t*) SPIx->DR;
+	*read_data = *byteDR; // read data from data register
 }
