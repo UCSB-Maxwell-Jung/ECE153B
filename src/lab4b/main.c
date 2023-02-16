@@ -14,6 +14,8 @@
 #include <string.h>
 #include <stdio.h>
 
+static int temperature;
+
 void Init_USARTx(int x);
 
 // Initializes USARTx
@@ -38,7 +40,6 @@ int main(void) {
 	uint8_t SlaveAddress;
 	uint8_t Data_Receive;
 	uint8_t command = RTR; // Read Temperature Register
-	int temperature;
 
 	System_Clock_Init(); // System Clock = 80 MHz
 	
