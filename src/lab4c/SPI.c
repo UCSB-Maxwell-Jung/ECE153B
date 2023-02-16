@@ -146,7 +146,7 @@ void SPI2_Init(void){
 
 // send data from SPI1
 void SPI_Send_Byte(SPI_TypeDef* SPIx, uint8_t write_data) {
-	while ((SPIx->SR & SPI_SR_TXE) == 0); // wait for Transmit Buffer Empty flag to be set
+	while ((SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
 
 	*(volatile uint8_t*)(&SPIx->DR) = write_data; // write data to data register
 
@@ -155,7 +155,7 @@ void SPI_Send_Byte(SPI_TypeDef* SPIx, uint8_t write_data) {
 
 // receive data from SPI2
 void SPI_Receive_Byte(SPI_TypeDef* SPIx, uint8_t* read_data) {
-	while ((SPIx->SR & SPI_SR_RXNE) == 0); // wait for receive not empty to be set
+	while ((SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
 
 	*read_data = *(volatile uint8_t*)(&SPIx->DR); // read data from data register
 }
