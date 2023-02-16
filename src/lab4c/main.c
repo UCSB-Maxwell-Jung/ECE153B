@@ -31,10 +31,9 @@ int main(void){
 	while(1) {
 		SPI_Send_Byte(SPI1, transmit);
 		SPI_Receive_Byte(SPI2, &receive);
-		
-		if (transmit == receive) {
+
+		if (transmit == receive)
 			Green_LED_Toggle();
-		}
 		
 		transmit++;
 		

@@ -864,7 +864,7 @@ typedef struct
   __IO uint32_t CR1;         /*!< SPI Control register 1,                              Address offset: 0x00 */
   __IO uint32_t CR2;         /*!< SPI Control register 2,                              Address offset: 0x04 */
   __IO uint32_t SR;          /*!< SPI Status register,                                 Address offset: 0x08 */
-  __IO uint32_t DR;          /*!< SPI data register,                                  Address offset: 0x0C */
+  __IO uint32_t DR;          /*!< SPI data register,                                   Address offset: 0x0C */
   __IO uint32_t CRCPR;       /*!< SPI CRC polynomial register,                         Address offset: 0x10 */
   __IO uint32_t RXCRCR;      /*!< SPI Rx CRC register,                                 Address offset: 0x14 */
   __IO uint32_t TXCRCR;      /*!< SPI Tx CRC register,                                 Address offset: 0x18 */

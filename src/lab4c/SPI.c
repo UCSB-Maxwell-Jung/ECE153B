@@ -150,7 +150,7 @@ void SPI_Send_Byte(SPI_TypeDef* SPIx, uint8_t write_data) {
 
 	*(volatile uint8_t*)(&SPIx->DR) = write_data; // write data to data register
 
-	while ((SPIx->SR & SPI_SR_BSY) == 1); // wait for busy to be unset
+	while ((SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
 }
 
 // receive data from SPI2

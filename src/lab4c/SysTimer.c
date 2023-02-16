@@ -22,7 +22,7 @@ void SysTick_Init(void){
 	// If CLKSOURCE = 1, the processor clock is used.
 	SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk; // set to 0 (80Mhz/8 = 10Mhz)
 
-	SysTick->LOAD = (10*1000000)*0.001-1; // set auto reload value to (10Mhz * 1ms) - 1
+	SysTick->LOAD = 9999; // set auto reload value to (10Mhz * 1ms) - 1
 
 	SysTick->VAL = 0; // set starting value to 0
 
