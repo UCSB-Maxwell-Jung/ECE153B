@@ -11,6 +11,11 @@
 #include "SysClock.h"
 #include "UART.h"
 #include <string.h>
+#include <stdio.h>
+
+static int temperature;
+
+void Init_USARTx(int x);
 
 // Initializes USARTx
 // USART2: UART Communication with Termite
@@ -30,6 +35,11 @@ void Init_USARTx(int x) {
 }
 
 int main(void) {
+	int i;
+	uint8_t SlaveAddress;
+	uint8_t Data_Receive;
+	uint8_t command = RTR; // Read Temperature Register
+
 	System_Clock_Init(); // System Clock = 80 MHz
 	
 	// Initialize I2C
