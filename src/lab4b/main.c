@@ -14,7 +14,11 @@
 #include <string.h>
 #include <stdio.h>
 
-static int temperature;
+// Note the "<< 1" must be present because bit 0 is treated as a don't care in 7-bit addressing mode
+static uint8_t SlaveAddress = 0x48 << 1; // A0 sensor (0b1001000);
+static uint8_t Data_Receive;
+static uint8_t command = RTR; // Read Temperature Register
+static int temperature = 0x80; // lowest possible temperature
 
 void Init_USARTx(int x);
 
@@ -37,9 +41,6 @@ void Init_USARTx(int x) {
 
 int main(void) {
 	int i;
-	uint8_t SlaveAddress;
-	uint8_t Data_Receive;
-	uint8_t command = RTR; // Read Temperature Register
 
 	System_Clock_Init(); // System Clock = 80 MHz
 	
@@ -49,20 +50,16 @@ int main(void) {
 
 	// Initialize UART -- change the argument depending on the part you are working on
 	Init_USARTx(2);
+	printf("USART initialized\n");
 
 	while(1) {	
-		// Determine Slave Address
-		//
-		// Note the "<< 1" must be present because bit 0 is treated as a don't care in 7-bit addressing mode
-		SlaveAddress = 0x48 << 1; // A0 sensor (0b1001000)
-		
-		// [TODO] - Get Temperature
+		// Get Temperature
 		// First, send a command to the sensor for reading the temperature
-		I2C_SendData(I2C1, SlaveAddress, &command, 8);
+		I2C_SendData(I2C1, SlaveAddress, &command, 1);
 		// Next, get the measurement
-		I2C_ReceiveData(I2C1, SlaveAddress, &Data_Receive, 8);
-		// [TODO] - Print Temperature to Termite
-		// convert unsigned 8 bit to signed 8 bit
+		I2C_ReceiveData(I2C1, SlaveAddress, &Data_Receive, 1);
+		// Print Temperature to Termite
+		// convert unsigned 8 bit to 2's complement signed 8 bit
 		// for 8 bit binary, 2's complement is equal to
 		// value of magnitude bits - 2^(n-1) * sign bit
 		temperature = (int)(0x7f & Data_Receive) - (int)(0x80 & Data_Receive);
