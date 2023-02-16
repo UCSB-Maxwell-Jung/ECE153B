@@ -53,7 +53,6 @@ void I2C_GPIO_Init(void) {
 void I2C_Initialization(void){
 	uint32_t OwnAddr = 0x52;
 	//part B
-	//RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; 
 	
 	RCC->APB1ENR1 |= RCC_APB1ENR1_I2C1EN; // 1.a enable peripheral clk
 
@@ -75,9 +74,9 @@ void I2C_Initialization(void){
 	I2C1->CR1 &= ~(I2C_CR1_ANFOFF | I2C_CR1_DNF | I2C_CR1_NOSTRETCH); 
 	
 	//set master to operate in 7-bit addressing
-	I2C1->CR2 &= ~I2C_CR2_ADD10;	
+	I2C1->CR2 &= ~I2C_CR2_ADD10;
 	//enable auto-end mode, enable NACK generation
-	I2C1->CR2 |= (I2C_CR2_AUTOEND | I2C_CR2_NACK); 
+	I2C1->CR2 |= (I2C_CR2_AUTOEND | I2C_CR2_NACK);
 
 	//2.b
 	/*
@@ -87,24 +86,24 @@ void I2C_Initialization(void){
 	Min data hold time = 1250ns = 1.25us
 	
 	PRESC = 7
-	f_PRESC = 80MHz/(1+7) = 10MHz (t_PRESC = 10us)
+	f_PRESC = 80MHz/(1+7) = 10MHz (t_PRESC = 0.1us)
 	SCLDEL = 0
-	t_SCLDEL = (SCLDEL + 1) * t_PRESC = (0 + 1)*10us = 10us Condition: [t_SCLDEL > 1us] 
+	t_SCLDEL = (SCLDEL + 1) * t_PRESC = (10 + 1)*0.1us = 1.1us Condition: [t_SCLDEL > 1us] 
 	SDADEL = 0
-	t_SDADEL = (SDADEL + 1) * t_PRESC = (0 + 1)*10us = 10us	     	 [t_SDADEL > 1.25us]
+	t_SDADEL = (SDADEL + 1) * t_PRESC = (12 + 1)*0.1us = 1.3us	     	 [t_SDADEL > 1.25us]
 	SCLL = 	0
-	t_SCLL = (SCLL + 1) * t_PRESC = (0 + 1)*10us =	10us		         [t_SCLL > 4.7us]
+	t_SCLL = (SCLL + 1) * t_PRESC = (47 + 1)*0.1us = 4.8us		         [t_SCLL > 4.7us]
 	SCLH = 	0
-	t_SCLH = (SCLH + 1) * t_PRESC = (0 + 1)*10us =	10us		         [t_SCLH > 4.0us]
+	t_SCLH = (SCLH + 1) * t_PRESC = (40 + 1)*0.1us = 4.1us		         [t_SCLH > 4.0us]
 
 	
 	*/
 
 	I2C1->TIMINGR |= ((7<<I2C_TIMINGR_PRESC_POS) 
-					 |(0<<I2C_TIMINGR_SCLDEL_POS)
-					 |(0<<I2C_TIMINGR_SDADEL_POS)
-					 |(0<<I2C_TIMINGR_SCLH_POS)
-					 |(0<<I2C_TIMINGR_SCLL_POS));
+					 |(10<<I2C_TIMINGR_SCLDEL_POS)
+					 |(12<<I2C_TIMINGR_SDADEL_POS)
+					 |(47<<I2C_TIMINGR_SCLH_POS)
+					 |(40<<I2C_TIMINGR_SCLL_POS));
 	
 	// part 3 disable own address
 	I2C1->OAR1 &= ~I2C_OAR1_OA1EN; 
@@ -202,7 +201,7 @@ int8_t I2C_SendData(I2C_TypeDef * I2Cx, uint8_t DeviceAddress, uint8_t *pData, u
 		// transmitted must be written in the I2C_TXDR register. It is cleared when the next data to be
 		// sent is written in the I2C_TXDR register.
 		// The TXIS flag is not set when a NACK is received.
-		while((I2Cx->ISR & I2C_ISR_TXIS) == 0 );
+		while((I2Cx->ISR & I2C_ISR_TXIS) == 0);
 		I2Cx->TXDR = pData[i] & I2C_TXDR_TXDATA;  // TXE is cleared by writing to the TXDR register.
 	}
 	
