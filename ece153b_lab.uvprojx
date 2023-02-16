@@ -1189,6 +1189,63 @@
             </File>
           </Files>
         </Group>
+
+        <Group>
+          <GroupName>lab4b</GroupName>
+          <Files>
+            <File>
+              <FileName>I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab4b\I2C.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab4b\I2C.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab4b\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32l476xx.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\lab4b\startup_stm32l476xx.s</FilePath>
+            </File>
+            <File>
+              <FileName>stm32l476xx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab4b\stm32l476xx.h</FilePath>
+            </File>
+            <File>
+              <FileName>SysClock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab4b\SysClock.c</FilePath>
+            </File>
+            <File>
+              <FileName>SysClock.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab4b\SysClock.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab4b\UART.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab4b\UART.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART_printf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab4b\UART_printf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        
         <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
