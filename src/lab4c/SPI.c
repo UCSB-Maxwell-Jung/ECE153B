@@ -5,23 +5,23 @@
 // we should use "*((volatile uint8_t*)&SPIx->DR) = byte_data";
 
 // initialize SPI1 GPIO pins
+// configure PB3, PB4, PB5
 void SPI1_GPIO_Init(void) {
 	uint32_t af_num;
 	uint32_t pin_num;
 
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
-	// configure PB3, PB4, PB5
 
-	// set to alternate function mode (10)
-	// explanation: default is 11, so use mask &~(01) to set second bit to 0
-	GPIOB->MODER &= ~(GPIO_MODER_MODER3_0 | 
-					  GPIO_MODER_MODER4_0 | 
-					  GPIO_MODER_MODER5_0);
+	GPIOB->MODER &= ~(GPIO_MODER_MODER3 | 
+					  GPIO_MODER_MODER4 | 
+					  GPIO_MODER_MODER5); // reset to 00
+	GPIOB->MODER |= (GPIO_MODER_MODER3_1 | 
+					 GPIO_MODER_MODER4_1 | 
+					 GPIO_MODER_MODER5_1); // set to alternate function mode (10)
 
-	// reset AF for pin 3, 4, 5
 	GPIOB->AFR[0] &= ~(GPIO_AFRL_AFSEL3 | 
 	                   GPIO_AFRL_AFSEL4 | 
-	                   GPIO_AFRL_AFSEL5);
+	                   GPIO_AFRL_AFSEL5); // reset AF for pin 3, 4, 5
 
 	// set pin 3, 4, 5 to AF5
 	af_num = 5;
@@ -75,18 +75,19 @@ void SPI1_Init(void){
 }
 
 // initialize SPI2 GPIO pins
+// configure PB13, PB14, PB15
 void SPI2_GPIO_Init(void) {
 	uint32_t af_num;
 	uint32_t pin_num;
 
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
-	// configure PB13, PB14, PB15
 
-	// set to alternate function mode (10)
-	// explanation: default is 11, so use mask &~(01) to set second bit to 0
-	GPIOB->MODER &= ~(GPIO_MODER_MODER13_0 | 
-					  GPIO_MODER_MODER14_0 | 
-					  GPIO_MODER_MODER15_0);
+	GPIOB->MODER &= ~(GPIO_MODER_MODER13 | 
+					  GPIO_MODER_MODER14 | 
+					  GPIO_MODER_MODER15); // reset to 00
+	GPIOB->MODER |= (GPIO_MODER_MODER13_1 | 
+					 GPIO_MODER_MODER14_1 | 
+					 GPIO_MODER_MODER15_1); // set to alternate function mode (10)
 
 	// reset AF for pin 13, 14, 15
 	GPIOB->AFR[1] &= ~(GPIO_AFRH_AFSEL13 | 
@@ -148,7 +149,7 @@ void SPI2_Init(void){
 void SPI_Send_Byte(SPI_TypeDef* SPIx, uint8_t write_data) {
 	while ((SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
 
-	*(volatile uint8_t*)(&SPIx->DR) = write_data; // write data to data register
+	*((volatile uint8_t*)&SPIx->DR) = write_data; // write data to data register
 
 	while ((SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
 }
@@ -157,5 +158,5 @@ void SPI_Send_Byte(SPI_TypeDef* SPIx, uint8_t write_data) {
 void SPI_Receive_Byte(SPI_TypeDef* SPIx, uint8_t* read_data) {
 	while ((SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
 
-	*read_data = *(volatile uint8_t*)(&SPIx->DR); // read data from data register
+	*read_data = *((volatile uint8_t*)&SPIx->DR); // read data from data register
 }
