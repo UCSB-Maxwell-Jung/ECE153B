@@ -13,17 +13,25 @@
 #include "stm32l476xx.h"
 #include <stdio.h>
 
+uint32_t measurement;
+double vin;
+double vref = 3.3;
+
 int main(void) {
     // Initialization
     System_Clock_Init(); // Switch System Clock = 16 MHz
 
     ADC_Init();
 
-    // [TODO] Initialize PWM
+    PWM_Init(); // Initialize PWM
 
     while (1) {
-        // [TODO] Trigger ADC and get result
+        // Trigger ADC and get result
+        ADC1->CR |= ADC_CR_ADSTART; // start regular conversion
+        while (ADC123_COMMON->CSR & ADC_CSR_EOC_MST == 0); // wait until ADC conversion is complete
+        measurement = ADC1->DR; // ADC outputs value in range [0,4095)
 
-        // [TODO] LED behavior based on ADC result
+        vin = vref*measurement/4096.0; // measurement/4096 = vin/vref
+        set_LED_voltage(vin, vref); // set led brightness according to vin and vref
     }
 }
