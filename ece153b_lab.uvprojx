@@ -1383,6 +1383,56 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>lab5a</GroupName>
+          <Files>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab5a\ADC.c</FilePath>
+            </File>
+            <File>
+              <FileName>ADC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab5a\ADC.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab5a\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>PWM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab5a\PWM.c</FilePath>
+            </File>
+            <File>
+              <FileName>PWM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab5a\PWM.h</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32l476xx.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\lab5a\startup_stm32l476xx.s</FilePath>
+            </File>
+            <File>
+              <FileName>stm32l476xx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab5a\stm32l476xx.h</FilePath>
+            </File>
+            <File>
+              <FileName>SysClock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab5a\SysClock.c</FilePath>
+            </File>
+            <File>
+              <FileName>SysClock.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab5a\SysClock.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
