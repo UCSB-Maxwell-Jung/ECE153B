@@ -14,6 +14,8 @@
 #include <stdio.h>
 
 uint32_t measurement;
+double vin;
+double vref = 3.3;
 
 int main(void) {
     // Initialization
@@ -28,6 +30,8 @@ int main(void) {
         ADC1->CR |= ADC_CR_ADSTART; // start regular conversion
         while (ADC123_COMMON->CSR & ADC_CSR_EOC_MST); // wait until ADC conversion is complete
         measurement = ADC1->DR; // ADC outputs value in range [0,4095)
+
+        vin = vref*measurement/4096.0; // measurement/4096 = vin/vref
         // [TODO] LED behavior based on ADC result
     }
 }
