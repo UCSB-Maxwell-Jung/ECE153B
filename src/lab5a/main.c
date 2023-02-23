@@ -23,7 +23,7 @@ int main(void) {
 
     ADC_Init();
 
-    // [TODO] Initialize PWM
+    PWM_Init(); // Initialize PWM
 
     while (1) {
         // Trigger ADC and get result
@@ -32,6 +32,6 @@ int main(void) {
         measurement = ADC1->DR; // ADC outputs value in range [0,4095)
 
         vin = vref*measurement/4096.0; // measurement/4096 = vin/vref
-        // [TODO] LED behavior based on ADC result
+        set_LED_voltage(vin, vref); // set led brightness according to vin and vref
     }
 }
