@@ -77,9 +77,9 @@ void ADC_Init(void) {
     RCC->AHB2ENR |= RCC_AHB2ENR_ADCEN; //  .1 enable ADC clk
     
     RCC->AHB2RSTR |= RCC_AHB2RSTR_ADCRST; // .2 reset ADC clk
-    RCC->AHB2RSTR &= ~(RCC_AHB2RSTR_ADCRST); //then clear reset bit
+    RCC->AHB2RSTR &= ~RCC_AHB2RSTR_ADCRST; //then clear reset bit
 
-	ADC1->CR |= ADC_CR_ADDIS; //.3 disable ADC
+	ADC1->CR &= ~ADC_CR_ADEN; //.3 disable ADC
 
     // Other ADC Initialization
     ADC_Pin_Init();

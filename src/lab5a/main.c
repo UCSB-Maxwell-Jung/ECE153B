@@ -28,7 +28,7 @@ int main(void) {
     while (1) {
         // Trigger ADC and get result
         ADC1->CR |= ADC_CR_ADSTART; // start regular conversion
-        while (ADC123_COMMON->CSR & ADC_CSR_EOC_MST); // wait until ADC conversion is complete
+        while (ADC123_COMMON->CSR & ADC_CSR_EOC_MST == 0); // wait until ADC conversion is complete
         measurement = ADC1->DR; // ADC outputs value in range [0,4095)
 
         vin = vref*measurement/4096.0; // measurement/4096 = vin/vref
