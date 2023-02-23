@@ -3,6 +3,7 @@
 
 #include "stm32l476xx.h"
 
-// [TODO] 
+// [DONE] 
+void PWM_Init(void);
 
 #endif /* __STM32L476G_DISCOVERY_PWM_H */

@@ -37,24 +37,26 @@ void EXTI15_10_IRQHandler(void) {
 	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0) {
 		// PC13 button is default HIGH for some reason
 		dac_value = (DAC->DHR12R1); //read from reg
-        if((dac_value < DAC_MAX) && (direction == UP))
-        {
-            dac_value += DAC_INCREMENT;
+        if(direction == UP)
+            if(dac_value < DAC_MAX)
+                dac_value += DAC_INCREMENT;
+            else
+            {
+                 direction = DOWN;
+                 dac_value -= DAC_INCREMENT;
+            }
         }
-        else if((dac_value >= DAC_MAX) && (direction == UP))
+        else
         {
-            direction = DOWN;
+            if(dac_value > DAC_MIN)
+                dac_value -= DAC_INCREMENT;
+            else
+            {
+                direction = UP;
+                dac_value += DAC_INCREMENT;
+            }
         }
-        else if(dac_value > DAC_MIN) && (direction == DOWN))
-        {
-            dac_value -= DAC_INCREMENT;
-        }
-        else if((dac_value <= DAC_MIN) && (direction == DOWN))
-        {
-            direction = UP;
-        }else{
-            //nothing...
-        }
+        DAC_Write_Value(dac_value); 
 		// Cleared flag by writing 1
  		EXTI->PR1 |= EXTI_PR1_PIF13;
 	}

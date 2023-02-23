@@ -24,10 +24,27 @@ int main(void) {
     EXTI_Init();
 
     // [TODO] Initialize PWM
+    PWM_Init();
 
     while (1) {
-        // [TODO] Trigger ADC and get result
-
-        // [TODO] LED behavior based on ADC result
+        // Start Regular Conversion
+			ADC1->CR |= ADC_CR_ADSTART;
+			
+			// Wait for ADC conversion
+			while((ADC1->ISR & ADC_ISR_EOC) == 0);
+			
+			// Ready ADC data register
+			data = ADC1->DR;
+			
+			voltage = 3.3*((4096-((float)data))/4096);
+			
+			if (data > 3985) {
+				TIM2->CCR1 = 4096;
+			} else {
+				TIM2->CCR1 &= ~TIM_CCR1_CCR1;
+				TIM2->CCR1 |= data;
+			}
+			
+			for(int i=0; i<1000; ++i); // Some Delay
     }
 }

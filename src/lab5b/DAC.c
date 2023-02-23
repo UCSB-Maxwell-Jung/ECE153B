@@ -11,8 +11,13 @@ static void DAC_Pin_Init(void) {
 }
 
 void DAC_Write_Value(uint32_t value) {
-    // [TODO] Write DAC1Ch1 right-aligned 12-bit value
-    DAC->DHR12R1 = value;
+    // [DONE] Write DAC1Ch1 right-aligned 12-bit value
+    if (value > 4095) //corrects value if slightly over
+		DAC->DHR12R1 = 4095;
+	else if (value < 1) //if slightly under
+		DAC->DHR12R1 = 1;
+	else
+		DAC->DHR12R1 = value; 
 }
 
 void DAC_Init(void) {
