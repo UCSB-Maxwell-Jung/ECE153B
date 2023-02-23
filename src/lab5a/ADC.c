@@ -60,7 +60,7 @@ void ADC_Pin_Init(void) {
 
 	// GPIO Mode: Input(00), Output (01),
 	// AF(10), Analog (11) 
-    GPIOA->PUPDR &= ~GPIO_MODER_MODE1
+    GPIOA->PUPDR &= ~GPIO_MODER_MODE1;
 	GPIOA->MODER |= GPIO_MODER_MODE1;// set to Analog
 
 	// GPIO Push-Pull: No pull-up, pull-down (00),
@@ -88,7 +88,7 @@ void ADC_Init(void) {
 
     //.4 configure the ADC to have 12-bit resolution and rightalignment.
     ADC1->CFGR &= ~ADC_CFGR_ALIGN; //right alignment
-    ADC1->CFGR &= ~(ADC_CFGR_RES) //12bit resolution
+    ADC1->CFGR &= ~ADC_CFGR_RES; //12bit resolution
 
     //.5
 	ADC1->SQR1 &= ~ADC_SQR1_L; //set sequence length to 1
