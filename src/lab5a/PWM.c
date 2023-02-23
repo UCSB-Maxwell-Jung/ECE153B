@@ -34,7 +34,7 @@ void PWM_Init() {
 				   // Explanation: downscale 8 Mhz clock input to 1 Mhz by dividing by PSC + 1: 8 MHz/(7+1) = 1 Mhz
 	// 7c
 	TIM2->ARR = 999; // set auto-reload value
-					  // Explanation: reset timer every 1ms (999+1 ticks @ 1us/tick)
+					 // Explanation: reset timer every 1ms (999+1 ticks @ 1us/tick)
 	// below 2 lines might be unnecessary
 	TIM2->CCMR1 &= ~TIM_CCMR1_CC1S; // reset capture/compare 1 selection
 	TIM2->CCMR1 |= 0b00;			// configure CC1 channel as output
