@@ -20,7 +20,7 @@ void DAC_Init(void) {
     DAC_Pin_Init();
     //Step 3.1
     // [DONE] Enable DAC clock
-    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; //.1
+    RCC->APB1ENR1 |= RCC_APB1ENR1_DAC1EN; //.1
 
     DAC->CR &= ~(DAC_CR_EN1); //.2
 
