@@ -20,7 +20,7 @@ double voltage;
 
 int main(void) {
     // Initialization
-    System_Clock_Init(); // Switch System Clock = 16 MHz
+    System_Clock_Init(); // Switch System Clock = 8 MHz
 
     ADC_Init();
     DAC_Init();
