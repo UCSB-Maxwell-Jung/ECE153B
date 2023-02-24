@@ -13,7 +13,7 @@ static void DAC_Pin_Init(void) {
 void DAC_Write_Value(uint32_t value) {
     if (value > 0xfff) // corrects value if over 2^12-1
 		value = 0xfff;
-	DAC->DHR12R1 = value; 
+	DAC->DHR12R1 = value;
 }
 
 void DAC_Init(void) {

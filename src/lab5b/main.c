@@ -9,6 +9,7 @@
 
 #include "ADC.h"
 #include "DAC.h"
+#include "Button.h"
 #include "EXTI.h"
 #include "PWM.h"
 #include "SysClock.h"
@@ -24,10 +25,11 @@ int main(void) {
 
     ADC_Init();
     DAC_Init();
+	Button_Init();
     EXTI_Init();
 
     // Initialize PWM
-    PWM_Init();
+    // PWM_Init();
 
     while (1) {
         // Start Regular Conversion
@@ -38,15 +40,14 @@ int main(void) {
 		
 		// Ready ADC data register
 		data = ADC1->DR;
+		voltage = 3.3*data/4095.0;
 		
-		voltage = 3.3*((4096-((float)data))/4096);
-		
-		if (data > 3985) {
-			TIM2->CCR1 = 4096;
-		} else {
-			TIM2->CCR1 &= ~TIM_CCR1_CCR1;
-			TIM2->CCR1 |= data;
-		}
+		// if (data > 3985) {
+		// 	TIM2->CCR1 = 4096;
+		// } else {
+		// 	TIM2->CCR1 &= ~TIM_CCR1_CCR1;
+		// 	TIM2->CCR1 |= data;
+		// }
 		
 		for(int i=0; i<1000; ++i); // Some Delay
     }
