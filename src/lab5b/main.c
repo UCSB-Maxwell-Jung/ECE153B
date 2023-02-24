@@ -15,6 +15,9 @@
 #include "stm32l476xx.h"
 #include <stdio.h>
 
+uint32_t data;
+double voltage;
+
 int main(void) {
     // Initialization
     System_Clock_Init(); // Switch System Clock = 16 MHz

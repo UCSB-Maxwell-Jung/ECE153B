@@ -34,10 +34,12 @@ static enum {
 //step 3.2 .2
 void EXTI15_10_IRQHandler(void) {
 	// Clear interrupt pending bit
-	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0) {
+	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0)
+    {
 		// PC13 button is default HIGH for some reason
 		dac_value = (DAC->DHR12R1); //read from reg
-        if(direction == UP)
+        if (direction == UP)
+        {
             if(dac_value < DAC_MAX)
                 dac_value += DAC_INCREMENT;
             else
@@ -48,7 +50,7 @@ void EXTI15_10_IRQHandler(void) {
         }
         else
         {
-            if(dac_value > DAC_MIN)
+            if (dac_value > DAC_MIN)
                 dac_value -= DAC_INCREMENT;
             else
             {
