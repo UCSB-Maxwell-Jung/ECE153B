@@ -7,17 +7,13 @@ static void DAC_Pin_Init(void) {
 	GPIOB->MODER |= GPIO_MODER_MODER4; // set to Analog mode (11)
 	
 	GPIOB->PUPDR &= ~GPIO_PUPDR_PUPD4; // set to No Pull=Up, No Pull-Down (00)
-
 }
 
+// Write DAC1Ch1 right-aligned 12-bit value
 void DAC_Write_Value(uint32_t value) {
-    // [DONE] Write DAC1Ch1 right-aligned 12-bit value
-    if (value > 4095) //corrects value if slightly over
-		DAC->DHR12R1 = 4095;
-	else if (value < 1) //if slightly under
-		DAC->DHR12R1 = 1;
-	else
-		DAC->DHR12R1 = value; 
+    if (value > 0xfff) // corrects value if over 2^12-1
+		value = 0xfff;
+	DAC->DHR12R1 = value; 
 }
 
 void DAC_Init(void) {
