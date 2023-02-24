@@ -4,6 +4,7 @@
         "led.h": "c",
         "exti.h": "c",
         "sysclock.h": "c",
-        "pwm.h": "c"
+        "pwm.h": "c",
+        "button.h": "c"
     }
 }
