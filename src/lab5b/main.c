@@ -30,7 +30,7 @@ int main(void) {
     EXTI_Init();
 
     // Initialize PWM
-    // PWM_Init();
+    PWM_Init();
 
     while (1) {
         // Start Regular Conversion
