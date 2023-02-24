@@ -26,7 +26,7 @@ int main(void) {
     DAC_Init();
     EXTI_Init();
 
-    // [TODO] Initialize PWM
+    // Initialize PWM
     PWM_Init();
 
     while (1) {
