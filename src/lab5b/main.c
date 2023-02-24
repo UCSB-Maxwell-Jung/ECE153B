@@ -18,6 +18,7 @@
 
 uint32_t data;
 double voltage;
+double vref = 3.3;
 
 int main(void) {
     // Initialization
@@ -40,15 +41,8 @@ int main(void) {
 		
 		// Ready ADC data register
 		data = ADC1->DR;
-		voltage = 3.3*data/4095.0;
+		voltage = data/4095.0*vref;
 		
-		// if (data > 3985) {
-		// 	TIM2->CCR1 = 4096;
-		// } else {
-		// 	TIM2->CCR1 &= ~TIM_CCR1_CCR1;
-		// 	TIM2->CCR1 |= data;
-		// }
-		
-		for(int i=0; i<1000; ++i); // Some Delay
+		set_LED_voltage(voltage, vref); // set led brightness according to vin and vref
     }
 }
