@@ -1450,6 +1450,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\lab5b\SysClock.h</FilePath>
             </File>
+            <File>
+              <FileName>Button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lab5b\Button.c</FilePath>
+            </File>
+            <File>
+              <FileName>Button.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\lab5b\Button.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
