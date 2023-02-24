@@ -3,6 +3,7 @@
 
 #include "stm32l476xx.h"
 
-// [TODO] 
+void PWM_Init();
+void set_LED_voltage(double vin, double maxVoltage);
 
 #endif /* __STM32L476G_DISCOVERY_PWM_H */
