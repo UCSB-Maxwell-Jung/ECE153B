@@ -87,7 +87,7 @@ void set_output(uint8_t ABab) {
 
 #define DELAY 60000	// delay between steps of the sequences
 
-void Full_Stepping_Clockwise(void){
+void Full_Stepping_Clockwise_Sequence(void){
 	uint8_t ABab;
 	for (int i = 8; i > 0; i-=2) { // 8 (0), 6, 4, 2
 		ABab = angle_to_digital(i%8);
@@ -97,7 +97,7 @@ void Full_Stepping_Clockwise(void){
 	}
 }
 
-void Full_Stepping_CounterClockwise(void){
+void Full_Stepping_CounterClockwise_Sequence(void){
 	uint8_t ABab;
 	for (int i = 0; i < 8; i+=2) { // 0, 2, 4, 6
 		ABab = angle_to_digital(i&8);
@@ -107,7 +107,7 @@ void Full_Stepping_CounterClockwise(void){
 	}
 }
 
-void Half_Stepping_Clockwise(void){
+void Half_Stepping_Clockwise_Sequence(void){
 	uint8_t ABab;
 	for (int i = 8; i > 0; i-=2) { // 8, 7, 6, 5, 4, 3, 2, 1
 		ABab = angle_to_digital(i%8);
@@ -117,7 +117,7 @@ void Half_Stepping_Clockwise(void){
 	}
 }
 
-void Half_Stepping_CounterClockwise(void){
+void Half_Stepping_CounterClockwise_Sequence(void){
 	uint8_t ABab;
 	for (int i = 0; i < 8; i+=1) { // 0, 1, 2, 3, 4, 5, 6, 7
 		ABab = angle_to_digital(i&8);
@@ -134,11 +134,11 @@ int main(void){
 
 	// Rotate 360 degrees counter-clockwise using full-stepping
 	for (int i = 0; i < repeats; i++) {
-		Full_Stepping_CounterClockwise();
+		Full_Stepping_CounterClockwise_Sequence();
 	}
 
 	// Rotate 360 degrees clockwise using half-stepping
 	for (int i = 0; i < repeats; i++) {
-		Half_Stepping_Clockwise();
+		Half_Stepping_Clockwise_Sequence();
 	}
 }
