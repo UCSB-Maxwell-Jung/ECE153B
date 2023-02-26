@@ -129,7 +129,16 @@ void Half_Stepping_CounterClockwise(void){
 
 int main(void){
 	GPIO_Init();
-	
-	// Rotate 360 degrees either clockwise or counter-clockwise
-	// [TODO]
+
+	uint32_t repeats = 512;
+
+	// Rotate 360 degrees counter-clockwise using full-stepping
+	for (int i = 0; i < repeats; i++) {
+		Full_Stepping_CounterClockwise();
+	}
+
+	// Rotate 360 degrees clockwise using half-stepping
+	for (int i = 0; i < repeats; i++) {
+		Half_Stepping_Clockwise();
+	}
 }
