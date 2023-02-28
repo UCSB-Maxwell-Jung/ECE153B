@@ -41,6 +41,7 @@
 // #include "Print.h"
 #include "Adafruit_SPITFT.h"
 #include <SPI.h>
+#include <stdbool.h>
 
 #define ILI9341_TFTWIDTH 240  ///< ILI9341 max TFT width
 #define ILI9341_TFTHEIGHT 320 ///< ILI9341 max TFT height
@@ -124,28 +125,10 @@
 #define ILI9341_GREENYELLOW 0xAFE5 ///< 173, 255,  41
 #define ILI9341_PINK 0xFC18        ///< 255, 130, 198
 
-/**************************************************************************/
-/*!
-@brief Class to manage hardware interface with ILI9341 chipset (also seems to
-work with ILI9340)
-*/
-/**************************************************************************/
-
-// class Adafruit_ILI9341 : public Adafruit_SPITFT {
-// public:
-//   Adafruit_ILI9341(int8_t _CS, int8_t _DC, int8_t _MOSI, int8_t _SCLK,
-//                    int8_t _RST = -1, int8_t _MISO = -1);
-//   Adafruit_ILI9341(int8_t _CS, int8_t _DC, int8_t _RST = -1);
-// #if !defined(ESP8266)
-//   Adafruit_ILI9341(SPIClass *spiClass, int8_t dc, int8_t cs = -1,
-//                    int8_t rst = -1);
-// #endif // end !ESP8266
-//   Adafruit_ILI9341(tftBusWidth busWidth, int8_t d0, int8_t wr, int8_t dc,
-//                    int8_t cs = -1, int8_t rst = -1, int8_t rd = -1);
-// };
-
-void tft_init(void);
-void tft_begin(uint32_t freq = 0);
+void init_display(uint16_t w, uint16_t h, int8_t cs, int8_t dc,
+                  int8_t mosi, int8_t sck, int8_t rst,
+                  int8_t miso);
+void tft_begin(uint32_t freq);
 void tft_setRotation(uint8_t r);
 void tft_invertDisplay(bool i);
 void tft_scrollTo(uint16_t y);
@@ -165,7 +148,7 @@ uint8_t tft_readcommand8(uint8_t reg, uint8_t index = 0);
 // values defined in SPI.h, which are NOT the same as 0 for SPI_MODE0,
 // 1 for SPI_MODE1, etc...use ONLY the SPI_MODEn defines! Only!
 // Name is outdated (interface may be parallel) but for compatibility:
-void initSPI(uint32_t freq = 0, uint8_t spiMode = SPI_MODE0);
+void init_SPI(uint32_t freq = 0, uint8_t spiMode = SPI_MODE0);
 void setSPISpeed(uint32_t freq);
 // Chip select and/or hardware SPI transaction start as needed:
 void startWrite(void);

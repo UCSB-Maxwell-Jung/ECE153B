@@ -37,10 +37,10 @@ void setup() {
   init_system_clock(); // Switch System Clock = 80 MHz
 	begin_serial(TERMITE, 9600);
 	init_LED();
-  init_display();
+  init_display(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, cs, dc, rst);
   printf("ILI9341 Test!\n"); 
  
-  tft_begin();
+  begin_display();
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft_readcommand8(ILI9341_RDMODE);
