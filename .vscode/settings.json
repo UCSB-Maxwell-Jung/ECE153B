@@ -7,6 +7,8 @@
         "pwm.h": "c",
         "button.h": "c",
         "ili9341_font.h": "c",
-        "ili9341_gfx.h": "c"
+        "ili9341_gfx.h": "c",
+        "glcdfont.c": "cpp",
+        "systimer.h": "c"
     }
 }

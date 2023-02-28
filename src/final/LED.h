@@ -1,28 +1,12 @@
-/*
- * ECE 153B - Winter 2021
- *
- * Name(s): Maxwell Jung, Baron Young
- * Section: Wed 7pm
- * Lab: 2A
- */
-
-#ifndef __STM32L476G_NUCLEO_LED_H
-#define __STM32L476G_NUCLEO_LED_H
+#ifndef __STM32L476R_NUCLEO_LED_H
+#define __STM32L476R_NUCLEO_LED_H
 
 #include "stm32l476xx.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+void LED_Init(void);
 
-    void LED_Init(void);
-
-    void Green_LED_Off(void);
-    void Green_LED_On(void);
-    void Green_LED_Toggle(void);
-
-#ifdef __cplusplus
-}
-#endif
+void Green_LED_Off(void);
+void Green_LED_On(void);
+void Green_LED_Toggle(void);
 
 #endif

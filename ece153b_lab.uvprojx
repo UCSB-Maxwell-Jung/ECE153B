@@ -1654,11 +1654,6 @@
           <GroupName>final</GroupName>
           <Files>
             <File>
-              <FileName>main.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\main.cpp</FilePath>
-            </File>
-            <File>
               <FileName>startup_stm32l476xx.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\src\final\startup_stm32l476xx.s</FilePath>
@@ -1667,26 +1662,6 @@
               <FileName>stm32l476xx.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\stm32l476xx.h</FilePath>
-            </File>
-            <File>
-              <FileName>Button.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\Button.c</FilePath>
-            </File>
-            <File>
-              <FileName>Button.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\Button.h</FilePath>
-            </File>
-            <File>
-              <FileName>EXTI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\EXTI.c</FilePath>
-            </File>
-            <File>
-              <FileName>EXTI.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\EXTI.h</FilePath>
             </File>
             <File>
               <FileName>LED.c</FileName>
@@ -1707,6 +1682,36 @@
               <FileName>SysClock.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\SysClock.h</FilePath>
+            </File>
+            <File>
+              <FileName>SysTimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\SysTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>SysTimer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\SysTimer.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\UART.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\UART.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART_printf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\UART_printf.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\main.c</FilePath>
             </File>
           </Files>
         </Group>
