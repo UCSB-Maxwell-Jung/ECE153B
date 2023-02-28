@@ -43,35 +43,43 @@ void Init_USARTx(int x, uint32_t baud_rate) {
 		UART1_Init();
 		UART1_GPIO_Init();
 		USART_Init(USART1, baud_rate);
-	} else if(x == TERMITE) {
+	}
+  else if(x == TERMITE) {
 		UART2_Init();
 		UART2_GPIO_Init();
 		USART_Init(USART2, baud_rate);
-	} else {
+	}
+  else {
 		// Do nothing...
 	}
 }
 
-int main() {
+void setup(void) {
   System_Clock_Init(); // Switch System Clock = 80 MHz
 	Init_USARTx(TERMITE, 9600);
 	LED_Init();
+}
 
+void loop(void) {
   char command[64]; // assume command typed by the user is at most 63 characters (63 + 1 null character)
-  while(1) {
-    printf("Please enter a command:");
-    scanf("%s", command);
-    
-    if((strcmp(command, "Y") == 0) || (strcmp(command, "y") == 0)){
-      printf("LED ON \n");
-      Green_LED_On();
-    }
-    else if((strcmp(command, "N") == 0) || (strcmp(command, "n") == 0)){
-      printf("LED OFF \n");
-      Green_LED_Off();
-    }
-    else {
-      printf("Please input valid character: 'y'/'Y' or 'n'/'N' \n");
-    }
+  printf("Please enter a command:");
+  scanf("%s", command);
+  
+  if((strcmp(command, "Y") == 0) || (strcmp(command, "y") == 0)){
+    printf("LED ON \n");
+    Green_LED_On();
   }
+  else if((strcmp(command, "N") == 0) || (strcmp(command, "n") == 0)){
+    printf("LED OFF \n");
+    Green_LED_Off();
+  }
+  else {
+    printf("Please input valid character: 'y'/'Y' or 'n'/'N' \n");
+  }
+}
+
+int main() {
+  setup();
+  while(1)
+    loop();
 }
