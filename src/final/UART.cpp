@@ -1,7 +1,9 @@
-#include "Serial.h"
+#include "UART.h"
 #include <stdio.h>
 
-void Serial::init_UART1(void) {
+UART::UART(USART_TypeDef* USARTx) : _USARTx(USARTx) {}
+
+void UART::init_UART1(void) {
 	// part a 2.3 (step 1)
 	RCC->APB2ENR |= RCC_APB2ENR_USART1EN; // enable USART1 clock in peripheral clk reg
 	
@@ -9,14 +11,14 @@ void Serial::init_UART1(void) {
 	RCC->CCIPR |= RCC_CCIPR_USART1SEL_0;
 }
 
-void Serial::init_UART2(void) {
+void UART::init_UART2(void) {
 	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN; // 1.a enable USART2 clock in peripheral clk reg
 	
 	RCC->CCIPR &= ~RCC_CCIPR_USART2SEL;
 	RCC->CCIPR |= RCC_CCIPR_USART2SEL_0; // 1.b select the sys clk as USART2 clk src 
 }
 
-void Serial::init_UART1_GPIO(void) {
+void UART::init_UART1_GPIO(void) {
 	// part a 2.3 (step 2)
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
 
@@ -44,7 +46,7 @@ void Serial::init_UART1_GPIO(void) {
 	GPIOB->AFR[0] |= (GPIO_AFRL_AFSEL7_2 | GPIO_AFRL_AFSEL7_1 | GPIO_AFRL_AFSEL7_0);
 }
 
-void Serial::init_UART2_GPIO(void) {
+void UART::init_UART2_GPIO(void) {
 	//part a 
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; //clk enabled
 
@@ -72,7 +74,7 @@ void Serial::init_UART2_GPIO(void) {
 	GPIOA->AFR[0] |= (GPIO_AFRL_AFSEL3_2 | GPIO_AFRL_AFSEL3_1 | GPIO_AFRL_AFSEL3_0);
 }
 
-void Serial::begin(uint32_t baud_rate) {
+void UART::begin(uint32_t baud_rate) {
 	if (_USARTx == USART1) {
 		init_UART1();
 		init_UART1_GPIO();
@@ -102,10 +104,10 @@ void Serial::begin(uint32_t baud_rate) {
 	_USARTx->CR1 |= USART_CR1_UE; // Enable USART 
 }
 
-void Serial::print(char* str) {
+void UART::print(char* str) {
 	printf("%s", str);
 }
 
-void Serial::println(char* str) {
+void UART::println(char* str) {
 	printf("%s\n", str);
 }
