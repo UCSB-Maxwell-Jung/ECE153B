@@ -4,8 +4,10 @@
 // It mistakenly send two bytes out because SPIx->DR has 16 bits. To solve the program,
 // we should use "*((volatile uint8_t*)&SPIx->DR) = byte_data";
 
+SPI::SPI(SPI_TypeDef* SPIx) : _SPIx(SPIx) {}
+
 // initialize SPI1 GPIO pins
-void SPI1_GPIO_Init(void) {
+void SPI::init_SPI1_GPIO(void) {
 	uint32_t af_num;
 	uint32_t pin_num;
 
@@ -49,7 +51,7 @@ void SPI1_GPIO_Init(void) {
 }
 
 // initialize SPI1 peripheral as master
-void SPI1_Init(void){
+void SPI::init_SPI1(void){
 	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN; // enable SPI1 clock
 	RCC->APB2RSTR |= RCC_APB2RSTR_SPI1RST; // set, then reset to clear SPI1
 	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST; 
@@ -75,7 +77,7 @@ void SPI1_Init(void){
 }
 
 // initialize SPI2 GPIO pins
-void SPI2_GPIO_Init(void) {
+void SPI::init_SPI2_GPIO(void) {
 	uint32_t af_num;
 	uint32_t pin_num;
 
@@ -119,7 +121,7 @@ void SPI2_GPIO_Init(void) {
 }
 
 // initialize SPI2 peripheral as slave
-void SPI2_Init(void){
+void SPI::init_SPI2(void){
 	RCC->APB1ENR1 |= RCC_APB1ENR1_SPI2EN; // enable SPI2 clock
 	RCC->APB1RSTR1 |= RCC_APB1RSTR1_SPI2RST; // set, then reset to clear SPI2
 	RCC->APB1RSTR1 &= ~RCC_APB1RSTR1_SPI2RST; 
@@ -145,17 +147,17 @@ void SPI2_Init(void){
 }
 
 // send data from SPI1
-void SPI_Send_Byte(SPI_TypeDef* SPIx, uint8_t write_data) {
-	while ((SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
+void SPI::send_byte(uint8_t write_data) {
+	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
 
-	*(volatile uint8_t*)(&SPIx->DR) = write_data; // write data to data register
+	*(volatile uint8_t*)(&_SPIx->DR) = write_data; // write data to data register
 
-	while ((SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
+	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
 }
 
 // receive data from SPI2
-void SPI_Receive_Byte(SPI_TypeDef* SPIx, uint8_t* read_data) {
-	while ((SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
+void SPI::receive_byte(uint8_t* read_data) {
+	while ((_SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
 
-	*read_data = *(volatile uint8_t*)(&SPIx->DR); // read data from data register
+	*read_data = *(volatile uint8_t*)(&_SPIx->DR); // read data from data register
 }
