@@ -23,11 +23,11 @@ public:
   static void begin(uint32_t baud_rate);
   static void print(char* str);
   static void println(char* str);
-};
 
-uint8_t serial_read();
-void serial_write(uint8_t *buffer, uint32_t nBytes);
-void serial_delay(uint32_t us);
+  static uint8_t read();
+  static void write(uint8_t *buffer, uint32_t nBytes);
+  static void delay(uint32_t us);
+};
 
 // void USART1_IRQHandler(void);
 // void USART2_IRQHandler(void);

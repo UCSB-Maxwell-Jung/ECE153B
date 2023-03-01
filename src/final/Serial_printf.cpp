@@ -14,13 +14,13 @@ FILE __stdin;
 int fputc(int ch, FILE *f) { 
 	uint8_t c;
 	c = ch & 0x00FF;
-	serial_write((uint8_t *)&c, 1);
+	Serial::write((uint8_t *)&c, 1);
 	return(ch);
 }
 
 // Retarget scanf() to USARTx
 int fgetc(FILE *f) {  
 	uint8_t rxByte;
-	rxByte = serial_read();
+	rxByte = Serial::read();
 	return rxByte;
 }
