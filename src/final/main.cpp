@@ -47,17 +47,17 @@ void setup() {
 
   // read diagnostics (optional but can help debug problems)
   // uint8_t x = tft.readcommand8(ILI9341_RDMODE);
-  // Serial::print("Display Power Mode: 0x"); Serial::println(x, HEX);
+  Serial::print("Display Power Mode: 0x"); // Serial::println(x, HEX);
   // x = tft.readcommand8(ILI9341_RDMADCTL);
-  // Serial::print("MADCTL Mode: 0x"); Serial::println(x, HEX);
+  Serial::print("MADCTL Mode: 0x"); // Serial::println(x, HEX);
   // x = tft.readcommand8(ILI9341_RDPIXFMT);
-  // Serial::print("Pixel Format: 0x"); Serial::println(x, HEX);
+  Serial::print("Pixel Format: 0x"); // Serial::println(x, HEX);
   // x = tft.readcommand8(ILI9341_RDIMGFMT);
-  // Serial::print("Image Format: 0x"); Serial::println(x, HEX);
+  Serial::print("Image Format: 0x"); // Serial::println(x, HEX);
   // x = tft.readcommand8(ILI9341_RDSELFDIAG);
-  // Serial::print("Self Diagnostic: 0x"); Serial::println(x, HEX); 
+  Serial::print("Self Diagnostic: 0x"); // Serial::println(x, HEX); 
   
-  // Serial::println(F("Benchmark                Time (microseconds)"));
+  Serial::println(("Benchmark                Time (microseconds)"));
   // delay(10);
   // Serial::print(F("Screen fill              "));
   // Serial::println(testFillScreen());
@@ -106,7 +106,7 @@ void setup() {
   // Serial::println(testFilledRoundRects());
   // delay(500);
 
-  // Serial::println(F("Done!"));
+  Serial::println(("Done!"));
 }
 
 
