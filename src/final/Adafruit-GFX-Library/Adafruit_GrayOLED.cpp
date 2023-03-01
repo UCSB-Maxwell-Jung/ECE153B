@@ -403,7 +403,7 @@ uint8_t *Adafruit_GrayOLED::getBuffer(void) { return buffer; }
             enabled, drawing MONOOLED_BLACK (value 0) pixels will actually draw
    white, MONOOLED_WHITE (value 1) will draw black.
 */
-void Adafruit_GrayOLED::invertDisplay(bool i) {
+void Adafruit_GrayOLED::tft_invertDisplay(bool i) {
   oled_command(i ? GRAYOLED_INVERTDISPLAY : GRAYOLED_NORMALDISPLAY);
 }
 

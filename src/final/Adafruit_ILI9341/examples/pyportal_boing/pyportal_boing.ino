@@ -51,8 +51,8 @@ void setup() {
   pinMode(TFT_BACKLIGHT, OUTPUT);
   digitalWrite(TFT_BACKLIGHT, HIGH);
 
-  tft.begin();
-  tft.setRotation(3); // Landscape orientation, USB at bottom right
+  tft.tft_begin();
+  tft.tft_setRotation(3); // Landscape orientation, USB at bottom right
 
   // Draw initial framebuffer contents:
   tft.drawBitmap(0, 0, (uint8_t *)background,
@@ -118,7 +118,7 @@ void loop() {
   tft.endWrite();
 
   tft.startWrite();
-  tft.setAddrWindow(minx, miny, width, height);
+  tft.tft_setAddrWindow(minx, miny, width, height);
 
   for(y=0; y<height; y++) { // For each row...
     destPtr = &renderbuf[bufIdx][0];

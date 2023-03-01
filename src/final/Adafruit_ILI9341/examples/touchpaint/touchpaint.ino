@@ -46,7 +46,7 @@ void setup(void) {
   Serial.begin(9600);
   Serial.println(F("Touch Paint!"));
   
-  tft.begin();
+  tft.tft_begin();
 
   if (!ts.begin()) {
     Serial.println("Couldn't start touchscreen controller");

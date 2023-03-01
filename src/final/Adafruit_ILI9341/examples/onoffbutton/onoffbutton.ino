@@ -70,7 +70,7 @@ void greenBtn()
 void setup(void)
 {
   Serial.begin(9600);
-  tft.begin();
+  tft.tft_begin();
   if (!ts.begin()) { 
     Serial.println("Unable to start touchscreen.");
   } 
@@ -80,7 +80,7 @@ void setup(void)
 
   tft.fillScreen(ILI9341_BLUE);
   // origin = left,top landscape (USB left upper)
-  tft.setRotation(1); 
+  tft.tft_setRotation(1); 
   redBtn();
 }
 

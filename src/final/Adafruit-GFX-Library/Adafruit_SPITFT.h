@@ -167,7 +167,7 @@ public:
       @brief  Display-specific initialization function.
       @param  freq  SPI frequency, in hz (or 0 for default or unused).
   */
-  virtual void begin(uint32_t freq) = 0;
+  virtual void tft_begin(uint32_t freq) = 0;
 
   /*!
       @brief  Set up the specific display hardware's "address window"
@@ -181,7 +181,7 @@ public:
       @param  h  Height of area to be drawn, in pixels (MUST be >0 and,
                  added to x, within display bounds at current rotation).
   */
-  virtual void setAddrWindow(uint16_t x, uint16_t y, uint16_t w,
+  virtual void tft_setAddrWindow(uint16_t x, uint16_t y, uint16_t w,
                              uint16_t h) = 0;
 
   // Remaining functions do not need to be declared in subclasses
@@ -254,7 +254,7 @@ public:
   void drawRGBBitmap(int16_t x, int16_t y, uint16_t *pcolors, int16_t w,
                      int16_t h);
 
-  void invertDisplay(bool i);
+  void tft_invertDisplay(bool i);
   uint16_t color565(uint8_t r, uint8_t g, uint8_t b);
 
   // Despite parallel additions, function names kept for compatibility:

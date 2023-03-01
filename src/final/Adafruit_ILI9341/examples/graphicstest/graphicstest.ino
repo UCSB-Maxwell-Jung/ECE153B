@@ -31,18 +31,18 @@ void setup() {
   Serial.begin(9600);
   Serial.println("ILI9341 Test!"); 
  
-  tft.begin();
+  tft.tft_begin();
 
   // read diagnostics (optional but can help debug problems)
-  uint8_t x = tft.readcommand8(ILI9341_RDMODE);
+  uint8_t x = tft.tft_readcommand8(ILI9341_RDMODE);
   Serial.print("Display Power Mode: 0x"); Serial.println(x, HEX);
-  x = tft.readcommand8(ILI9341_RDMADCTL);
+  x = tft.tft_readcommand8(ILI9341_RDMADCTL);
   Serial.print("MADCTL Mode: 0x"); Serial.println(x, HEX);
-  x = tft.readcommand8(ILI9341_RDPIXFMT);
+  x = tft.tft_readcommand8(ILI9341_RDPIXFMT);
   Serial.print("Pixel Format: 0x"); Serial.println(x, HEX);
-  x = tft.readcommand8(ILI9341_RDIMGFMT);
+  x = tft.tft_readcommand8(ILI9341_RDIMGFMT);
   Serial.print("Image Format: 0x"); Serial.println(x, HEX);
-  x = tft.readcommand8(ILI9341_RDSELFDIAG);
+  x = tft.tft_readcommand8(ILI9341_RDSELFDIAG);
   Serial.print("Self Diagnostic: 0x"); Serial.println(x, HEX); 
   
   Serial.println(F("Benchmark                Time (microseconds)"));
@@ -101,7 +101,7 @@ void setup() {
 
 void loop(void) {
   for(uint8_t rotation=0; rotation<4; rotation++) {
-    tft.setRotation(rotation);
+    tft.tft_setRotation(rotation);
     testText();
     delay(1000);
   }

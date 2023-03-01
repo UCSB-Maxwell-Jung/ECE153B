@@ -3,7 +3,7 @@
 // ******************************************************************************************
 // Switch the PLL source from MSI to HSI, and select the PLL as SYSCLK source.
 // ******************************************************************************************
-void System_Clock_Init(void){
+void init_system_clock(void){
 	
 	uint32_t HSITrim;
 

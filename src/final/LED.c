@@ -1,6 +1,6 @@
 #include "LED.h"
 
-void LED_Init(void)
+void init_LED(void)
 {
 	// Enable GPIO Clock
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;

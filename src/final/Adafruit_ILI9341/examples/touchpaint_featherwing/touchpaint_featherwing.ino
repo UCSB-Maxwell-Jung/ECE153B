@@ -84,7 +84,7 @@ void setup(void) {
   }
   Serial.println("Touchscreen started");
   
-  tft.begin();
+  tft.tft_begin();
   tft.fillScreen(ILI9341_BLACK);
   
   // make the color selection boxes

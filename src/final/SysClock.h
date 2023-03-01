@@ -3,6 +3,6 @@
 
 #include "stm32l476xx.h"
 
-void System_Clock_Init(void);
+void init_system_clock(void);
 
 #endif

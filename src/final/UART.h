@@ -4,6 +4,10 @@
 #include "stm32l476xx.h"
 
 #define BufferSize 32
+#define BLUETOOTH 1
+#define TERMITE 2
+
+void begin_serial(int x, uint32_t baud_rate);
 
 void UART1_Init(void);
 void UART2_Init(void);

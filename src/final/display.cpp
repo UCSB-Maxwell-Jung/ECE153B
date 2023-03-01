@@ -46,13 +46,13 @@
  *
  */
 
-#include "Adafruit_ILI9341.h"
-#ifndef ARDUINO_STM32_FEATHER
-#include "pins_arduino.h"
-#ifndef RASPI
-#include "wiring_private.h"
-#endif
-#endif
+#include "ILI9341.h"
+// #ifndef ARDUINO_STM32_FEATHER
+// #include "pins_arduino.h"
+// #ifndef RASPI
+// #include "wiring_private.h"
+// #endif
+// #endif
 #include <limits.h>
 
 #if defined(ARDUINO_ARCH_ARC32) || defined(ARDUINO_MAXIM)
@@ -81,101 +81,9 @@
 #define MADCTL_BGR 0x08 ///< Blue-Green-Red pixel order
 #define MADCTL_MH 0x04  ///< LCD refresh right to left
 
-/**************************************************************************/
-/*!
-    @brief  Instantiate Adafruit ILI9341 driver with software SPI
-    @param    cs    Chip select pin #
-    @param    dc    Data/Command pin #
-    @param    mosi  SPI MOSI pin #
-    @param    sclk  SPI Clock pin #
-    @param    rst   Reset pin # (optional, pass -1 if unused)
-    @param    miso  SPI MISO pin # (optional, pass -1 if unused)
-*/
-/**************************************************************************/
-Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t mosi,
-                                   int8_t sclk, int8_t rst, int8_t miso)
-    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, cs, dc, mosi, sclk,
-                      rst, miso) {}
-
-/**************************************************************************/
-/*!
-    @brief  Instantiate Adafruit ILI9341 driver with hardware SPI using the
-            default SPI peripheral.
-    @param  cs   Chip select pin # (OK to pass -1 if CS tied to GND).
-    @param  dc   Data/Command pin # (required).
-    @param  rst  Reset pin # (optional, pass -1 if unused).
-*/
-/**************************************************************************/
-Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t rst)
-    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, cs, dc, rst) {}
-
-#if !defined(ESP8266)
-/**************************************************************************/
-/*!
-    @brief  Instantiate Adafruit ILI9341 driver with hardware SPI using
-            a specific SPI peripheral (not necessarily default).
-    @param  spiClass  Pointer to SPI peripheral (e.g. &SPI or &SPI1).
-    @param  dc        Data/Command pin # (required).
-    @param  cs        Chip select pin # (optional, pass -1 if unused and
-                      CS is tied to GND).
-    @param  rst       Reset pin # (optional, pass -1 if unused).
-*/
-/**************************************************************************/
-Adafruit_ILI9341::Adafruit_ILI9341(SPIClass *spiClass, int8_t dc, int8_t cs,
-                                   int8_t rst)
-    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, spiClass, cs, dc,
-                      rst) {}
-#endif // end !ESP8266
-
-/**************************************************************************/
-/*!
-    @brief  Instantiate Adafruit ILI9341 driver using parallel interface.
-    @param  busWidth  If tft16 (enumeration in Adafruit_SPITFT.h), is a
-                      16-bit interface, else 8-bit.
-    @param  d0        Data pin 0 (MUST be a byte- or word-aligned LSB of a
-                      PORT register -- pins 1-n are extrapolated from this).
-    @param  wr        Write strobe pin # (required).
-    @param  dc        Data/Command pin # (required).
-    @param  cs        Chip select pin # (optional, pass -1 if unused and CS
-                      is tied to GND).
-    @param  rst       Reset pin # (optional, pass -1 if unused).
-    @param  rd        Read strobe pin # (optional, pass -1 if unused).
-*/
-/**************************************************************************/
-Adafruit_ILI9341::Adafruit_ILI9341(tftBusWidth busWidth, int8_t d0, int8_t wr,
-                                   int8_t dc, int8_t cs, int8_t rst, int8_t rd)
-    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, busWidth, d0, wr, dc,
-                      cs, rst, rd) {}
-
-// clang-format off
-static const uint8_t PROGMEM initcmd[] = {
-  0xEF, 3, 0x03, 0x80, 0x02,
-  0xCF, 3, 0x00, 0xC1, 0x30,
-  0xED, 4, 0x64, 0x03, 0x12, 0x81,
-  0xE8, 3, 0x85, 0x00, 0x78,
-  0xCB, 5, 0x39, 0x2C, 0x00, 0x34, 0x02,
-  0xF7, 1, 0x20,
-  0xEA, 2, 0x00, 0x00,
-  ILI9341_PWCTR1  , 1, 0x23,             // Power control VRH[5:0]
-  ILI9341_PWCTR2  , 1, 0x10,             // Power control SAP[2:0];BT[3:0]
-  ILI9341_VMCTR1  , 2, 0x3e, 0x28,       // VCM control
-  ILI9341_VMCTR2  , 1, 0x86,             // VCM control2
-  ILI9341_MADCTL  , 1, 0x48,             // Memory Access Control
-  ILI9341_VSCRSADD, 1, 0x00,             // Vertical scroll zero
-  ILI9341_PIXFMT  , 1, 0x55,
-  ILI9341_FRMCTR1 , 2, 0x00, 0x18,
-  ILI9341_DFUNCTR , 3, 0x08, 0x82, 0x27, // Display Function Control
-  0xF2, 1, 0x00,                         // 3Gamma Function Disable
-  ILI9341_GAMMASET , 1, 0x01,             // Gamma curve selected
-  ILI9341_GMCTRP1 , 15, 0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, // Set Gamma
-    0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00,
-  ILI9341_GMCTRN1 , 15, 0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, // Set Gamma
-    0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F,
-  ILI9341_SLPOUT  , 0x80,                // Exit Sleep
-  ILI9341_DISPON  , 0x80,                // Display on
-  0x00                                   // End of list
-};
-// clang-format on
+void tft_init(void) {
+  // [TODO]
+}
 
 /**************************************************************************/
 /*!
@@ -184,7 +92,7 @@ static const uint8_t PROGMEM initcmd[] = {
     @param    freq  Desired SPI clock frequency
 */
 /**************************************************************************/
-void Adafruit_ILI9341::tft_begin(uint32_t freq) {
+void tft_begin(uint32_t freq) {
 
   if (!freq)
     freq = SPI_DEFAULT_FREQ;
@@ -216,7 +124,7 @@ void Adafruit_ILI9341::tft_begin(uint32_t freq) {
     @param   m  The index for rotation, from 0-3 inclusive
 */
 /**************************************************************************/
-void Adafruit_ILI9341::tft_setRotation(uint8_t m) {
+void tft_setRotation(uint8_t m) {
   rotation = m % 4; // can't be higher than 3
   switch (rotation) {
   case 0:
@@ -250,7 +158,7 @@ void Adafruit_ILI9341::tft_setRotation(uint8_t m) {
     @param   invert True to invert, False to have normal color
 */
 /**************************************************************************/
-void Adafruit_ILI9341::tft_invertDisplay(bool invert) {
+void tft_invertDisplay(bool invert) {
   sendCommand(invert ? ILI9341_INVON : ILI9341_INVOFF);
 }
 
@@ -260,7 +168,7 @@ void Adafruit_ILI9341::tft_invertDisplay(bool invert) {
     @param   y How many pixels to scroll display by
 */
 /**************************************************************************/
-void Adafruit_ILI9341::tft_scrollTo(uint16_t y) {
+void tft_scrollTo(uint16_t y) {
   uint8_t data[2];
   data[0] = y >> 8;
   data[1] = y & 0xff;
@@ -274,7 +182,7 @@ void Adafruit_ILI9341::tft_scrollTo(uint16_t y) {
     @param   bottom The height of the Bottom scroll margin
  */
 /**************************************************************************/
-void Adafruit_ILI9341::tft_setScrollMargins(uint16_t top, uint16_t bottom) {
+void tft_setScrollMargins(uint16_t top, uint16_t bottom) {
   // TFA+VSA+BFA must equal 320
   if (top + bottom <= ILI9341_TFTHEIGHT) {
     uint16_t middle = ILI9341_TFTHEIGHT - (top + bottom);
@@ -300,7 +208,7 @@ void Adafruit_ILI9341::tft_setScrollMargins(uint16_t top, uint16_t bottom) {
     @param   h   Height of rectangle
 */
 /**************************************************************************/
-void Adafruit_ILI9341::tft_setAddrWindow(uint16_t x1, uint16_t y1, uint16_t w,
+void tft_setAddrWindow(uint16_t x1, uint16_t y1, uint16_t w,
                                      uint16_t h) {
   static uint16_t old_x1 = 0xffff, old_x2 = 0xffff;
   static uint16_t old_y1 = 0xffff, old_y2 = 0xffff;
@@ -333,7 +241,7 @@ void Adafruit_ILI9341::tft_setAddrWindow(uint16_t x1, uint16_t y1, uint16_t w,
     @return   Unsigned 8-bit data read from ILI9341 register
  */
 /**************************************************************************/
-uint8_t Adafruit_ILI9341::tft_readcommand8(uint8_t commandByte, uint8_t index) {
+uint8_t tft_readcommand8(uint8_t commandByte, uint8_t index) {
   uint8_t data = 0x10 + index;
   sendCommand(0xD9, &data, 1); // Set Index Register
   return Adafruit_SPITFT::readcommand8(commandByte);

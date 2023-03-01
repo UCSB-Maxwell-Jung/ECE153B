@@ -40,8 +40,8 @@ void setup(void) {
   Serial.begin(115200);
   Serial.print("Mandelbrot drawer!");
 
-  tft.begin();
-  tft.setRotation(1);
+  tft.tft_begin();
+  tft.tft_setRotation(1);
   tft.fillScreen(ILI9341_BLACK);
 
   // Turn on backlight (required on PyPortal)

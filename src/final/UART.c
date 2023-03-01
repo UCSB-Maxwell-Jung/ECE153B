@@ -1,5 +1,24 @@
 #include "UART.h"
 
+// Initializes USARTx
+// USART2: UART Communication with Termite
+// USART1: Bluetooth Communication with Phone
+void begin_serial(int x, uint32_t baud_rate) {
+	if(x == BLUETOOTH) {
+		UART1_Init();
+		UART1_GPIO_Init();
+		USART_Init(USART1, baud_rate);
+	}
+  else if(x == TERMITE) {
+		UART2_Init();
+		UART2_GPIO_Init();
+		USART_Init(USART2, baud_rate);
+	}
+  else {
+		// Do nothing...
+	}
+}
+
 void UART1_Init(void) {
 	// part a 2.3 (step 1)
 	RCC->APB2ENR |= RCC_APB2ENR_USART1EN;			// enable USART1 clock in peripheral clk reg

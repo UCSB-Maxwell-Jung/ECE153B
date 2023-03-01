@@ -40,12 +40,12 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 //Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
 void setup() {
-  tft.begin();
+  tft.tft_begin();
 }
 
 void loop(void) {
   for(uint8_t r=0; r<4; r++) {
-    tft.setRotation(r);
+    tft.tft_setRotation(r);
     tft.fillScreen(ILI9341_BLACK);
     for(uint8_t j=0; j<20; j++) {
       tft.drawRGBBitmap(

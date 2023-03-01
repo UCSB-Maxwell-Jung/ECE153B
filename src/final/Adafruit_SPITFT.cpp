@@ -944,7 +944,7 @@ void Adafruit_SPITFT::endWrite(void) {
 */
 void Adafruit_SPITFT::writePixel(int16_t x, int16_t y, uint16_t color) {
   if ((x >= 0) && (x < _width) && (y >= 0) && (y < _height)) {
-    tft_setAddrWindow(x, y, 1, 1);
+    setAddrWindow(x, y, 1, 1);
     SPI_WRITE16(color);
   }
 }
@@ -1621,7 +1621,7 @@ void inline Adafruit_SPITFT::writeFastVLine(int16_t x, int16_t y, int16_t h,
 inline void Adafruit_SPITFT::writeFillRectPreclipped(int16_t x, int16_t y,
                                                      int16_t w, int16_t h,
                                                      uint16_t color) {
-  tft_setAddrWindow(x, y, w, h);
+  setAddrWindow(x, y, w, h);
   writeColor(color, (uint32_t)w * h);
 }
 
@@ -1647,7 +1647,7 @@ void Adafruit_SPITFT::drawPixel(int16_t x, int16_t y, uint16_t color) {
   if ((x >= 0) && (x < _width) && (y >= 0) && (y < _height)) {
     // THEN set up transaction (if needed) and draw...
     startWrite();
-    tft_setAddrWindow(x, y, 1, 1);
+    setAddrWindow(x, y, 1, 1);
     SPI_WRITE16(color);
     endWrite();
   }
@@ -1855,7 +1855,7 @@ void Adafruit_SPITFT::drawRGBBitmap(int16_t x, int16_t y, uint16_t *pcolors,
 
   pcolors += by1 * saveW + bx1; // Offset bitmap ptr to clipped top-left
   startWrite();
-  tft_setAddrWindow(x, y, w, h); // Clipped area
+  setAddrWindow(x, y, w, h); // Clipped area
   while (h--) {              // For each (clipped) scanline...
     writePixels(pcolors, w); // Push one (clipped) row
     pcolors += saveW;        // Advance pointer by one full (unclipped) line
@@ -1871,7 +1871,7 @@ void Adafruit_SPITFT::drawRGBBitmap(int16_t x, int16_t y, uint16_t *pcolors,
             Self-contained, no transaction setup required.
     @param  i  true = inverted display, false = normal display.
 */
-void Adafruit_SPITFT::tft_invertDisplay(bool i) {
+void Adafruit_SPITFT::invertDisplay(bool i) {
   startWrite();
   writeCommand(i ? invertOnCommand : invertOffCommand);
   endWrite();
