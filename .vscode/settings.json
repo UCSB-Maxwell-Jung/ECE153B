@@ -18,6 +18,8 @@
         "spi.h": "c",
         "stdio.h": "c",
         "string.h": "c",
-        "display.h": "c"
+        "display.h": "c",
+        "uart.h": "c",
+        "__config": "cpp"
     }
 }

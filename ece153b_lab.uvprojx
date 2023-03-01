@@ -1654,6 +1654,31 @@
           <GroupName>final</GroupName>
           <Files>
             <File>
+              <FileName>LED.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\LED.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>LED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\LED.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\main.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Serial.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Serial.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Serial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Serial.h</FilePath>
+            </File>
+            <File>
               <FileName>startup_stm32l476xx.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\src\final\startup_stm32l476xx.s</FilePath>
@@ -1664,19 +1689,9 @@
               <FilePath>.\src\final\stm32l476xx.h</FilePath>
             </File>
             <File>
-              <FileName>LED.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\LED.c</FilePath>
-            </File>
-            <File>
-              <FileName>LED.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\LED.h</FilePath>
-            </File>
-            <File>
-              <FileName>SysClock.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\SysClock.c</FilePath>
+              <FileName>SysClock.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SysClock.cpp</FilePath>
             </File>
             <File>
               <FileName>SysClock.h</FileName>
@@ -1684,9 +1699,9 @@
               <FilePath>.\src\final\SysClock.h</FilePath>
             </File>
             <File>
-              <FileName>SysTimer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\SysTimer.c</FilePath>
+              <FileName>SysTimer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SysTimer.cpp</FilePath>
             </File>
             <File>
               <FileName>SysTimer.h</FileName>
@@ -1694,44 +1709,9 @@
               <FilePath>.\src\final\SysTimer.h</FilePath>
             </File>
             <File>
-              <FileName>UART.c</FileName>
+              <FileName>Serial_printf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\final\UART.c</FilePath>
-            </File>
-            <File>
-              <FileName>UART.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\UART.h</FilePath>
-            </File>
-            <File>
-              <FileName>UART_printf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\UART_printf.c</FilePath>
-            </File>
-            <File>
-              <FileName>Adafruit_GFX.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\Adafruit_GFX.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Adafruit_GFX.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\Adafruit_GFX.h</FilePath>
-            </File>
-            <File>
-              <FileName>Adafruit_ILI9341.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\Adafruit_ILI9341.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Adafruit_ILI9341.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\Adafruit_ILI9341.h</FilePath>
-            </File>
-            <File>
-              <FileName>main.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\main.cpp</FilePath>
+              <FilePath>.\src\final\Serial_printf.c</FilePath>
             </File>
           </Files>
         </Group>

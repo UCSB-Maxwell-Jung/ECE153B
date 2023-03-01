@@ -1,40 +1,22 @@
-#include "UART.h"
+#include "Serial.h"
+#include <stdio.h>
 
-// Initializes USARTx
-// USART2: UART Communication with Termite
-// USART1: Bluetooth Communication with Phone
-void init_UARTx(int x, uint32_t baud_rate) {
-	if(x == BLUETOOTH) {
-		UART1_Init();
-		UART1_GPIO_Init();
-		begin_USART(USART1, baud_rate);
-	}
-  else if(x == TERMITE) {
-		UART2_Init();
-		UART2_GPIO_Init();
-		begin_USART(USART2, baud_rate);
-	}
-  else {
-		// Do nothing...
-	}
-}
-
-void UART1_Init(void) {
+void Serial::init_UART1(void) {
 	// part a 2.3 (step 1)
-	RCC->APB2ENR |= RCC_APB2ENR_USART1EN;			// enable USART1 clock in peripheral clk reg
+	RCC->APB2ENR |= RCC_APB2ENR_USART1EN; // enable USART1 clock in peripheral clk reg
 	
-	RCC->CCIPR &= ~RCC_CCIPR_USART1SEL;				// 1.b select the sys clk as USART1 clk src 
+	RCC->CCIPR &= ~RCC_CCIPR_USART1SEL; // 1.b select the sys clk as USART1 clk src 
 	RCC->CCIPR |= RCC_CCIPR_USART1SEL_0;
 }
 
-void UART2_Init(void) {
-	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;			// 1.a enable USART2 clock in peripheral clk reg
+void Serial::init_UART2(void) {
+	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN; // 1.a enable USART2 clock in peripheral clk reg
 	
 	RCC->CCIPR &= ~RCC_CCIPR_USART2SEL;
-	RCC->CCIPR |= RCC_CCIPR_USART2SEL_0;			// 1.b select the sys clk as USART2 clk src 
+	RCC->CCIPR |= RCC_CCIPR_USART2SEL_0; // 1.b select the sys clk as USART2 clk src 
 }
 
-void UART1_GPIO_Init(void) {
+void Serial::init_UART1_GPIO(void) {
 	// part a 2.3 (step 2)
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
 
@@ -62,7 +44,7 @@ void UART1_GPIO_Init(void) {
 	GPIOB->AFR[0] |= (GPIO_AFRL_AFSEL7_2 | GPIO_AFRL_AFSEL7_1 | GPIO_AFRL_AFSEL7_0);
 }
 
-void UART2_GPIO_Init(void) {
+void Serial::init_UART2_GPIO(void) {
 	//part a 
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; //clk enabled
 
@@ -88,51 +70,70 @@ void UART2_GPIO_Init(void) {
 
 	GPIOA->AFR[0] &= ~GPIO_AFRL_AFSEL3;		//pin 3
 	GPIOA->AFR[0] |= (GPIO_AFRL_AFSEL3_2 | GPIO_AFRL_AFSEL3_1 | GPIO_AFRL_AFSEL3_0);
-
 }
 
-void begin_USART(USART_TypeDef* USARTx, uint32_t baud_rate) {
-	USARTx->CR1 &= ~USART_CR1_UE; 					// disable USART before modifying regs
+void Serial::begin(uint32_t baud_rate) {
+	if (_USARTx == USART1) {
+		init_UART1();
+		init_UART1_GPIO();
+	}
+	else if (_USARTx == USART2) {
+		init_UART2();
+		init_UART2_GPIO();
+	}
+	else {
+		return; // do nothing
+	}
 
-	USARTx->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); 	// 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
-	USARTx->CR1 &= ~USART_CR1_OVER8;				// 0 = oversampling by 16
-	USARTx->CR2 &= ~USART_CR2_STOP;					// 00 = 1 stop bit
+	_USARTx->CR1 &= ~USART_CR1_UE; // disable USART before modifying regs
+
+	_USARTx->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); // 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
+	_USARTx->CR1 &= ~USART_CR1_OVER8; // 0 = oversampling by 16
+	_USARTx->CR2 &= ~USART_CR2_STOP; // 00 = 1 stop bit
 
 	//3.b set USARTDIV in BRR[3:0] (*note: BRR[3:0] == USARTDIV[3:0] when USARTx->CR1 bit 16 (line 50) is 0)
-	USARTx->BRR &= ~0xFFFF; //clear [15:0] 
-	USARTx->BRR = (uint16_t) (80*1000000/baud_rate); // USARTDIV = f_clk/Baud Rate = 80Mhz/baud_rate
+	_USARTx->BRR &= ~0xFFFF; //clear [15:0] 
+	_USARTx->BRR = (uint16_t) (80*1000000/baud_rate); // USARTDIV = f_clk/Baud Rate = 80Mhz/baud_rate
 
 	//3.c enable transmitter and receiver 
-	USARTx->CR1 |= USART_CR1_TE;					//enable transmitter
-	USARTx->CR1 |= USART_CR1_RE;					//enable receiver
+	_USARTx->CR1 |= USART_CR1_TE; //enable transmitter
+	_USARTx->CR1 |= USART_CR1_RE; //enable receiver
 
-	USARTx->CR1 |= USART_CR1_UE; 					// EnablUSART diabled 
+	_USARTx->CR1 |= USART_CR1_UE; // Enable USART 
 }
 
-uint8_t USART_Read(USART_TypeDef * USARTx) {
+void Serial::print(char* str) {
+	printf("%s", str);
+}
+
+void Serial::println(char* str) {
+	printf("%s\n", str);
+}
+
+uint8_t read() {
 	// SR_RXNE (Read data register not empty) bit is set by hardware
-	while (!(USARTx->ISR & USART_ISR_RXNE));  // Wait until RXNE (RX not empty) bit is set
+	while (!(Serial::_USARTx->ISR & USART_ISR_RXNE));  // Wait until RXNE (RX not empty) bit is set
 	// USART resets the RXNE flag automatically after reading DR
-	return ((uint8_t)(USARTx->RDR & 0xFF));
+	return ((uint8_t)(Serial::_USARTx->RDR & 0xFF));
 	// Reading USART_DR automatically clears the RXNE flag 
 }
 
-void USART_Write(USART_TypeDef * USARTx, uint8_t *buffer, uint32_t nBytes) {
+void write(uint8_t *buffer, uint32_t nBytes) {
 	int i;
 	// TXE is cleared by a write to the USART_DR register.
 	// TXE is set by hardware when the content of the TDR 
 	// register has been transferred into the shift register.
 	for (i = 0; i < nBytes; i++) {
-		while (!(USARTx->ISR & USART_ISR_TXE));   	// wait until TXE (TX empty) bit is set
+		while (!(Serial::_USARTx->ISR & USART_ISR_TXE));   	// wait until TXE (TX empty) bit is set
 		// Writing USART_DR automatically clears the TXE flag 	
-		USARTx->TDR = buffer[i] & 0xFF;
-		USART_Delay(300);
+		Serial::_USARTx->TDR = buffer[i] & 0xFF;
+		serial_delay(300);
 	}
-	while (!(USARTx->ISR & USART_ISR_TC));   		  // wait until TC bit is set
-	USARTx->ISR &= ~USART_ISR_TC;
-}   
+	while (!(Serial::_USARTx->ISR & USART_ISR_TC));   		  // wait until TC bit is set
+	Serial::_USARTx->ISR &= ~USART_ISR_TC;
+}
 
-void USART_Delay(uint32_t us) {
+void serial_delay(uint32_t us) {
 	uint32_t time = 100*us/7;    
-	while(--time);   
+	while(--time);
 }

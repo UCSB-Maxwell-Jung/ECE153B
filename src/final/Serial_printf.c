@@ -1,4 +1,4 @@
-#include "UART.h"
+#include "Serial.h"
 #include <stdio.h>
 
 // Implement a dummy __FILE struct, which is called with the FILE structure.
@@ -10,19 +10,17 @@ struct _FILE {
 FILE __stdout;
 FILE __stdin;
  
-// Retarget printf() to USART1/USART2
+// Retarget printf() to USARTx
 int fputc(int ch, FILE *f) { 
 	uint8_t c;
 	c = ch & 0x00FF;
-	USART_Write(USART2, (uint8_t *)&c, 1); // Termite
-	// USART_Write(USART1, (uint8_t *)&c, 1); // Bluetooth
+	serial_write((uint8_t *)&c, 1);
 	return(ch);
 }
 
-// Retarget scanf() to USART1/USART2
+// Retarget scanf() to USARTx
 int fgetc(FILE *f) {  
 	uint8_t rxByte;
-	rxByte = USART_Read(USART2); // Termite
-	// rxByte = USART_Read(USART1); // Bluetooth
+	rxByte = serial_read();
 	return rxByte;
 }
