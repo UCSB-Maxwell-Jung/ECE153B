@@ -40,6 +40,10 @@ UART Serial = UART(DEV_PRINTER);
 //Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
 void setup() {
+  init_system_clock();   // System Clock = 80 MHz
+	// SysTick_Init();
+	init_LED();
+
   Serial.begin(9600);
   Serial.println("ILI9341 Test!");
  
@@ -116,7 +120,7 @@ void loop(void) {
   //   testText();
   //   delay(1000);
   // }
-  // Serial.println("printer working!");
+  Serial.println("printer working!");
 }
 
 // unsigned long testFillScreen() {
