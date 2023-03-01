@@ -9,6 +9,18 @@
         "ili9341_font.h": "c",
         "ili9341_gfx.h": "c",
         "glcdfont.c": "cpp",
-        "systimer.h": "c"
+        "systimer.h": "c",
+        "adafruit_spitft.h": "c",
+        "adafruit_ili9341.h": "c",
+        "limits.h": "c",
+        "adafruit_gfx.h": "c",
+        "gfxfont.h": "c",
+        "spi.h": "c",
+        "stdio.h": "c",
+        "string.h": "c",
+        "display.h": "c",
+        "uart.h": "c",
+        "__config": "cpp",
+        "serial.h": "c"
     }
 }

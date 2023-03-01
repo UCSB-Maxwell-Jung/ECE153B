@@ -5,18 +5,26 @@
 
 #define BufferSize 32
 
-void UART1_Init(void);
-void UART2_Init(void);
-void UART1_GPIO_Init(void);
-void UART2_GPIO_Init(void);
+class UART {
+protected:
+  USART_TypeDef* _USARTx;
 
-void USART_Init(USART_TypeDef* USARTx, uint32_t baud_rate);
+  void init_UART1(void);
+  void init_UART2(void);
 
-void USART1_IRQHandler(void);
-void USART2_IRQHandler(void);
+  void init_UART1_GPIO(void);
+  void init_UART2_GPIO(void);
 
-void USART_Write(USART_TypeDef * USARTx, uint8_t *buffer, uint32_t nBytes);
-uint8_t USART_Read(USART_TypeDef * USARTx);
-void USART_Delay(uint32_t us);
+public:
+  // constructor
+  UART(USART_TypeDef* USARTx);
+  // methods
+  void begin(uint32_t baud_rate);
+  void print(char* str);
+  void println(char* str);
+};
+
+// void USART1_IRQHandler(void);
+// void USART2_IRQHandler(void);
 
 #endif

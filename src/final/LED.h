@@ -3,7 +3,7 @@
 
 #include "stm32l476xx.h"
 
-void LED_Init(void);
+void init_LED(void);
 
 void Green_LED_Off(void);
 void Green_LED_On(void);
