@@ -7,14 +7,14 @@
 #define BLUETOOTH 1
 #define TERMITE 2
 
-void begin_serial(int x, uint32_t baud_rate);
+void init_UARTx(int x, uint32_t baud_rate);
 
 void UART1_Init(void);
 void UART2_Init(void);
 void UART1_GPIO_Init(void);
 void UART2_GPIO_Init(void);
 
-void USART_Init(USART_TypeDef* USARTx, uint32_t baud_rate);
+void begin_USART(USART_TypeDef* USARTx, uint32_t baud_rate);
 
 void USART1_IRQHandler(void);
 void USART2_IRQHandler(void);

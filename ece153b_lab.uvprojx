@@ -1709,9 +1709,29 @@
               <FilePath>.\src\final\UART_printf.c</FilePath>
             </File>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\main.c</FilePath>
+              <FileName>Adafruit_GFX.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Adafruit_GFX.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Adafruit_GFX.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Adafruit_GFX.h</FilePath>
+            </File>
+            <File>
+              <FileName>Adafruit_ILI9341.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Adafruit_ILI9341.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Adafruit_ILI9341.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Adafruit_ILI9341.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\main.cpp</FilePath>
             </File>
           </Files>
         </Group>

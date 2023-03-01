@@ -17,12 +17,11 @@
 #include "LED.h"
 #include "SysTimer.h"
 #include "SysClock.h"
-#include "display.h"
 #include <string.h>
 #include <stdio.h>
 
-#include "SPI.h"
-#include "GFX.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_ILI9341.h"
 
 // For the Adafruit shield, these are the default.
 #define TFT_DC 9
@@ -35,7 +34,7 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 void setup() {
   init_system_clock(); // Switch System Clock = 80 MHz
-	begin_serial(TERMITE, 9600);
+	init_UARTx(TERMITE, 9600);
 	init_LED();
   init_display(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, cs, dc, rst);
   printf("ILI9341 Test!\n"); 

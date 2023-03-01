@@ -3,16 +3,16 @@
 // Initializes USARTx
 // USART2: UART Communication with Termite
 // USART1: Bluetooth Communication with Phone
-void begin_serial(int x, uint32_t baud_rate) {
+void init_UARTx(int x, uint32_t baud_rate) {
 	if(x == BLUETOOTH) {
 		UART1_Init();
 		UART1_GPIO_Init();
-		USART_Init(USART1, baud_rate);
+		begin_USART(USART1, baud_rate);
 	}
   else if(x == TERMITE) {
 		UART2_Init();
 		UART2_GPIO_Init();
-		USART_Init(USART2, baud_rate);
+		begin_USART(USART2, baud_rate);
 	}
   else {
 		// Do nothing...
@@ -91,7 +91,7 @@ void UART2_GPIO_Init(void) {
 
 }
 
-void USART_Init(USART_TypeDef* USARTx, uint32_t baud_rate) {
+void begin_USART(USART_TypeDef* USARTx, uint32_t baud_rate) {
 	USARTx->CR1 &= ~USART_CR1_UE; 					// disable USART before modifying regs
 
 	USARTx->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); 	// 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
