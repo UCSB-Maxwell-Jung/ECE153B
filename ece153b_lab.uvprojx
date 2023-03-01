@@ -1832,6 +1832,21 @@
           <GroupName>final</GroupName>
           <Files>
             <File>
+              <FileName>LED.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\LED.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>LED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\LED.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\main.cpp</FilePath>
+            </File>
+            <File>
               <FileName>startup_stm32l476xx.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\src\final\startup_stm32l476xx.s</FilePath>
@@ -1842,19 +1857,9 @@
               <FilePath>.\src\final\stm32l476xx.h</FilePath>
             </File>
             <File>
-              <FileName>LED.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\LED.c</FilePath>
-            </File>
-            <File>
-              <FileName>LED.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\LED.h</FilePath>
-            </File>
-            <File>
-              <FileName>SysClock.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\SysClock.c</FilePath>
+              <FileName>SysClock.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SysClock.cpp</FilePath>
             </File>
             <File>
               <FileName>SysClock.h</FileName>
@@ -1862,9 +1867,9 @@
               <FilePath>.\src\final\SysClock.h</FilePath>
             </File>
             <File>
-              <FileName>SysTimer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\SysTimer.c</FilePath>
+              <FileName>SysTimer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SysTimer.cpp</FilePath>
             </File>
             <File>
               <FileName>SysTimer.h</FileName>
@@ -1872,9 +1877,9 @@
               <FilePath>.\src\final\SysTimer.h</FilePath>
             </File>
             <File>
-              <FileName>UART.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\UART.c</FilePath>
+              <FileName>UART.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\UART.cpp</FilePath>
             </File>
             <File>
               <FileName>UART.h</FileName>
@@ -1887,9 +1892,9 @@
               <FilePath>.\src\final\UART_printf.c</FilePath>
             </File>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\main.c</FilePath>
+              <FileName>device.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\device.h</FilePath>
             </File>
           </Files>
         </Group>
