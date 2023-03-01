@@ -14,5 +14,6 @@
 #define TERMITE USART2
 
 #define DEV_PRINTER TERMITE
+#define DEV_DISPLAY SPI1
 
 #endif

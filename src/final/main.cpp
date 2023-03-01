@@ -36,6 +36,7 @@
 // Use hardware SPI (on Uno, #13, #12, #11) and the above for CS/DC
 // Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 UART Serial = UART(DEV_PRINTER);
+SPI Display = SPI(DEV_DISPLAY);
 // If using the breakout, change pins as desired
 //Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
@@ -44,7 +45,11 @@ void setup() {
 	// SysTick_Init();
 	init_LED();
 
+  
   Serial.begin(9600);
+  Display.begin();
+
+
   Serial.println("ILI9341 Test!");
  
   // tft.begin();

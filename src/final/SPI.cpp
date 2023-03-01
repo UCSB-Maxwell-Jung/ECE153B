@@ -6,6 +6,36 @@
 
 SPI::SPI(SPI_TypeDef* SPIx) : _SPIx(SPIx) {}
 
+void SPI::begin(void) {
+	if (_SPIx == SPI1) {
+		init_SPI1_GPIO();
+		init_SPI1();
+	}
+	else if (_SPIx == SPI2) {
+		init_SPI2_GPIO();
+		init_SPI2();
+	}
+	else {
+		return;
+	}
+}
+
+// send data from SPI1
+void SPI::send_byte(uint8_t write_data) {
+	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
+
+	*(volatile uint8_t*)(&_SPIx->DR) = write_data; // write data to data register
+
+	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
+}
+
+// receive data from SPI2
+void SPI::receive_byte(uint8_t* read_data) {
+	while ((_SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
+
+	*read_data = *(volatile uint8_t*)(&_SPIx->DR); // read data from data register
+}
+
 // initialize SPI1 GPIO pins
 void SPI::init_SPI1_GPIO(void) {
 	uint32_t af_num;
@@ -144,20 +174,4 @@ void SPI::init_SPI2(void){
 	SPI2->CR1 &= ~SPI_CR1_SSI; // set internal slave select bit (0)
 	SPI2->CR2 |= SPI_CR2_FRXTH; // set FIFO threshold to 1/4 (1)
 	SPI2->CR1 |= SPI_CR1_SPE; // enable SPI2
-}
-
-// send data from SPI1
-void SPI::send_byte(uint8_t write_data) {
-	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
-
-	*(volatile uint8_t*)(&_SPIx->DR) = write_data; // write data to data register
-
-	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
-}
-
-// receive data from SPI2
-void SPI::receive_byte(uint8_t* read_data) {
-	while ((_SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
-
-	*read_data = *(volatile uint8_t*)(&_SPIx->DR); // read data from data register
 }

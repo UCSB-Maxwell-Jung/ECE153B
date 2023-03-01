@@ -76,12 +76,12 @@ void UART::init_UART2_GPIO(void) {
 
 void UART::begin(uint32_t baud_rate) {
 	if (_USARTx == USART1) {
-		init_UART1();
 		init_UART1_GPIO();
+		init_UART1();
 	}
 	else if (_USARTx == USART2) {
-		init_UART2();
 		init_UART2_GPIO();
+		init_UART2();
 	}
 	else {
 		return; // do nothing

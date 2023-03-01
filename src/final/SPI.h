@@ -3,6 +3,14 @@
 
 #include "stm32l476xx.h"
 class SPI {
+public:
+  // constructor
+  SPI(SPI_TypeDef* SPIx);
+  // methods
+  void begin(void);
+  void send_byte(uint8_t write_data);
+  void receive_byte(uint8_t* read_data);
+
 protected:
   SPI_TypeDef* _SPIx;
 
@@ -11,13 +19,6 @@ protected:
 
   void init_SPI1_GPIO(void);
   void init_SPI2_GPIO(void);
-
-public:
-  // constructor
-  SPI(SPI_TypeDef* SPIx);
-  // methods
-  void send_byte(uint8_t write_data);
-  void receive_byte(uint8_t* read_data);
 };
 
 #endif 
