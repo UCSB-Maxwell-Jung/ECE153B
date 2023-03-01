@@ -1,4 +1,5 @@
-/*  This file contains mappings
+/*
+    This file contains mappings
     of various pheripherals to their 
     respective hardware interfaces.
 
@@ -15,5 +16,15 @@
 
 #define DEV_PRINTER TERMITE
 #define DEV_DISPLAY SPI1
+
+/*
+    CS = chip select = PA3
+    RESET = reset = PA2
+    DC = Data / Command = PA10
+    SDI(MOSI) = Serial Data In = SPI1 MOSI
+    SCK = Serial Clock = SPI1 SCK
+
+    SDO = Serial Data Out = NC (connect to SPI1 MISO for debugging)
+*/
 
 #endif

@@ -1896,6 +1896,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\final\device.h</FilePath>
             </File>
+            <File>
+              <FileName>SPI.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SPI.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SPI.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\SPI.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -25,7 +25,7 @@
 #include "SPI.h"
 #include "device.h"
 
-// display/graphics library from Adafruit
+// graphics and lcd library from Adafruit
 // #include "Adafruit_GFX.h"
 // #include "Adafruit_ILI9341.h"
 
@@ -36,7 +36,7 @@
 // Use hardware SPI (on Uno, #13, #12, #11) and the above for CS/DC
 // Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 UART Serial = UART(DEV_PRINTER);
-SPI Display = SPI(DEV_DISPLAY);
+SPI Display_SPI = SPI(DEV_DISPLAY);
 // If using the breakout, change pins as desired
 //Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
@@ -45,10 +45,9 @@ void setup() {
 	// SysTick_Init();
 	init_LED();
 
-  
+  // initialize communication interfaces
   Serial.begin(9600);
-  Display.begin();
-
+  Display_SPI.begin();
 
   Serial.println("ILI9341 Test!");
  
