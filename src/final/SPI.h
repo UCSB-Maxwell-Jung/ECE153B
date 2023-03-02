@@ -12,8 +12,7 @@ public:
   SPI(SPI_TypeDef* SPIx=NULL);
   // methods
   void begin(uint32_t freq);
-  void transfer(uint8_t write_data);
-  void receive_byte(uint8_t* read_data);
+  uint8_t transfer(uint8_t write_data);
 
 protected:
   SPI_TypeDef* _SPIx;

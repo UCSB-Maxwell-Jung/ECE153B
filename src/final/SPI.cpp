@@ -22,19 +22,28 @@ void SPI::begin(uint32_t freq) {
 }
 
 // transfer data out on output line and in on input line
-void SPI::transfer(uint8_t b) {
-	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
+uint8_t SPI::transfer(uint8_t b) {
+	// enable spi
+	_SPIx->CR1 |= SPI_CR1_SPE;
+	// wait for Transmit Buffer Empty flag to be set
+	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE);
 
-	*(volatile uint8_t*)(&_SPIx->DR) = b; // write byte to data register
+	// write byte to transfer
+	*(volatile uint8_t*)(&_SPIx->DR) = b;
 
-	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
-}
+	// wait for no more data to transmit
+	while ((_SPIx->SR & SPI_SR_FTLVL) != 0);
+	// wait for busy to be unset
+	while ((_SPIx->SR & SPI_SR_BSY) != 0);
+	// disable spi
+	_SPIx->CR1 &= ~SPI_CR1_SPE;
 
-// read current data in spi register
-void SPI::receive_byte(uint8_t* b) {
-	while ((_SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
-
-	*b = *(volatile uint8_t*)(&_SPIx->DR); // read byte from data register
+	// read last received byte
+	uint8_t received;
+	while ((_SPIx->SR & SPI_SR_RXNE) == SPI_SR_RXNE)
+		received = *(volatile uint8_t*)(&_SPIx->DR);
+	
+	return received;
 }
 
 // configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI)
@@ -82,17 +91,8 @@ void SPI::init_SPI1(uint32_t freq){
 	RCC->APB2RSTR |= RCC_APB2RSTR_SPI1RST; // set, then reset to clear SPI1
 	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST; 
 	SPI1->CR1 &= ~SPI_CR1_SPE; // disable SPI1
-	SPI1->CR1 &= ~SPI_CR1_RXONLY; // set to full-duplex (0)
-	SPI1->CR1 &= ~SPI_CR1_BIDIMODE; // set to 2-line unidirectional data mode (0)
-	SPI1->CR1 &= ~SPI_CR1_BIDIOE; // disable output in bidirectional mode (0)
-	SPI1->CR1 &= ~SPI_CR1_LSBFIRST; // MSB first (0)
-	SPI1->CR2 &= ~SPI_CR2_DS; // reset data size bits to 0000;
-	SPI1->CR2 |= (SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0); // set data size to 8 (strangely, 8 corresponds to 0111 in the datasheet)
-	SPI1->CR2 &= ~SPI_CR2_FRF; // use motorola SPI mode (0)
-	SPI1->CR1 &= ~SPI_CR1_CPOL; // set clock to low polarity (0)
-	SPI1->CR1 &= ~SPI_CR1_CPHA; // set clock to first clock transition (0)
-	SPI1->CR1 &= ~SPI_CR1_BR; // reset baud rate control bits to 000
 
+	// ---------------CR1-----------------
 	// set spi clock prescalar to be the next highest requested freq
 	uint8_t br;
 	br = floor((log(80*1000000.0/freq)/log(2.0))-1);
@@ -100,15 +100,53 @@ void SPI::init_SPI1(uint32_t freq){
 		br = 0;
 	else if (br > 7)
 		br = 7;
+	SPI1->CR1 &= ~SPI_CR1_BR; // reset baud rate control bits to 000
 	SPI1->CR1 |= br << 3;
 
-	SPI1->CR1 &= ~SPI_CR1_CRCEN; // disable hardware CRC calculation (0)
-	SPI1->CR1 |= SPI_CR1_MSTR; // set to master (1)
-	SPI1->CR1 |= SPI_CR1_SSM; // enable SSM (software slave management) (1)
-	SPI1->CR2 |= SPI_CR2_NSSP; // enable NSS pulse generation (1)
-	SPI1->CR1 |= SPI_CR1_SSI; // set internal slave select bit (1)
-	SPI1->CR2 |= SPI_CR2_FRXTH; // set FIFO threshold to 1/4 (1)
-	SPI1->CR1 |= SPI_CR1_SPE; // enable SPI1
+	// set clock polarity to low (0)
+	SPI1->CR1 &= ~SPI_CR1_CPOL;
+	// set clock phase to first edge (0)
+	SPI1->CR1 &= ~SPI_CR1_CPHA;
+
+	// set to full-duplex (0)
+	SPI1->CR1 &= ~SPI_CR1_RXONLY;
+	// set to 2-line unidirectional data mode (0)
+	SPI1->CR1 &= ~SPI_CR1_BIDIMODE;
+	// disable output in bidirectional mode (0)
+	SPI1->CR1 &= ~SPI_CR1_BIDIOE;
+
+	// MSB first (0)
+	SPI1->CR1 &= ~SPI_CR1_LSBFIRST;
+	
+	// disable SSM (Hardware NSS management) (0)
+	SPI1->CR1 &= ~SPI_CR1_SSM;
+
+	// set to master (1)
+	SPI1->CR1 |= SPI_CR1_MSTR;
+
+	// ----------------CR2--------------
+	// reset data size bits to 0000;
+	SPI1->CR2 &= ~SPI_CR2_DS;
+	// set data size to 8 (strangely, 8 corresponds to 0111 in the datasheet)
+	SPI1->CR2 |= (SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0);
+
+	// set NSS output enable (1)
+	SPI1->CR2 |= SPI_CR2_SSOE;
+
+	// use motorola SPI mode (0)
+	SPI1->CR2 &= ~SPI_CR2_FRF; 
+	
+	// set FIFO threshold to 1/4 (8-bit) (1)
+	SPI1->CR2 |= SPI_CR2_FRXTH;
+
+	// disable hardware CRC calculation (0)
+	SPI1->CR1 &= ~SPI_CR1_CRCEN;
+
+	// enable NSS pulse generation (1)
+	SPI1->CR2 |= SPI_CR2_NSSP;
+	
+	// enable SPI1
+	SPI1->CR1 |= SPI_CR1_SPE;
 }
 
 // initialize SPI2 GPIO pins
