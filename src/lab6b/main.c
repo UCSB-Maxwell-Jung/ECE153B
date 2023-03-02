@@ -15,17 +15,22 @@ void SERVO_Pin_Init(){
 	GPIOA->MODER &= ~GPIO_MODER_MODE0; // reset moder to 00
 	GPIOA->MODER |= GPIO_MODER_MODE0_1; // set moder to AF (10)
 
-	GPIOA->AFR[0] &= ~GPIO_AFRL_AFRL0; // reset to 0000
-	GPIOA->AFR[0] |= 2; // set pin 0 to AF2 (TIM5_CH1)
+	GPIOA->AFR[0] &= ~GPIO_AFRL_AFRL0; // 3.
+	GPIOA->AFR[0] |= GPIO_AFRL_AFSEL0_1; // AF2 (TIM5_CH1)
 
-	GPIOA->PUPDR &= ~GPIO_PUPDR_PUPD0; // set to no pull-up, no pull-down (00)
+	// GPIO Push-Pull: No pull-up, pull-down (00),
+	// Pull-up (01), Pull-down (10), Reserved (11)
+	GPIOA->PUPDR &= ~GPIO_PUPDR_PUPD0; // 4. Set PA0 to no pull-up, no pull-down.
+	
+	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR0;
+	GPIOA->OTYPER &=~GPIO_OTYPER_OT0;
 }
 
 void TIM5_CH1_Init(){
 	/*______________ALL STEP 5.________________*/
-
-	//	Set TIM5->CR1 for the counting direction to be up.
-	//	up (0), down (1)
+	// Set TIM5->CR1 for the counting direction to be up.
+	// up (0), down (1)
+	RCC->APB1ENR1 |= RCC_APB1ENR1_TIM5EN;
 	TIM5->CR1 &= ~TIM_CR1_DIR; // 5. set counter direction up (0), 
 
 	// 	Set the prescaler TIM5->PSC to count at 100kHz.
@@ -46,7 +51,7 @@ void TIM5_CH1_Init(){
 		f_CK_CNT = 100kHz
 		Counting Period = (1+ARR)/(f_CK_CNT) 
 				  0.02s = (1 + 1999)/100KHz
-		1999 = 0x7CF
+					ARR = 1999
 	*/
 	TIM5->ARR &= ~TIM_ARR_ARR;
 	TIM5->ARR = 1999;
@@ -63,14 +68,14 @@ void TIM5_CH1_Init(){
 	//	Enable the Output 1 preload enable in TIM5->CCMR1:
 	TIM5->CCMR1 |= TIM_CCMR1_OC1PE;
 
-	//	Select the output polarity by clearing the CC1NP in TIM5->CCER :
-	TIM5->CCER &= ~(TIM_CCER_CC1NP);
+	// Select the output polarity by clearing the CC1NP in TIM5->CCER :
+	//TIM5->CCER |= TIM_CCER_CC1NP;
 
-	//	Enable complementary output of Channel 1 (CH1N) by setting the CC1NE bit
-	TIM5->CCER |= TIM_CCER_CC1NE;
+	// Enable complementary output of Channel 1 (CH1N) by setting the CC1NE bit
+	TIM5->CCER |= TIM_CCER_CC1E;
 
-	//	Set the main output enable (MOE)
-	TIM5->BDTR |= TIM_BDTR_MOE;
+	// Set the main output enable (MOE)
+	//TIM5->BDTR |= TIM_BDTR_MOE;
 	
 	//	Set the output compare register to have a duty cycle of 50%:
 	/*
@@ -81,6 +86,9 @@ void TIM5_CH1_Init(){
 	*/
 	TIM5->CCR1 &= ~TIM_CCR1_CCR1;
 	TIM5->CCR1 = 1000;
+		
+	TIM5->CR1 |= TIM_CR1_CEN; //Enable timer
+
 }
 
 // function to move the servo to +90 degrees
@@ -92,8 +100,7 @@ void Servo_Move_Left_90_Degree(){
 		duty cycle = (1ms)/(.02) = 0.05 = 5%
 		thus CCR = .05 * 2000 = 100 = 0x64
 	*/
-	TIM5->CCR1 &= ~TIM_CCR1_CCR1;
-	TIM5->CCR1 = 100;
+	TIM5->CCR1 = 50;
 }
 
 // function to move the servo to 0 degrees
@@ -105,7 +112,6 @@ void Servo_Move_Center(){
 		duty cycle = (1.5ms)/(.02) = 0.075 = 7.5%
 		thus CCR = .075 * 2000 = 150 = 0x96
 	*/
-	TIM5->CCR1 &= ~TIM_CCR1_CCR1;
 	TIM5->CCR1 = 150;
 }
 
@@ -118,10 +124,8 @@ void Servo_Move_Right_90_Degree(){
 		duty cycle = (2ms)/(.02) = 0.1 = 10%
 		thus CCR = 0.1 * 2000 = 200 = 0xC8
 	*/
-	TIM5->CCR1 &= ~TIM_CCR1_CCR1;
-	TIM5->CCR1 = 200;
+	TIM5->CCR1 = 250;
 }
-
 
 int main() {
 	int i;
@@ -132,10 +136,10 @@ int main() {
     while(1) {
 			// Move servo to +90 degrees, 0 degrees, and -90 degrees
 			Servo_Move_Right_90_Degree();
-			for(i=0;i<1000;i++); 
+			for(i=0;i<200000;i++); 
 			Servo_Move_Center();
-			for(i=0;i<1000;i++); 
+			for(i=0;i<200000;i++); 
 			Servo_Move_Left_90_Degree();
-			for(i=0;i<1000;i++);  		// delay
+			for(i=0;i<200000;i++);  		// delay
     }
 }
