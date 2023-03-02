@@ -189,11 +189,13 @@ void Adafruit_SPITFT::initSPI(uint32_t freq, uint8_t spiMode) {
 
   // Init basic control pins common to all connection types
 
-  // [TODO] init chip select pin
-  // if (_cs >= 0) {
-  //   pinMode(_cs, OUTPUT);
-  //   digitalWrite(_cs, HIGH); // Deselect
-  // }
+  // [TODO] init CS (chip select) PA3
+  // Enable GPIOA
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+	// Set to Output mode
+	GPIOA->MODER &= ~GPIO_MODER_MODE3_1;
+  // Set to High (CS is active low, so High = disabled)
+  GPIOA->ODR |= GPIO_ODR_OD3;
 
   // [TODO] init data/command pin
   // pinMode(_dc, OUTPUT);
