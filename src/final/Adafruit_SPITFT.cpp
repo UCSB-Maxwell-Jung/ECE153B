@@ -201,7 +201,7 @@ void Adafruit_SPITFT::initSPI(uint32_t freq, uint8_t spiMode) {
 
   hwspi._freq = freq; // Save freq value for later
   hwspi._mode = spiMode; // Save spiMode value for later
-  hwspi._spi->begin();
+  hwspi._spi->begin(freq);
 
   // [TODO] init reset pin
   // Toggle _rst low to reset
@@ -213,245 +213,245 @@ void Adafruit_SPITFT::initSPI(uint32_t freq, uint8_t spiMode) {
   // digitalWrite(_rst, HIGH);
   // delay(200);
 
-#if defined(USE_SPI_DMA) && (defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO))
-  if (((connection == TFT_HARD_SPI) || (connection == TFT_PARALLEL)) &&
-      (dma.allocate() == DMA_STATUS_OK)) { // Allocate channel
-    // The DMA library needs to alloc at least one valid descriptor,
-    // so we do that here. It's not used in the usual sense though,
-    // just before a transfer we copy descriptor[0] to this address.
-    if (dptr = dma.addDescriptor(NULL, NULL, 42, DMA_BEAT_SIZE_BYTE, false,
-                                 false)) {
-      // Alloc 2 scanlines worth of pixels on display's major axis,
-      // whichever that is, rounding each up to 2-pixel boundary.
-      int major = (WIDTH > HEIGHT) ? WIDTH : HEIGHT;
-      major += (major & 1);   // -> next 2-pixel bound, if needed.
-      maxFillLen = major * 2; // 2 scanlines
-      // Note to future self: if you decide to make the pixel buffer
-      // much larger, remember that DMA transfer descriptors can't
-      // exceed 65,535 bytes (not 65,536), meaning 32,767 pixels max.
-      // Not that we have that kind of RAM to throw around right now.
-      if ((pixelBuf[0] = (uint16_t *)malloc(maxFillLen * sizeof(uint16_t)))) {
-        // Alloc OK. Get pointer to start of second scanline.
-        pixelBuf[1] = &pixelBuf[0][major];
-        // Determine number of DMA descriptors needed to cover
-        // entire screen when entire 2-line pixelBuf is used
-        // (round up for fractional last descriptor).
-        int numDescriptors = (WIDTH * HEIGHT + (maxFillLen - 1)) / maxFillLen;
-        // DMA descriptors MUST be 128-bit (16 byte) aligned.
-        // memalign() is considered obsolete but it's replacements
-        // (aligned_alloc() or posix_memalign()) are not currently
-        // available in the version of ARM GCC in use, but this
-        // is, so here we are.
-        if ((descriptor = (DmacDescriptor *)memalign(
-                 16, numDescriptors * sizeof(DmacDescriptor)))) {
-          int dmac_id;
-          volatile uint32_t *data_reg;
+// #if defined(USE_SPI_DMA) && (defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO))
+//   if (((connection == TFT_HARD_SPI) || (connection == TFT_PARALLEL)) &&
+//       (dma.allocate() == DMA_STATUS_OK)) { // Allocate channel
+//     // The DMA library needs to alloc at least one valid descriptor,
+//     // so we do that here. It's not used in the usual sense though,
+//     // just before a transfer we copy descriptor[0] to this address.
+//     if (dptr = dma.addDescriptor(NULL, NULL, 42, DMA_BEAT_SIZE_BYTE, false,
+//                                  false)) {
+//       // Alloc 2 scanlines worth of pixels on display's major axis,
+//       // whichever that is, rounding each up to 2-pixel boundary.
+//       int major = (WIDTH > HEIGHT) ? WIDTH : HEIGHT;
+//       major += (major & 1);   // -> next 2-pixel bound, if needed.
+//       maxFillLen = major * 2; // 2 scanlines
+//       // Note to future self: if you decide to make the pixel buffer
+//       // much larger, remember that DMA transfer descriptors can't
+//       // exceed 65,535 bytes (not 65,536), meaning 32,767 pixels max.
+//       // Not that we have that kind of RAM to throw around right now.
+//       if ((pixelBuf[0] = (uint16_t *)malloc(maxFillLen * sizeof(uint16_t)))) {
+//         // Alloc OK. Get pointer to start of second scanline.
+//         pixelBuf[1] = &pixelBuf[0][major];
+//         // Determine number of DMA descriptors needed to cover
+//         // entire screen when entire 2-line pixelBuf is used
+//         // (round up for fractional last descriptor).
+//         int numDescriptors = (WIDTH * HEIGHT + (maxFillLen - 1)) / maxFillLen;
+//         // DMA descriptors MUST be 128-bit (16 byte) aligned.
+//         // memalign() is considered obsolete but it's replacements
+//         // (aligned_alloc() or posix_memalign()) are not currently
+//         // available in the version of ARM GCC in use, but this
+//         // is, so here we are.
+//         if ((descriptor = (DmacDescriptor *)memalign(
+//                  16, numDescriptors * sizeof(DmacDescriptor)))) {
+//           int dmac_id;
+//           volatile uint32_t *data_reg;
 
-          if (connection == TFT_HARD_SPI) {
-            // THIS IS AN AFFRONT TO NATURE, but I don't know
-            // any "clean" way to get the sercom number from the
-            // the SPIClass pointer (e.g. &SPI or &SPI1), which
-            // is all we have to work with. SPIClass does contain
-            // a SERCOM pointer but it is a PRIVATE member!
-            // Doing an UNSPEAKABLY HORRIBLE THING here, directly
-            // accessing the first 32-bit value in the SPIClass
-            // structure, knowing that's (currently) where the
-            // SERCOM pointer lives, but this ENTIRELY DEPENDS on
-            // that structure not changing nor the compiler
-            // rearranging things. Oh the humanity!
+//           if (connection == TFT_HARD_SPI) {
+//             // THIS IS AN AFFRONT TO NATURE, but I don't know
+//             // any "clean" way to get the sercom number from the
+//             // the SPIClass pointer (e.g. &SPI or &SPI1), which
+//             // is all we have to work with. SPIClass does contain
+//             // a SERCOM pointer but it is a PRIVATE member!
+//             // Doing an UNSPEAKABLY HORRIBLE THING here, directly
+//             // accessing the first 32-bit value in the SPIClass
+//             // structure, knowing that's (currently) where the
+//             // SERCOM pointer lives, but this ENTIRELY DEPENDS on
+//             // that structure not changing nor the compiler
+//             // rearranging things. Oh the humanity!
 
-            if (*(SERCOM **)hwspi._spi == &sercom0) {
-              dmac_id = SERCOM0_DMAC_ID_TX;
-              data_reg = &SERCOM0->SPI.DATA.reg;
-#if defined SERCOM1
-            } else if (*(SERCOM **)hwspi._spi == &sercom1) {
-              dmac_id = SERCOM1_DMAC_ID_TX;
-              data_reg = &SERCOM1->SPI.DATA.reg;
-#endif
-#if defined SERCOM2
-            } else if (*(SERCOM **)hwspi._spi == &sercom2) {
-              dmac_id = SERCOM2_DMAC_ID_TX;
-              data_reg = &SERCOM2->SPI.DATA.reg;
-#endif
-#if defined SERCOM3
-            } else if (*(SERCOM **)hwspi._spi == &sercom3) {
-              dmac_id = SERCOM3_DMAC_ID_TX;
-              data_reg = &SERCOM3->SPI.DATA.reg;
-#endif
-#if defined SERCOM4
-            } else if (*(SERCOM **)hwspi._spi == &sercom4) {
-              dmac_id = SERCOM4_DMAC_ID_TX;
-              data_reg = &SERCOM4->SPI.DATA.reg;
-#endif
-#if defined SERCOM5
-            } else if (*(SERCOM **)hwspi._spi == &sercom5) {
-              dmac_id = SERCOM5_DMAC_ID_TX;
-              data_reg = &SERCOM5->SPI.DATA.reg;
-#endif
-#if defined SERCOM6
-            } else if (*(SERCOM **)hwspi._spi == &sercom6) {
-              dmac_id = SERCOM6_DMAC_ID_TX;
-              data_reg = &SERCOM6->SPI.DATA.reg;
-#endif
-#if defined SERCOM7
-            } else if (*(SERCOM **)hwspi._spi == &sercom7) {
-              dmac_id = SERCOM7_DMAC_ID_TX;
-              data_reg = &SERCOM7->SPI.DATA.reg;
-#endif
-            }
-            dma.setPriority(DMA_PRIORITY_3);
-            dma.setTrigger(dmac_id);
-            dma.setAction(DMA_TRIGGER_ACTON_BEAT);
+//             if (*(SERCOM **)hwspi._spi == &sercom0) {
+//               dmac_id = SERCOM0_DMAC_ID_TX;
+//               data_reg = &SERCOM0->SPI.DATA.reg;
+// #if defined SERCOM1
+//             } else if (*(SERCOM **)hwspi._spi == &sercom1) {
+//               dmac_id = SERCOM1_DMAC_ID_TX;
+//               data_reg = &SERCOM1->SPI.DATA.reg;
+// #endif
+// #if defined SERCOM2
+//             } else if (*(SERCOM **)hwspi._spi == &sercom2) {
+//               dmac_id = SERCOM2_DMAC_ID_TX;
+//               data_reg = &SERCOM2->SPI.DATA.reg;
+// #endif
+// #if defined SERCOM3
+//             } else if (*(SERCOM **)hwspi._spi == &sercom3) {
+//               dmac_id = SERCOM3_DMAC_ID_TX;
+//               data_reg = &SERCOM3->SPI.DATA.reg;
+// #endif
+// #if defined SERCOM4
+//             } else if (*(SERCOM **)hwspi._spi == &sercom4) {
+//               dmac_id = SERCOM4_DMAC_ID_TX;
+//               data_reg = &SERCOM4->SPI.DATA.reg;
+// #endif
+// #if defined SERCOM5
+//             } else if (*(SERCOM **)hwspi._spi == &sercom5) {
+//               dmac_id = SERCOM5_DMAC_ID_TX;
+//               data_reg = &SERCOM5->SPI.DATA.reg;
+// #endif
+// #if defined SERCOM6
+//             } else if (*(SERCOM **)hwspi._spi == &sercom6) {
+//               dmac_id = SERCOM6_DMAC_ID_TX;
+//               data_reg = &SERCOM6->SPI.DATA.reg;
+// #endif
+// #if defined SERCOM7
+//             } else if (*(SERCOM **)hwspi._spi == &sercom7) {
+//               dmac_id = SERCOM7_DMAC_ID_TX;
+//               data_reg = &SERCOM7->SPI.DATA.reg;
+// #endif
+//             }
+//             dma.setPriority(DMA_PRIORITY_3);
+//             dma.setTrigger(dmac_id);
+//             dma.setAction(DMA_TRIGGER_ACTON_BEAT);
 
-            // Initialize descriptor list.
-            for (int d = 0; d < numDescriptors; d++) {
-              // No need to set SRCADDR, DESCADDR or BTCNT --
-              // those are done in the pixel-writing functions.
-              descriptor[d].BTCTRL.bit.VALID = true;
-              descriptor[d].BTCTRL.bit.EVOSEL = DMA_EVENT_OUTPUT_DISABLE;
-              descriptor[d].BTCTRL.bit.BLOCKACT = DMA_BLOCK_ACTION_NOACT;
-              descriptor[d].BTCTRL.bit.BEATSIZE = DMA_BEAT_SIZE_BYTE;
-              descriptor[d].BTCTRL.bit.DSTINC = 0;
-              descriptor[d].BTCTRL.bit.STEPSEL = DMA_STEPSEL_SRC;
-              descriptor[d].BTCTRL.bit.STEPSIZE =
-                  DMA_ADDRESS_INCREMENT_STEP_SIZE_1;
-              descriptor[d].DSTADDR.reg = (uint32_t)data_reg;
-            }
+//             // Initialize descriptor list.
+//             for (int d = 0; d < numDescriptors; d++) {
+//               // No need to set SRCADDR, DESCADDR or BTCNT --
+//               // those are done in the pixel-writing functions.
+//               descriptor[d].BTCTRL.bit.VALID = true;
+//               descriptor[d].BTCTRL.bit.EVOSEL = DMA_EVENT_OUTPUT_DISABLE;
+//               descriptor[d].BTCTRL.bit.BLOCKACT = DMA_BLOCK_ACTION_NOACT;
+//               descriptor[d].BTCTRL.bit.BEATSIZE = DMA_BEAT_SIZE_BYTE;
+//               descriptor[d].BTCTRL.bit.DSTINC = 0;
+//               descriptor[d].BTCTRL.bit.STEPSEL = DMA_STEPSEL_SRC;
+//               descriptor[d].BTCTRL.bit.STEPSIZE =
+//                   DMA_ADDRESS_INCREMENT_STEP_SIZE_1;
+//               descriptor[d].DSTADDR.reg = (uint32_t)data_reg;
+//             }
 
-          } else { // Parallel connection
+//           } else { // Parallel connection
 
-#if defined(__SAMD51__)
-            int dmaChannel = dma.getChannel();
-            // Enable event output, use EVOSEL output
-            DMAC->Channel[dmaChannel].CHEVCTRL.bit.EVOE = 1;
-            DMAC->Channel[dmaChannel].CHEVCTRL.bit.EVOMODE = 0;
+// #if defined(__SAMD51__)
+//             int dmaChannel = dma.getChannel();
+//             // Enable event output, use EVOSEL output
+//             DMAC->Channel[dmaChannel].CHEVCTRL.bit.EVOE = 1;
+//             DMAC->Channel[dmaChannel].CHEVCTRL.bit.EVOMODE = 0;
 
-            // CONFIGURE TIMER/COUNTER (for write strobe)
+//             // CONFIGURE TIMER/COUNTER (for write strobe)
 
-            Tc *timer = tcList[tcNum].tc; // -> Timer struct
-            int id = tcList[tcNum].gclk;  // Timer GCLK ID
-            GCLK_PCHCTRL_Type pchctrl;
+//             Tc *timer = tcList[tcNum].tc; // -> Timer struct
+//             int id = tcList[tcNum].gclk;  // Timer GCLK ID
+//             GCLK_PCHCTRL_Type pchctrl;
 
-            // Set up timer clock source from GCLK
-            GCLK->PCHCTRL[id].bit.CHEN = 0; // Stop timer
-            while (GCLK->PCHCTRL[id].bit.CHEN)
-              ; // Wait for it
-            pchctrl.bit.GEN = GCLK_PCHCTRL_GEN_GCLK0_Val;
-            pchctrl.bit.CHEN = 1; // Enable
-            GCLK->PCHCTRL[id].reg = pchctrl.reg;
-            while (!GCLK->PCHCTRL[id].bit.CHEN)
-              ; // Wait for it
+//             // Set up timer clock source from GCLK
+//             GCLK->PCHCTRL[id].bit.CHEN = 0; // Stop timer
+//             while (GCLK->PCHCTRL[id].bit.CHEN)
+//               ; // Wait for it
+//             pchctrl.bit.GEN = GCLK_PCHCTRL_GEN_GCLK0_Val;
+//             pchctrl.bit.CHEN = 1; // Enable
+//             GCLK->PCHCTRL[id].reg = pchctrl.reg;
+//             while (!GCLK->PCHCTRL[id].bit.CHEN)
+//               ; // Wait for it
 
-            // Disable timer/counter before configuring it
-            timer->COUNT8.CTRLA.bit.ENABLE = 0;
-            while (timer->COUNT8.SYNCBUSY.bit.STATUS)
-              ;
+//             // Disable timer/counter before configuring it
+//             timer->COUNT8.CTRLA.bit.ENABLE = 0;
+//             while (timer->COUNT8.SYNCBUSY.bit.STATUS)
+//               ;
 
-            timer->COUNT8.WAVE.bit.WAVEGEN = 2;    // NPWM
-            timer->COUNT8.CTRLA.bit.MODE = 1;      // 8-bit
-            timer->COUNT8.CTRLA.bit.PRESCALER = 0; // 1:1
-            while (timer->COUNT8.SYNCBUSY.bit.STATUS)
-              ;
+//             timer->COUNT8.WAVE.bit.WAVEGEN = 2;    // NPWM
+//             timer->COUNT8.CTRLA.bit.MODE = 1;      // 8-bit
+//             timer->COUNT8.CTRLA.bit.PRESCALER = 0; // 1:1
+//             while (timer->COUNT8.SYNCBUSY.bit.STATUS)
+//               ;
 
-            timer->COUNT8.CTRLBCLR.bit.DIR = 1; // Count UP
-            while (timer->COUNT8.SYNCBUSY.bit.CTRLB)
-              ;
-            timer->COUNT8.CTRLBSET.bit.ONESHOT = 1; // One-shot
-            while (timer->COUNT8.SYNCBUSY.bit.CTRLB)
-              ;
-            timer->COUNT8.PER.reg = 6; // PWM top
-            while (timer->COUNT8.SYNCBUSY.bit.PER)
-              ;
-            timer->COUNT8.CC[0].reg = 2; // Compare
-            while (timer->COUNT8.SYNCBUSY.bit.CC0)
-              ;
-            // Enable async input events,
-            // event action = restart.
-            timer->COUNT8.EVCTRL.bit.TCEI = 1;
-            timer->COUNT8.EVCTRL.bit.EVACT = 1;
+//             timer->COUNT8.CTRLBCLR.bit.DIR = 1; // Count UP
+//             while (timer->COUNT8.SYNCBUSY.bit.CTRLB)
+//               ;
+//             timer->COUNT8.CTRLBSET.bit.ONESHOT = 1; // One-shot
+//             while (timer->COUNT8.SYNCBUSY.bit.CTRLB)
+//               ;
+//             timer->COUNT8.PER.reg = 6; // PWM top
+//             while (timer->COUNT8.SYNCBUSY.bit.PER)
+//               ;
+//             timer->COUNT8.CC[0].reg = 2; // Compare
+//             while (timer->COUNT8.SYNCBUSY.bit.CC0)
+//               ;
+//             // Enable async input events,
+//             // event action = restart.
+//             timer->COUNT8.EVCTRL.bit.TCEI = 1;
+//             timer->COUNT8.EVCTRL.bit.EVACT = 1;
 
-            // Enable timer
-            timer->COUNT8.CTRLA.reg |= TC_CTRLA_ENABLE;
-            while (timer->COUNT8.SYNCBUSY.bit.STATUS)
-              ;
+//             // Enable timer
+//             timer->COUNT8.CTRLA.reg |= TC_CTRLA_ENABLE;
+//             while (timer->COUNT8.SYNCBUSY.bit.STATUS)
+//               ;
 
-#if (wrPeripheral == PIO_CCL)
-            // CONFIGURE CCL (inverts timer/counter output)
+// #if (wrPeripheral == PIO_CCL)
+//             // CONFIGURE CCL (inverts timer/counter output)
 
-            MCLK->APBCMASK.bit.CCL_ = 1;         // Enable CCL clock
-            CCL->CTRL.bit.ENABLE = 0;            // Disable to config
-            CCL->CTRL.bit.SWRST = 1;             // Reset CCL registers
-            CCL->LUTCTRL[tcNum].bit.ENABLE = 0;  // Disable LUT
-            CCL->LUTCTRL[tcNum].bit.FILTSEL = 0; // No filter
-            CCL->LUTCTRL[tcNum].bit.INSEL0 = 6;  // TC input
-            CCL->LUTCTRL[tcNum].bit.INSEL1 = 0;  // MASK
-            CCL->LUTCTRL[tcNum].bit.INSEL2 = 0;  // MASK
-            CCL->LUTCTRL[tcNum].bit.TRUTH = 1;   // Invert in 0
-            CCL->LUTCTRL[tcNum].bit.ENABLE = 1;  // Enable LUT
-            CCL->CTRL.bit.ENABLE = 1;            // Enable CCL
-#endif
+//             MCLK->APBCMASK.bit.CCL_ = 1;         // Enable CCL clock
+//             CCL->CTRL.bit.ENABLE = 0;            // Disable to config
+//             CCL->CTRL.bit.SWRST = 1;             // Reset CCL registers
+//             CCL->LUTCTRL[tcNum].bit.ENABLE = 0;  // Disable LUT
+//             CCL->LUTCTRL[tcNum].bit.FILTSEL = 0; // No filter
+//             CCL->LUTCTRL[tcNum].bit.INSEL0 = 6;  // TC input
+//             CCL->LUTCTRL[tcNum].bit.INSEL1 = 0;  // MASK
+//             CCL->LUTCTRL[tcNum].bit.INSEL2 = 0;  // MASK
+//             CCL->LUTCTRL[tcNum].bit.TRUTH = 1;   // Invert in 0
+//             CCL->LUTCTRL[tcNum].bit.ENABLE = 1;  // Enable LUT
+//             CCL->CTRL.bit.ENABLE = 1;            // Enable CCL
+// #endif
 
-            // CONFIGURE EVENT SYSTEM
+//             // CONFIGURE EVENT SYSTEM
 
-            // Set up event system clock source from GCLK...
-            // Disable EVSYS, wait for disable
-            GCLK->PCHCTRL[EVSYS_GCLK_ID_0].bit.CHEN = 0;
-            while (GCLK->PCHCTRL[EVSYS_GCLK_ID_0].bit.CHEN)
-              ;
-            pchctrl.bit.GEN = GCLK_PCHCTRL_GEN_GCLK0_Val;
-            pchctrl.bit.CHEN = 1; // Re-enable
-            GCLK->PCHCTRL[EVSYS_GCLK_ID_0].reg = pchctrl.reg;
-            // Wait for it, then enable EVSYS clock
-            while (!GCLK->PCHCTRL[EVSYS_GCLK_ID_0].bit.CHEN)
-              ;
-            MCLK->APBBMASK.bit.EVSYS_ = 1;
+//             // Set up event system clock source from GCLK...
+//             // Disable EVSYS, wait for disable
+//             GCLK->PCHCTRL[EVSYS_GCLK_ID_0].bit.CHEN = 0;
+//             while (GCLK->PCHCTRL[EVSYS_GCLK_ID_0].bit.CHEN)
+//               ;
+//             pchctrl.bit.GEN = GCLK_PCHCTRL_GEN_GCLK0_Val;
+//             pchctrl.bit.CHEN = 1; // Re-enable
+//             GCLK->PCHCTRL[EVSYS_GCLK_ID_0].reg = pchctrl.reg;
+//             // Wait for it, then enable EVSYS clock
+//             while (!GCLK->PCHCTRL[EVSYS_GCLK_ID_0].bit.CHEN)
+//               ;
+//             MCLK->APBBMASK.bit.EVSYS_ = 1;
 
-            // Connect Timer EVU to ch 0
-            EVSYS->USER[tcList[tcNum].evu].reg = 1;
-            // Datasheet recommends single write operation;
-            // reg instead of bit. Also datasheet: PATH bits
-            // must be zero when using async!
-            EVSYS_CHANNEL_Type ev;
-            ev.reg = 0;
-            ev.bit.PATH = 2;                  // Asynchronous
-            ev.bit.EVGEN = 0x22 + dmaChannel; // DMA channel 0+
-            EVSYS->Channel[0].CHANNEL.reg = ev.reg;
+//             // Connect Timer EVU to ch 0
+//             EVSYS->USER[tcList[tcNum].evu].reg = 1;
+//             // Datasheet recommends single write operation;
+//             // reg instead of bit. Also datasheet: PATH bits
+//             // must be zero when using async!
+//             EVSYS_CHANNEL_Type ev;
+//             ev.reg = 0;
+//             ev.bit.PATH = 2;                  // Asynchronous
+//             ev.bit.EVGEN = 0x22 + dmaChannel; // DMA channel 0+
+//             EVSYS->Channel[0].CHANNEL.reg = ev.reg;
 
-            // Initialize descriptor list.
-            for (int d = 0; d < numDescriptors; d++) {
-              // No need to set SRCADDR, DESCADDR or BTCNT --
-              // those are done in the pixel-writing functions.
-              descriptor[d].BTCTRL.bit.VALID = true;
-              // Event strobe on beat xfer:
-              descriptor[d].BTCTRL.bit.EVOSEL = 0x3;
-              descriptor[d].BTCTRL.bit.BLOCKACT = DMA_BLOCK_ACTION_NOACT;
-              descriptor[d].BTCTRL.bit.BEATSIZE =
-                  tft8.wide ? DMA_BEAT_SIZE_HWORD : DMA_BEAT_SIZE_BYTE;
-              descriptor[d].BTCTRL.bit.SRCINC = 1;
-              descriptor[d].BTCTRL.bit.DSTINC = 0;
-              descriptor[d].BTCTRL.bit.STEPSEL = DMA_STEPSEL_SRC;
-              descriptor[d].BTCTRL.bit.STEPSIZE =
-                  DMA_ADDRESS_INCREMENT_STEP_SIZE_1;
-              descriptor[d].DSTADDR.reg = (uint32_t)tft8.writePort;
-            }
-#endif      // __SAMD51
-          } // end parallel-specific DMA setup
+//             // Initialize descriptor list.
+//             for (int d = 0; d < numDescriptors; d++) {
+//               // No need to set SRCADDR, DESCADDR or BTCNT --
+//               // those are done in the pixel-writing functions.
+//               descriptor[d].BTCTRL.bit.VALID = true;
+//               // Event strobe on beat xfer:
+//               descriptor[d].BTCTRL.bit.EVOSEL = 0x3;
+//               descriptor[d].BTCTRL.bit.BLOCKACT = DMA_BLOCK_ACTION_NOACT;
+//               descriptor[d].BTCTRL.bit.BEATSIZE =
+//                   tft8.wide ? DMA_BEAT_SIZE_HWORD : DMA_BEAT_SIZE_BYTE;
+//               descriptor[d].BTCTRL.bit.SRCINC = 1;
+//               descriptor[d].BTCTRL.bit.DSTINC = 0;
+//               descriptor[d].BTCTRL.bit.STEPSEL = DMA_STEPSEL_SRC;
+//               descriptor[d].BTCTRL.bit.STEPSIZE =
+//                   DMA_ADDRESS_INCREMENT_STEP_SIZE_1;
+//               descriptor[d].DSTADDR.reg = (uint32_t)tft8.writePort;
+//             }
+// #endif      // __SAMD51
+//           } // end parallel-specific DMA setup
 
-          lastFillColor = 0x0000;
-          lastFillLen = 0;
-          dma.setCallback(dma_callback);
-          return; // Success!
-                  // else clean up any partial allocation...
-        }         // end descriptor memalign()
-        free(pixelBuf[0]);
-        pixelBuf[0] = pixelBuf[1] = NULL;
-      }         // end pixelBuf malloc()
-                // Don't currently have a descriptor delete function in
-                // ZeroDMA lib, but if we did, it would be called here.
-    }           // end addDescriptor()
-    dma.free(); // Deallocate DMA channel
-  }
-#endif // end USE_SPI_DMA
+//           lastFillColor = 0x0000;
+//           lastFillLen = 0;
+//           dma.setCallback(dma_callback);
+//           return; // Success!
+//                   // else clean up any partial allocation...
+//         }         // end descriptor memalign()
+//         free(pixelBuf[0]);
+//         pixelBuf[0] = pixelBuf[1] = NULL;
+//       }         // end pixelBuf malloc()
+//                 // Don't currently have a descriptor delete function in
+//                 // ZeroDMA lib, but if we did, it would be called here.
+//     }           // end addDescriptor()
+//     dma.free(); // Deallocate DMA channel
+//   }
+// #endif // end USE_SPI_DMA
 }
 
 /*!

@@ -21,6 +21,7 @@
         "display.h": "c",
         "uart.h": "c",
         "__config": "cpp",
-        "serial.h": "c"
+        "serial.h": "c",
+        "cmath": "cpp"
     }
 }

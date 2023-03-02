@@ -81,9 +81,8 @@
 #define MADCTL_BGR 0x08 ///< Blue-Green-Red pixel order
 #define MADCTL_MH 0x04  ///< LCD refresh right to left
 
-Adafruit_ILI9341::Adafruit_ILI9341() : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
-  hwspi = SPI()
-}
+Adafruit_ILI9341::Adafruit_ILI9341(SPI_TypeDef* SPIx)
+    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, SPIx) {}
 
 // clang-format off
 static const uint8_t PROGMEM initcmd[] = {

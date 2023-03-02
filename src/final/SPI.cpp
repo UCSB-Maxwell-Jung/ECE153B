@@ -1,4 +1,5 @@
 #include "SPI.h"
+#include <math.h>
 
 // Note: When the data frame size is 8 bit, "SPIx->DR = byte_data;" works incorrectly. 
 // It mistakenly send two bytes out because SPIx->DR has 16 bits. To solve the program,
@@ -6,10 +7,10 @@
 
 SPI::SPI(SPI_TypeDef* SPIx) : _SPIx(SPIx) {}
 
-void SPI::begin(void) {
+void SPI::begin(uint32_t freq) {
 	if (_SPIx == SPI1) {
 		init_SPI1_GPIO();
-		init_SPI1();
+		init_SPI1(freq);
 	}
 	else if (_SPIx == SPI2) {
 		init_SPI2_GPIO();
@@ -36,13 +37,11 @@ void SPI::receive_byte(uint8_t* b) {
 	*b = *(volatile uint8_t*)(&_SPIx->DR); // read byte from data register
 }
 
-// initialize SPI1 GPIO pins
+// configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI)
 void SPI::init_SPI1_GPIO(void) {
-	uint32_t af_num;
-	uint32_t pin_num;
+	uint8_t af_num;
 
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
-	// configure PB3, PB4, PB5
 
 	// set to alternate function mode (10)
 	// explanation: default is 11, so use mask &~(01) to set second bit to 0
@@ -57,12 +56,9 @@ void SPI::init_SPI1_GPIO(void) {
 
 	// set pin 3, 4, 5 to AF5
 	af_num = 5;
-	pin_num = 3;
-	GPIOB->AFR[0] |= (af_num << (pin_num*4));
-	pin_num = 4;
-	GPIOB->AFR[0] |= (af_num << (pin_num*4));
-	pin_num = 5;
-	GPIOB->AFR[0] |= (af_num << (pin_num*4));
+	GPIOB->AFR[0] |= (af_num << (3*4));
+	GPIOB->AFR[0] |= (af_num << (4*4));
+	GPIOB->AFR[0] |= (af_num << (5*4));
 
 	// set to push-pull (0)
 	GPIOB->OTYPER &= ~(GPIO_OTYPER_OT3 | 
@@ -81,7 +77,7 @@ void SPI::init_SPI1_GPIO(void) {
 }
 
 // initialize SPI1 peripheral as master
-void SPI::init_SPI1(void){
+void SPI::init_SPI1(uint32_t freq){
 	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN; // enable SPI1 clock
 	RCC->APB2RSTR |= RCC_APB2RSTR_SPI1RST; // set, then reset to clear SPI1
 	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST; 
@@ -96,7 +92,16 @@ void SPI::init_SPI1(void){
 	SPI1->CR1 &= ~SPI_CR1_CPOL; // set clock to low polarity (0)
 	SPI1->CR1 &= ~SPI_CR1_CPHA; // set clock to first clock transition (0)
 	SPI1->CR1 &= ~SPI_CR1_BR; // reset baud rate control bits to 000
-	SPI1->CR1 |= (SPI_CR1_BR_1 | SPI_CR1_BR_0); // set to 011 (prescalar value 16)
+
+	// set spi clock prescalar to be the next highest requested freq
+	uint8_t br;
+	br = floor((log(80*1000000.0/freq)/log(2.0))-1);
+	if (br < 0)
+		br = 0;
+	else if (br > 7)
+		br = 7;
+	SPI1->CR1 |= br << 3;
+
 	SPI1->CR1 &= ~SPI_CR1_CRCEN; // disable hardware CRC calculation (0)
 	SPI1->CR1 |= SPI_CR1_MSTR; // set to master (1)
 	SPI1->CR1 |= SPI_CR1_SSM; // enable SSM (software slave management) (1)

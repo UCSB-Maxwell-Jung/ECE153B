@@ -134,7 +134,7 @@ work with ILI9340)
 class Adafruit_ILI9341 : public Adafruit_SPITFT {
 public:
   // constructor
-  Adafruit_ILI9341();
+  Adafruit_ILI9341(SPI_TypeDef* SPIx);
 
   // methods
   void begin(uint32_t freq = 0);
