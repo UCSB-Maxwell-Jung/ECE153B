@@ -121,23 +121,23 @@ void loop(void) {
   //   testText();
   //   delay(1000);
   // }
-  Serial.println("printer working!");
+  // Serial.println("printer working!");
 }
 
-unsigned long testFillScreen() {
-  unsigned long start = micros();
-  tft.fillScreen(ILI9341_BLACK);
-  delay(1);
-  tft.fillScreen(ILI9341_RED);
-  delay(1);
-  tft.fillScreen(ILI9341_GREEN);
-  delay(1);
-  tft.fillScreen(ILI9341_BLUE);
-  delay(1);
-  tft.fillScreen(ILI9341_BLACK);
-  delay(1);
-  return micros() - start;
-}
+// unsigned long testFillScreen() {
+//   unsigned long start = micros();
+//   tft.fillScreen(ILI9341_BLACK);
+//   delay(1);
+//   tft.fillScreen(ILI9341_RED);
+//   delay(1);
+//   tft.fillScreen(ILI9341_GREEN);
+//   delay(1);
+//   tft.fillScreen(ILI9341_BLUE);
+//   delay(1);
+//   tft.fillScreen(ILI9341_BLACK);
+//   delay(1);
+//   return micros() - start;
+// }
 
 // unsigned long testText() {
 //   tft.fillScreen(ILI9341_BLACK);
