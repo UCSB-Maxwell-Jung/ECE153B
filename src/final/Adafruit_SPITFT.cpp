@@ -197,9 +197,13 @@ void Adafruit_SPITFT::initSPI(uint32_t freq, uint8_t spiMode) {
   // Set to High (CS is active low, so High = disabled)
   GPIOA->ODR |= GPIO_ODR_OD3;
 
-  // [TODO] init data/command pin
-  // pinMode(_dc, OUTPUT);
-  // digitalWrite(_dc, HIGH); // Data mode
+  // [TODO] init D/C (data/command) PA10
+  // Enable GPIOA
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+	// Set to Output mode
+	GPIOA->MODER &= ~GPIO_MODER_MODE10_1;
+  // Set to High
+  GPIOA->ODR |= GPIO_ODR_OD10;
 
   hwspi._freq = freq; // Save freq value for later
   hwspi._mode = spiMode; // Save spiMode value for later
