@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <string.h>
+#include <stdlib.h>
 
 #include "Adafruit_GFX.h"
 // #include "glcdfont.c"
@@ -133,18 +134,29 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h) : WIDTH(w), HEIGHT(h) {
 // /**************************************************************************/
 // void Adafruit_GFX::writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 //                              uint16_t color) {
-// #if defined(ESP8266)
-//   yield();
-// #endif
 //   int16_t steep = abs(y1 - y0) > abs(x1 - x0);
 //   if (steep) {
-//     _swap_int16_t(x0, y0);
-//     _swap_int16_t(x1, y1);
+//     uint16_t temp;
+//     // _swap_int16_t(x0, y0);
+//     temp = y0;
+//     y0 = x0;
+//     x0 = temp;
+//     // _swap_int16_t(x1, y1);
+//     temp = y1;
+//     y1 = x1;
+//     x1 = temp;
 //   }
 
 //   if (x0 > x1) {
-//     _swap_int16_t(x0, x1);
-//     _swap_int16_t(y0, y1);
+//     uint16_t temp;
+//     // _swap_int16_t(x0, x1);
+//     temp = x1;
+//     x1 = x0;
+//     x0 = temp;
+//     // _swap_int16_t(y0, y1);
+//     temp = y1;
+//     y1 = y0;
+//     y0 = temp;
 //   }
 
 //   int16_t dx, dy;
@@ -266,9 +278,9 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h) : WIDTH(w), HEIGHT(h) {
 // /**************************************************************************/
 // void Adafruit_GFX::drawFastVLine(int16_t x, int16_t y, int16_t h,
 //                                  uint16_t color) {
-//   startWrite();
+//   // startWrite();
 //   writeLine(x, y, x, y + h - 1, color);
-//   endWrite();
+//   // endWrite();
 // }
 
 // /**************************************************************************/
@@ -288,36 +300,36 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h) : WIDTH(w), HEIGHT(h) {
 //   endWrite();
 // }
 
-// /**************************************************************************/
-// /*!
-//    @brief    Fill a rectangle completely with one color. Update in subclasses if
-//    desired!
-//     @param    x   Top left corner x coordinate
-//     @param    y   Top left corner y coordinate
-//     @param    w   Width in pixels
-//     @param    h   Height in pixels
-//    @param    color 16-bit 5-6-5 Color to fill with
-// */
-// /**************************************************************************/
-// void Adafruit_GFX::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
-//                             uint16_t color) {
-//   startWrite();
-//   for (int16_t i = x; i < x + w; i++) {
-//     writeFastVLine(i, y, h, color);
-//   }
-//   endWrite();
-// }
+/**************************************************************************/
+/*!
+   @brief    Fill a rectangle completely with one color. Update in subclasses if
+   desired!
+    @param    x   Top left corner x coordinate
+    @param    y   Top left corner y coordinate
+    @param    w   Width in pixels
+    @param    h   Height in pixels
+   @param    color 16-bit 5-6-5 Color to fill with
+*/
+/**************************************************************************/
+void Adafruit_GFX::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                            uint16_t color) {
+  // startWrite();
+  // for (int16_t i = x; i < x + w; i++) {
+  //   writeFastVLine(i, y, h, color);
+  // }
+  // endWrite();
+}
 
-// /**************************************************************************/
-// /*!
-//    @brief    Fill the screen completely with one color. Update in subclasses if
-//    desired!
-//     @param    color 16-bit 5-6-5 Color to fill with
-// */
-// /**************************************************************************/
-// void Adafruit_GFX::fillScreen(uint16_t color) {
-//   fillRect(0, 0, _width, _height, color);
-// }
+/**************************************************************************/
+/*!
+   @brief    Fill the screen completely with one color. Update in subclasses if
+   desired!
+    @param    color 16-bit 5-6-5 Color to fill with
+*/
+/**************************************************************************/
+void Adafruit_GFX::fillScreen(uint16_t color) {
+  fillRect(0, 0, _width, _height, color);
+}
 
 // /**************************************************************************/
 // /*!

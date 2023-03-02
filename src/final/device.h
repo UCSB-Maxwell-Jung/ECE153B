@@ -24,7 +24,7 @@
 */
 
 /*
-    CS = chip select = PB10
+    CS = chip select = SPI1 NSS = PA4
     RESET = reset = PA8
     DC = Data / Command = PA10
     SDI(MOSI) = Serial Data In = SPI1 MOSI = PB5

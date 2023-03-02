@@ -146,8 +146,8 @@ public:
       @param  h  Height of area to be drawn, in pixels (MUST be >0 and,
                  added to x, within display bounds at current rotation).
   */
-  // virtual void setAddrWindow(uint16_t x, uint16_t y, uint16_t w,
-  //                            uint16_t h) = 0;
+  virtual void setAddrWindow(uint16_t x, uint16_t y, uint16_t w,
+                             uint16_t h) = 0;
 
   // Remaining functions do not need to be declared in subclasses
   // unless they wish to provide hardware-specific optimizations.
@@ -160,10 +160,6 @@ public:
   // Name is outdated (interface may be parallel) but for compatibility:
   void initSPI(uint32_t freq = 0);
   // void setSPISpeed(uint32_t freq);
-  // Chip select and/or hardware SPI transaction start as needed:
-  void startWrite(void);
-  // Chip deselect and/or hardware SPI transaction end as needed:
-  void endWrite(void);
   void sendCommand(uint8_t commandByte, uint8_t *dataBytes,
                    uint8_t numDataBytes);
   void sendCommand(uint8_t commandByte, const uint8_t *dataBytes = NULL,
@@ -182,18 +178,18 @@ public:
   // void writePixel(int16_t x, int16_t y, uint16_t color);
   // void writePixels(uint16_t *colors, uint32_t len, bool block = true,
   //                  bool bigEndian = false);
-  // void writeColor(uint16_t color, uint32_t len);
+  void writeColor(uint16_t color, uint32_t len);
   // void writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
   //                    uint16_t color);
   // void writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
-  // void writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
+  void writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   // This is a new function, similar to writeFillRect() except that
   // all arguments MUST be onscreen, sorted and clipped. If higher-level
   // primitives can handle their own sorting/clipping, it avoids repeating
   // such operations in the low-level code, making it potentially faster.
   // CALLING THIS WITH UNCLIPPED OR NEGATIVE VALUES COULD BE DISASTROUS.
-  // inline void writeFillRectPreclipped(int16_t x, int16_t y, int16_t w,
-  //                                     int16_t h, uint16_t color);
+  inline void writeFillRectPreclipped(int16_t x, int16_t y, int16_t w,
+                                      int16_t h, uint16_t color);
   // Another new function, companion to the new non-blocking
   // writePixels() variant.
   // void dmaWait(void);
@@ -207,7 +203,7 @@ public:
   // solo -- that is, as graphics primitives in themselves, not invoked by
   // higher-level primitives (which should use the functions above).
   // void drawPixel(int16_t x, int16_t y, uint16_t color);
-  // void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
+  void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
   // void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
   // void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   // A single-pixel push encapsulated in a transaction. I don't think
@@ -224,7 +220,7 @@ public:
 
   // Despite parallel additions, function names kept for compatibility:
   void spiWrite(uint8_t b);          // Write single byte as DATA
-  // void writeCommand(uint8_t cmd);    // Write single byte as COMMAND
+  void writeCommand(uint8_t cmd);    // Write single byte as COMMAND
   uint8_t spiRead(void);             // Read single byte of data
   // void write16(uint16_t w);          // Write 16-bit value as DATA
   // void writeCommand16(uint16_t cmd); // Write 16-bit value as COMMAND
@@ -235,7 +231,7 @@ public:
   // to avoid macro mishaps. Despite the addition of code for a parallel
   // display interface, the names have been kept for backward
   // compatibility (some subclasses may be invoking these):
-  // void SPI_WRITE16(uint16_t w); // Not inline
+  void SPI_WRITE16(uint16_t w); // Not inline
   // void SPI_WRITE32(uint32_t l); // Not inline
   // Old code had both a spiWrite16() function and SPI_WRITE16 macro
   // in addition to the SPI_WRITE32 macro. The latter two have been
@@ -248,41 +244,19 @@ public:
   // them implicitly them while allowing their use in other code:
 
   /*!
-      @brief  Set the chip-select line HIGH. Does NOT check whether CS pin
-              is set (>=0), that should be handled in calling function.
-              Despite function name, this is used even if the display
-              connection is parallel.
-  */
-  void SPI_CS_HIGH(void) {
-    // Set CS (PB10) HIGH
-    GPIOB->ODR |= GPIO_ODR_OD10;
-  }
-
-  /*!
-      @brief  Set the chip-select line LOW. Does NOT check whether CS pin
-              is set (>=0), that should be handled in calling function.
-              Despite function name, this is used even if the display
-              connection is parallel.
-  */
-  void SPI_CS_LOW(void) {
-    // Set CS (PB10) LOW
-    GPIOB->ODR &= ~GPIO_ODR_OD10;
-  }
-
-  /*!
       @brief  Set D/C (PA10) HIGH (data mode).
   */
   void SPI_DC_HIGH(void) {
-    // Set CS (PA10) Low
-    GPIOA->ODR &= ~GPIO_ODR_OD10;
+    // Set CS (PA10) HIGH
+    GPIOA->ODR |= GPIO_ODR_OD10;
   }
 
   /*!
       @brief  Set D/C (PA10) LOW (command mode).
   */
   void SPI_DC_LOW(void) {
-    // Set CS (PA10) High
-    GPIOA->ODR |= GPIO_ODR_OD10;
+    // Set CS (PA10) LOW
+    GPIOA->ODR &= ~GPIO_ODR_OD10;
   }
 
 protected:

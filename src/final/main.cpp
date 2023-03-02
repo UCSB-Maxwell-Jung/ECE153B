@@ -29,6 +29,8 @@
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
 
+unsigned long testFillScreen();
+
 // For the Adafruit shield, these are the default.
 // #define TFT_DC 9
 // #define TFT_CS 10
@@ -50,7 +52,6 @@ void setup() {
   printf("ILI9341 Test!\n");
  
   tft.begin();
-  printf("Initialized TFT Display!\n");
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
@@ -64,9 +65,9 @@ void setup() {
   x = tft.readcommand8(ILI9341_RDSELFDIAG);
   printf("Self Diagnostic: %#x\n", x);
   
-  // printf("Benchmark                Time (microseconds)\n");
+  printf("Benchmark                Time (microseconds)\n");
   // delay(10);
-  // printf("Screen fill              %d\n", testFillScreen());
+  printf("Screen fill              %d\n", testFillScreen());
   // delay(500);
 
   // Serial.print(F("Text                     "));
@@ -122,23 +123,23 @@ void loop(void) {
   //   testText();
   //   delay(1000);
   // }
-  // Serial.println("printer working!");
 }
 
-// unsigned long testFillScreen() {
-//   unsigned long start = micros();
-//   tft.fillScreen(ILI9341_BLACK);
-//   delay(1);
-//   tft.fillScreen(ILI9341_RED);
-//   delay(1);
-//   tft.fillScreen(ILI9341_GREEN);
-//   delay(1);
-//   tft.fillScreen(ILI9341_BLUE);
-//   delay(1);
-//   tft.fillScreen(ILI9341_BLACK);
-//   delay(1);
-//   return micros() - start;
-// }
+unsigned long testFillScreen() {
+  // unsigned long start = micros();
+  tft.fillScreen(ILI9341_BLACK);
+  // delay(1);
+  tft.fillScreen(ILI9341_RED);
+  // delay(1);
+  tft.fillScreen(ILI9341_GREEN);
+  // delay(1);
+  tft.fillScreen(ILI9341_BLUE);
+  // delay(1);
+  tft.fillScreen(ILI9341_BLACK);
+  // delay(1);
+  // return micros() - start;
+  return 0;
+}
 
 // unsigned long testText() {
 //   tft.fillScreen(ILI9341_BLACK);

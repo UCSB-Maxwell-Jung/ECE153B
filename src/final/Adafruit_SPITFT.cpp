@@ -484,28 +484,6 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
 // #endif
 // }
 
-/*!
-    @brief  Call before issuing command(s) or data to display. Performs
-            chip-select (if required) and starts an SPI transaction (if
-            using hardware SPI and transactions are supported). Required
-            for all display types; not an SPI-specific function.
-*/
-void Adafruit_SPITFT::startWrite(void) {
-  // // SPI_BEGIN_TRANSACTION();
-  SPI_CS_LOW();
-}
-
-/*!
-    @brief  Call after issuing command(s) or data to display. Performs
-            chip-deselect (if required) and ends an SPI transaction (if
-            using hardware SPI and transactions are supported). Required
-            for all display types; not an SPI-specific function.
-*/
-void Adafruit_SPITFT::endWrite(void) {
-  SPI_CS_HIGH();
-  // // SPI_END_TRANSACTION();
-}
-
 // // -------------------------------------------------------------------------
 // // Lower-level graphics operations. These functions require a chip-select
 // // and/or SPI transaction around them (via startWrite(), endWrite() above).
@@ -763,198 +741,21 @@ void Adafruit_SPITFT::endWrite(void) {
 // #endif
 // }
 
-// /*!
-//     @brief  Issue a series of pixels, all the same color. Not self-
-//             contained; should follow startWrite() and setAddrWindow() calls.
-//     @param  color  16-bit pixel color in '565' RGB format.
-//     @param  len    Number of pixels to draw.
-// */
-// void Adafruit_SPITFT::writeColor(uint16_t color, uint32_t len) {
+/*!
+    @brief  Issue a series of pixels, all the same color. Not self-
+            contained; should follow startWrite() and setAddrWindow() calls.
+    @param  color  16-bit pixel color in '565' RGB format.
+    @param  len    Number of pixels to draw.
+*/
+void Adafruit_SPITFT::writeColor(uint16_t color, uint32_t len) {
 
-//   if (!len)
-//     return; // Avoid 0-byte transfers
+  if (!len)
+    return; // Avoid 0-byte transfers
 
-//   uint8_t hi = color >> 8, lo = color;
-
-// #if defined(ESP32) // ESP32 has a special SPI pixel-writing function...
-//   if (connection == TFT_HARD_SPI) {
-// #define SPI_MAX_PIXELS_AT_ONCE 32
-// #define TMPBUF_LONGWORDS (SPI_MAX_PIXELS_AT_ONCE + 1) / 2
-// #define TMPBUF_PIXELS (TMPBUF_LONGWORDS * 2)
-//     static uint32_t temp[TMPBUF_LONGWORDS];
-//     uint32_t c32 = color * 0x00010001;
-//     uint16_t bufLen = (len < TMPBUF_PIXELS) ? len : TMPBUF_PIXELS, xferLen,
-//              fillLen;
-//     // Fill temp buffer 32 bits at a time
-//     fillLen = (bufLen + 1) / 2; // Round up to next 32-bit boundary
-//     for (uint32_t t = 0; t < fillLen; t++) {
-//       temp[t] = c32;
-//     }
-//     // Issue pixels in blocks from temp buffer
-//     while (len) {                              // While pixels remain
-//       xferLen = (bufLen < len) ? bufLen : len; // How many this pass?
-//       writePixels((uint16_t *)temp, xferLen);
-//       len -= xferLen;
-//     }
-//     return;
-//   }
-// #elif defined(ARDUINO_NRF52_ADAFRUIT) &&                                       \
-//     defined(NRF52840_XXAA) // Adafruit nRF52840 use SPIM3 DMA at 32Mhz
-//   // at most 2 scan lines
-//   uint32_t const pixbufcount = min(len, ((uint32_t)2 * width()));
-//   uint16_t *pixbuf = (uint16_t *)rtos_malloc(2 * pixbufcount);
-
-//   // use SPI3 DMA if we could allocate buffer, else fall back to writing each
-//   // pixel loop below
-//   if (pixbuf) {
-//     uint16_t const swap_color = __builtin_bswap16(color);
-
-//     // fill buffer with color
-//     for (uint32_t i = 0; i < pixbufcount; i++) {
-//       pixbuf[i] = swap_color;
-//     }
-
-//     while (len) {
-//       uint32_t const count = min(len, pixbufcount);
-//       writePixels(pixbuf, count, true, true);
-//       len -= count;
-//     }
-
-//     rtos_free(pixbuf);
-//     return;
-//   }
-// #else                      // !ESP32
-// #if defined(USE_SPI_DMA) && (defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO))
-//   if (((connection == TFT_HARD_SPI) || (connection == TFT_PARALLEL)) &&
-//       (len >= 16)) { // Don't bother with DMA on short pixel runs
-//     int i, d, numDescriptors;
-//     if (hi == lo) { // If high & low bytes are same...
-//       onePixelBuf = color;
-//       // Can do this with a relatively short descriptor list,
-//       // each transferring a max of 32,767 (not 32,768) pixels.
-//       // This won't run off the end of the allocated descriptor list,
-//       // since we're using much larger chunks per descriptor here.
-//       numDescriptors = (len + 32766) / 32767;
-//       for (d = 0; d < numDescriptors; d++) {
-//         int count = (len < 32767) ? len : 32767;
-//         descriptor[d].SRCADDR.reg = (uint32_t)&onePixelBuf;
-//         descriptor[d].BTCTRL.bit.SRCINC = 0;
-//         descriptor[d].BTCNT.reg = count * 2;
-//         descriptor[d].DESCADDR.reg = (uint32_t)&descriptor[d + 1];
-//         len -= count;
-//       }
-//       descriptor[d - 1].DESCADDR.reg = 0;
-//     } else {
-//       // If high and low bytes are distinct, it's necessary to fill
-//       // a buffer with pixel data (swapping high and low bytes because
-//       // TFT and SAMD are different endianisms) and create a longer
-//       // descriptor list pointing repeatedly to this data. We can do
-//       // this slightly faster working 2 pixels (32 bits) at a time.
-//       uint32_t *pixelPtr = (uint32_t *)pixelBuf[0],
-//                twoPixels = __builtin_bswap16(color) * 0x00010001;
-//       // We can avoid some or all of the buffer-filling if the color
-//       // is the same as last time...
-//       if (color == lastFillColor) {
-//         // If length is longer than prior instance, fill only the
-//         // additional pixels in the buffer and update lastFillLen.
-//         if (len > lastFillLen) {
-//           int fillStart = lastFillLen / 2,
-//               fillEnd = (((len < maxFillLen) ? len : maxFillLen) + 1) / 2;
-//           for (i = fillStart; i < fillEnd; i++)
-//             pixelPtr[i] = twoPixels;
-//           lastFillLen = fillEnd * 2;
-//         } // else do nothing, don't set pixels or change lastFillLen
-//       } else {
-//         int fillEnd = (((len < maxFillLen) ? len : maxFillLen) + 1) / 2;
-//         for (i = 0; i < fillEnd; i++)
-//           pixelPtr[i] = twoPixels;
-//         lastFillLen = fillEnd * 2;
-//         lastFillColor = color;
-//       }
-
-//       numDescriptors = (len + maxFillLen - 1) / maxFillLen;
-//       for (d = 0; d < numDescriptors; d++) {
-//         int pixels = (len < maxFillLen) ? len : maxFillLen, bytes = pixels * 2;
-//         descriptor[d].SRCADDR.reg = (uint32_t)pixelPtr + bytes;
-//         descriptor[d].BTCTRL.bit.SRCINC = 1;
-//         descriptor[d].BTCNT.reg = bytes;
-//         descriptor[d].DESCADDR.reg = (uint32_t)&descriptor[d + 1];
-//         len -= pixels;
-//       }
-//       descriptor[d - 1].DESCADDR.reg = 0;
-//     }
-//     memcpy(dptr, &descriptor[0], sizeof(DmacDescriptor));
-// #if defined(__SAMD51__)
-//     if (connection == TFT_PARALLEL) {
-//       // Switch WR pin to PWM or CCL
-//       pinPeripheral(tft8._wr, wrPeripheral);
-//     }
-// #endif // end __SAMD51__
-
-//     dma_busy = true;
-//     dma.startJob();
-//     if (connection == TFT_PARALLEL)
-//       dma.trigger();
-//     while (dma_busy)
-//       ; // Wait for completion
-//       // Unfortunately blocking is necessary. An earlier version returned
-//       // immediately and checked dma_busy on startWrite() instead, but it
-//       // turns out to be MUCH slower on many graphics operations (as when
-//       // drawing lines, pixel-by-pixel), perhaps because it's a volatile
-//       // type and doesn't cache. Working on this.
-// #if defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO)
-//     if (connection == TFT_HARD_SPI) {
-//       // SAMD51: SPI DMA seems to leave the SPI peripheral in a freaky
-//       // state on completion. Workaround is to explicitly set it back...
-//       // (5/17/2019: apparently SAMD21 too, in certain cases, observed
-//       // with ST7789 display.)
-//       hwspi._spi->setDataMode(hwspi._mode);
-//     } else {
-//       pinPeripheral(tft8._wr, PIO_OUTPUT); // Switch WR back to GPIO
-//     }
-// #endif // end __SAMD51__
-//     return;
-//   }
-// #endif // end USE_SPI_DMA
-// #endif // end !ESP32
-
-//   // All other cases (non-DMA hard SPI, bitbang SPI, parallel)...
-
-//   if (connection == TFT_HARD_SPI) {
-// #if defined(ESP8266)
-//     do {
-//       uint32_t pixelsThisPass = len;
-//       if (pixelsThisPass > 50000)
-//         pixelsThisPass = 50000;
-//       len -= pixelsThisPass;
-//       yield(); // Periodic yield() on long fills
-//       while (pixelsThisPass--) {
-//         hwspi._spi->write(hi);
-//         hwspi._spi->write(lo);
-//       }
-//     } while (len);
-// #elif defined(ARDUINO_ARCH_RP2040)
-//     spi_inst_t *pi_spi = hwspi._spi == &SPI ? spi0 : spi1;
-//     color = __builtin_bswap16(color);
-
-//     while (len--)
-//       spi_write_blocking(pi_spi, (uint8_t *)&color, 2);
-// #else // !ESP8266 && !ARDUINO_ARCH_RP2040
-//     while (len--) {
-// #if defined(__AVR__)
-//       AVR_WRITESPI(hi);
-//       AVR_WRITESPI(lo);
-// #elif defined(ESP32)
-//       hwspi._spi->write(hi);
-//       hwspi._spi->write(lo);
-// #else
-//       hwspi._spi->transfer(hi);
-//       hwspi._spi->transfer(lo);
-// #endif
-//     }
-// #endif // end !ESP8266
-//   }
-// }
+  uint8_t hi = color >> 8, lo = color;
+  hwspi._spi.transfer(hi);
+  hwspi._spi.transfer(lo);
+}
 
 // /*!
 //     @brief  Draw a filled rectangle to the display. Not self-contained;
@@ -1050,68 +851,68 @@ void Adafruit_SPITFT::endWrite(void) {
 //   }
 // }
 
-// /*!
-//     @brief  Draw a vertical line on the display. Performs edge clipping and
-//             rejection. Not self-contained; should follow startWrite().
-//             Typically used by higher-level graphics primitives; user code
-//             shouldn't need to call this and is likely to use the self-
-//             contained drawFastVLine() instead.
-//     @param  x      Horizontal position of first point.
-//     @param  y      Vertical position of first point.
-//     @param  h      Line height in pixels (positive = below first point,
-//                    negative = above first point).
-//     @param  color  16-bit line color in '565' RGB format.
-// */
-// void inline Adafruit_SPITFT::writeFastVLine(int16_t x, int16_t y, int16_t h,
-//                                             uint16_t color) {
-//   if ((x >= 0) && (x < _width) && h) { // X on screen, nonzero height
-//     if (h < 0) {                       // If negative height...
-//       y += h + 1;                      //   Move Y to top edge
-//       h = -h;                          //   Use positive height
-//     }
-//     if (y < _height) { // Not off bottom
-//       int16_t y2 = y + h - 1;
-//       if (y2 >= 0) { // Not off top
-//         // Line partly or fully overlaps screen
-//         if (y < 0) {
-//           y = 0;
-//           h = y2 + 1;
-//         } // Clip top
-//         if (y2 >= _height) {
-//           h = _height - y;
-//         } // Clip bottom
-//         writeFillRectPreclipped(x, y, 1, h, color);
-//       }
-//     }
-//   }
-// }
+/*!
+    @brief  Draw a vertical line on the display. Performs edge clipping and
+            rejection. Not self-contained; should follow startWrite().
+            Typically used by higher-level graphics primitives; user code
+            shouldn't need to call this and is likely to use the self-
+            contained drawFastVLine() instead.
+    @param  x      Horizontal position of first point.
+    @param  y      Vertical position of first point.
+    @param  h      Line height in pixels (positive = below first point,
+                   negative = above first point).
+    @param  color  16-bit line color in '565' RGB format.
+*/
+void inline Adafruit_SPITFT::writeFastVLine(int16_t x, int16_t y, int16_t h,
+                                            uint16_t color) {
+  if ((x >= 0) && (x < _width) && h) { // X on screen, nonzero height
+    if (h < 0) {                       // If negative height...
+      y += h + 1;                      //   Move Y to top edge
+      h = -h;                          //   Use positive height
+    }
+    if (y < _height) { // Not off bottom
+      int16_t y2 = y + h - 1;
+      if (y2 >= 0) { // Not off top
+        // Line partly or fully overlaps screen
+        if (y < 0) {
+          y = 0;
+          h = y2 + 1;
+        } // Clip top
+        if (y2 >= _height) {
+          h = _height - y;
+        } // Clip bottom
+        writeFillRectPreclipped(x, y, 1, h, color);
+      }
+    }
+  }
+}
 
-// /*!
-//     @brief  A lower-level version of writeFillRect(). This version requires
-//             all inputs are in-bounds, that width and height are positive,
-//             and no part extends offscreen. NO EDGE CLIPPING OR REJECTION IS
-//             PERFORMED. If higher-level graphics primitives are written to
-//             handle their own clipping earlier in the drawing process, this
-//             can avoid unnecessary function calls and repeated clipping
-//             operations in the lower-level functions.
-//     @param  x      Horizontal position of first corner. MUST BE WITHIN
-//                    SCREEN BOUNDS.
-//     @param  y      Vertical position of first corner. MUST BE WITHIN SCREEN
-//                    BOUNDS.
-//     @param  w      Rectangle width in pixels. MUST BE POSITIVE AND NOT
-//                    EXTEND OFF SCREEN.
-//     @param  h      Rectangle height in pixels. MUST BE POSITIVE AND NOT
-//                    EXTEND OFF SCREEN.
-//     @param  color  16-bit fill color in '565' RGB format.
-//     @note   This is a new function, no graphics primitives besides rects
-//             and horizontal/vertical lines are written to best use this yet.
-// */
-// inline void Adafruit_SPITFT::writeFillRectPreclipped(int16_t x, int16_t y,
-//                                                      int16_t w, int16_t h,
-//                                                      uint16_t color) {
-//   setAddrWindow(x, y, w, h);
-//   writeColor(color, (uint32_t)w * h);
-// }
+/*!
+    @brief  A lower-level version of writeFillRect(). This version requires
+            all inputs are in-bounds, that width and height are positive,
+            and no part extends offscreen. NO EDGE CLIPPING OR REJECTION IS
+            PERFORMED. If higher-level graphics primitives are written to
+            handle their own clipping earlier in the drawing process, this
+            can avoid unnecessary function calls and repeated clipping
+            operations in the lower-level functions.
+    @param  x      Horizontal position of first corner. MUST BE WITHIN
+                   SCREEN BOUNDS.
+    @param  y      Vertical position of first corner. MUST BE WITHIN SCREEN
+                   BOUNDS.
+    @param  w      Rectangle width in pixels. MUST BE POSITIVE AND NOT
+                   EXTEND OFF SCREEN.
+    @param  h      Rectangle height in pixels. MUST BE POSITIVE AND NOT
+                   EXTEND OFF SCREEN.
+    @param  color  16-bit fill color in '565' RGB format.
+    @note   This is a new function, no graphics primitives besides rects
+            and horizontal/vertical lines are written to best use this yet.
+*/
+inline void Adafruit_SPITFT::writeFillRectPreclipped(int16_t x, int16_t y,
+                                                     int16_t w, int16_t h,
+                                                     uint16_t color) {
+  setAddrWindow(x, y, w, h);
+  writeColor(color, (uint32_t)w * h);
+}
 
 // // -------------------------------------------------------------------------
 // // Ever-so-slightly higher-level graphics operations. Similar to the 'write'
@@ -1141,66 +942,66 @@ void Adafruit_SPITFT::endWrite(void) {
 //   }
 // }
 
-// /*!
-//     @brief  Draw a filled rectangle to the display. Self-contained and
-//             provides its own transaction as needed (see writeFillRect() or
-//             writeFillRectPreclipped() for lower-level variants). Edge
-//             clipping and rejection is performed here.
-//     @param  x      Horizontal position of first corner.
-//     @param  y      Vertical position of first corner.
-//     @param  w      Rectangle width in pixels (positive = right of first
-//                    corner, negative = left of first corner).
-//     @param  h      Rectangle height in pixels (positive = below first
-//                    corner, negative = above first corner).
-//     @param  color  16-bit fill color in '565' RGB format.
-//     @note   This repeats the writeFillRect() function almost in its entirety,
-//             with the addition of a transaction start/end. It's done this way
-//             (rather than starting the transaction and calling writeFillRect()
-//             to handle clipping and so forth) so that the transaction isn't
-//             performed at all if the rectangle is rejected. It's really not
-//             that much code.
-// */
-// void Adafruit_SPITFT::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
-//                                uint16_t color) {
-//   if (w && h) {   // Nonzero width and height?
-//     if (w < 0) {  // If negative width...
-//       x += w + 1; //   Move X to left edge
-//       w = -w;     //   Use positive width
-//     }
-//     if (x < _width) { // Not off right
-//       if (h < 0) {    // If negative height...
-//         y += h + 1;   //   Move Y to top edge
-//         h = -h;       //   Use positive height
-//       }
-//       if (y < _height) { // Not off bottom
-//         int16_t x2 = x + w - 1;
-//         if (x2 >= 0) { // Not off left
-//           int16_t y2 = y + h - 1;
-//           if (y2 >= 0) { // Not off top
-//             // Rectangle partly or fully overlaps screen
-//             if (x < 0) {
-//               x = 0;
-//               w = x2 + 1;
-//             } // Clip left
-//             if (y < 0) {
-//               y = 0;
-//               h = y2 + 1;
-//             } // Clip top
-//             if (x2 >= _width) {
-//               w = _width - x;
-//             } // Clip right
-//             if (y2 >= _height) {
-//               h = _height - y;
-//             } // Clip bottom
-//             startWrite();
-//             writeFillRectPreclipped(x, y, w, h, color);
-//             endWrite();
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
+/*!
+    @brief  Draw a filled rectangle to the display. Self-contained and
+            provides its own transaction as needed (see writeFillRect() or
+            writeFillRectPreclipped() for lower-level variants). Edge
+            clipping and rejection is performed here.
+    @param  x      Horizontal position of first corner.
+    @param  y      Vertical position of first corner.
+    @param  w      Rectangle width in pixels (positive = right of first
+                   corner, negative = left of first corner).
+    @param  h      Rectangle height in pixels (positive = below first
+                   corner, negative = above first corner).
+    @param  color  16-bit fill color in '565' RGB format.
+    @note   This repeats the writeFillRect() function almost in its entirety,
+            with the addition of a transaction start/end. It's done this way
+            (rather than starting the transaction and calling writeFillRect()
+            to handle clipping and so forth) so that the transaction isn't
+            performed at all if the rectangle is rejected. It's really not
+            that much code.
+*/
+void Adafruit_SPITFT::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                               uint16_t color) {
+  if (w && h) {   // Nonzero width and height?
+    if (w < 0) {  // If negative width...
+      x += w + 1; //   Move X to left edge
+      w = -w;     //   Use positive width
+    }
+    if (x < _width) { // Not off right
+      if (h < 0) {    // If negative height...
+        y += h + 1;   //   Move Y to top edge
+        h = -h;       //   Use positive height
+      }
+      if (y < _height) { // Not off bottom
+        int16_t x2 = x + w - 1;
+        if (x2 >= 0) { // Not off left
+          int16_t y2 = y + h - 1;
+          if (y2 >= 0) { // Not off top
+            // Rectangle partly or fully overlaps screen
+            if (x < 0) {
+              x = 0;
+              w = x2 + 1;
+            } // Clip left
+            if (y < 0) {
+              y = 0;
+              h = y2 + 1;
+            } // Clip top
+            if (x2 >= _width) {
+              w = _width - x;
+            } // Clip right
+            if (y2 >= _height) {
+              h = _height - y;
+            } // Clip bottom
+            // startWrite();
+            writeFillRectPreclipped(x, y, w, h, color);
+            // endWrite();
+          }
+        }
+      }
+    }
+  }
+}
 
 // /*!
 //     @brief  Draw a horizontal line on the display. Self-contained and
@@ -1388,20 +1189,13 @@ data
 */
 void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
-  // // SPI_BEGIN_TRANSACTION();
-  SPI_CS_LOW();
-
   SPI_DC_LOW();          // Command mode
   spiWrite(commandByte); // Send the command byte
-
   SPI_DC_HIGH();
   for (int i = 0; i < numDataBytes; i++) {
     spiWrite(*dataBytes); // Send the data bytes
     dataBytes++;
   }
-
-  SPI_CS_HIGH();
-  // // SPI_END_TRANSACTION();
 }
 
 /*!
@@ -1413,9 +1207,6 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
  */
 void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
-  // SPI_BEGIN_TRANSACTION();
-  SPI_CS_LOW();
-
   SPI_DC_LOW();          // Command mode
   spiWrite(commandByte); // Send the command byte
 
@@ -1423,9 +1214,6 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
   for (int i = 0; i < numDataBytes; i++) {
     spiWrite(*(dataBytes++));
   }
-
-  SPI_CS_HIGH();
-  // SPI_END_TRANSACTION();
 }
 
 // /*!
@@ -1475,14 +1263,12 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
 /**************************************************************************/
 uint8_t Adafruit_SPITFT::readcommand8(uint8_t commandByte, uint8_t index) {
   uint8_t result;
-  startWrite();
   SPI_DC_LOW(); // Command mode
   spiWrite(commandByte);
   SPI_DC_HIGH(); // Data mode
   do {
     result = spiRead();
   } while (index--); // Discard bytes up to index'th
-  endWrite();
   return result;
 }
 
@@ -1583,19 +1369,19 @@ void Adafruit_SPITFT::spiWrite(uint8_t b) {
   hwspi._spi.transfer(b);
 }
 
-// /*!
-//     @brief  Write a single command byte to the display. Chip-select and
-//             transaction must have been previously set -- this ONLY sets
-//             the device to COMMAND mode, issues the byte and then restores
-//             DATA mode. There is no corresponding explicit writeData()
-//             function -- just use spiWrite().
-//     @param  cmd  8-bit command to write.
-// */
-// void Adafruit_SPITFT::writeCommand(uint8_t cmd) {
-//   SPI_DC_LOW();
-//   spiWrite(cmd);
-//   SPI_DC_HIGH();
-// }
+/*!
+    @brief  Write a single command byte to the display. Chip-select and
+            transaction must have been previously set -- this ONLY sets
+            the device to COMMAND mode, issues the byte and then restores
+            DATA mode. There is no corresponding explicit writeData()
+            function -- just use spiWrite().
+    @param  cmd  8-bit command to write.
+*/
+void Adafruit_SPITFT::writeCommand(uint8_t cmd) {
+  SPI_DC_LOW();
+  spiWrite(cmd);
+  SPI_DC_HIGH();
+}
 
 /*!
     @brief   Read a single 8-bit value from the display. Chip-select and
@@ -1610,7 +1396,7 @@ void Adafruit_SPITFT::spiWrite(uint8_t b) {
 uint8_t Adafruit_SPITFT::spiRead(void) {
   // uint8_t b = 0;
   // uint16_t w = 0;
-  hwspi._spi.transfer((uint8_t)0);
+  return hwspi._spi.transfer((uint8_t)0);
 }
 
 // /*!
@@ -1796,59 +1582,20 @@ uint8_t Adafruit_SPITFT::spiRead(void) {
 // #endif // end !USE_FAST_PINIO
 // }
 
-// /*!
-//     @brief  Issue a single 16-bit value to the display. Chip-select,
-//             transaction and data/command selection must have been
-//             previously set -- this ONLY issues the word. Despite the name,
-//             this function is used even if display connection is parallel;
-//             name was maintaned for backward compatibility. Naming is also
-//             not consistent with the 8-bit version, spiWrite(). Sorry about
-//             that. Again, staying compatible with outside code.
-//     @param  w  16-bit value to write.
-// */
-// void Adafruit_SPITFT::SPI_WRITE16(uint16_t w) {
-//   if (connection == TFT_HARD_SPI) {
-// #if defined(__AVR__)
-//     AVR_WRITESPI(w >> 8);
-//     AVR_WRITESPI(w);
-// #elif defined(ESP8266) || defined(ESP32)
-//     hwspi._spi->write16(w);
-// #elif defined(ARDUINO_ARCH_RP2040)
-//     spi_inst_t *pi_spi = hwspi._spi == &SPI ? spi0 : spi1;
-//     w = __builtin_bswap16(w);
-//     spi_write_blocking(pi_spi, (uint8_t *)&w, 2);
-// #else
-//     // MSB, LSB because TFTs are generally big-endian
-//     hwspi._spi->transfer(w >> 8);
-//     hwspi._spi->transfer(w);
-// #endif
-//   } else if (connection == TFT_SOFT_SPI) {
-//     for (uint8_t bit = 0; bit < 16; bit++) {
-//       if (w & 0x8000)
-//         SPI_MOSI_HIGH();
-//       else
-//         SPI_MOSI_LOW();
-//       SPI_SCK_HIGH();
-//       SPI_SCK_LOW();
-//       w <<= 1;
-//     }
-//   } else { // TFT_PARALLEL
-// #if defined(__AVR__)
-//     *tft8.writePort = w >> 8;
-//     TFT_WR_STROBE();
-//     *tft8.writePort = w;
-// #elif defined(USE_FAST_PINIO)
-//     if (!tft8.wide) {
-//       *tft8.writePort = w >> 8;
-//       TFT_WR_STROBE();
-//       *tft8.writePort = w;
-//     } else {
-//       *(volatile uint16_t *)tft8.writePort = w;
-//     }
-// #endif
-//     TFT_WR_STROBE();
-//   }
-// }
+/*!
+    @brief  Issue a single 16-bit value to the display. Chip-select,
+            transaction and data/command selection must have been
+            previously set -- this ONLY issues the word. Despite the name,
+            this function is used even if display connection is parallel;
+            name was maintaned for backward compatibility. Naming is also
+            not consistent with the 8-bit version, spiWrite(). Sorry about
+            that. Again, staying compatible with outside code.
+    @param  w  16-bit value to write.
+*/
+void Adafruit_SPITFT::SPI_WRITE16(uint16_t w) {
+  hwspi._spi.transfer(w >> 8);
+  hwspi._spi.transfer(w);
+}
 
 // /*!
 //     @brief  Issue a single 32-bit value to the display. Chip-select,
