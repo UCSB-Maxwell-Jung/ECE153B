@@ -18,13 +18,19 @@
 #define DEV_DISPLAY SPI1
 
 /*
-    CS = chip select = PA3
-    RESET = reset = PA2
-    DC = Data / Command = PA10
-    SDI(MOSI) = Serial Data In = SPI1 MOSI
-    SCK = Serial Clock = SPI1 SCK
+    termite
+    UART2_TX = PA2
+    UART2_RX = PA3
+*/
 
-    SDO = Serial Data Out = NC (connect to SPI1 MISO for debugging)
+/*
+    CS = chip select = PB10
+    RESET = reset = PA8
+    DC = Data / Command = PA10
+    SDI(MOSI) = Serial Data In = SPI1 MOSI = PB5
+    SCK = Serial Clock = SPI1 SCK = PB3
+
+    SDO(MISO) = Serial Data Out = NC (connect to SPI1 MISO for debugging) = PB4
 */
 
 #endif

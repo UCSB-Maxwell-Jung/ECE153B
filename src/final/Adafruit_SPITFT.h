@@ -254,8 +254,8 @@ public:
               connection is parallel.
   */
   void SPI_CS_HIGH(void) {
-    // Set CS (PA3) High
-    GPIOA->ODR |= GPIO_ODR_OD3;
+    // Set CS (PB10) HIGH
+    GPIOB->ODR |= GPIO_ODR_OD10;
   }
 
   /*!
@@ -265,12 +265,12 @@ public:
               connection is parallel.
   */
   void SPI_CS_LOW(void) {
-    // Set CS (PA3) Low
-    GPIOA->ODR &= ~GPIO_ODR_OD3;
+    // Set CS (PB10) LOW
+    GPIOB->ODR &= ~GPIO_ODR_OD10;
   }
 
   /*!
-      @brief  Set the data/command line HIGH (data mode).
+      @brief  Set D/C (PA10) HIGH (data mode).
   */
   void SPI_DC_HIGH(void) {
     // Set CS (PA10) Low
@@ -278,7 +278,7 @@ public:
   }
 
   /*!
-      @brief  Set the data/command line LOW (command mode).
+      @brief  Set D/C (PA10) LOW (command mode).
   */
   void SPI_DC_LOW(void) {
     // Set CS (PA10) High

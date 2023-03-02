@@ -46,7 +46,7 @@
  *
  */
 
-#include "SysTimer.h"
+// #include "SysTimer.h"
 
 #include "Adafruit_ILI9341.h"
 // // #ifndef ARDUINO_STM32_FEATHER
@@ -139,7 +139,8 @@ void Adafruit_ILI9341::begin(uint32_t freq) {
     sendCommand(cmd, addr, numArgs);
     addr += numArgs;
     if (x & 0x80)
-      delay(150);
+      // delay(150);
+      for (int i = 0; i < 1000; i++);
   }
 
   _width = ILI9341_TFTWIDTH;

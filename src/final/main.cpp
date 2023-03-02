@@ -19,7 +19,7 @@
 
 // custom library
 #include "LED.h"
-#include "SysTimer.h"
+// #include "SysTimer.h"
 #include "SysClock.h"
 #include "UART.h"
 #include "SPI.h"
@@ -41,7 +41,7 @@ UART Serial = UART(DEV_PRINTER);
 
 void setup() {
   init_system_clock();   // System Clock = 80 MHz
-	init_SysTick();
+	// init_SysTick();
 	init_LED();
 
   // initialize Serial communication interface
@@ -50,6 +50,7 @@ void setup() {
   printf("ILI9341 Test!\n");
  
   tft.begin();
+  printf("Initialized TFT Display!\n");
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);

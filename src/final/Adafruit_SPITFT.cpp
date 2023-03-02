@@ -33,7 +33,7 @@
 
 // #if !defined(__AVR_ATtiny85__) // Not for ATtiny, at all
 
-#include "SysTimer.h"
+// #include "SysTimer.h"
 
 #include "Adafruit_SPITFT.h"
 
@@ -191,13 +191,13 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
 
   // Init basic control pins common to all connection types
 
-  // init CS (chip select) PA3
-  // Enable GPIOA
-	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+  // init CS (chip select) PB10
+  // Enable GPIOB
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;
 	// Set to Output mode
-	GPIOA->MODER &= ~GPIO_MODER_MODE3_1;
+	GPIOB->MODER &= ~GPIO_MODER_MODE10_1;
   // Set to High (CS is active low, so High = disabled)
-  GPIOA->ODR |= GPIO_ODR_OD3;
+  GPIOB->ODR |= GPIO_ODR_OD10;
 
   // init D/C (data/command) PA10
   // Enable GPIOA
@@ -212,20 +212,23 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
   // hwspi._mode = spiMode; // Save spiMode value for later
   hwspi._spi.begin(freq);
 
-  // init RST (reset) PA2
+  // init RST (reset) PA8
   // Enable GPIOA
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
 	// Set to Output mode
-	GPIOA->MODER &= ~GPIO_MODER_MODE2_1;
+	GPIOA->MODER &= ~GPIO_MODER_MODE8_1;
   // Set to High
-  GPIOA->ODR |= GPIO_ODR_OD2;
-  delay(100);
+  GPIOA->ODR |= GPIO_ODR_OD8;
+  // delay(100);
+  for (int i = 0; i < 10000; i++);
   // Set to Low
   GPIOA->ODR &= ~GPIO_ODR_OD2;
-  delay(100);
+  // delay(100);
+  for (int i = 0; i < 10000; i++);
   // Set to High
   GPIOA->ODR |= GPIO_ODR_OD2;
-  delay(200);
+  // delay(200);
+  for (int i = 0; i < 10000; i++);
 
 // #if defined(USE_SPI_DMA) && (defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO))
 //   if (((connection == TFT_HARD_SPI) || (connection == TFT_PARALLEL)) &&
