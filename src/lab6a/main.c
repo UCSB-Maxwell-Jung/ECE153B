@@ -85,7 +85,7 @@ void set_output(uint8_t ABab) {
 	GPIOC->ODR |= value; // write new signal
 }
 
-#define DELAY 60000	// delay between steps of the sequences
+#define DELAY 1000	// delay between steps of the sequences
 
 void Full_Stepping_Clockwise_Sequence(void){
 	uint8_t ABab;
@@ -100,7 +100,7 @@ void Full_Stepping_Clockwise_Sequence(void){
 void Full_Stepping_CounterClockwise_Sequence(void){
 	uint8_t ABab;
 	for (int angle = 0; angle < 8; angle+=2) { // 0, 2, 4, 6
-		ABab = angle_to_digital(angle&8);
+		ABab = angle_to_digital(angle%8);
 		set_output(ABab);
 		
 		for (int delay = 0; delay < DELAY; delay++); // delay
@@ -120,7 +120,7 @@ void Half_Stepping_Clockwise_Sequence(void){
 void Half_Stepping_CounterClockwise_Sequence(void){
 	uint8_t ABab;
 	for (int angle = 0; angle < 8; angle+=1) { // 0, 1, 2, 3, 4, 5, 6, 7
-		ABab = angle_to_digital(angle&8);
+		ABab = angle_to_digital(angle%8);
 		set_output(ABab);
 		
 		for (int delay = 0; delay < DELAY; delay++); // delay
@@ -136,6 +136,8 @@ int main(void){
 	for (int i = 0; i < repeats; i++) {
 		Full_Stepping_CounterClockwise_Sequence();
 	}
+
+	for (int i = 0; i < 10*DELAY; i++);
 
 	// Rotate 360 degrees clockwise using half-stepping
 	for (int i = 0; i < repeats; i++) {
