@@ -486,9 +486,8 @@ void Adafruit_SPITFT::setSPISpeed(uint32_t freq) {
             for all display types; not an SPI-specific function.
 */
 void Adafruit_SPITFT::startWrite(void) {
-  SPI_BEGIN_TRANSACTION();
-  if (_cs >= 0)
-    SPI_CS_LOW();
+  // SPI_BEGIN_TRANSACTION();
+  SPI_CS_LOW();
 }
 
 /*!
@@ -498,9 +497,8 @@ void Adafruit_SPITFT::startWrite(void) {
             for all display types; not an SPI-specific function.
 */
 void Adafruit_SPITFT::endWrite(void) {
-  if (_cs >= 0)
-    SPI_CS_HIGH();
-  SPI_END_TRANSACTION();
+  SPI_CS_HIGH();
+  // SPI_END_TRANSACTION();
 }
 
 // -------------------------------------------------------------------------
@@ -1476,7 +1474,7 @@ data
 */
 void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
-  SPI_BEGIN_TRANSACTION();
+  // SPI_BEGIN_TRANSACTION();
   SPI_CS_LOW();
 
   SPI_DC_LOW();          // Command mode
@@ -1484,18 +1482,12 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
 
   SPI_DC_HIGH();
   for (int i = 0; i < numDataBytes; i++) {
-    if ((connection == TFT_PARALLEL) && tft8.wide) {
-      SPI_WRITE16(*(uint16_t *)dataBytes);
-      dataBytes += 2;
-    } else {
-      spiWrite(*dataBytes); // Send the data bytes
-      dataBytes++;
-    }
+    spiWrite(*dataBytes); // Send the data bytes
+    dataBytes++;
   }
 
-  if (_cs >= 0)
-    SPI_CS_HIGH();
-  SPI_END_TRANSACTION();
+  SPI_CS_HIGH();
+  // SPI_END_TRANSACTION();
 }
 
 /*!
@@ -1713,57 +1705,7 @@ void Adafruit_SPITFT::writeCommand(uint8_t cmd) {
 uint8_t Adafruit_SPITFT::spiRead(void) {
   uint8_t b = 0;
   uint16_t w = 0;
-  if (connection == TFT_HARD_SPI) {
-    return hwspi._spi->transfer((uint8_t)0);
-  } else if (connection == TFT_SOFT_SPI) {
-    if (swspi._miso >= 0) {
-      for (uint8_t i = 0; i < 8; i++) {
-        SPI_SCK_HIGH();
-        b <<= 1;
-        if (SPI_MISO_READ())
-          b++;
-        SPI_SCK_LOW();
-      }
-    }
-    return b;
-  } else { // TFT_PARALLEL
-    if (tft8._rd >= 0) {
-#if defined(USE_FAST_PINIO)
-      TFT_RD_LOW(); // Read line LOW
-#if defined(__AVR__)
-      *tft8.portDir = 0x00; // Set port to input state
-      w = *tft8.readPort;   // Read value from port
-      *tft8.portDir = 0xFF; // Restore port to output
-#else                       // !__AVR__
-      if (!tft8.wide) {                             // 8-bit TFT connection
-#if defined(HAS_PORT_SET_CLR)
-        *tft8.dirClr = 0xFF;                        // Set port to input state
-        w = *tft8.readPort;                         // Read value from port
-        *tft8.dirSet = 0xFF;                        // Restore port to output
-#else  // !HAS_PORT_SET_CLR
-        *tft8.portDir = 0x00;                        // Set port to input state
-        w = *tft8.readPort;                          // Read value from port
-        *tft8.portDir = 0xFF;                        // Restore port to output
-#endif // end HAS_PORT_SET_CLR
-      } else {                                      // 16-bit TFT connection
-#if defined(HAS_PORT_SET_CLR)
-        *(volatile uint16_t *)tft8.dirClr = 0xFFFF; // Input state
-        w = *(volatile uint16_t *)tft8.readPort;    // 16-bit read
-        *(volatile uint16_t *)tft8.dirSet = 0xFFFF; // Output state
-#else  // !HAS_PORT_SET_CLR
-        *(volatile uint16_t *)tft8.portDir = 0x0000; // Input state
-        w = *(volatile uint16_t *)tft8.readPort;     // 16-bit read
-        *(volatile uint16_t *)tft8.portDir = 0xFFFF; // Output state
-#endif // end !HAS_PORT_SET_CLR
-      }
-      TFT_RD_HIGH();                                 // Read line HIGH
-#endif // end !__AVR__
-#else  // !USE_FAST_PINIO
-      w = 0; // Parallel TFT is NOT SUPPORTED without USE_FAST_PINIO
-#endif // end !USE_FAST_PINIO
-    }
-    return w;
-  }
+  hwspi._spi->transfer((uint8_t)0);
 }
 
 /*!

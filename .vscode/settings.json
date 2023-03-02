@@ -22,6 +22,8 @@
         "uart.h": "c",
         "__config": "cpp",
         "serial.h": "c",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "initializer_list": "cpp",
+        "xutility": "cpp"
     }
 }

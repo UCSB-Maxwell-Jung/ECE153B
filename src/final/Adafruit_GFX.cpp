@@ -31,13 +31,15 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdlib.h>
+
 #include "Adafruit_GFX.h"
 #include "glcdfont.c"
-#ifdef __AVR__
-#include <avr/pgmspace.h>
-#elif defined(ESP8266) || defined(ESP32)
-#include <pgmspace.h>
-#endif
+// #ifdef __AVR__
+// #include <avr/pgmspace.h>
+// #elif defined(ESP8266) || defined(ESP32)
+// #include <pgmspace.h>
+// #endif
 
 // Many (but maybe not all) non-AVR board installs define macros
 // for compatibility with existing PROGMEM-reading AVR code.

@@ -47,12 +47,12 @@
  */
 
 #include "Adafruit_ILI9341.h"
-#ifndef ARDUINO_STM32_FEATHER
-#include "pins_arduino.h"
-#ifndef RASPI
-#include "wiring_private.h"
-#endif
-#endif
+// #ifndef ARDUINO_STM32_FEATHER
+// #include "pins_arduino.h"
+// #ifndef RASPI
+// #include "wiring_private.h"
+// #endif
+// #endif
 #include <limits.h>
 
 #if defined(ARDUINO_ARCH_ARC32) || defined(ARDUINO_MAXIM)

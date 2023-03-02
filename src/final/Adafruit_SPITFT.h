@@ -254,19 +254,8 @@ public:
               connection is parallel.
   */
   void SPI_CS_HIGH(void) {
-#if defined(USE_FAST_PINIO)
-#if defined(HAS_PORT_SET_CLR)
-#if defined(KINETISK)
-    *csPortSet = 1;
-#else  // !KINETISK
-    *csPortSet = csPinMask;
-#endif // end !KINETISK
-#else  // !HAS_PORT_SET_CLR
-    *csPort |= csPinMaskSet;
-#endif // end !HAS_PORT_SET_CLR
-#else  // !USE_FAST_PINIO
-    digitalWrite(_cs, HIGH);
-#endif // end !USE_FAST_PINIO
+    // Set CS (PA3) High
+    GPIOA->ODR |= GPIO_ODR_OD3;
   }
 
   /*!
@@ -276,57 +265,24 @@ public:
               connection is parallel.
   */
   void SPI_CS_LOW(void) {
-#if defined(USE_FAST_PINIO)
-#if defined(HAS_PORT_SET_CLR)
-#if defined(KINETISK)
-    *csPortClr = 1;
-#else  // !KINETISK
-    *csPortClr = csPinMask;
-#endif // end !KINETISK
-#else  // !HAS_PORT_SET_CLR
-    *csPort &= csPinMaskClr;
-#endif // end !HAS_PORT_SET_CLR
-#else  // !USE_FAST_PINIO
-    digitalWrite(_cs, LOW);
-#endif // end !USE_FAST_PINIO
+    // Set CS (PA3) Low
+    GPIOA->ODR &= ~GPIO_ODR_OD3;
   }
 
   /*!
       @brief  Set the data/command line HIGH (data mode).
   */
   void SPI_DC_HIGH(void) {
-#if defined(USE_FAST_PINIO)
-#if defined(HAS_PORT_SET_CLR)
-#if defined(KINETISK)
-    *dcPortSet = 1;
-#else  // !KINETISK
-    *dcPortSet = dcPinMask;
-#endif // end !KINETISK
-#else  // !HAS_PORT_SET_CLR
-    *dcPort |= dcPinMaskSet;
-#endif // end !HAS_PORT_SET_CLR
-#else  // !USE_FAST_PINIO
-    digitalWrite(_dc, HIGH);
-#endif // end !USE_FAST_PINIO
+    // Set CS (PA10) Low
+    GPIOA->ODR &= ~GPIO_ODR_OD10;
   }
 
   /*!
       @brief  Set the data/command line LOW (command mode).
   */
   void SPI_DC_LOW(void) {
-#if defined(USE_FAST_PINIO)
-#if defined(HAS_PORT_SET_CLR)
-#if defined(KINETISK)
-    *dcPortClr = 1;
-#else  // !KINETISK
-    *dcPortClr = dcPinMask;
-#endif // end !KINETISK
-#else  // !HAS_PORT_SET_CLR
-    *dcPort &= dcPinMaskClr;
-#endif // end !HAS_PORT_SET_CLR
-#else  // !USE_FAST_PINIO
-    digitalWrite(_dc, LOW);
-#endif // end !USE_FAST_PINIO
+    // Set CS (PA10) High
+    GPIOA->ODR |= GPIO_ODR_OD10;
   }
 
 protected:
