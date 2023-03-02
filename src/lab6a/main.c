@@ -132,15 +132,19 @@ int main(void){
 
 	uint32_t repeats = 512;
 
-	// Rotate 360 degrees counter-clockwise using full-stepping
-	for (int i = 0; i < repeats; i++) {
-		Full_Stepping_CounterClockwise_Sequence();
-	}
+	while (1) {
+		// Rotate 360 degrees counter-clockwise using full-stepping
+		for (int i = 0; i < repeats; i++) {
+			Full_Stepping_CounterClockwise_Sequence();
+		}
 
-	for (int i = 0; i < 10*DELAY; i++);
+		for (int i = 0; i < 10*DELAY; i++);
 
-	// Rotate 360 degrees clockwise using half-stepping
-	for (int i = 0; i < repeats; i++) {
-		Half_Stepping_Clockwise_Sequence();
+		// Rotate 360 degrees clockwise using half-stepping
+		for (int i = 0; i < repeats; i++) {
+			Half_Stepping_Clockwise_Sequence();
+		}
+
+		for (int i = 0; i < 10*DELAY; i++);
 	}
 }
