@@ -100,7 +100,7 @@ void Servo_Move_Left_90_Degree(){
 		duty cycle = (1ms)/(.02) = 0.05 = 5%
 		thus CCR = .05 * 2000 = 100 = 0x64
 	*/
-	TIM5->CCR1 = 100;
+	TIM5->CCR1 = 50;
 }
 
 // function to move the servo to 0 degrees
@@ -124,9 +124,8 @@ void Servo_Move_Right_90_Degree(){
 		duty cycle = (2ms)/(.02) = 0.1 = 10%
 		thus CCR = 0.1 * 2000 = 200 = 0xC8
 	*/
-	TIM5->CCR1 = 200;
+	TIM5->CCR1 = 250;
 }
-
 
 int main() {
 	int i;
