@@ -26,17 +26,17 @@
 #include "device.h"
 
 // graphics and lcd library from Adafruit
-// #include "Adafruit_GFX.h"
-// #include "Adafruit_ILI9341.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_ILI9341.h"
 
 // For the Adafruit shield, these are the default.
 // #define TFT_DC 9
 // #define TFT_CS 10
 
 // Use hardware SPI (on Uno, #13, #12, #11) and the above for CS/DC
-// Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+Adafruit_ILI9341 tft = Adafruit_ILI9341(DEV_DISPLAY);
 UART Serial = UART(DEV_PRINTER);
-SPI Display_SPI = SPI(DEV_DISPLAY);
+// SPI Display_SPI = SPI(DEV_DISPLAY);
 // If using the breakout, change pins as desired
 //Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
@@ -47,11 +47,11 @@ void setup() {
 
   // initialize communication interfaces
   Serial.begin(9600);
-  Display_SPI.begin();
+  // Display_SPI.begin();
 
   Serial.println("ILI9341 Test!");
  
-  // tft.begin();
+  tft.begin();
 
   // read diagnostics (optional but can help debug problems)
   // uint8_t x = tft.readcommand8(ILI9341_RDMODE);

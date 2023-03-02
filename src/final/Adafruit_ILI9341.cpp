@@ -81,71 +81,9 @@
 #define MADCTL_BGR 0x08 ///< Blue-Green-Red pixel order
 #define MADCTL_MH 0x04  ///< LCD refresh right to left
 
-/**************************************************************************/
-/*!
-    @brief  Instantiate Adafruit ILI9341 driver with software SPI
-    @param    cs    Chip select pin #
-    @param    dc    Data/Command pin #
-    @param    mosi  SPI MOSI pin #
-    @param    sclk  SPI Clock pin #
-    @param    rst   Reset pin # (optional, pass -1 if unused)
-    @param    miso  SPI MISO pin # (optional, pass -1 if unused)
-*/
-/**************************************************************************/
-Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t mosi,
-                                   int8_t sclk, int8_t rst, int8_t miso)
-    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, cs, dc, mosi, sclk,
-                      rst, miso) {}
-
-/**************************************************************************/
-/*!
-    @brief  Instantiate Adafruit ILI9341 driver with hardware SPI using the
-            default SPI peripheral.
-    @param  cs   Chip select pin # (OK to pass -1 if CS tied to GND).
-    @param  dc   Data/Command pin # (required).
-    @param  rst  Reset pin # (optional, pass -1 if unused).
-*/
-/**************************************************************************/
-Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t rst)
-    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, cs, dc, rst) {}
-
-#if !defined(ESP8266)
-/**************************************************************************/
-/*!
-    @brief  Instantiate Adafruit ILI9341 driver with hardware SPI using
-            a specific SPI peripheral (not necessarily default).
-    @param  spiClass  Pointer to SPI peripheral (e.g. &SPI or &SPI1).
-    @param  dc        Data/Command pin # (required).
-    @param  cs        Chip select pin # (optional, pass -1 if unused and
-                      CS is tied to GND).
-    @param  rst       Reset pin # (optional, pass -1 if unused).
-*/
-/**************************************************************************/
-Adafruit_ILI9341::Adafruit_ILI9341(SPIClass *spiClass, int8_t dc, int8_t cs,
-                                   int8_t rst)
-    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, spiClass, cs, dc,
-                      rst) {}
-#endif // end !ESP8266
-
-/**************************************************************************/
-/*!
-    @brief  Instantiate Adafruit ILI9341 driver using parallel interface.
-    @param  busWidth  If tft16 (enumeration in Adafruit_SPITFT.h), is a
-                      16-bit interface, else 8-bit.
-    @param  d0        Data pin 0 (MUST be a byte- or word-aligned LSB of a
-                      PORT register -- pins 1-n are extrapolated from this).
-    @param  wr        Write strobe pin # (required).
-    @param  dc        Data/Command pin # (required).
-    @param  cs        Chip select pin # (optional, pass -1 if unused and CS
-                      is tied to GND).
-    @param  rst       Reset pin # (optional, pass -1 if unused).
-    @param  rd        Read strobe pin # (optional, pass -1 if unused).
-*/
-/**************************************************************************/
-Adafruit_ILI9341::Adafruit_ILI9341(tftBusWidth busWidth, int8_t d0, int8_t wr,
-                                   int8_t dc, int8_t cs, int8_t rst, int8_t rd)
-    : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT, busWidth, d0, wr, dc,
-                      cs, rst, rd) {}
+Adafruit_ILI9341::Adafruit_ILI9341() : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
+  hwspi = SPI()
+}
 
 // clang-format off
 static const uint8_t PROGMEM initcmd[] = {

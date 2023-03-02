@@ -22,8 +22,10 @@
 
 #if !defined(__AVR_ATtiny85__) // Not for ATtiny, at all
 
+// my SPI library
+#include "SPI.h"
+
 #include "Adafruit_GFX.h"
-#include <SPI.h>
 
 // HARDWARE CONFIG ---------------------------------------------------------
 
@@ -121,42 +123,9 @@ class Adafruit_SPITFT : public Adafruit_GFX {
 
 public:
   // CONSTRUCTORS --------------------------------------------------------
-
-  // Software SPI constructor: expects width & height (at default rotation
-  // setting 0), 4 signal pins (cs, dc, mosi, sclk), 2 optional pins
-  // (reset, miso). cs argument is required but can be -1 if unused --
-  // rather than moving it to the optional arguments, it was done this way
-  // to avoid breaking existing code (-1 option was a later addition).
-  Adafruit_SPITFT(uint16_t w, uint16_t h, int8_t cs, int8_t dc, int8_t mosi,
-                  int8_t sck, int8_t rst = -1, int8_t miso = -1);
-
-  // Hardware SPI constructor using the default SPI port: expects width &
-  // height (at default rotation setting 0), 2 signal pins (cs, dc),
-  // optional reset pin. cs is required but can be -1 if unused -- rather
-  // than moving it to the optional arguments, it was done this way to
-  // avoid breaking existing code (-1 option was a later addition).
-  Adafruit_SPITFT(uint16_t w, uint16_t h, int8_t cs, int8_t dc,
-                  int8_t rst = -1);
-
-#if !defined(ESP8266) // See notes in .cpp
-  // Hardware SPI constructor using an arbitrary SPI peripheral: expects
-  // width & height (rotation 0), SPIClass pointer, 2 signal pins (cs, dc)
-  // and optional reset pin. cs is required but can be -1 if unused.
-  Adafruit_SPITFT(uint16_t w, uint16_t h, SPIClass *spiClass, int8_t cs,
-                  int8_t dc, int8_t rst = -1);
-#endif // end !ESP8266
-
-  // Parallel constructor: expects width & height (rotation 0), flag
-  // indicating whether 16-bit (true) or 8-bit (false) interface, 3 signal
-  // pins (d0, wr, dc), 3 optional pins (cs, rst, rd). 16-bit parallel
-  // isn't even fully implemented but the 'wide' flag was added as a
-  // required argument to avoid ambiguity with other constructors.
-  Adafruit_SPITFT(uint16_t w, uint16_t h, tftBusWidth busWidth, int8_t d0,
-                  int8_t wr, int8_t dc, int8_t cs = -1, int8_t rst = -1,
-                  int8_t rd = -1);
+  Adafruit_SPITFT();
 
   // DESTRUCTOR ----------------------------------------------------------
-
   ~Adafruit_SPITFT(){};
 
   // CLASS MEMBER FUNCTIONS ----------------------------------------------
@@ -403,88 +372,16 @@ protected:
 #if defined(__cplusplus) && (__cplusplus >= 201100)
   union {
 #endif
-    struct {          //   Values specific to HARDWARE SPI:
-      SPIClass *_spi; ///< SPI class pointer
-#if defined(SPI_HAS_TRANSACTION)
-      SPISettings settings; ///< SPI transaction settings
-#else
-    uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
-#endif
-      uint32_t _mode; ///< SPI data mode (transactions or no)
-    } hwspi;          ///< Hardware SPI values
-    struct {          //   Values specific to SOFTWARE SPI:
-#if defined(USE_FAST_PINIO)
-      PORTreg_t misoPort; ///< PORT (PIN) register for MISO
-#if defined(HAS_PORT_SET_CLR)
-      PORTreg_t mosiPortSet; ///< PORT register for MOSI SET
-      PORTreg_t mosiPortClr; ///< PORT register for MOSI CLEAR
-      PORTreg_t sckPortSet;  ///< PORT register for SCK SET
-      PORTreg_t sckPortClr;  ///< PORT register for SCK CLEAR
-#if !defined(KINETISK)
-      ADAGFX_PORT_t mosiPinMask; ///< Bitmask for MOSI
-      ADAGFX_PORT_t sckPinMask;  ///< Bitmask for SCK
-#endif                           // end !KINETISK
-#else                            // !HAS_PORT_SET_CLR
-      PORTreg_t mosiPort;           ///< PORT register for MOSI
-      PORTreg_t sckPort;            ///< PORT register for SCK
-      ADAGFX_PORT_t mosiPinMaskSet; ///< Bitmask for MOSI SET (OR)
-      ADAGFX_PORT_t mosiPinMaskClr; ///< Bitmask for MOSI CLEAR (AND)
-      ADAGFX_PORT_t sckPinMaskSet;  ///< Bitmask for SCK SET (OR bitmask)
-      ADAGFX_PORT_t sckPinMaskClr;  ///< Bitmask for SCK CLEAR (AND)
-#endif                           // end HAS_PORT_SET_CLR
-#if !defined(KINETISK)
-      ADAGFX_PORT_t misoPinMask; ///< Bitmask for MISO
-#endif                           // end !KINETISK
-#endif                           // end USE_FAST_PINIO
-      int8_t _mosi;              ///< MOSI pin #
-      int8_t _miso;              ///< MISO pin #
-      int8_t _sck;               ///< SCK pin #
-    } swspi;                     ///< Software SPI values
-    struct {                     //   Values specific to 8-bit parallel:
-#if defined(USE_FAST_PINIO)
+//     struct {          //   Values specific to HARDWARE SPI:
+//       SPIClass *_spi; ///< SPI class pointer
+// #if defined(SPI_HAS_TRANSACTION)
+//       SPISettings settings; ///< SPI transaction settings
+// #else
+//     uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
+// #endif
+//       uint32_t _mode; ///< SPI data mode (transactions or no)
+//     } hwspi;          ///< Hardware SPI values
 
-#if defined(__IMXRT1052__) || defined(__IMXRT1062__) // Teensy 4.x
-      volatile uint32_t *writePort; ///< PORT register for DATA WRITE
-      volatile uint32_t *readPort;  ///< PORT (PIN) register for DATA READ
-#else
-      volatile uint8_t *writePort;  ///< PORT register for DATA WRITE
-      volatile uint8_t *readPort;   ///< PORT (PIN) register for DATA READ
-#endif
-#if defined(HAS_PORT_SET_CLR)
-      // Port direction register pointers are always 8-bit regardless of
-      // PORTreg_t -- even if 32-bit port, we modify a byte-aligned 8 bits.
-#if defined(__IMXRT1052__) || defined(__IMXRT1062__) // Teensy 4.x
-      volatile uint32_t *dirSet; ///< PORT byte data direction SET
-      volatile uint32_t *dirClr; ///< PORT byte data direction CLEAR
-#else
-      volatile uint8_t *dirSet; ///< PORT byte data direction SET
-      volatile uint8_t *dirClr; ///< PORT byte data direction CLEAR
-#endif
-      PORTreg_t wrPortSet; ///< PORT register for write strobe SET
-      PORTreg_t wrPortClr; ///< PORT register for write strobe CLEAR
-      PORTreg_t rdPortSet; ///< PORT register for read strobe SET
-      PORTreg_t rdPortClr; ///< PORT register for read strobe CLEAR
-#if !defined(KINETISK)
-      ADAGFX_PORT_t wrPinMask; ///< Bitmask for write strobe
-#endif                         // end !KINETISK
-      ADAGFX_PORT_t rdPinMask; ///< Bitmask for read strobe
-#else                          // !HAS_PORT_SET_CLR
-      // Port direction register pointer is always 8-bit regardless of
-      // PORTreg_t -- even if 32-bit port, we modify a byte-aligned 8 bits.
-      volatile uint8_t *portDir;  ///< PORT direction register
-      PORTreg_t wrPort;           ///< PORT register for write strobe
-      PORTreg_t rdPort;           ///< PORT register for read strobe
-      ADAGFX_PORT_t wrPinMaskSet; ///< Bitmask for write strobe SET (OR)
-      ADAGFX_PORT_t wrPinMaskClr; ///< Bitmask for write strobe CLEAR (AND)
-      ADAGFX_PORT_t rdPinMaskSet; ///< Bitmask for read strobe SET (OR)
-      ADAGFX_PORT_t rdPinMaskClr; ///< Bitmask for read strobe CLEAR (AND)
-#endif                         // end HAS_PORT_SET_CLR
-#endif                         // end USE_FAST_PINIO
-      int8_t _d0;              ///< Data pin 0 #
-      int8_t _wr;              ///< Write strobe pin #
-      int8_t _rd;              ///< Read strobe pin # (or -1)
-      bool wide = 0;           ///< If true, is 16-bit interface
-    } tft8;                    ///< Parallel interface settings
 #if defined(__cplusplus) && (__cplusplus >= 201100)
   }; ///< Only one interface is active
 #endif
@@ -524,6 +421,7 @@ protected:
   uint8_t invertOffCommand = 0; ///< Command to disable invert mode
 
   uint32_t _freq = 0; ///< Dummy var to keep subclasses happy
+  SPI hwspi;
 };
 
 #endif // end __AVR_ATtiny85__
