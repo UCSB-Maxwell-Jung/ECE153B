@@ -3,10 +3,13 @@
 
 #include "device.h"
 #include "stm32l476xx.h"
+
+#include <stddef.h>
+
 class SPI {
 public:
   // constructor
-  SPI(SPI_TypeDef* SPIx);
+  SPI(SPI_TypeDef* SPIx=NULL);
   // methods
   void begin(uint32_t freq);
   void transfer(uint8_t write_data);
@@ -22,4 +25,4 @@ protected:
   void init_SPI2_GPIO(void);
 };
 
-#endif 
+#endif

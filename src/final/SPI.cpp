@@ -21,7 +21,7 @@ void SPI::begin(uint32_t freq) {
 	}
 }
 
-// send data from SPI1
+// transfer data out on output line and in on input line
 void SPI::transfer(uint8_t b) {
 	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
 
@@ -30,7 +30,7 @@ void SPI::transfer(uint8_t b) {
 	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
 }
 
-// receive data from SPI2
+// read current data in spi register
 void SPI::receive_byte(uint8_t* b) {
 	while ((_SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
 

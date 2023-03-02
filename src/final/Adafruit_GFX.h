@@ -1,7 +1,6 @@
 #ifndef _ADAFRUIT_GFX_H
 #define _ADAFRUIT_GFX_H
 
-#include <stddef.h>
 #include "stm32l476xx.h"
 
 // // #if ARDUINO >= 100

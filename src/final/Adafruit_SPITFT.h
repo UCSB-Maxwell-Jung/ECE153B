@@ -322,7 +322,7 @@ protected:
 // #endif                 // end HAS_PORT_SET_CLR
 // #endif                 // end USE_FAST_PINIO
 struct {          //   Values specific to HARDWARE SPI:
-  SPI* _spi;      ///< SPI class pointer
+  SPI _spi;      ///< SPI class pointer
   uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
   // uint32_t _mode; ///< SPI data mode (transactions or no)
 } hwspi;          ///< Hardware SPI values

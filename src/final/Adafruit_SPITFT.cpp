@@ -101,7 +101,7 @@
 // CONSTRUCTORS ------------------------------------------------------------
 Adafruit_SPITFT::Adafruit_SPITFT(uint16_t w, uint16_t h, SPI_TypeDef* SPIx)
     : Adafruit_GFX(w, h) {
-  hwspi._spi = &SPI(SPIx);
+  hwspi._spi = SPI(SPIx);
 // #if defined(USE_FAST_PINIO)
 // #if defined(HAS_PORT_SET_CLR)
 // #if defined(CORE_TEENSY)
@@ -210,7 +210,7 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
   // init SPI
   hwspi._freq = freq; // Save freq value for later
   // hwspi._mode = spiMode; // Save spiMode value for later
-  hwspi._spi->begin(freq);
+  hwspi._spi.begin(freq);
 
   // init RST (reset) PA2
   // Enable GPIOA
@@ -1577,7 +1577,7 @@ uint8_t Adafruit_SPITFT::readcommand8(uint8_t commandByte, uint8_t index) {
     @param  b  8-bit value to write.
 */
 void Adafruit_SPITFT::spiWrite(uint8_t b) {
-  hwspi._spi->transfer(b);
+  hwspi._spi.transfer(b);
 }
 
 // /*!
@@ -1607,7 +1607,7 @@ void Adafruit_SPITFT::spiWrite(uint8_t b) {
 uint8_t Adafruit_SPITFT::spiRead(void) {
   // uint8_t b = 0;
   // uint16_t w = 0;
-  hwspi._spi->transfer((uint8_t)0);
+  hwspi._spi.transfer((uint8_t)0);
 }
 
 // /*!
