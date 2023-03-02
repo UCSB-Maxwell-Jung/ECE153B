@@ -22,7 +22,7 @@
 
 #if !defined(__AVR_ATtiny85__) // Not for ATtiny, at all
 
-// my SPI library
+// maxwell's SPI library
 #include "SPI.h"
 
 #include "Adafruit_GFX.h"
@@ -369,22 +369,12 @@ protected:
   PORTreg_t dcPort;                 ///< PORT register for data/command
 #endif                 // end HAS_PORT_SET_CLR
 #endif                 // end USE_FAST_PINIO
-#if defined(__cplusplus) && (__cplusplus >= 201100)
-  union {
-#endif
-//     struct {          //   Values specific to HARDWARE SPI:
-//       SPIClass *_spi; ///< SPI class pointer
-// #if defined(SPI_HAS_TRANSACTION)
-//       SPISettings settings; ///< SPI transaction settings
-// #else
-//     uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
-// #endif
-//       uint32_t _mode; ///< SPI data mode (transactions or no)
-//     } hwspi;          ///< Hardware SPI values
+struct {          //   Values specific to HARDWARE SPI:
+  SPI* _spi;      ///< SPI class pointer
+  uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
+  uint32_t _mode; ///< SPI data mode (transactions or no)
+} hwspi;          ///< Hardware SPI values
 
-#if defined(__cplusplus) && (__cplusplus >= 201100)
-  }; ///< Only one interface is active
-#endif
 #if defined(USE_SPI_DMA) &&                                                    \
     (defined(__SAMD51__) ||                                                    \
      defined(ARDUINO_SAMD_ZERO))     // Used by hardware SPI and tft8
@@ -410,10 +400,6 @@ protected:
   ADAGFX_PORT_t dcPinMaskClr;     ///< Bitmask for data/command CLEAR (AND)
 #endif                     // end HAS_PORT_SET_CLR
 #endif                     // end USE_FAST_PINIO
-  uint8_t connection;      ///< TFT_HARD_SPI, TFT_SOFT_SPI, etc.
-  int8_t _rst;             ///< Reset pin # (or -1)
-  int8_t _cs;              ///< Chip select pin # (or -1)
-  int8_t _dc;              ///< Data/command pin #
 
   int16_t _xstart = 0;          ///< Internal framebuffer X offset
   int16_t _ystart = 0;          ///< Internal framebuffer Y offset
@@ -421,7 +407,6 @@ protected:
   uint8_t invertOffCommand = 0; ///< Command to disable invert mode
 
   uint32_t _freq = 0; ///< Dummy var to keep subclasses happy
-  SPI hwspi;
 };
 
 #endif // end __AVR_ATtiny85__

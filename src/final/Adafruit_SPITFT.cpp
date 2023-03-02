@@ -98,9 +98,8 @@ static const struct {
 
 // CONSTRUCTORS ------------------------------------------------------------
 Adafruit_SPITFT::Adafruit_SPITFT(uint16_t w, uint16_t h, SPI_TypeDef* SPIx)
-    : Adafruit_GFX(w, h), connection(TFT_HARD_SPI), _rst(rst), _cs(cs),
-      _dc(dc) {
-  hwspi = SPI(SPIx);
+    : Adafruit_GFX(w, h) {
+  hwspi._spi = &SPI(SPIx);
 #if defined(USE_FAST_PINIO)
 #if defined(HAS_PORT_SET_CLR)
 #if defined(CORE_TEENSY)
@@ -184,129 +183,35 @@ Adafruit_SPITFT::Adafruit_SPITFT(uint16_t w, uint16_t h, SPI_TypeDef* SPIx)
             were generously put in the public section.
 */
 void Adafruit_SPITFT::initSPI(uint32_t freq, uint8_t spiMode) {
-
-  if (!freq)
+  if (!freq) {
     freq = DEFAULT_SPI_FREQ; // If no freq specified, use default
+  }
 
   // Init basic control pins common to all connection types
-  if (_cs >= 0) {
-    pinMode(_cs, OUTPUT);
-    digitalWrite(_cs, HIGH); // Deselect
-  }
-  pinMode(_dc, OUTPUT);
-  digitalWrite(_dc, HIGH); // Data mode
 
-  if (connection == TFT_HARD_SPI) {
+  // [TODO] init chip select pin
+  // if (_cs >= 0) {
+  //   pinMode(_cs, OUTPUT);
+  //   digitalWrite(_cs, HIGH); // Deselect
+  // }
 
-#if defined(SPI_HAS_TRANSACTION)
-    hwspi.settings = SPISettings(freq, MSBFIRST, spiMode);
-#else
-    hwspi._freq = freq; // Save freq value for later
-#endif
-    hwspi._mode = spiMode; // Save spiMode value for later
-    // Call hwspi._spi->begin() ONLY if this is among the 'established'
-    // SPI interfaces in variant.h. For DIY roll-your-own SERCOM SPIs,
-    // begin() and pinPeripheral() calls MUST be made in one's calling
-    // code, BEFORE the screen-specific begin/init function is called.
-    // Reason for this is that SPI::begin() makes its own calls to
-    // pinPeripheral() based on g_APinDescription[n].ulPinType, which
-    // on non-established SPI interface pins will always be PIO_DIGITAL
-    // or similar, while we need PIO_SERCOM or PIO_SERCOM_ALT...it's
-    // highly unique between devices and variants for each pin or
-    // SERCOM so we can't make those calls ourselves here. And the SPI
-    // device needs to be set up before calling this because it's
-    // immediately followed with initialization commands. Blargh.
-    if (
-#if !defined(SPI_INTERFACES_COUNT)
-        1
-#else
-#if SPI_INTERFACES_COUNT > 0
-        (hwspi._spi == &SPI)
-#endif
-#if SPI_INTERFACES_COUNT > 1
-        || (hwspi._spi == &SPI1)
-#endif
-#if SPI_INTERFACES_COUNT > 2
-        || (hwspi._spi == &SPI2)
-#endif
-#if SPI_INTERFACES_COUNT > 3
-        || (hwspi._spi == &SPI3)
-#endif
-#if SPI_INTERFACES_COUNT > 4
-        || (hwspi._spi == &SPI4)
-#endif
-#if SPI_INTERFACES_COUNT > 5
-        || (hwspi._spi == &SPI5)
-#endif
-#endif // end SPI_INTERFACES_COUNT
-    ) {
-      hwspi._spi->begin();
-    }
-  } else if (connection == TFT_SOFT_SPI) {
+  // [TODO] init data/command pin
+  // pinMode(_dc, OUTPUT);
+  // digitalWrite(_dc, HIGH); // Data mode
 
-    pinMode(swspi._mosi, OUTPUT);
-    digitalWrite(swspi._mosi, LOW);
-    pinMode(swspi._sck, OUTPUT);
-    digitalWrite(swspi._sck, LOW);
-    if (swspi._miso >= 0) {
-      pinMode(swspi._miso, INPUT);
-    }
+  hwspi._freq = freq; // Save freq value for later
+  hwspi._mode = spiMode; // Save spiMode value for later
+  hwspi._spi->begin();
 
-  } else { // TFT_PARALLEL
-           // Initialize data pins.  We were only passed d0, so scan
-           // the pin description list looking for the other pins.
-           // They'll be on the same PORT, and within the next 7 (or 15) bits
-           // (because we need to write to a contiguous PORT byte or word).
-#if defined(__AVR__)
-    // PORT registers are 8 bits wide, so just need a register match...
-    for (uint8_t i = 0; i < NUM_DIGITAL_PINS; i++) {
-      if ((PORTreg_t)portOutputRegister(digitalPinToPort(i)) ==
-          tft8.writePort) {
-        pinMode(i, OUTPUT);
-        digitalWrite(i, LOW);
-      }
-    }
-#elif defined(USE_FAST_PINIO)
-#if defined(CORE_TEENSY)
-    if (!tft8.wide) {
-      *tft8.dirSet = 0xFF;    // Set port to output
-      *tft8.writePort = 0x00; // Write all 0s
-    } else {
-      *(volatile uint16_t *)tft8.dirSet = 0xFFFF;
-      *(volatile uint16_t *)tft8.writePort = 0x0000;
-    }
-#else  // !CORE_TEENSY
-    uint8_t portNum = g_APinDescription[tft8._d0].ulPort, // d0 PORT #
-        dBit = g_APinDescription[tft8._d0].ulPin,         // d0 bit in PORT
-        lastBit = dBit + (tft8.wide ? 15 : 7);
-    for (uint8_t i = 0; i < PINS_COUNT; i++) {
-      if ((g_APinDescription[i].ulPort == portNum) &&
-          (g_APinDescription[i].ulPin >= dBit) &&
-          (g_APinDescription[i].ulPin <= (uint32_t)lastBit)) {
-        pinMode(i, OUTPUT);
-        digitalWrite(i, LOW);
-      }
-    }
-#endif // end !CORE_TEENSY
-#endif
-    pinMode(tft8._wr, OUTPUT);
-    digitalWrite(tft8._wr, HIGH);
-    if (tft8._rd >= 0) {
-      pinMode(tft8._rd, OUTPUT);
-      digitalWrite(tft8._rd, HIGH);
-    }
-  }
-
-  if (_rst >= 0) {
-    // Toggle _rst low to reset
-    pinMode(_rst, OUTPUT);
-    digitalWrite(_rst, HIGH);
-    delay(100);
-    digitalWrite(_rst, LOW);
-    delay(100);
-    digitalWrite(_rst, HIGH);
-    delay(200);
-  }
+  // [TODO] init reset pin
+  // Toggle _rst low to reset
+  // pinMode(_rst, OUTPUT);
+  // digitalWrite(_rst, HIGH);
+  // delay(100);
+  // digitalWrite(_rst, LOW);
+  // delay(100);
+  // digitalWrite(_rst, HIGH);
+  // delay(200);
 
 #if defined(USE_SPI_DMA) && (defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO))
   if (((connection == TFT_HARD_SPI) || (connection == TFT_PARALLEL)) &&
