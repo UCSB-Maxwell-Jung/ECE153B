@@ -7,7 +7,7 @@ volatile uint32_t msTicks;
 //******************************************************************************************
 // Initialize SysTick	
 //******************************************************************************************	
-void SysTick_Init(void){
+void init_SysTick(void){
 	// generate 1ms interrupt
 	// SysTick Control & Status Register
 	SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk; // disable SysTick IRQ and SysTick Counter
@@ -47,11 +47,13 @@ void SysTick_Handler(void){
 //******************************************************************************************
 // Delay in ms
 //******************************************************************************************
-void delay (uint32_t T){
+void delay(uint32_t T){
 	uint32_t curTicks;
 
 	curTicks = msTicks;
 	while ((msTicks - curTicks) < T);
-		
-	msTicks = 0;
+}
+
+uint32_t micros(void) {
+	return msTicks;
 }

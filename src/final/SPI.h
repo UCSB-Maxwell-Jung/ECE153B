@@ -8,7 +8,7 @@ public:
   SPI(SPI_TypeDef* SPIx);
   // methods
   void begin(void);
-  void send_byte(uint8_t write_data);
+  void transfer(uint8_t write_data);
   void receive_byte(uint8_t* read_data);
 
 protected:

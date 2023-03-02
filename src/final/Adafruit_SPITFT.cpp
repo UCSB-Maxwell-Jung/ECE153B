@@ -1465,8 +1465,7 @@ data
 void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
   SPI_BEGIN_TRANSACTION();
-  if (_cs >= 0)
-    SPI_CS_LOW();
+  SPI_CS_LOW();
 
   SPI_DC_LOW();          // Command mode
   spiWrite(commandByte); // Send the command byte
@@ -1672,38 +1671,7 @@ inline void Adafruit_SPITFT::SPI_END_TRANSACTION(void) {
     @param  b  8-bit value to write.
 */
 void Adafruit_SPITFT::spiWrite(uint8_t b) {
-  if (connection == TFT_HARD_SPI) {
-#if defined(__AVR__)
-    AVR_WRITESPI(b);
-#elif defined(ESP8266) || defined(ESP32)
-    hwspi._spi->write(b);
-#elif defined(ARDUINO_ARCH_RP2040)
-    spi_inst_t *pi_spi = hwspi._spi == &SPI ? spi0 : spi1;
-    spi_write_blocking(pi_spi, &b, 1);
-#else
-    hwspi._spi->transfer(b);
-#endif
-  } else if (connection == TFT_SOFT_SPI) {
-    for (uint8_t bit = 0; bit < 8; bit++) {
-      if (b & 0x80)
-        SPI_MOSI_HIGH();
-      else
-        SPI_MOSI_LOW();
-      SPI_SCK_HIGH();
-      b <<= 1;
-      SPI_SCK_LOW();
-    }
-  } else { // TFT_PARALLEL
-#if defined(__AVR__)
-    *tft8.writePort = b;
-#elif defined(USE_FAST_PINIO)
-    if (!tft8.wide)
-      *tft8.writePort = b;
-    else
-      *(volatile uint16_t *)tft8.writePort = b;
-#endif
-    TFT_WR_STROBE();
-  }
+  hwspi._spi->transfer(b);
 }
 
 /*!

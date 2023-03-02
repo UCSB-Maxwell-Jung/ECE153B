@@ -128,11 +128,6 @@ void Adafruit_ILI9341::begin(uint32_t freq) {
     freq = SPI_DEFAULT_FREQ;
   initSPI(freq);
 
-  if (_rst < 0) {                 // If no hardware reset pin...
-    sendCommand(ILI9341_SWRESET); // Engage software reset
-    delay(150);
-  }
-
   uint8_t cmd, x, numArgs;
   const uint8_t *addr = initcmd;
   while ((cmd = pgm_read_byte(addr++)) > 0) {

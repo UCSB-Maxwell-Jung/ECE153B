@@ -21,19 +21,19 @@ void SPI::begin(void) {
 }
 
 // send data from SPI1
-void SPI::send_byte(uint8_t write_data) {
+void SPI::transfer(uint8_t b) {
 	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE); // wait for Transmit Buffer Empty flag to be set
 
-	*(volatile uint8_t*)(&_SPIx->DR) = write_data; // write data to data register
+	*(volatile uint8_t*)(&_SPIx->DR) = b; // write byte to data register
 
 	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait for busy to be unset
 }
 
 // receive data from SPI2
-void SPI::receive_byte(uint8_t* read_data) {
+void SPI::receive_byte(uint8_t* b) {
 	while ((_SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE); // wait for receive not empty to be set
 
-	*read_data = *(volatile uint8_t*)(&_SPIx->DR); // read data from data register
+	*b = *(volatile uint8_t*)(&_SPIx->DR); // read byte from data register
 }
 
 // initialize SPI1 GPIO pins
