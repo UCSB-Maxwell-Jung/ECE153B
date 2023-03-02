@@ -205,19 +205,25 @@ void Adafruit_SPITFT::initSPI(uint32_t freq, uint8_t spiMode) {
   // Set to High
   GPIOA->ODR |= GPIO_ODR_OD10;
 
+  // init SPI
   hwspi._freq = freq; // Save freq value for later
   hwspi._mode = spiMode; // Save spiMode value for later
   hwspi._spi->begin(freq);
 
-  // [TODO] init reset pin
-  // Toggle _rst low to reset
-  // pinMode(_rst, OUTPUT);
-  // digitalWrite(_rst, HIGH);
-  // delay(100);
-  // digitalWrite(_rst, LOW);
-  // delay(100);
-  // digitalWrite(_rst, HIGH);
-  // delay(200);
+  // init RST (reset) PA2
+  // Enable GPIOA
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+	// Set to Output mode
+	GPIOA->MODER &= ~GPIO_MODER_MODE2_1;
+  // Set to High
+  GPIOA->ODR |= GPIO_ODR_OD2;
+  delay(100);
+  // Set to Low
+  GPIOA->ODR &= ~GPIO_ODR_OD2;
+  delay(100);
+  // Set to High
+  GPIOA->ODR |= GPIO_ODR_OD2;
+  delay(200);
 
 // #if defined(USE_SPI_DMA) && (defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO))
 //   if (((connection == TFT_HARD_SPI) || (connection == TFT_PARALLEL)) &&
