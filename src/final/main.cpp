@@ -67,8 +67,9 @@ void setup() {
   
   printf("Benchmark                Time (microseconds)\n");
   // delay(10);
-  printf("Screen fill              %d\n", testFillScreen());
-  // delay(500);
+  for (int i = 0; i < 1000000; i++);
+  testFillScreen();
+  // // delay(500);
 
   // Serial.print(F("Text                     "));
   // Serial.println(testText());
@@ -129,20 +130,22 @@ unsigned long testFillScreen() {
   // unsigned long start = micros();
   tft.fillScreen(ILI9341_BLACK);
   // delay(1);
+  printf("Filled Screen Black\n");
   for (int i = 0; i < 1000; i++);
   tft.fillScreen(ILI9341_RED);
-  // delay(1);
+  // // delay(1);
+  printf("Filled Screen Red\n");
   for (int i = 0; i < 1000; i++);
-  tft.fillScreen(ILI9341_GREEN);
-  // delay(1);
-  for (int i = 0; i < 1000; i++);
-  tft.fillScreen(ILI9341_BLUE);
-  // delay(1);
-  for (int i = 0; i < 1000; i++);
-  tft.fillScreen(ILI9341_BLACK);
-  // delay(1);
-  for (int i = 0; i < 1000; i++);
-  // return micros() - start;
+  // tft.fillScreen(ILI9341_GREEN);
+  // // delay(1);
+  // for (int i = 0; i < 1000; i++);
+  // tft.fillScreen(ILI9341_BLUE);
+  // // delay(1);
+  // for (int i = 0; i < 1000; i++);
+  // tft.fillScreen(ILI9341_BLACK);
+  // // delay(1);
+  // for (int i = 0; i < 1000; i++);
+  // // return micros() - start;
   return 0;
 }
 

@@ -211,15 +211,15 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
   // Set to High
   GPIOA->ODR |= GPIO_ODR_OD8;
   // delay(100);
-  for (int i = 0; i < 10000; i++);
+  for (int i = 0; i < 100000; i++);
   // Set to Low
   GPIOA->ODR &= ~GPIO_ODR_OD8;
   // delay(100);
-  for (int i = 0; i < 10000; i++);
+  for (int i = 0; i < 100000; i++);
   // Set to High
   GPIOA->ODR |= GPIO_ODR_OD8;
   // delay(200);
-  for (int i = 0; i < 10000; i++);
+  for (int i = 0; i < 200000; i++);
 
 // #if defined(USE_SPI_DMA) && (defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO))
 //   if (((connection == TFT_HARD_SPI) || (connection == TFT_PARALLEL)) &&
@@ -744,8 +744,10 @@ void Adafruit_SPITFT::writeColor(uint16_t color, uint32_t len) {
     return; // Avoid 0-byte transfers
 
   uint8_t hi = color >> 8, lo = color;
-  hwspi._spi.transfer(hi);
-  hwspi._spi.transfer(lo);
+  while (len--) {
+    hwspi._spi.transfer(hi);
+    hwspi._spi.transfer(lo);
+  }
 }
 
 // /*!

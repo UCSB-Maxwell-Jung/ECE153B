@@ -76,6 +76,8 @@
 // #endif
 
 #define SPI_DEFAULT_FREQ 5000000
+// #define SPI_DEFAULT_FREQ 1250000
+
 
 // #define MADCTL_MY 0x80  ///< Bottom to top
 // #define MADCTL_MX 0x40  ///< Right to left
@@ -140,7 +142,7 @@ void Adafruit_ILI9341::begin(uint32_t freq) {
     addr += numArgs;
     if (x & 0x80)
       // delay(150);
-      for (int i = 0; i < 1000; i++);
+      for (int i = 0; i < 150000; i++);
   }
 
   _width = ILI9341_TFTWIDTH;
