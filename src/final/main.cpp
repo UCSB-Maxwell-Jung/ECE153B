@@ -129,14 +129,19 @@ unsigned long testFillScreen() {
   // unsigned long start = micros();
   tft.fillScreen(ILI9341_BLACK);
   // delay(1);
+  for (int i = 0; i < 1000; i++);
   tft.fillScreen(ILI9341_RED);
   // delay(1);
+  for (int i = 0; i < 1000; i++);
   tft.fillScreen(ILI9341_GREEN);
   // delay(1);
+  for (int i = 0; i < 1000; i++);
   tft.fillScreen(ILI9341_BLUE);
   // delay(1);
+  for (int i = 0; i < 1000; i++);
   tft.fillScreen(ILI9341_BLACK);
   // delay(1);
+  for (int i = 0; i < 1000; i++);
   // return micros() - start;
   return 0;
 }

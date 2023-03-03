@@ -190,15 +190,6 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
   }
 
   // Init basic control pins common to all connection types
-
-  // init CS (chip select) PB10
-  // Enable GPIOB
-	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;
-	// Set to Output mode
-	GPIOB->MODER &= ~GPIO_MODER_MODE10_1;
-  // Set to High (CS is active low, so High = disabled)
-  GPIOB->ODR |= GPIO_ODR_OD10;
-
   // init D/C (data/command) PA10
   // Enable GPIOA
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
@@ -222,11 +213,11 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
   // delay(100);
   for (int i = 0; i < 10000; i++);
   // Set to Low
-  GPIOA->ODR &= ~GPIO_ODR_OD2;
+  GPIOA->ODR &= ~GPIO_ODR_OD8;
   // delay(100);
   for (int i = 0; i < 10000; i++);
   // Set to High
-  GPIOA->ODR |= GPIO_ODR_OD2;
+  GPIOA->ODR |= GPIO_ODR_OD8;
   // delay(200);
   for (int i = 0; i < 10000; i++);
 

@@ -39,11 +39,11 @@ uint8_t SPI::transfer(uint8_t b) {
 	// wait for no more data to transmit
 	while ((_SPIx->SR & SPI_SR_FTLVL) != 0);
 	// wait for busy to be unset
-	while ((_SPIx->SR & SPI_SR_BSY) != 0);
+	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY);
 	// disable spi
 	_SPIx->CR1 &= ~SPI_CR1_SPE;
 
-	// read last received byte
+	// empty receive buffer
 	uint8_t trash;
 	while ((_SPIx->SR & SPI_SR_RXNE) == SPI_SR_RXNE)
 		trash = *(volatile uint8_t*)(&_SPIx->DR);
