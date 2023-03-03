@@ -19,53 +19,57 @@
 
 // custom library
 #include "LED.h"
-#include "SysTimer.h"
+// #include "SysTimer.h"
 #include "SysClock.h"
 #include "UART.h"
 #include "SPI.h"
 #include "device.h"
 
-// display/graphics library from Adafruit
-// #include "Adafruit_GFX.h"
-// #include "Adafruit_ILI9341.h"
+// graphics and lcd library from Adafruit
+#include "Adafruit_GFX.h"
+#include "Adafruit_ILI9341.h"
+
+unsigned long testFillScreen();
 
 // For the Adafruit shield, these are the default.
 // #define TFT_DC 9
 // #define TFT_CS 10
 
 // Use hardware SPI (on Uno, #13, #12, #11) and the above for CS/DC
-// Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+Adafruit_ILI9341 tft = Adafruit_ILI9341(DEV_DISPLAY);
 UART Serial = UART(DEV_PRINTER);
 // If using the breakout, change pins as desired
 //Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
 void setup() {
   init_system_clock();   // System Clock = 80 MHz
-	// SysTick_Init();
+	// init_SysTick();
 	init_LED();
 
+  // initialize Serial communication interface
   Serial.begin(9600);
-  Serial.println("ILI9341 Test!");
+
+  printf("ILI9341 Test!\n");
  
-  // tft.begin();
+  tft.begin();
 
   // read diagnostics (optional but can help debug problems)
-  // uint8_t x = tft.readcommand8(ILI9341_RDMODE);
-  // Serial.print("Display Power Mode: 0x"); Serial.println(x, HEX);
-  // x = tft.readcommand8(ILI9341_RDMADCTL);
-  // Serial.print("MADCTL Mode: 0x"); Serial.println(x, HEX);
-  // x = tft.readcommand8(ILI9341_RDPIXFMT);
-  // Serial.print("Pixel Format: 0x"); Serial.println(x, HEX);
-  // x = tft.readcommand8(ILI9341_RDIMGFMT);
-  // Serial.print("Image Format: 0x"); Serial.println(x, HEX);
-  // x = tft.readcommand8(ILI9341_RDSELFDIAG);
-  // Serial.print("Self Diagnostic: 0x"); Serial.println(x, HEX); 
+  uint8_t x = tft.readcommand8(ILI9341_RDMODE);
+  printf("Display Power Mode: %#x\n", x);
+  x = tft.readcommand8(ILI9341_RDMADCTL);
+  printf("MADCTL Mode: %#x\n", x);
+  x = tft.readcommand8(ILI9341_RDPIXFMT);
+  printf("Pixel Format: %#x\n", x);
+  x = tft.readcommand8(ILI9341_RDIMGFMT);
+  printf("Image Format: %#x\n", x);
+  x = tft.readcommand8(ILI9341_RDSELFDIAG);
+  printf("Self Diagnostic: %#x\n", x);
   
-  // Serial.println(F("Benchmark                Time (microseconds)"));
+  printf("Benchmark                Time (microseconds)\n");
   // delay(10);
-  // Serial.print(F("Screen fill              "));
-  // Serial.println(testFillScreen());
-  // delay(500);
+  for (int i = 0; i < 1000000; i++);
+  testFillScreen();
+  // // delay(500);
 
   // Serial.print(F("Text                     "));
   // Serial.println(testText());
@@ -120,23 +124,30 @@ void loop(void) {
   //   testText();
   //   delay(1000);
   // }
-  Serial.println("printer working!");
 }
 
-// unsigned long testFillScreen() {
-//   unsigned long start = micros();
-//   tft.fillScreen(ILI9341_BLACK);
-//   yield();
-//   tft.fillScreen(ILI9341_RED);
-//   yield();
-//   tft.fillScreen(ILI9341_GREEN);
-//   yield();
-//   tft.fillScreen(ILI9341_BLUE);
-//   yield();
-//   tft.fillScreen(ILI9341_BLACK);
-//   yield();
-//   return micros() - start;
-// }
+unsigned long testFillScreen() {
+  // unsigned long start = micros();
+  tft.fillScreen(ILI9341_BLACK);
+  // delay(1);
+  printf("Filled Screen Black\n");
+  for (int i = 0; i < 1000; i++);
+  tft.fillScreen(ILI9341_RED);
+  // // delay(1);
+  printf("Filled Screen Red\n");
+  for (int i = 0; i < 1000; i++);
+  // tft.fillScreen(ILI9341_GREEN);
+  // // delay(1);
+  // for (int i = 0; i < 1000; i++);
+  // tft.fillScreen(ILI9341_BLUE);
+  // // delay(1);
+  // for (int i = 0; i < 1000; i++);
+  // tft.fillScreen(ILI9341_BLACK);
+  // // delay(1);
+  // for (int i = 0; i < 1000; i++);
+  // // return micros() - start;
+  return 0;
+}
 
 // unsigned long testText() {
 //   tft.fillScreen(ILI9341_BLACK);

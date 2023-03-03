@@ -6,6 +6,14 @@
 #define BufferSize 32
 
 class UART {
+public:
+  // constructor
+  UART(USART_TypeDef* USARTx);
+  // methods
+  void begin(uint32_t baud_rate);
+  void print(char* str);
+  void println(char* str);
+
 protected:
   USART_TypeDef* _USARTx;
 
@@ -14,14 +22,6 @@ protected:
 
   void init_UART1_GPIO(void);
   void init_UART2_GPIO(void);
-
-public:
-  // constructor
-  UART(USART_TypeDef* USARTx);
-  // methods
-  void begin(uint32_t baud_rate);
-  void print(char* str);
-  void println(char* str);
 };
 
 // void USART1_IRQHandler(void);
