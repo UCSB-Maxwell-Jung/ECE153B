@@ -24,13 +24,16 @@
 */
 
 /*
+    ili9341 pins
+    VDD - 5V
+    GND - GND
     CS = chip select = SPI1 NSS = PA4
-    RESET = reset = PA8
+    RST = reset = PA8
     DC = Data / Command = PA10
     SDI(MOSI) = Serial Data In = SPI1 MOSI = PB5
     SCK = Serial Clock = SPI1 SCK = PB3
-
-    SDO(MISO) = Serial Data Out = NC (connect to SPI1 MISO for debugging) = PB4
+    LED = 5V
+    SDO(MISO) = Serial Data Out = SPI1 MISO = PB4
 */
 
 #endif
