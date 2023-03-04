@@ -44,9 +44,7 @@ void setup() {
 
   printf("ILI9341 Test!\n");
 
-  printf("ILI9341 initializing...\n");
-  tft.begin();
-  printf("ILI9341 initialized\n");
+  tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
