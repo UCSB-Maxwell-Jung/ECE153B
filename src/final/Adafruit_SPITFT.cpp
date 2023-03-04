@@ -466,6 +466,26 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
 // #endif
 // }
 
+/*!
+    @brief  Call before issuing command(s) or data to display. Performs
+            chip-select (if required) and starts an SPI transaction (if
+            using hardware SPI and transactions are supported). Required
+            for all display types; not an SPI-specific function.
+*/
+void Adafruit_SPITFT::startWrite(void) {
+  hwspi._spi.enable();
+}
+
+/*!
+    @brief  Call after issuing command(s) or data to display. Performs
+            chip-deselect (if required) and ends an SPI transaction (if
+            using hardware SPI and transactions are supported). Required
+            for all display types; not an SPI-specific function.
+*/
+void Adafruit_SPITFT::endWrite(void) {
+  hwspi._spi.disable();
+}
+
 // // -------------------------------------------------------------------------
 // // Lower-level graphics operations. These functions require a chip-select
 // // and/or SPI transaction around them (via startWrite(), endWrite() above).
@@ -977,9 +997,9 @@ void Adafruit_SPITFT::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
             if (y2 >= _height) {
               h = _height - y;
             } // Clip bottom
-            // startWrite();
+            startWrite();
             writeFillRectPreclipped(x, y, w, h, color);
-            // endWrite();
+            endWrite();
           }
         }
       }
@@ -1350,7 +1370,8 @@ uint8_t Adafruit_SPITFT::readcommand8(uint8_t commandByte, uint8_t index) {
     @param  b  8-bit value to write.
 */
 void Adafruit_SPITFT::spiWrite(uint8_t b) {
-  hwspi._spi.transfer(b);
+  hwspi._spi.write(b);
+  // hwspi._spi.transfer(b);
 }
 
 /*!

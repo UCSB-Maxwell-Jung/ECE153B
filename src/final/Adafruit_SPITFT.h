@@ -160,6 +160,10 @@ public:
   // Name is outdated (interface may be parallel) but for compatibility:
   void initSPI(uint32_t freq = 0);
   // void setSPISpeed(uint32_t freq);
+  // Chip select and/or hardware SPI transaction start as needed:
+  void startWrite(void);
+  // Chip deselect and/or hardware SPI transaction end as needed:
+  void endWrite(void);
   void sendCommand(uint8_t commandByte, uint8_t *dataBytes,
                    uint8_t numDataBytes);
   void sendCommand(uint8_t commandByte, const uint8_t *dataBytes = NULL,
