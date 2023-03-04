@@ -75,9 +75,7 @@
 // #define SPI_DEFAULT_FREQ 24000000 ///< Default SPI data clock frequency
 // #endif
 
-#define SPI_DEFAULT_FREQ 5000000
-// #define SPI_DEFAULT_FREQ 1250000
-
+// #define SPI_DEFAULT_FREQ 40000000
 
 // #define MADCTL_MY 0x80  ///< Bottom to top
 // #define MADCTL_MX 0x40  ///< Right to left
@@ -130,7 +128,7 @@ static const uint8_t initcmd[] = {
 void Adafruit_ILI9341::begin(uint32_t freq) {
 
   if (!freq)
-    freq = SPI_DEFAULT_FREQ;
+    freq = SPI_DISPLAY_DEFAULT_FREQ;
   initSPI(freq);
 
   uint8_t cmd, x, numArgs;

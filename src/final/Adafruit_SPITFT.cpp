@@ -185,7 +185,7 @@ Adafruit_SPITFT::Adafruit_SPITFT(uint16_t w, uint16_t h)
 */
 void Adafruit_SPITFT::initSPI(uint32_t freq) {
   if (!freq) {
-    freq = DEFAULT_SPI_FREQ; // If no freq specified, use default
+    freq = SPI_DEFAULT_FREQ; // If no freq specified, use default
   }
 
   // Init each pin on the display

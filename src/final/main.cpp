@@ -125,15 +125,10 @@ void loop(void) {
 uint32_t testFillScreen() {
   uint32_t start = micros();
   tft.fillScreen(ILI9341_BLACK);
-  printf("painted screen black!\n");
   tft.fillScreen(ILI9341_RED);
-  printf("painted screen red!\n");
   tft.fillScreen(ILI9341_GREEN);
-  printf("painted screen green!\n");
   tft.fillScreen(ILI9341_BLUE);
-  printf("painted screen blue!\n");
   tft.fillScreen(ILI9341_BLACK);
-  printf("painted screen black!\n");
   return micros() - start;
 }
 
