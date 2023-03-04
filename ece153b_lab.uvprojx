@@ -1922,16 +1922,6 @@
               <FilePath>.\src\final\SysClock.h</FilePath>
             </File>
             <File>
-              <FileName>SysTimer.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\SysTimer.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>SysTimer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\SysTimer.h</FilePath>
-            </File>
-            <File>
               <FileName>UART.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\UART.cpp</FilePath>
@@ -1945,6 +1935,16 @@
               <FileName>UART_printf.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\final\UART_printf.c</FilePath>
+            </File>
+            <File>
+              <FileName>SysTick.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SysTick.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SysTick.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\SysTick.h</FilePath>
             </File>
           </Files>
         </Group>
