@@ -1193,6 +1193,7 @@ data
 */
 void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
+  startWrite();
   SPI_DC_LOW();          // Command mode
   spiWrite(commandByte); // Send the command byte
   SPI_DC_HIGH();
@@ -1200,6 +1201,7 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
     spiWrite(*dataBytes); // Send the data bytes
     dataBytes++;
   }
+  endWrite();
 }
 
 /*!
@@ -1211,6 +1213,7 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
  */
 void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
+  startWrite();
   SPI_DC_LOW();          // Command mode
   spiWrite(commandByte); // Send the command byte
 
@@ -1218,6 +1221,7 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
   for (int i = 0; i < numDataBytes; i++) {
     spiWrite(*(dataBytes++));
   }
+  endWrite();
 }
 
 // /*!
@@ -1267,12 +1271,14 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
 /**************************************************************************/
 uint8_t Adafruit_SPITFT::readcommand8(uint8_t commandByte, uint8_t index) {
   uint8_t result;
+  startWrite();
   SPI_DC_LOW(); // Command mode
   spiWrite(commandByte);
   SPI_DC_HIGH(); // Data mode
   do {
     result = spiRead();
   } while (index--); // Discard bytes up to index'th
+  endWrite();
   return result;
 }
 
