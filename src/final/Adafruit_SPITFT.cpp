@@ -1376,8 +1376,8 @@ uint8_t Adafruit_SPITFT::readcommand8(uint8_t commandByte, uint8_t index) {
     @param  b  8-bit value to write.
 */
 void Adafruit_SPITFT::spiWrite(uint8_t b) {
-  hwspi._spi.transmit(b);
-  // hwspi._spi.transfer(b);
+  // hwspi._spi.transmit(b);
+  hwspi._spi.transmit_receive(b);
 }
 
 /*!
