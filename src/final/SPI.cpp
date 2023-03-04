@@ -41,7 +41,6 @@ void SPI::transmit(uint8_t b) {
 
 // transfer data out on output line and in on input line
 uint8_t SPI::transmit_receive(uint8_t b) {
-	uint8_t received;
 	// wait for Transmit Buffer Empty flag to be set
 	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE);
 	// write byte to transfer
@@ -50,9 +49,7 @@ uint8_t SPI::transmit_receive(uint8_t b) {
 	// wait for data from slave
 	while ((_SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE);
 	// read received byte
-	received = *(volatile uint8_t*)(&_SPIx->DR);
-
-	return received;
+	return *(volatile uint8_t*)(&_SPIx->DR);
 }
 
 // initialize SPI2 GPIO pins
