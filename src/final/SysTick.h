@@ -9,8 +9,7 @@ extern "C" {
 
 void init_SysTick(void);
 void SysTick_Handler(void);
-void delay(uint32_t T);
-uint32_t micros(void);
+void delay(uint32_t ms);
 
 #ifdef __cplusplus
 }
