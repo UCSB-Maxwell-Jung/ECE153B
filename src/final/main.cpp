@@ -19,7 +19,7 @@
 
 // custom library
 #include "LED.h"
-// #include "SysTimer.h"
+#include "SysTick.h"
 #include "SysClock.h"
 #include "UART.h"
 #include "SPI.h"
@@ -31,43 +31,36 @@
 
 unsigned long testFillScreen();
 
-// For the Adafruit shield, these are the default.
-// #define TFT_DC 9
-// #define TFT_CS 10
-
-// Use hardware SPI (on Uno, #13, #12, #11) and the above for CS/DC
 Adafruit_ILI9341 tft = Adafruit_ILI9341(DEV_DISPLAY);
-UART Serial = UART(DEV_PRINTER);
-// If using the breakout, change pins as desired
-//Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
+// UART Serial = UART(DEV_PRINTER);
 
 void setup() {
   init_system_clock();   // System Clock = 80 MHz
-	// init_SysTick();
+	init_SysTick();
 	init_LED();
 
   // initialize Serial communication interface
-  Serial.begin(9600);
+  // Serial.begin(9600);
 
-  printf("ILI9341 Test!\n");
+  // printf("ILI9341 Test!\n");
  
   tft.begin();
 
   // read diagnostics (optional but can help debug problems)
-  uint8_t x = tft.readcommand8(ILI9341_RDMODE);
-  printf("Display Power Mode: %#x\n", x);
-  x = tft.readcommand8(ILI9341_RDMADCTL);
-  printf("MADCTL Mode: %#x\n", x);
-  x = tft.readcommand8(ILI9341_RDPIXFMT);
-  printf("Pixel Format: %#x\n", x);
-  x = tft.readcommand8(ILI9341_RDIMGFMT);
-  printf("Image Format: %#x\n", x);
-  x = tft.readcommand8(ILI9341_RDSELFDIAG);
-  printf("Self Diagnostic: %#x\n", x);
+  // uint8_t x = tft.readcommand8(ILI9341_RDMODE);
+  // printf("Display Power Mode: %#x\n", x);
+  // x = tft.readcommand8(ILI9341_RDMADCTL);
+  // printf("MADCTL Mode: %#x\n", x);
+  // x = tft.readcommand8(ILI9341_RDPIXFMT);
+  // printf("Pixel Format: %#x\n", x);
+  // x = tft.readcommand8(ILI9341_RDIMGFMT);
+  // printf("Image Format: %#x\n", x);
+  // x = tft.readcommand8(ILI9341_RDSELFDIAG);
+  // printf("Self Diagnostic: %#x\n", x);
   
-  printf("Benchmark                Time (microseconds)\n");
+  // printf("Benchmark                Time (microseconds)\n");
   // delay(10);
-  for (int i = 0; i < 1000000; i++);
+  // for (int i = 0; i < 1000000; i++);
   testFillScreen();
   // // delay(500);
 
@@ -130,12 +123,12 @@ unsigned long testFillScreen() {
   // unsigned long start = micros();
   tft.fillScreen(ILI9341_BLACK);
   // delay(1);
-  printf("Filled Screen Black\n");
-  for (int i = 0; i < 1000; i++);
-  tft.fillScreen(ILI9341_RED);
+  // printf("Filled Screen Black\n");
+  // for (int i = 0; i < 1000; i++);
+  // tft.fillScreen(ILI9341_RED);
   // // delay(1);
-  printf("Filled Screen Red\n");
-  for (int i = 0; i < 1000; i++);
+  // printf("Filled Screen Red\n");
+  // for (int i = 0; i < 1000; i++);
   // tft.fillScreen(ILI9341_GREEN);
   // // delay(1);
   // for (int i = 0; i < 1000; i++);
