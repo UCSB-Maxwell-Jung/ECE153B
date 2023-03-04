@@ -758,7 +758,6 @@ void Adafruit_SPITFT::writeColor(uint16_t color, uint32_t len) {
   while (len--) {
     hwspi.transmit_receive(hi);
     hwspi.transmit_receive(lo);
-    delay(1);
   }
 }
 
