@@ -12,9 +12,9 @@
 class SPI {
 public:
   // constructor
-  SPI(SPI_TypeDef* SPIx=NULL, uint32_t desired_freq=SPI_DEFAULT_FREQ);
+  SPI(SPI_TypeDef* SPIx=NULL);
   // methods
-  virtual void begin();
+  virtual void begin(uint32_t desired_freq=SPI_DEFAULT_FREQ);
   void enable(void);
   void disable(void);
   void transmit(uint8_t write_data);

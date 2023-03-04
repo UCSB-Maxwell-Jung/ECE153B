@@ -1,7 +1,8 @@
 #include "SPI_Display.h"
+#include "device.h"
 
-SPI_Display::SPI_Display(SPI_TypeDef* SPIx, uint32_t freq)
-    : SPI(SPIx, freq) {}
+SPI_Display::SPI_Display()
+    : SPI(DEV_DISPLAY) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI)
 void SPI_Display::configure_GPIO() {

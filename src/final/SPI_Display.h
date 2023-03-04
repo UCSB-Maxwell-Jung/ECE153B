@@ -6,7 +6,7 @@
 class SPI_Display : public SPI { // inherit more general SPI class
 public:
   // constructor
-  SPI_Display(SPI_TypeDef* SPIx, uint32_t freq = 0);
+  SPI_Display();
 
 private:
   void configure_GPIO(void);
