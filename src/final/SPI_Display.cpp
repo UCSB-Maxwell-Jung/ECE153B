@@ -4,43 +4,50 @@
 SPI_Display::SPI_Display()
     : SPI(DEV_DISPLAY) {}
 
-// Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI)
+// Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
 void SPI_Display::configure_GPIO() {
 	uint8_t af_num;
-
-	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; // enable GPIOB
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; // enable GPIOA
 
 	// set to alternate function mode (10)
 	// explanation: default is 11, so use mask &~(01) to set second bit to 0
-	GPIOB->MODER &= ~(GPIO_MODER_MODER3_0 | 
-					  GPIO_MODER_MODER4_0 | 
-					  GPIO_MODER_MODER5_0);
+	GPIOB->MODER &= ~(GPIO_MODER_MODER3_0 | // PB3
+					  GPIO_MODER_MODER4_0 | // PB4
+					  GPIO_MODER_MODER5_0); // PB5
+	GPIOA->MODER &= ~(GPIO_MODER_MODER4_0); // PA4
 
-	// reset AF for pin 3, 4, 5
-	GPIOB->AFR[0] &= ~(GPIO_AFRL_AFSEL3 | 
-	                   GPIO_AFRL_AFSEL4 | 
-	                   GPIO_AFRL_AFSEL5);
+	// reset AF for PA4, PB3, PB4, PB5
+	GPIOB->AFR[0] &= ~(GPIO_AFRL_AFSEL3 | // PB3
+	                   GPIO_AFRL_AFSEL4 | // PB4
+	                   GPIO_AFRL_AFSEL5); // PB5
+	GPIOA->AFR[0] &= ~(GPIO_AFRL_AFSEL4); // PA4
 
-	// set pin 3, 4, 5 to AF5
+
+	// set PB3, PB4, PB5, PA4 to AF5
 	af_num = 5;
-	GPIOB->AFR[0] |= (af_num << (3*4));
-	GPIOB->AFR[0] |= (af_num << (4*4));
-	GPIOB->AFR[0] |= (af_num << (5*4));
+	GPIOB->AFR[0] |= (af_num << (3*4)); // PB3
+	GPIOB->AFR[0] |= (af_num << (4*4)); // PB4
+	GPIOB->AFR[0] |= (af_num << (5*4)); // PB5
+	GPIOA->AFR[0] |= (af_num << (4*4)); // PA4
 
 	// set to push-pull (0)
 	GPIOB->OTYPER &= ~(GPIO_OTYPER_OT3 | 
 	                   GPIO_OTYPER_OT4 | 
 	                   GPIO_OTYPER_OT5);
+	GPIOA->OTYPER &= ~(GPIO_OTYPER_OT4);
 
 	// set to very high (11)
 	GPIOB->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR3 | 
 	                   GPIO_OSPEEDER_OSPEEDR4 | 
 	                   GPIO_OSPEEDER_OSPEEDR5);
+	GPIOA->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR4);
 	
 	// set to no pull-up, pull-down (00)
 	GPIOB->PUPDR &= ~(GPIO_PUPDR_PUPD3 | 
 	                  GPIO_PUPDR_PUPD4 | 
 	                  GPIO_PUPDR_PUPD5);
+	GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD4);
 }
 
 // Initialize SPI1 peripheral as master
