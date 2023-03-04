@@ -1,4 +1,5 @@
-/*  This file contains mappings
+/*
+    This file contains mappings
     of various pheripherals to their 
     respective hardware interfaces.
 
@@ -14,5 +15,22 @@
 #define TERMITE USART2
 
 #define DEV_PRINTER TERMITE
+#define DEV_DISPLAY SPI1
+
+/*
+    termite
+    UART2_TX = PA2
+    UART2_RX = PA3
+*/
+
+/*
+    CS = chip select = SPI1 NSS = PA4
+    RESET = reset = PA8
+    DC = Data / Command = PA10
+    SDI(MOSI) = Serial Data In = SPI1 MOSI = PB5
+    SCK = Serial Clock = SPI1 SCK = PB3
+
+    SDO(MISO) = Serial Data Out = NC (connect to SPI1 MISO for debugging) = PB4
+*/
 
 #endif
