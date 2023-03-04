@@ -31,7 +31,7 @@
 
 uint32_t testFillScreen();
 
-Adafruit_ILI9341 tft = Adafruit_ILI9341(DEV_DISPLAY);
+Adafruit_ILI9341 tft = Adafruit_ILI9341();
 UART Serial = UART(DEV_PRINTER);
 
 void setup() {

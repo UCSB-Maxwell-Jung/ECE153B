@@ -23,7 +23,7 @@
 // #if !defined(__AVR_ATtiny85__) // Not for ATtiny, at all
 
 // maxwell's SPI library
-#include "SPI.h"
+#include "SPI_Display.h"
 
 #include "Adafruit_GFX.h"
 
@@ -119,7 +119,7 @@ class Adafruit_SPITFT : public Adafruit_GFX {
 
 public:
   // CONSTRUCTORS --------------------------------------------------------
-  Adafruit_SPITFT(uint16_t w, uint16_t h, SPI_TypeDef* SPIx);
+  Adafruit_SPITFT(uint16_t w, uint16_t h);
 
   // DESTRUCTOR ----------------------------------------------------------
   ~Adafruit_SPITFT(){};
@@ -299,11 +299,12 @@ protected:
 //   PORTreg_t dcPort;                 ///< PORT register for data/command
 // #endif                 // end HAS_PORT_SET_CLR
 // #endif                 // end USE_FAST_PINIO
-struct {          //   Values specific to HARDWARE SPI:
-  SPI _spi;      ///< SPI class pointer
-  uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
-  // uint32_t _mode; ///< SPI data mode (transactions or no)
-} hwspi;          ///< Hardware SPI values
+// struct {          //   Values specific to HARDWARE SPI:
+//   SPI _spi;      ///< SPI class pointer
+//   uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
+//   // uint32_t _mode; ///< SPI data mode (transactions or no)
+// } hwspi;          ///< Hardware SPI values
+SPI_Display hwspi;
 
 // #if defined(USE_SPI_DMA) &&                                                    \
 //     (defined(__SAMD51__) ||                                                    \
