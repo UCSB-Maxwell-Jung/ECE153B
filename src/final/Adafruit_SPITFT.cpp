@@ -756,8 +756,9 @@ void Adafruit_SPITFT::writeColor(uint16_t color, uint32_t len) {
 
   uint8_t hi = color >> 8, lo = color;
   while (len--) {
-    hwspi._spi.transmit(hi);
-    hwspi._spi.transmit(lo);
+    hwspi._spi.transmit_receive(hi);
+    hwspi._spi.transmit_receive(lo);
+    delay(1);
   }
 }
 
@@ -1604,8 +1605,8 @@ uint8_t Adafruit_SPITFT::spiRead(void) {
     @param  w  16-bit value to write.
 */
 void Adafruit_SPITFT::SPI_WRITE16(uint16_t w) {
-  hwspi._spi.transmit(w >> 8);
-  hwspi._spi.transmit(w);
+  hwspi._spi.transmit_receive(w >> 8);
+  hwspi._spi.transmit_receive(w);
 }
 
 // /*!
