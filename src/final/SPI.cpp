@@ -21,11 +21,31 @@ void SPI::begin(uint32_t freq) {
 	}
 }
 
-// transfer data out on output line and in on input line
-uint8_t SPI::transfer(uint8_t b) {
-	uint8_t received;
+void SPI::enable(void) {
 	// enable spi
 	_SPIx->CR1 |= SPI_CR1_SPE;
+}
+
+void SPI::disable(void) {
+	while ((_SPIx->SR & SPI_SR_FTLVL) != 0); // wait until no more data to transmit
+	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait until last data frame is processed
+	_SPIx->CR1 &= ~SPI_CR1_SPE; // disable spi
+	uint8_t discard;
+	while ((_SPIx->SR & SPI_SR_FRLVL) != 0) // read all received data
+		discard = *(volatile uint8_t*)(&_SPIx->DR); 
+}
+
+// send data out but don't care about data in
+void SPI::transmit(uint8_t b) {
+	// wait for Transmit Buffer Empty flag to be set
+	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE);
+	// write byte to transfer
+	*(volatile uint8_t*)(&_SPIx->DR) = b;
+}
+
+// transfer data out on output line and in on input line
+uint8_t SPI::transmit_receive(uint8_t b) {
+	uint8_t received;
 	// wait for Transmit Buffer Empty flag to be set
 	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE);
 	// write byte to transfer
@@ -36,18 +56,6 @@ uint8_t SPI::transfer(uint8_t b) {
 	// read received byte
 	received = *(volatile uint8_t*)(&_SPIx->DR);
 
-	// wait for no more data to transmit
-	while ((_SPIx->SR & SPI_SR_FTLVL) != 0);
-	// wait for busy to be unset
-	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY);
-	// disable spi
-	_SPIx->CR1 &= ~SPI_CR1_SPE;
-
-	// empty receive buffer
-	uint8_t trash;
-	while ((_SPIx->SR & SPI_SR_RXNE) == SPI_SR_RXNE)
-		trash = *(volatile uint8_t*)(&_SPIx->DR);
-	
 	return received;
 }
 

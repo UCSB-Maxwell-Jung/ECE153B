@@ -33,7 +33,7 @@
 
 // #if !defined(__AVR_ATtiny85__) // Not for ATtiny, at all
 
-// #include "SysTimer.h"
+#include "SysTick.h"
 
 #include "Adafruit_SPITFT.h"
 
@@ -189,37 +189,28 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
     freq = DEFAULT_SPI_FREQ; // If no freq specified, use default
   }
 
-  // Init basic control pins common to all connection types
-  // init D/C (data/command) PA10
-  // Enable GPIOA
-	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
-	// Set to Output mode
-	GPIOA->MODER &= ~GPIO_MODER_MODE10_1;
-  // Set to High
-  GPIOA->ODR |= GPIO_ODR_OD10;
+  // Init each pin on the display
 
-  // init SPI
+  // init D/C (data/command) pin to PA10 Output
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+	GPIOA->MODER &= ~GPIO_MODER_MODE10_1;
+  GPIOA->ODR |= GPIO_ODR_OD10; // Set to High
+
+  // init SPI (CS - PA4, SCK - PB3, SDI - PB5, SDO - PB4)
   hwspi._freq = freq; // Save freq value for later
   // hwspi._mode = spiMode; // Save spiMode value for later
   hwspi._spi.begin(freq);
 
-  // init RST (reset) PA8
-  // Enable GPIOA
+  // init RST (reset) pin to PA8 Output
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
-	// Set to Output mode
 	GPIOA->MODER &= ~GPIO_MODER_MODE8_1;
-  // Set to High
-  GPIOA->ODR |= GPIO_ODR_OD8;
-  // delay(100);
-  for (int i = 0; i < 100000; i++);
-  // Set to Low
-  GPIOA->ODR &= ~GPIO_ODR_OD8;
-  // delay(100);
-  for (int i = 0; i < 100000; i++);
-  // Set to High
-  GPIOA->ODR |= GPIO_ODR_OD8;
-  // delay(200);
-  for (int i = 0; i < 200000; i++);
+  // reset LCD
+  GPIOA->ODR |= GPIO_ODR_OD8; // Set to High
+  delay(100);
+  GPIOA->ODR &= ~GPIO_ODR_OD8; // Set to Low
+  delay(100);
+  GPIOA->ODR |= GPIO_ODR_OD8; // Set to High
+  delay(200);
 
 // #if defined(USE_SPI_DMA) && (defined(__SAMD51__) || defined(ARDUINO_SAMD_ZERO))
 //   if (((connection == TFT_HARD_SPI) || (connection == TFT_PARALLEL)) &&
@@ -474,6 +465,26 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
 //   hwspi._freq = freq; // Save freq value for later
 // #endif
 // }
+
+/*!
+    @brief  Call before issuing command(s) or data to display. Performs
+            chip-select (if required) and starts an SPI transaction (if
+            using hardware SPI and transactions are supported). Required
+            for all display types; not an SPI-specific function.
+*/
+void Adafruit_SPITFT::startWrite(void) {
+  hwspi._spi.enable();
+}
+
+/*!
+    @brief  Call after issuing command(s) or data to display. Performs
+            chip-deselect (if required) and ends an SPI transaction (if
+            using hardware SPI and transactions are supported). Required
+            for all display types; not an SPI-specific function.
+*/
+void Adafruit_SPITFT::endWrite(void) {
+  hwspi._spi.disable();
+}
 
 // // -------------------------------------------------------------------------
 // // Lower-level graphics operations. These functions require a chip-select
@@ -745,8 +756,9 @@ void Adafruit_SPITFT::writeColor(uint16_t color, uint32_t len) {
 
   uint8_t hi = color >> 8, lo = color;
   while (len--) {
-    hwspi._spi.transfer(hi);
-    hwspi._spi.transfer(lo);
+    hwspi._spi.transmit_receive(hi);
+    hwspi._spi.transmit_receive(lo);
+    delay(1);
   }
 }
 
@@ -986,9 +998,9 @@ void Adafruit_SPITFT::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
             if (y2 >= _height) {
               h = _height - y;
             } // Clip bottom
-            // startWrite();
+            startWrite();
             writeFillRectPreclipped(x, y, w, h, color);
-            // endWrite();
+            endWrite();
           }
         }
       }
@@ -1182,6 +1194,7 @@ data
 */
 void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
+  startWrite();
   SPI_DC_LOW();          // Command mode
   spiWrite(commandByte); // Send the command byte
   SPI_DC_HIGH();
@@ -1189,6 +1202,7 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
     spiWrite(*dataBytes); // Send the data bytes
     dataBytes++;
   }
+  endWrite();
 }
 
 /*!
@@ -1200,6 +1214,7 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, uint8_t *dataBytes,
  */
 void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
+  startWrite();
   SPI_DC_LOW();          // Command mode
   spiWrite(commandByte); // Send the command byte
 
@@ -1207,6 +1222,7 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
   for (int i = 0; i < numDataBytes; i++) {
     spiWrite(*(dataBytes++));
   }
+  endWrite();
 }
 
 // /*!
@@ -1256,12 +1272,14 @@ void Adafruit_SPITFT::sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
 /**************************************************************************/
 uint8_t Adafruit_SPITFT::readcommand8(uint8_t commandByte, uint8_t index) {
   uint8_t result;
+  startWrite();
   SPI_DC_LOW(); // Command mode
   spiWrite(commandByte);
   SPI_DC_HIGH(); // Data mode
   do {
     result = spiRead();
   } while (index--); // Discard bytes up to index'th
+  endWrite();
   return result;
 }
 
@@ -1359,7 +1377,8 @@ uint8_t Adafruit_SPITFT::readcommand8(uint8_t commandByte, uint8_t index) {
     @param  b  8-bit value to write.
 */
 void Adafruit_SPITFT::spiWrite(uint8_t b) {
-  hwspi._spi.transfer(b);
+  // hwspi._spi.transmit(b);
+  hwspi._spi.transmit_receive(b);
 }
 
 /*!
@@ -1389,7 +1408,7 @@ void Adafruit_SPITFT::writeCommand(uint8_t cmd) {
 uint8_t Adafruit_SPITFT::spiRead(void) {
   // uint8_t b = 0;
   // uint16_t w = 0;
-  return hwspi._spi.transfer((uint8_t)0);
+  return hwspi._spi.transmit_receive((uint8_t)0);
 }
 
 // /*!
@@ -1586,8 +1605,8 @@ uint8_t Adafruit_SPITFT::spiRead(void) {
     @param  w  16-bit value to write.
 */
 void Adafruit_SPITFT::SPI_WRITE16(uint16_t w) {
-  hwspi._spi.transfer(w >> 8);
-  hwspi._spi.transfer(w);
+  hwspi._spi.transmit_receive(w >> 8);
+  hwspi._spi.transmit_receive(w);
 }
 
 // /*!

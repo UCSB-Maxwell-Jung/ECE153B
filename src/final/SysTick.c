@@ -1,7 +1,7 @@
 
-#include "SysTimer.h"
+#include "SysTick.h"
 
-volatile uint32_t msTicks;
+volatile uint32_t current_ms_elapsed;
 
 
 //******************************************************************************************
@@ -33,27 +33,27 @@ void init_SysTick(void){
 	// Enable SysTick IRQ and SysTick Timer
 	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 
-	// set the starting tick count as 0
-	msTicks = 0;
+	// set the starting ms elapsed to 0
+	current_ms_elapsed = 0;
 }
 
 //******************************************************************************************
 // SysTick Interrupt Handler
 //******************************************************************************************
 void SysTick_Handler(void){
-	msTicks++;
+	current_ms_elapsed++;
 }
 	
 //******************************************************************************************
 // Delay in ms
 //******************************************************************************************
-void delay(uint32_t T){
-	uint32_t curTicks;
+void delay(uint32_t ms_wait_duration){
+	uint32_t future_ms_elapsed;
 
-	curTicks = msTicks;
-	while ((msTicks - curTicks) < T);
+	future_ms_elapsed = current_ms_elapsed + ms_wait_duration;
+	while (current_ms_elapsed < future_ms_elapsed);
 }
 
-uint32_t micros(void) {
-	return msTicks;
+uint32_t micros(void){
+	return current_ms_elapsed;
 }
