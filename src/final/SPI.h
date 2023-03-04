@@ -6,12 +6,15 @@
 
 #include <stddef.h>
 
+#define PCLK_FREQ  80000000 // 80Mhz
+#define SPI_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
+
 class SPI {
 public:
   // constructor
-  SPI(SPI_TypeDef* SPIx=NULL);
+  SPI(SPI_TypeDef* SPIx=NULL, uint32_t desired_freq=SPI_DEFAULT_FREQ);
   // methods
-  void begin(uint32_t freq);
+  virtual void begin();
   void enable(void);
   void disable(void);
   void transmit(uint8_t write_data);
@@ -19,12 +22,14 @@ public:
 
 protected:
   SPI_TypeDef* _SPIx;
+  uint8_t _br;
+  uint32_t _desired_freq;
+  uint32_t _actual_freq;
 
-  void init_SPI1(uint32_t freq);
-  void init_SPI2(void);
-
-  void init_SPI1_GPIO(void);
-  void init_SPI2_GPIO(void);
+  virtual void configure_GPIO(void) = 0; // must be implemented in derived class
+  virtual void configure_SPI() = 0; // must be implemented in derived class
+  // void init_SPI2(void);
+  // void init_SPI2_GPIO(void);
 };
 
 #endif
