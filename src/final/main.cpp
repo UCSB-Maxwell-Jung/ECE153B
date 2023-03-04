@@ -44,7 +44,7 @@ void setup() {
 
   printf("ILI9341 Test!\n");
 
-  printf("Initializing ILI9341...\n");
+  printf("ILI9341 initializing...\n");
   tft.begin();
   printf("ILI9341 initialized\n");
 
