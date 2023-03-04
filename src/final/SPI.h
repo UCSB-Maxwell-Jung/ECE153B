@@ -14,9 +14,8 @@ public:
   void begin(uint32_t freq);
   void enable(void);
   void disable(void);
-  void write(uint8_t write_data);
-  uint8_t read(uint8_t write_data);
-  uint8_t transfer(uint8_t write_data);
+  void transmit(uint8_t write_data);
+  uint8_t transmit_receive(uint8_t write_data);
 
 protected:
   SPI_TypeDef* _SPIx;
