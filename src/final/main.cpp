@@ -119,7 +119,7 @@ void loop(void) {
   //   testText();
   //   delay(1000);
   // }
-  testFillScreen();
+  // testFillScreen();
 }
 
 uint32_t testFillScreen() {
