@@ -1937,14 +1937,14 @@
               <FilePath>.\src\final\UART_printf.c</FilePath>
             </File>
             <File>
-              <FileName>SysTick.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\SysTick.cpp</FilePath>
-            </File>
-            <File>
               <FileName>SysTick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\SysTick.h</FilePath>
+            </File>
+            <File>
+              <FileName>SysTick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\SysTick.c</FilePath>
             </File>
           </Files>
         </Group>

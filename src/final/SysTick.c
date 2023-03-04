@@ -1,4 +1,3 @@
-
 #include "SysTick.h"
 
 volatile uint32_t msTicks;
