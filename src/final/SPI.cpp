@@ -27,8 +27,12 @@ void SPI::enable(void) {
 }
 
 void SPI::disable(void) {
-	// disable spi
-	_SPIx->CR1 &= ~SPI_CR1_SPE;
+	while ((_SPIx->SR & SPI_SR_FTLVL) != 0); // wait until no more data to transmit
+	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY); // wait until last data frame is processed
+	_SPIx->CR1 &= ~SPI_CR1_SPE; // disable spi
+	uint8_t discard;
+	while ((_SPIx->SR & SPI_SR_FRLVL) != 0) // read all received data
+		discard = *(volatile uint8_t*)(&_SPIx->DR); 
 }
 
 // send data out but don't care about data in
@@ -37,8 +41,6 @@ void SPI::write(uint8_t b) {
 	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE);
 	// write byte to transfer
 	*(volatile uint8_t*)(&_SPIx->DR) = b;
-
-	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY);
 }
 
 // transfer data out on output line and in on input line
@@ -53,9 +55,6 @@ uint8_t SPI::read(uint8_t b) {
 	while ((_SPIx->SR & SPI_SR_RXNE) != SPI_SR_RXNE);
 	// read received byte
 	received = *(volatile uint8_t*)(&_SPIx->DR);
-
-	// wait for busy to be unset
-	while ((_SPIx->SR & SPI_SR_BSY) == SPI_SR_BSY);
 	
 	return received;
 }
