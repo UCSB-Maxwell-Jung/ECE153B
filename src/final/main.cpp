@@ -29,7 +29,7 @@
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
 
-unsigned long testFillScreen();
+uint32_t testFillScreen();
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(DEV_DISPLAY);
 UART Serial = UART(DEV_PRINTER);
@@ -60,9 +60,9 @@ void setup() {
   x = tft.readcommand8(ILI9341_RDSELFDIAG);
   printf("Self Diagnostic: %#x\n", x);
   
-  printf("Benchmark                Time (microseconds)\n");
+  printf("Benchmark                Time (milliseconds)\n");
   delay(10);
-  testFillScreen();
+  printf("Screen fill              %d\n", testFillScreen());
   delay(500);
 
   // Serial.print(F("Text                     "));
@@ -122,7 +122,8 @@ void loop(void) {
   testFillScreen();
 }
 
-unsigned long testFillScreen() {
+uint32_t testFillScreen() {
+  uint32_t start = micros();
   tft.fillScreen(ILI9341_BLACK);
   printf("painted screen black!\n");
   delay(500);
@@ -137,8 +138,8 @@ unsigned long testFillScreen() {
   delay(500);
   tft.fillScreen(ILI9341_BLACK);
   printf("painted screen black!\n");
-  delay(500);
-  return 0;
+  delay(500);                    
+  return micros() - start;
 }
 
 // unsigned long testText() {
