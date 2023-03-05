@@ -101,9 +101,6 @@ void SPI_Display::configure_SPI() {
 	// disable hardware CRC calculation (0)
 	SPI1->CR1 &= ~SPI_CR1_CRCEN;
 
-	// enable NSS pulse generation (1)
-	SPI1->CR2 |= SPI_CR2_NSSP;
-	
-	// enable SPI1
-	SPI1->CR1 |= SPI_CR1_SPE;
+	// disable NSS pulse generation (0)
+	SPI1->CR2 &= ~SPI_CR2_NSSP;
 }
