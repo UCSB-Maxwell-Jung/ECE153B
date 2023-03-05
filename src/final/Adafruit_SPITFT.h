@@ -218,7 +218,7 @@ public:
   //                    int16_t h);
 
   // void invertDisplay(bool i);
-  // uint16_t color565(uint8_t r, uint8_t g, uint8_t b);
+  uint16_t color565(uint8_t r, uint8_t g, uint8_t b);
 
   // Despite parallel additions, function names kept for compatibility:
   void spiWrite(uint8_t b);          // Write single byte as DATA

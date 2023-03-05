@@ -1170,19 +1170,19 @@ void Adafruit_SPITFT::drawFastVLine(int16_t x, int16_t y, int16_t h,
 //   endWrite();
 // }
 
-// /*!
-//     @brief   Given 8-bit red, green and blue values, return a 'packed'
-//              16-bit color value in '565' RGB format (5 bits red, 6 bits
-//              green, 5 bits blue). This is just a mathematical operation,
-//              no hardware is touched.
-//     @param   red    8-bit red brightnesss (0 = off, 255 = max).
-//     @param   green  8-bit green brightnesss (0 = off, 255 = max).
-//     @param   blue   8-bit blue brightnesss (0 = off, 255 = max).
-//     @return  'Packed' 16-bit color value (565 format).
-// */
-// uint16_t Adafruit_SPITFT::color565(uint8_t red, uint8_t green, uint8_t blue) {
-//   return ((red & 0xF8) << 8) | ((green & 0xFC) << 3) | (blue >> 3);
-// }
+/*!
+    @brief   Given 8-bit red, green and blue values, return a 'packed'
+             16-bit color value in '565' RGB format (5 bits red, 6 bits
+             green, 5 bits blue). This is just a mathematical operation,
+             no hardware is touched.
+    @param   red    8-bit red brightnesss (0 = off, 255 = max).
+    @param   green  8-bit green brightnesss (0 = off, 255 = max).
+    @param   blue   8-bit blue brightnesss (0 = off, 255 = max).
+    @return  'Packed' 16-bit color value (565 format).
+*/
+uint16_t Adafruit_SPITFT::color565(uint8_t red, uint8_t green, uint8_t blue) {
+  return ((red & 0xF8) << 8) | ((green & 0xFC) << 3) | (blue >> 3);
+}
 
 /*!
 @brief   Adafruit_SPITFT Send Command handles complete sending of commands and
