@@ -89,16 +89,16 @@
 // #include <Adafruit_ZeroDMA.h>
 // #endif
 
-// // This is kind of a kludge. Needed a way to disambiguate the software SPI
-// // and parallel constructors via their argument lists. Originally tried a
-// // bool as the first argument to the parallel constructor (specifying 8-bit
-// // vs 16-bit interface) but the compiler regards this as equivalent to an
-// // integer and thus still ambiguous. SO...the parallel constructor requires
-// // an enumerated type as the first argument: tft8 (for 8-bit parallel) or
-// // tft16 (for 16-bit)...even though 16-bit isn't fully implemented or tested
-// // and might never be, still needed that disambiguation from soft SPI.
-// /*! For first arg to parallel constructor */
-// enum tftBusWidth { tft8bitbus, tft16bitbus };
+// This is kind of a kludge. Needed a way to disambiguate the software SPI
+// and parallel constructors via their argument lists. Originally tried a
+// bool as the first argument to the parallel constructor (specifying 8-bit
+// vs 16-bit interface) but the compiler regards this as equivalent to an
+// integer and thus still ambiguous. SO...the parallel constructor requires
+// an enumerated type as the first argument: tft8 (for 8-bit parallel) or
+// tft16 (for 16-bit)...even though 16-bit isn't fully implemented or tested
+// and might never be, still needed that disambiguation from soft SPI.
+/*! For first arg to parallel constructor */
+enum tftBusWidth { tft8bitbus, tft16bitbus };
 
 // CLASS DEFINITION --------------------------------------------------------
 
@@ -183,9 +183,9 @@ public:
   // void writePixels(uint16_t *colors, uint32_t len, bool block = true,
   //                  bool bigEndian = false);
   void writeColor(uint16_t color, uint32_t len);
-  // void writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
-  //                    uint16_t color);
-  // void writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
+  void writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                     uint16_t color);
+  void writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
   void writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   // This is a new function, similar to writeFillRect() except that
   // all arguments MUST be onscreen, sorted and clipped. If higher-level

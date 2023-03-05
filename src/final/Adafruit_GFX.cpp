@@ -89,27 +89,27 @@ POSSIBILITY OF SUCH DAMAGE.
 // #endif //__AVR__
 // }
 
-// #ifndef min
-// #define min(a, b) (((a) < (b)) ? (a) : (b))
-// #endif
+#ifndef min
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+#endif
 
-// #ifndef _swap_int16_t
-// #define _swap_int16_t(a, b)                                                    \
-//   {                                                                            \
-//     int16_t t = a;                                                             \
-//     a = b;                                                                     \
-//     b = t;                                                                     \
-//   }
-// #endif
+#ifndef _swap_int16_t
+#define _swap_int16_t(a, b)                                                    \
+  {                                                                            \
+    int16_t t = a;                                                             \
+    a = b;                                                                     \
+    b = t;                                                                     \
+  }
+#endif
 
-// /**************************************************************************/
-// /*!
-//    @brief    Instatiate a GFX context for graphics! Can only be done by a
-//    superclass
-//    @param    w   Display width, in pixels
-//    @param    h   Display height, in pixels
-// */
-// /**************************************************************************/
+/**************************************************************************/
+/*!
+   @brief    Instatiate a GFX context for graphics! Can only be done by a
+   superclass
+   @param    w   Display width, in pixels
+   @param    h   Display height, in pixels
+*/
+/**************************************************************************/
 Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h) : WIDTH(w), HEIGHT(h) {
   _width = WIDTH;
   _height = HEIGHT;
@@ -136,27 +136,13 @@ void Adafruit_GFX::writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
                              uint16_t color) {
   int16_t steep = abs(y1 - y0) > abs(x1 - x0);
   if (steep) {
-    uint16_t temp;
-    // _swap_int16_t(x0, y0);
-    temp = y0;
-    y0 = x0;
-    x0 = temp;
-    // _swap_int16_t(x1, y1);
-    temp = y1;
-    y1 = x1;
-    x1 = temp;
+    _swap_int16_t(x0, y0);
+    _swap_int16_t(x1, y1);
   }
 
   if (x0 > x1) {
-    uint16_t temp;
-    // _swap_int16_t(x0, x1);
-    temp = x1;
-    x1 = x0;
-    x0 = temp;
-    // _swap_int16_t(y0, y1);
-    temp = y1;
-    y1 = y0;
-    y0 = temp;
+    _swap_int16_t(x0, x1);
+    _swap_int16_t(y0, y1);
   }
 
   int16_t dx, dy;
@@ -205,58 +191,58 @@ void Adafruit_GFX::writePixel(int16_t x, int16_t y, uint16_t color) {
   drawPixel(x, y, color);
 }
 
-// /**************************************************************************/
-// /*!
-//    @brief    Write a perfectly vertical line, overwrite in subclasses if
-//    startWrite is defined!
-//     @param    x   Top-most x coordinate
-//     @param    y   Top-most y coordinate
-//     @param    h   Height in pixels
-//    @param    color 16-bit 5-6-5 Color to fill with
-// */
-// /**************************************************************************/
-// void Adafruit_GFX::writeFastVLine(int16_t x, int16_t y, int16_t h,
-//                                   uint16_t color) {
-//   // Overwrite in subclasses if startWrite is defined!
-//   // Can be just writeLine(x, y, x, y+h-1, color);
-//   // or writeFillRect(x, y, 1, h, color);
-//   drawFastVLine(x, y, h, color);
-// }
+/**************************************************************************/
+/*!
+   @brief    Write a perfectly vertical line, overwrite in subclasses if
+   startWrite is defined!
+    @param    x   Top-most x coordinate
+    @param    y   Top-most y coordinate
+    @param    h   Height in pixels
+   @param    color 16-bit 5-6-5 Color to fill with
+*/
+/**************************************************************************/
+void Adafruit_GFX::writeFastVLine(int16_t x, int16_t y, int16_t h,
+                                  uint16_t color) {
+  // Overwrite in subclasses if startWrite is defined!
+  // Can be just writeLine(x, y, x, y+h-1, color);
+  // or writeFillRect(x, y, 1, h, color);
+  drawFastVLine(x, y, h, color);
+}
 
-// /**************************************************************************/
-// /*!
-//    @brief    Write a perfectly horizontal line, overwrite in subclasses if
-//    startWrite is defined!
-//     @param    x   Left-most x coordinate
-//     @param    y   Left-most y coordinate
-//     @param    w   Width in pixels
-//    @param    color 16-bit 5-6-5 Color to fill with
-// */
-// /**************************************************************************/
-// void Adafruit_GFX::writeFastHLine(int16_t x, int16_t y, int16_t w,
-//                                   uint16_t color) {
-//   // Overwrite in subclasses if startWrite is defined!
-//   // Example: writeLine(x, y, x+w-1, y, color);
-//   // or writeFillRect(x, y, w, 1, color);
-//   drawFastHLine(x, y, w, color);
-// }
+/**************************************************************************/
+/*!
+   @brief    Write a perfectly horizontal line, overwrite in subclasses if
+   startWrite is defined!
+    @param    x   Left-most x coordinate
+    @param    y   Left-most y coordinate
+    @param    w   Width in pixels
+   @param    color 16-bit 5-6-5 Color to fill with
+*/
+/**************************************************************************/
+void Adafruit_GFX::writeFastHLine(int16_t x, int16_t y, int16_t w,
+                                  uint16_t color) {
+  // Overwrite in subclasses if startWrite is defined!
+  // Example: writeLine(x, y, x+w-1, y, color);
+  // or writeFillRect(x, y, w, 1, color);
+  drawFastHLine(x, y, w, color);
+}
 
-// /**************************************************************************/
-// /*!
-//    @brief    Write a rectangle completely with one color, overwrite in
-//    subclasses if startWrite is defined!
-//     @param    x   Top left corner x coordinate
-//     @param    y   Top left corner y coordinate
-//     @param    w   Width in pixels
-//     @param    h   Height in pixels
-//    @param    color 16-bit 5-6-5 Color to fill with
-// */
-// /**************************************************************************/
-// void Adafruit_GFX::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
-//                                  uint16_t color) {
-//   // Overwrite in subclasses if desired!
-//   fillRect(x, y, w, h, color);
-// }
+/**************************************************************************/
+/*!
+   @brief    Write a rectangle completely with one color, overwrite in
+   subclasses if startWrite is defined!
+    @param    x   Top left corner x coordinate
+    @param    y   Top left corner y coordinate
+    @param    w   Width in pixels
+    @param    h   Height in pixels
+   @param    color 16-bit 5-6-5 Color to fill with
+*/
+/**************************************************************************/
+void Adafruit_GFX::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                                 uint16_t color) {
+  // Overwrite in subclasses if desired!
+  fillRect(x, y, w, h, color);
+}
 
 /**************************************************************************/
 /*!
@@ -313,11 +299,11 @@ void Adafruit_GFX::drawFastHLine(int16_t x, int16_t y, int16_t w,
 /**************************************************************************/
 void Adafruit_GFX::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
                             uint16_t color) {
-  // startWrite();
-  // for (int16_t i = x; i < x + w; i++) {
-  //   writeFastVLine(i, y, h, color);
-  // }
-  // endWrite();
+  startWrite();
+  for (int16_t i = x; i < x + w; i++) {
+    writeFastVLine(i, y, h, color);
+  }
+  endWrite();
 }
 
 /**************************************************************************/
@@ -345,20 +331,12 @@ void Adafruit_GFX::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
                             uint16_t color) {
   // Update in subclasses if desired!
   if (x0 == x1) {
-    if (y0 > y1) {
-      int16_t temp;
-      temp = y1;
-      y1 = y0;
-      y0 = temp;
-    }
+    if (y0 > y1)
+      _swap_int16_t(y0, y1);
     drawFastVLine(x0, y0, y1 - y0 + 1, color);
   } else if (y0 == y1) {
-    if (x0 > x1) {
-      int16_t temp;
-      temp = x1;
-      x1 = x0;
-      x0 = temp;
-    }
+    if (x0 > x1)
+      _swap_int16_t(x0, x1);
     drawFastHLine(x0, y0, x1 - x0 + 1, color);
   } else {
     startWrite();

@@ -3,44 +3,44 @@
 
 #include "stm32l476xx.h"
 
-// // #if ARDUINO >= 100
-// // #include "Arduino.h"
-// // #include "Print.h"
-// // #else
-// // #include "WProgram.h"
-// // #endif
+// #if ARDUINO >= 100
+// #include "Arduino.h"
+// #include "Print.h"
+// #else
+// #include "WProgram.h"
+// #endif
 #include "gfxfont.h"
 
-// // #include <Adafruit_I2CDevice.h>
-// // #include <Adafruit_SPIDevice.h>
+// #include <Adafruit_I2CDevice.h>
+// #include <Adafruit_SPIDevice.h>
 
-// /// A generic graphics superclass that can handle all sorts of drawing. At a
-// /// minimum you can subclass and provide drawPixel(). At a maximum you can do a
-// /// ton of overriding to optimize. Used for any/all Adafruit displays!
+/// A generic graphics superclass that can handle all sorts of drawing. At a
+/// minimum you can subclass and provide drawPixel(). At a maximum you can do a
+/// ton of overriding to optimize. Used for any/all Adafruit displays!
 class Adafruit_GFX {
 public:
   Adafruit_GFX(int16_t w, int16_t h); // Constructor
 
-//   /**********************************************************************/
-//   /*!
-//     @brief  Draw to the screen/framebuffer/etc.
-//     Must be overridden in subclass.
-//     @param  x    X coordinate in pixels
-//     @param  y    Y coordinate in pixels
-//     @param color  16-bit pixel color.
-//   */
-//   /**********************************************************************/
+  /**********************************************************************/
+  /*!
+    @brief  Draw to the screen/framebuffer/etc.
+    Must be overridden in subclass.
+    @param  x    X coordinate in pixels
+    @param  y    Y coordinate in pixels
+    @param color  16-bit pixel color.
+  */
+  /**********************************************************************/
   virtual void drawPixel(int16_t x, int16_t y, uint16_t color) = 0;
 
-//   // TRANSACTION API / CORE DRAW API
-//   // These MAY be overridden by the subclass to provide device-specific
-//   // optimized code.  Otherwise 'generic' versions are used.
+  // TRANSACTION API / CORE DRAW API
+  // These MAY be overridden by the subclass to provide device-specific
+  // optimized code.  Otherwise 'generic' versions are used.
   virtual void startWrite(void);
   virtual void writePixel(int16_t x, int16_t y, uint16_t color);
-//   virtual void writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
-//                              uint16_t color);
-  // virtual void writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
-//   virtual void writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
+  virtual void writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                             uint16_t color);
+  virtual void writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
+  virtual void writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
   virtual void writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
                          uint16_t color);
   virtual void endWrite(void);
