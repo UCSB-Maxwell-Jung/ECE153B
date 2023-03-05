@@ -159,26 +159,26 @@ unsigned long testRects(uint16_t color) {
   return micros() - start;
 }
 
-// unsigned long testFilledRects(uint16_t color1, uint16_t color2) {
-//   unsigned long start, t = 0;
-//   int           n, i, i2,
-//                 cx = tft.width()  / 2 - 1,
-//                 cy = tft.height() / 2 - 1;
+unsigned long testFilledRects(uint16_t color1, uint16_t color2) {
+  unsigned long start, t = 0;
+  int           n, i, i2,
+                cx = tft.width()  / 2 - 1,
+                cy = tft.height() / 2 - 1;
 
-//   tft.fillScreen(ILI9341_BLACK);
-//   n = min(tft.width(), tft.height());
-//   for(i=n; i>0; i-=6) {
-//     i2    = i / 2;
-//     start = micros();
-//     tft.fillRect(cx-i2, cy-i2, i, i, color1);
-//     t    += micros() - start;
-//     // Outlines are not included in timing results
-//     tft.drawRect(cx-i2, cy-i2, i, i, color2);
-//     yield();
-//   }
+  tft.fillScreen(ILI9341_BLACK);
+  n = min(tft.width(), tft.height());
+  for(i=n; i>0; i-=6) {
+    i2    = i / 2;
+    start = micros();
+    tft.fillRect(cx-i2, cy-i2, i, i, color1);
+    t    += micros() - start;
+    // Outlines are not included in timing results
+    tft.drawRect(cx-i2, cy-i2, i, i, color2);
+    // yield();
+  }
 
-//   return t;
-// }
+  return t;
+}
 
 // unsigned long testFilledCircles(uint8_t radius, uint16_t color) {
 //   unsigned long start;
@@ -328,9 +328,8 @@ void setup() {
   printf("Rectangles (outline)     %d\n", testRects(ILI9341_GREEN));
   delay(500);
 
-  // Serial.print(F("Rectangles (filled)      "));
-  // Serial.println(testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
-  // delay(500);
+  printf("Rectangles (filled)      %d\n", testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
+  delay(500);
 
   // Serial.print(F("Circles (filled)         "));
   // Serial.println(testFilledCircles(10, ILI9341_MAGENTA));
