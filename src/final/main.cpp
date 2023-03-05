@@ -286,18 +286,7 @@ unsigned long testFilledRoundRects() {
   return micros() - start;
 }
 
-void setup() {
-  init_system_clock();   // System Clock = 80 MHz
-	init_SysTick();
-	init_LED();
-
-  // initialize Serial communication interface
-  Serial.begin(9600);
-
-  printf("ILI9341 Test!\n");
-
-  tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
-
+void test_graphics() {
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
   printf("Display Power Mode: %#x\n", x);
@@ -349,8 +338,22 @@ void setup() {
   printf("Rounded rects (filled)   %d\n", testFilledRoundRects());
   delay(500);
 
-  // Serial.println(F("Done!%d\n");
   printf("Done!\n");
+}
+
+void setup() {
+  init_system_clock();   // System Clock = 80 MHz
+	init_SysTick();
+	init_LED();
+
+  // initialize Serial communication interface
+  Serial.begin(9600);
+
+  printf("ILI9341 Test!\n");
+
+  tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
+
+  test_graphics();
 }
 
 void loop(void) {
@@ -359,7 +362,7 @@ void loop(void) {
   //   testText();
   //   delay(1000);
   // }
-  // testFillScreen();
+  test_graphics();
 }
 
 int main() {
