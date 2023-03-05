@@ -67,8 +67,6 @@
 // #endif                                     // end !ARM
 // typedef volatile ADAGFX_PORT_t *PORTreg_t; ///< PORT register type
 
-// #define DEFAULT_SPI_FREQ 20000000L ///< Hardware SPI default speed
-
 // #if defined(ADAFRUIT_PYPORTAL) || defined(ADAFRUIT_PYPORTAL_M4_TITANO) ||      \
 //     defined(ADAFRUIT_PYBADGE_M4_EXPRESS) ||                                    \
 //     defined(ADAFRUIT_PYGAMER_M4_EXPRESS) ||                                    \

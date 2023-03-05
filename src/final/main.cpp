@@ -142,22 +142,22 @@ unsigned long testFastLines(uint16_t color1, uint16_t color2) {
   return micros() - start;
 }
 
-// unsigned long testRects(uint16_t color) {
-//   unsigned long start;
-//   int           n, i, i2,
-//                 cx = tft.width()  / 2,
-//                 cy = tft.height() / 2;
+unsigned long testRects(uint16_t color) {
+  unsigned long start;
+  int           n, i, i2,
+                cx = tft.width()  / 2,
+                cy = tft.height() / 2;
 
-//   tft.fillScreen(ILI9341_BLACK);
-//   n     = min(tft.width(), tft.height());
-//   start = micros();
-//   for(i=2; i<n; i+=6) {
-//     i2 = i / 2;
-//     tft.drawRect(cx-i2, cy-i2, i, i, color);
-//   }
+  tft.fillScreen(ILI9341_BLACK);
+  n     = min(tft.width(), tft.height());
+  start = micros();
+  for(i=2; i<n; i+=6) {
+    i2 = i / 2;
+    tft.drawRect(cx-i2, cy-i2, i, i, color);
+  }
 
-//   return micros() - start;
-// }
+  return micros() - start;
+}
 
 // unsigned long testFilledRects(uint16_t color1, uint16_t color2) {
 //   unsigned long start, t = 0;
@@ -325,9 +325,8 @@ void setup() {
   printf("Horiz/Vert Lines         %d\n", testFastLines(ILI9341_RED, ILI9341_BLUE));
   delay(500);
 
-  // Serial.print(F("Rectangles (outline)     "));
-  // Serial.println(testRects(ILI9341_GREEN));
-  // delay(500);
+  printf("Rectangles (outline)     %d\n", testRects(ILI9341_GREEN));
+  delay(500);
 
   // Serial.print(F("Rectangles (filled)      "));
   // Serial.println(testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));

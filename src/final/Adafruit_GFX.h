@@ -14,9 +14,22 @@
 // #include <Adafruit_I2CDevice.h>
 // #include <Adafruit_SPIDevice.h>
 
-/// A generic graphics superclass that can handle all sorts of drawing. At a
-/// minimum you can subclass and provide drawPixel(). At a maximum you can do a
-/// ton of overriding to optimize. Used for any/all Adafruit displays!
+#ifndef min
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef _swap_int16_t
+#define _swap_int16_t(a, b)                                                    \
+  {                                                                            \
+    int16_t t = a;                                                             \
+    a = b;                                                                     \
+    b = t;                                                                     \
+  }
+#endif
+
+// / A generic graphics superclass that can handle all sorts of drawing. At a
+// / minimum you can subclass and provide drawPixel(). At a maximum you can do a
+// / ton of overriding to optimize. Used for any/all Adafruit displays!
 class Adafruit_GFX {
 public:
   Adafruit_GFX(int16_t w, int16_t h); // Constructor
@@ -64,8 +77,8 @@ public:
   // Optional and probably not necessary to change
   virtual void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
                         uint16_t color);
-//   virtual void drawRect(int16_t x, int16_t y, int16_t w, int16_t h,
-//                         uint16_t color);
+  virtual void drawRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                        uint16_t color);
 
 //   // These exist only with Adafruit_GFX (no subclass overrides)
 //   void drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);

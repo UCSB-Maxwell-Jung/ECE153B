@@ -89,19 +89,6 @@ POSSIBILITY OF SUCH DAMAGE.
 // #endif //__AVR__
 // }
 
-#ifndef min
-#define min(a, b) (((a) < (b)) ? (a) : (b))
-#endif
-
-#ifndef _swap_int16_t
-#define _swap_int16_t(a, b)                                                    \
-  {                                                                            \
-    int16_t t = a;                                                             \
-    a = b;                                                                     \
-    b = t;                                                                     \
-  }
-#endif
-
 /**************************************************************************/
 /*!
    @brief    Instatiate a GFX context for graphics! Can only be done by a
@@ -510,25 +497,25 @@ void Adafruit_GFX::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 //   }
 // }
 
-// /**************************************************************************/
-// /*!
-//    @brief   Draw a rectangle with no fill color
-//     @param    x   Top left corner x coordinate
-//     @param    y   Top left corner y coordinate
-//     @param    w   Width in pixels
-//     @param    h   Height in pixels
-//     @param    color 16-bit 5-6-5 Color to draw with
-// */
-// /**************************************************************************/
-// void Adafruit_GFX::drawRect(int16_t x, int16_t y, int16_t w, int16_t h,
-//                             uint16_t color) {
-//   startWrite();
-//   writeFastHLine(x, y, w, color);
-//   writeFastHLine(x, y + h - 1, w, color);
-//   writeFastVLine(x, y, h, color);
-//   writeFastVLine(x + w - 1, y, h, color);
-//   endWrite();
-// }
+/**************************************************************************/
+/*!
+   @brief   Draw a rectangle with no fill color
+    @param    x   Top left corner x coordinate
+    @param    y   Top left corner y coordinate
+    @param    w   Width in pixels
+    @param    h   Height in pixels
+    @param    color 16-bit 5-6-5 Color to draw with
+*/
+/**************************************************************************/
+void Adafruit_GFX::drawRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                            uint16_t color) {
+  startWrite();
+  writeFastHLine(x, y, w, color);
+  writeFastHLine(x, y + h - 1, w, color);
+  writeFastVLine(x, y, h, color);
+  writeFastVLine(x + w - 1, y, h, color);
+  endWrite();
+}
 
 // /**************************************************************************/
 // /*!
