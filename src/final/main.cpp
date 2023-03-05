@@ -34,92 +34,6 @@ uint32_t testFillScreen();
 Adafruit_ILI9341 tft = Adafruit_ILI9341();
 UART Serial = UART(DEV_PRINTER);
 
-void setup() {
-  init_system_clock();   // System Clock = 80 MHz
-	init_SysTick();
-	init_LED();
-
-  // initialize Serial communication interface
-  Serial.begin(9600);
-
-  printf("ILI9341 Test!\n");
-
-  tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
-
-  // read diagnostics (optional but can help debug problems)
-  uint8_t x = tft.readcommand8(ILI9341_RDMODE);
-  printf("Display Power Mode: %#x\n", x);
-  x = tft.readcommand8(ILI9341_RDMADCTL);
-  printf("MADCTL Mode: %#x\n", x);
-  x = tft.readcommand8(ILI9341_RDPIXFMT);
-  printf("Pixel Format: %#x\n", x);
-  x = tft.readcommand8(ILI9341_RDIMGFMT);
-  printf("Image Format: %#x\n", x);
-  x = tft.readcommand8(ILI9341_RDSELFDIAG);
-  printf("Self Diagnostic: %#x\n", x);
-  
-  printf("Benchmark                Time (milliseconds)\n");
-  delay(10);
-  printf("Screen fill              %d\n", testFillScreen());
-  delay(500);
-
-  // Serial.print(F("Text                     "));
-  // Serial.println(testText());
-  // delay(3000);
-
-  // Serial.print(F("Lines                    "));
-  // Serial.println(testLines(ILI9341_CYAN));
-  // delay(500);
-
-  // Serial.print(F("Horiz/Vert Lines         "));
-  // Serial.println(testFastLines(ILI9341_RED, ILI9341_BLUE));
-  // delay(500);
-
-  // Serial.print(F("Rectangles (outline)     "));
-  // Serial.println(testRects(ILI9341_GREEN));
-  // delay(500);
-
-  // Serial.print(F("Rectangles (filled)      "));
-  // Serial.println(testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
-  // delay(500);
-
-  // Serial.print(F("Circles (filled)         "));
-  // Serial.println(testFilledCircles(10, ILI9341_MAGENTA));
-
-  // Serial.print(F("Circles (outline)        "));
-  // Serial.println(testCircles(10, ILI9341_WHITE));
-  // delay(500);
-
-  // Serial.print(F("Triangles (outline)      "));
-  // Serial.println(testTriangles());
-  // delay(500);
-
-  // Serial.print(F("Triangles (filled)       "));
-  // Serial.println(testFilledTriangles());
-  // delay(500);
-
-  // Serial.print(F("Rounded rects (outline)  "));
-  // Serial.println(testRoundRects());
-  // delay(500);
-
-  // Serial.print(F("Rounded rects (filled)   "));
-  // Serial.println(testFilledRoundRects());
-  // delay(500);
-
-  // Serial.println(F("Done!"));
-  printf("Done!\n");
-}
-
-
-void loop(void) {
-  // for(uint8_t rotation=0; rotation<4; rotation++) {
-  //   tft.setRotation(rotation);
-  //   testText();
-  //   delay(1000);
-  // }
-  // testFillScreen();
-}
-
 uint32_t testFillScreen() {
   uint32_t start = micros();
   tft.fillScreen(ILI9341_BLACK);
@@ -157,64 +71,64 @@ uint32_t testFillScreen() {
 //   return micros() - start;
 // }
 
-// unsigned long testLines(uint16_t color) {
-//   unsigned long start, t;
-//   int           x1, y1, x2, y2,
-//                 w = tft.width(),
-//                 h = tft.height();
+unsigned long testLines(uint16_t color) {
+  unsigned long start, t;
+  int           x1, y1, x2, y2,
+                w = tft.width(),
+                h = tft.height();
 
-//   tft.fillScreen(ILI9341_BLACK);
-//   yield();
+  tft.fillScreen(ILI9341_BLACK);
+  // yield();
   
-//   x1 = y1 = 0;
-//   y2    = h - 1;
-//   start = micros();
-//   for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
-//   x2    = w - 1;
-//   for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
-//   t     = micros() - start; // fillScreen doesn't count against timing
+  x1 = y1 = 0;
+  y2    = h - 1;
+  start = micros();
+  for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
+  x2    = w - 1;
+  for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
+  t     = micros() - start; // fillScreen doesn't count against timing
 
-//   yield();
-//   tft.fillScreen(ILI9341_BLACK);
-//   yield();
+  // yield();
+  tft.fillScreen(ILI9341_BLACK);
+  // yield();
 
-//   x1    = w - 1;
-//   y1    = 0;
-//   y2    = h - 1;
-//   start = micros();
-//   for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
-//   x2    = 0;
-//   for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
-//   t    += micros() - start;
+  x1    = w - 1;
+  y1    = 0;
+  y2    = h - 1;
+  start = micros();
+  for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
+  x2    = 0;
+  for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
+  t    += micros() - start;
 
-//   yield();
-//   tft.fillScreen(ILI9341_BLACK);
-//   yield();
+  // yield();
+  tft.fillScreen(ILI9341_BLACK);
+  // yield();
 
-//   x1    = 0;
-//   y1    = h - 1;
-//   y2    = 0;
-//   start = micros();
-//   for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
-//   x2    = w - 1;
-//   for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
-//   t    += micros() - start;
+  x1    = 0;
+  y1    = h - 1;
+  y2    = 0;
+  start = micros();
+  for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
+  x2    = w - 1;
+  for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
+  t    += micros() - start;
 
-//   yield();
-//   tft.fillScreen(ILI9341_BLACK);
-//   yield();
+  // yield();
+  tft.fillScreen(ILI9341_BLACK);
+  // yield();
 
-//   x1    = w - 1;
-//   y1    = h - 1;
-//   y2    = 0;
-//   start = micros();
-//   for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
-//   x2    = 0;
-//   for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
+  x1    = w - 1;
+  y1    = h - 1;
+  y2    = 0;
+  start = micros();
+  for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
+  x2    = 0;
+  for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
 
-//   yield();
-//   return micros() - start;
-// }
+  // yield();
+  return micros() - start;
+}
 
 // unsigned long testFastLines(uint16_t color1, uint16_t color2) {
 //   unsigned long start;
@@ -371,6 +285,90 @@ uint32_t testFillScreen() {
 
 //   return micros() - start;
 // }
+
+void setup() {
+  init_system_clock();   // System Clock = 80 MHz
+	init_SysTick();
+	init_LED();
+
+  // initialize Serial communication interface
+  Serial.begin(9600);
+
+  printf("ILI9341 Test!\n");
+
+  tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
+
+  // read diagnostics (optional but can help debug problems)
+  uint8_t x = tft.readcommand8(ILI9341_RDMODE);
+  printf("Display Power Mode: %#x\n", x);
+  x = tft.readcommand8(ILI9341_RDMADCTL);
+  printf("MADCTL Mode: %#x\n", x);
+  x = tft.readcommand8(ILI9341_RDPIXFMT);
+  printf("Pixel Format: %#x\n", x);
+  x = tft.readcommand8(ILI9341_RDIMGFMT);
+  printf("Image Format: %#x\n", x);
+  x = tft.readcommand8(ILI9341_RDSELFDIAG);
+  printf("Self Diagnostic: %#x\n", x);
+  
+  printf("Benchmark                Time (milliseconds)\n");
+  delay(10);
+  printf("Screen fill              %d\n", testFillScreen());
+  delay(500);
+
+  // Serial.print(F("Text                     "));
+  // Serial.println(testText());
+  // delay(3000);
+
+  printf("Lines                    %d\n", testLines(ILI9341_CYAN));
+  delay(500);
+
+  // Serial.print(F("Horiz/Vert Lines         "));
+  // Serial.println(testFastLines(ILI9341_RED, ILI9341_BLUE));
+  // delay(500);
+
+  // Serial.print(F("Rectangles (outline)     "));
+  // Serial.println(testRects(ILI9341_GREEN));
+  // delay(500);
+
+  // Serial.print(F("Rectangles (filled)      "));
+  // Serial.println(testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
+  // delay(500);
+
+  // Serial.print(F("Circles (filled)         "));
+  // Serial.println(testFilledCircles(10, ILI9341_MAGENTA));
+
+  // Serial.print(F("Circles (outline)        "));
+  // Serial.println(testCircles(10, ILI9341_WHITE));
+  // delay(500);
+
+  // Serial.print(F("Triangles (outline)      "));
+  // Serial.println(testTriangles());
+  // delay(500);
+
+  // Serial.print(F("Triangles (filled)       "));
+  // Serial.println(testFilledTriangles());
+  // delay(500);
+
+  // Serial.print(F("Rounded rects (outline)  "));
+  // Serial.println(testRoundRects());
+  // delay(500);
+
+  // Serial.print(F("Rounded rects (filled)   "));
+  // Serial.println(testFilledRoundRects());
+  // delay(500);
+
+  // Serial.println(F("Done!"));
+  printf("Done!\n");
+}
+
+void loop(void) {
+  // for(uint8_t rotation=0; rotation<4; rotation++) {
+  //   tft.setRotation(rotation);
+  //   testText();
+  //   delay(1000);
+  // }
+  // testFillScreen();
+}
 
 int main() {
   setup();

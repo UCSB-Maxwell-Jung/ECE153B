@@ -179,7 +179,7 @@ public:
   // (e.g. circle or text rendering might make repeated lines or rects)
   // before ending the transaction. It's more efficient than starting a
   // transaction every time.
-  // void writePixel(int16_t x, int16_t y, uint16_t color);
+  void writePixel(int16_t x, int16_t y, uint16_t color);
   // void writePixels(uint16_t *colors, uint32_t len, bool block = true,
   //                  bool bigEndian = false);
   void writeColor(uint16_t color, uint32_t len);
@@ -206,10 +206,10 @@ public:
   // a chip-select and/or SPI transaction built-in. They're typically used
   // solo -- that is, as graphics primitives in themselves, not invoked by
   // higher-level primitives (which should use the functions above).
-  // void drawPixel(int16_t x, int16_t y, uint16_t color);
+  void drawPixel(int16_t x, int16_t y, uint16_t color);
   void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
-  // void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
-  // void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
+  void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
+  void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   // A single-pixel push encapsulated in a transaction. I don't think
   // this is used anymore (BMP demos might've used it?) but is provided
   // for backward compatibility, consider it deprecated:

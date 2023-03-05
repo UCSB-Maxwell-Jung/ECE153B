@@ -77,13 +77,13 @@
 
 // #define SPI_DEFAULT_FREQ 40000000
 
-// #define MADCTL_MY 0x80  ///< Bottom to top
-// #define MADCTL_MX 0x40  ///< Right to left
-// #define MADCTL_MV 0x20  ///< Reverse Mode
-// #define MADCTL_ML 0x10  ///< LCD refresh Bottom to top
-// #define MADCTL_RGB 0x00 ///< Red-Green-Blue pixel order
-// #define MADCTL_BGR 0x08 ///< Blue-Green-Red pixel order
-// #define MADCTL_MH 0x04  ///< LCD refresh right to left
+#define MADCTL_MY 0x80  ///< Bottom to top
+#define MADCTL_MX 0x40  ///< Right to left
+#define MADCTL_MV 0x20  ///< Reverse Mode
+#define MADCTL_ML 0x10  ///< LCD refresh Bottom to top
+#define MADCTL_RGB 0x00 ///< Red-Green-Blue pixel order
+#define MADCTL_BGR 0x08 ///< Blue-Green-Red pixel order
+#define MADCTL_MH 0x04  ///< LCD refresh right to left
 
 Adafruit_ILI9341::Adafruit_ILI9341()
     : Adafruit_SPITFT(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {}
@@ -146,84 +146,84 @@ void Adafruit_ILI9341::begin(uint32_t freq) {
   _height = ILI9341_TFTHEIGHT;
 }
 
-// /**************************************************************************/
-// /*!
-//     @brief   Set origin of (0,0) and orientation of TFT display
-//     @param   m  The index for rotation, from 0-3 inclusive
-// */
-// /**************************************************************************/
-// void Adafruit_ILI9341::setRotation(uint8_t m) {
-//   rotation = m % 4; // can't be higher than 3
-//   switch (rotation) {
-//   case 0:
-//     m = (MADCTL_MX | MADCTL_BGR);
-//     _width = ILI9341_TFTWIDTH;
-//     _height = ILI9341_TFTHEIGHT;
-//     break;
-//   case 1:
-//     m = (MADCTL_MV | MADCTL_BGR);
-//     _width = ILI9341_TFTHEIGHT;
-//     _height = ILI9341_TFTWIDTH;
-//     break;
-//   case 2:
-//     m = (MADCTL_MY | MADCTL_BGR);
-//     _width = ILI9341_TFTWIDTH;
-//     _height = ILI9341_TFTHEIGHT;
-//     break;
-//   case 3:
-//     m = (MADCTL_MX | MADCTL_MY | MADCTL_MV | MADCTL_BGR);
-//     _width = ILI9341_TFTHEIGHT;
-//     _height = ILI9341_TFTWIDTH;
-//     break;
-//   }
+/**************************************************************************/
+/*!
+    @brief   Set origin of (0,0) and orientation of TFT display
+    @param   m  The index for rotation, from 0-3 inclusive
+*/
+/**************************************************************************/
+void Adafruit_ILI9341::setRotation(uint8_t m) {
+  rotation = m % 4; // can't be higher than 3
+  switch (rotation) {
+  case 0:
+    m = (MADCTL_MX | MADCTL_BGR);
+    _width = ILI9341_TFTWIDTH;
+    _height = ILI9341_TFTHEIGHT;
+    break;
+  case 1:
+    m = (MADCTL_MV | MADCTL_BGR);
+    _width = ILI9341_TFTHEIGHT;
+    _height = ILI9341_TFTWIDTH;
+    break;
+  case 2:
+    m = (MADCTL_MY | MADCTL_BGR);
+    _width = ILI9341_TFTWIDTH;
+    _height = ILI9341_TFTHEIGHT;
+    break;
+  case 3:
+    m = (MADCTL_MX | MADCTL_MY | MADCTL_MV | MADCTL_BGR);
+    _width = ILI9341_TFTHEIGHT;
+    _height = ILI9341_TFTWIDTH;
+    break;
+  }
 
-//   sendCommand(ILI9341_MADCTL, &m, 1);
-// }
+  sendCommand(ILI9341_MADCTL, &m, 1);
+}
 
-// /**************************************************************************/
-// /*!
-//     @brief   Enable/Disable display color inversion
-//     @param   invert True to invert, False to have normal color
-// */
-// /**************************************************************************/
-// void Adafruit_ILI9341::invertDisplay(bool invert) {
-//   sendCommand(invert ? ILI9341_INVON : ILI9341_INVOFF);
-// }
+/**************************************************************************/
+/*!
+    @brief   Enable/Disable display color inversion
+    @param   invert True to invert, False to have normal color
+*/
+/**************************************************************************/
+void Adafruit_ILI9341::invertDisplay(bool invert) {
+  sendCommand(invert ? ILI9341_INVON : ILI9341_INVOFF);
+}
 
-// /**************************************************************************/
-// /*!
-//     @brief   Scroll display memory
-//     @param   y How many pixels to scroll display by
-// */
-// /**************************************************************************/
-// void Adafruit_ILI9341::scrollTo(uint16_t y) {
-//   uint8_t data[2];
-//   data[0] = y >> 8;
-//   data[1] = y & 0xff;
-//   sendCommand(ILI9341_VSCRSADD, (uint8_t *)data, 2);
-// }
+/**************************************************************************/
+/*!
+    @brief   Scroll display memory
+    @param   y How many pixels to scroll display by
+*/
+/**************************************************************************/
+void Adafruit_ILI9341::scrollTo(uint16_t y) {
+  uint8_t data[2];
+  data[0] = y >> 8;
+  data[1] = y & 0xff;
+  sendCommand(ILI9341_VSCRSADD, (uint8_t *)data, 2);
+}
 
-// /**************************************************************************/
-// /*!
-//     @brief   Set the height of the Top and Bottom Scroll Margins
-//     @param   top The height of the Top scroll margin
-//     @param   bottom The height of the Bottom scroll margin
-//  */
-// /**************************************************************************/
-// void Adafruit_ILI9341::setScrollMargins(uint16_t top, uint16_t bottom) {
-//   // TFA+VSA+BFA must equal 320
-//   if (top + bottom <= ILI9341_TFTHEIGHT) {
-//     uint16_t middle = ILI9341_TFTHEIGHT - (top + bottom);
-//     uint8_t data[6];
-//     data[0] = top >> 8;
-//     data[1] = top & 0xff;
-//     data[2] = middle >> 8;
-//     data[3] = middle & 0xff;
-//     data[4] = bottom >> 8;
-//     data[5] = bottom & 0xff;
-//     sendCommand(ILI9341_VSCRDEF, (uint8_t *)data, 6);
-//   }
-// }
+/**************************************************************************/
+/*!
+    @brief   Set the height of the Top and Bottom Scroll Margins
+    @param   top The height of the Top scroll margin
+    @param   bottom The height of the Bottom scroll margin
+ */
+/**************************************************************************/
+void Adafruit_ILI9341::setScrollMargins(uint16_t top, uint16_t bottom) {
+  // TFA+VSA+BFA must equal 320
+  if (top + bottom <= ILI9341_TFTHEIGHT) {
+    uint16_t middle = ILI9341_TFTHEIGHT - (top + bottom);
+    uint8_t data[6];
+    data[0] = top >> 8;
+    data[1] = top & 0xff;
+    data[2] = middle >> 8;
+    data[3] = middle & 0xff;
+    data[4] = bottom >> 8;
+    data[5] = bottom & 0xff;
+    sendCommand(ILI9341_VSCRDEF, (uint8_t *)data, 6);
+  }
+}
 
 /**************************************************************************/
 /*!
@@ -259,16 +259,16 @@ void Adafruit_ILI9341::setAddrWindow(uint16_t x1, uint16_t y1, uint16_t w,
   writeCommand(ILI9341_RAMWR); // Write to RAM
 }
 
-// /**************************************************************************/
-// /*!
-//     @brief  Read 8 bits of data from ILI9341 configuration memory. NOT from RAM!
-//             This is highly undocumented/supported, it's really a hack but kinda
-//    works?
-//     @param    commandByte  The command register to read data from
-//     @param    index  The byte index into the command to read from
-//     @return   Unsigned 8-bit data read from ILI9341 register
-//  */
-// /**************************************************************************/
+/**************************************************************************/
+/*!
+    @brief  Read 8 bits of data from ILI9341 configuration memory. NOT from RAM!
+            This is highly undocumented/supported, it's really a hack but kinda
+   works?
+    @param    commandByte  The command register to read data from
+    @param    index  The byte index into the command to read from
+    @return   Unsigned 8-bit data read from ILI9341 register
+ */
+/**************************************************************************/
 uint8_t Adafruit_ILI9341::readcommand8(uint8_t commandByte, uint8_t index) {
   uint8_t data = 0x10 + index;
   sendCommand(0xD9, &data, 1); // Set Index Register
