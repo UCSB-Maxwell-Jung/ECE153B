@@ -1,24 +1,27 @@
 /*
-    This file contains mappings
-    of various pheripherals to their 
-    respective hardware interfaces.
+    This file contains various constants
+    hardware definitions, configuration parameters
+    specific to the digital_camera final project
 
-    For example, DEV_PRINTER = TERMITE = USART2
+    For example, DEV_TERMINAL = WIRED = USART2
 */
 
-#ifndef __STM32L476R_NUCLEO_DEVICE_H
-#define __STM32L476R_NUCLEO_DEVICE_H
+#ifndef __STM32L476R_NUCLEO_CAMERA_H
+#define __STM32L476R_NUCLEO_CAMERA_H
 
 #include "stm32l476xx.h"
 
-#define BLUETOOTH USART1
-#define TERMITE USART2
+#define CLK_FREQ  80000000 // 80Mhz
 
-#define DEV_PRINTER TERMITE
-#define DEV_DISPLAY SPI1
+#define BLUETOOTH USART1
+#define WIRED USART2
+#define ILI9341 SPI1
+
+#define DEV_TERMINAL WIRED
+
 
 /*
-    termite
+    WIRED
     UART2_TX = PA2
     UART2_RX = PA3
 */

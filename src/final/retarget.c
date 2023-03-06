@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "stm32l476xx.h"
-#include "device.h"
+#include "camera.h"
 
 // Implement a dummy __FILE struct, which is called with the FILE structure.
 struct _FILE {
@@ -44,13 +44,13 @@ static void USART_Write(USART_TypeDef * USARTx, uint8_t *buffer, uint32_t nBytes
 int fputc(int ch, FILE *f) { 
 	uint8_t c;
 	c = ch & 0x00FF;
-	USART_Write(DEV_PRINTER, (uint8_t *)&c, 1);
+	USART_Write(DEV_TERMINAL, (uint8_t *)&c, 1);
 	return(ch);
 }
 
 // Retarget scanf() to USART1/USART2
 int fgetc(FILE *f) {  
 	uint8_t rxByte;
-	rxByte = USART_Read(DEV_PRINTER);
+	rxByte = USART_Read(DEV_TERMINAL);
 	return rxByte;
 }
