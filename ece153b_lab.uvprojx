@@ -1932,11 +1932,6 @@
               <FilePath>.\src\final\UART.h</FilePath>
             </File>
             <File>
-              <FileName>UART_printf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\UART_printf.c</FilePath>
-            </File>
-            <File>
               <FileName>SysTick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\SysTick.h</FilePath>
@@ -1955,6 +1950,11 @@
               <FileName>SPI_Display.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\SPI_Display.h</FilePath>
+            </File>
+            <File>
+              <FileName>retarget.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\retarget.c</FilePath>
             </File>
           </Files>
         </Group>
