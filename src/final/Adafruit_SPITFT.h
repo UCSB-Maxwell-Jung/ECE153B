@@ -67,8 +67,6 @@
 // #endif                                     // end !ARM
 // typedef volatile ADAGFX_PORT_t *PORTreg_t; ///< PORT register type
 
-// #define DEFAULT_SPI_FREQ 20000000L ///< Hardware SPI default speed
-
 // #if defined(ADAFRUIT_PYPORTAL) || defined(ADAFRUIT_PYPORTAL_M4_TITANO) ||      \
 //     defined(ADAFRUIT_PYBADGE_M4_EXPRESS) ||                                    \
 //     defined(ADAFRUIT_PYGAMER_M4_EXPRESS) ||                                    \
@@ -89,16 +87,16 @@
 // #include <Adafruit_ZeroDMA.h>
 // #endif
 
-// // This is kind of a kludge. Needed a way to disambiguate the software SPI
-// // and parallel constructors via their argument lists. Originally tried a
-// // bool as the first argument to the parallel constructor (specifying 8-bit
-// // vs 16-bit interface) but the compiler regards this as equivalent to an
-// // integer and thus still ambiguous. SO...the parallel constructor requires
-// // an enumerated type as the first argument: tft8 (for 8-bit parallel) or
-// // tft16 (for 16-bit)...even though 16-bit isn't fully implemented or tested
-// // and might never be, still needed that disambiguation from soft SPI.
-// /*! For first arg to parallel constructor */
-// enum tftBusWidth { tft8bitbus, tft16bitbus };
+// This is kind of a kludge. Needed a way to disambiguate the software SPI
+// and parallel constructors via their argument lists. Originally tried a
+// bool as the first argument to the parallel constructor (specifying 8-bit
+// vs 16-bit interface) but the compiler regards this as equivalent to an
+// integer and thus still ambiguous. SO...the parallel constructor requires
+// an enumerated type as the first argument: tft8 (for 8-bit parallel) or
+// tft16 (for 16-bit)...even though 16-bit isn't fully implemented or tested
+// and might never be, still needed that disambiguation from soft SPI.
+/*! For first arg to parallel constructor */
+enum tftBusWidth { tft8bitbus, tft16bitbus };
 
 // CLASS DEFINITION --------------------------------------------------------
 
@@ -179,13 +177,13 @@ public:
   // (e.g. circle or text rendering might make repeated lines or rects)
   // before ending the transaction. It's more efficient than starting a
   // transaction every time.
-  // void writePixel(int16_t x, int16_t y, uint16_t color);
+  void writePixel(int16_t x, int16_t y, uint16_t color);
   // void writePixels(uint16_t *colors, uint32_t len, bool block = true,
   //                  bool bigEndian = false);
   void writeColor(uint16_t color, uint32_t len);
-  // void writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
-  //                    uint16_t color);
-  // void writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
+  void writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                     uint16_t color);
+  void writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
   void writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   // This is a new function, similar to writeFillRect() except that
   // all arguments MUST be onscreen, sorted and clipped. If higher-level
@@ -206,10 +204,10 @@ public:
   // a chip-select and/or SPI transaction built-in. They're typically used
   // solo -- that is, as graphics primitives in themselves, not invoked by
   // higher-level primitives (which should use the functions above).
-  // void drawPixel(int16_t x, int16_t y, uint16_t color);
+  void drawPixel(int16_t x, int16_t y, uint16_t color);
   void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
-  // void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
-  // void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
+  void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
+  void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   // A single-pixel push encapsulated in a transaction. I don't think
   // this is used anymore (BMP demos might've used it?) but is provided
   // for backward compatibility, consider it deprecated:
@@ -220,7 +218,7 @@ public:
   //                    int16_t h);
 
   // void invertDisplay(bool i);
-  // uint16_t color565(uint8_t r, uint8_t g, uint8_t b);
+  uint16_t color565(uint8_t r, uint8_t g, uint8_t b);
 
   // Despite parallel additions, function names kept for compatibility:
   void spiWrite(uint8_t b);          // Write single byte as DATA

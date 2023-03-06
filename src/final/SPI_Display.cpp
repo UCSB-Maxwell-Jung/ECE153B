@@ -1,8 +1,8 @@
 #include "SPI_Display.h"
-#include "device.h"
+#include "camera.h"
 
 SPI_Display::SPI_Display()
-    : SPI(DEV_DISPLAY) {}
+    : SPI(ILI9341) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
 void SPI_Display::configure_GPIO() {
@@ -101,9 +101,6 @@ void SPI_Display::configure_SPI() {
 	// disable hardware CRC calculation (0)
 	SPI1->CR1 &= ~SPI_CR1_CRCEN;
 
-	// enable NSS pulse generation (1)
-	SPI1->CR2 |= SPI_CR2_NSSP;
-	
-	// enable SPI1
-	SPI1->CR1 |= SPI_CR1_SPE;
+	// disable NSS pulse generation (0)
+	SPI1->CR2 &= ~SPI_CR2_NSSP;
 }

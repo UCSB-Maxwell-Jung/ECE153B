@@ -486,27 +486,27 @@ void Adafruit_SPITFT::endWrite(void) {
   hwspi.disable();
 }
 
-// // -------------------------------------------------------------------------
-// // Lower-level graphics operations. These functions require a chip-select
-// // and/or SPI transaction around them (via startWrite(), endWrite() above).
-// // Higher-level graphics primitives might start a single transaction and
-// // then make multiple calls to these functions (e.g. circle or text
-// // rendering might make repeated lines or rects) before ending the
-// // transaction. It's more efficient than starting a transaction every time.
+// -------------------------------------------------------------------------
+// Lower-level graphics operations. These functions require a chip-select
+// and/or SPI transaction around them (via startWrite(), endWrite() above).
+// Higher-level graphics primitives might start a single transaction and
+// then make multiple calls to these functions (e.g. circle or text
+// rendering might make repeated lines or rects) before ending the
+// transaction. It's more efficient than starting a transaction every time.
 
-// /*!
-//     @brief  Draw a single pixel to the display at requested coordinates.
-//             Not self-contained; should follow a startWrite() call.
-//     @param  x      Horizontal position (0 = left).
-//     @param  y      Vertical position   (0 = top).
-//     @param  color  16-bit pixel color in '565' RGB format.
-// */
-// void Adafruit_SPITFT::writePixel(int16_t x, int16_t y, uint16_t color) {
-//   if ((x >= 0) && (x < _width) && (y >= 0) && (y < _height)) {
-//     setAddrWindow(x, y, 1, 1);
-//     SPI_WRITE16(color);
-//   }
-// }
+/*!
+    @brief  Draw a single pixel to the display at requested coordinates.
+            Not self-contained; should follow a startWrite() call.
+    @param  x      Horizontal position (0 = left).
+    @param  y      Vertical position   (0 = top).
+    @param  color  16-bit pixel color in '565' RGB format.
+*/
+void Adafruit_SPITFT::writePixel(int16_t x, int16_t y, uint16_t color) {
+  if ((x >= 0) && (x < _width) && (y >= 0) && (y < _height)) {
+    setAddrWindow(x, y, 1, 1);
+    SPI_WRITE16(color);
+  }
+}
 
 // /*!
 //     @brief  Swap bytes in an array of pixels; converts little-to-big or
@@ -761,99 +761,99 @@ void Adafruit_SPITFT::writeColor(uint16_t color, uint32_t len) {
   }
 }
 
-// /*!
-//     @brief  Draw a filled rectangle to the display. Not self-contained;
-//             should follow startWrite(). Typically used by higher-level
-//             graphics primitives; user code shouldn't need to call this and
-//             is likely to use the self-contained fillRect() instead.
-//             writeFillRect() performs its own edge clipping and rejection;
-//             see writeFillRectPreclipped() for a more 'raw' implementation.
-//     @param  x      Horizontal position of first corner.
-//     @param  y      Vertical position of first corner.
-//     @param  w      Rectangle width in pixels (positive = right of first
-//                    corner, negative = left of first corner).
-//     @param  h      Rectangle height in pixels (positive = below first
-//                    corner, negative = above first corner).
-//     @param  color  16-bit fill color in '565' RGB format.
-//     @note   Written in this deep-nested way because C by definition will
-//             optimize for the 'if' case, not the 'else' -- avoids branches
-//             and rejects clipped rectangles at the least-work possibility.
-// */
-// void Adafruit_SPITFT::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
-//                                     uint16_t color) {
-//   if (w && h) {   // Nonzero width and height?
-//     if (w < 0) {  // If negative width...
-//       x += w + 1; //   Move X to left edge
-//       w = -w;     //   Use positive width
-//     }
-//     if (x < _width) { // Not off right
-//       if (h < 0) {    // If negative height...
-//         y += h + 1;   //   Move Y to top edge
-//         h = -h;       //   Use positive height
-//       }
-//       if (y < _height) { // Not off bottom
-//         int16_t x2 = x + w - 1;
-//         if (x2 >= 0) { // Not off left
-//           int16_t y2 = y + h - 1;
-//           if (y2 >= 0) { // Not off top
-//             // Rectangle partly or fully overlaps screen
-//             if (x < 0) {
-//               x = 0;
-//               w = x2 + 1;
-//             } // Clip left
-//             if (y < 0) {
-//               y = 0;
-//               h = y2 + 1;
-//             } // Clip top
-//             if (x2 >= _width) {
-//               w = _width - x;
-//             } // Clip right
-//             if (y2 >= _height) {
-//               h = _height - y;
-//             } // Clip bottom
-//             writeFillRectPreclipped(x, y, w, h, color);
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
+/*!
+    @brief  Draw a filled rectangle to the display. Not self-contained;
+            should follow startWrite(). Typically used by higher-level
+            graphics primitives; user code shouldn't need to call this and
+            is likely to use the self-contained fillRect() instead.
+            writeFillRect() performs its own edge clipping and rejection;
+            see writeFillRectPreclipped() for a more 'raw' implementation.
+    @param  x      Horizontal position of first corner.
+    @param  y      Vertical position of first corner.
+    @param  w      Rectangle width in pixels (positive = right of first
+                   corner, negative = left of first corner).
+    @param  h      Rectangle height in pixels (positive = below first
+                   corner, negative = above first corner).
+    @param  color  16-bit fill color in '565' RGB format.
+    @note   Written in this deep-nested way because C by definition will
+            optimize for the 'if' case, not the 'else' -- avoids branches
+            and rejects clipped rectangles at the least-work possibility.
+*/
+void Adafruit_SPITFT::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+                                    uint16_t color) {
+  if (w && h) {   // Nonzero width and height?
+    if (w < 0) {  // If negative width...
+      x += w + 1; //   Move X to left edge
+      w = -w;     //   Use positive width
+    }
+    if (x < _width) { // Not off right
+      if (h < 0) {    // If negative height...
+        y += h + 1;   //   Move Y to top edge
+        h = -h;       //   Use positive height
+      }
+      if (y < _height) { // Not off bottom
+        int16_t x2 = x + w - 1;
+        if (x2 >= 0) { // Not off left
+          int16_t y2 = y + h - 1;
+          if (y2 >= 0) { // Not off top
+            // Rectangle partly or fully overlaps screen
+            if (x < 0) {
+              x = 0;
+              w = x2 + 1;
+            } // Clip left
+            if (y < 0) {
+              y = 0;
+              h = y2 + 1;
+            } // Clip top
+            if (x2 >= _width) {
+              w = _width - x;
+            } // Clip right
+            if (y2 >= _height) {
+              h = _height - y;
+            } // Clip bottom
+            writeFillRectPreclipped(x, y, w, h, color);
+          }
+        }
+      }
+    }
+  }
+}
 
-// /*!
-//     @brief  Draw a horizontal line on the display. Performs edge clipping
-//             and rejection. Not self-contained; should follow startWrite().
-//             Typically used by higher-level graphics primitives; user code
-//             shouldn't need to call this and is likely to use the self-
-//             contained drawFastHLine() instead.
-//     @param  x      Horizontal position of first point.
-//     @param  y      Vertical position of first point.
-//     @param  w      Line width in pixels (positive = right of first point,
-//                    negative = point of first corner).
-//     @param  color  16-bit line color in '565' RGB format.
-// */
-// void inline Adafruit_SPITFT::writeFastHLine(int16_t x, int16_t y, int16_t w,
-//                                             uint16_t color) {
-//   if ((y >= 0) && (y < _height) && w) { // Y on screen, nonzero width
-//     if (w < 0) {                        // If negative width...
-//       x += w + 1;                       //   Move X to left edge
-//       w = -w;                           //   Use positive width
-//     }
-//     if (x < _width) { // Not off right
-//       int16_t x2 = x + w - 1;
-//       if (x2 >= 0) { // Not off left
-//         // Line partly or fully overlaps screen
-//         if (x < 0) {
-//           x = 0;
-//           w = x2 + 1;
-//         } // Clip left
-//         if (x2 >= _width) {
-//           w = _width - x;
-//         } // Clip right
-//         writeFillRectPreclipped(x, y, w, 1, color);
-//       }
-//     }
-//   }
-// }
+/*!
+    @brief  Draw a horizontal line on the display. Performs edge clipping
+            and rejection. Not self-contained; should follow startWrite().
+            Typically used by higher-level graphics primitives; user code
+            shouldn't need to call this and is likely to use the self-
+            contained drawFastHLine() instead.
+    @param  x      Horizontal position of first point.
+    @param  y      Vertical position of first point.
+    @param  w      Line width in pixels (positive = right of first point,
+                   negative = point of first corner).
+    @param  color  16-bit line color in '565' RGB format.
+*/
+void inline Adafruit_SPITFT::writeFastHLine(int16_t x, int16_t y, int16_t w,
+                                            uint16_t color) {
+  if ((y >= 0) && (y < _height) && w) { // Y on screen, nonzero width
+    if (w < 0) {                        // If negative width...
+      x += w + 1;                       //   Move X to left edge
+      w = -w;                           //   Use positive width
+    }
+    if (x < _width) { // Not off right
+      int16_t x2 = x + w - 1;
+      if (x2 >= 0) { // Not off left
+        // Line partly or fully overlaps screen
+        if (x < 0) {
+          x = 0;
+          w = x2 + 1;
+        } // Clip left
+        if (x2 >= _width) {
+          w = _width - x;
+        } // Clip right
+        writeFillRectPreclipped(x, y, w, 1, color);
+      }
+    }
+  }
+}
 
 /*!
     @brief  Draw a vertical line on the display. Performs edge clipping and
@@ -918,33 +918,33 @@ inline void Adafruit_SPITFT::writeFillRectPreclipped(int16_t x, int16_t y,
   writeColor(color, (uint32_t)w * h);
 }
 
-// // -------------------------------------------------------------------------
-// // Ever-so-slightly higher-level graphics operations. Similar to the 'write'
-// // functions above, but these contain their own chip-select and SPI
-// // transactions as needed (via startWrite(), endWrite()). They're typically
-// // used solo -- as graphics primitives in themselves, not invoked by higher-
-// // level primitives (which should use the functions above for better
-// // performance).
+// -------------------------------------------------------------------------
+// Ever-so-slightly higher-level graphics operations. Similar to the 'write'
+// functions above, but these contain their own chip-select and SPI
+// transactions as needed (via startWrite(), endWrite()). They're typically
+// used solo -- as graphics primitives in themselves, not invoked by higher-
+// level primitives (which should use the functions above for better
+// performance).
 
-// /*!
-//     @brief  Draw a single pixel to the display at requested coordinates.
-//             Self-contained and provides its own transaction as needed
-//             (see writePixel(x,y,color) for a lower-level variant).
-//             Edge clipping is performed here.
-//     @param  x      Horizontal position (0 = left).
-//     @param  y      Vertical position   (0 = top).
-//     @param  color  16-bit pixel color in '565' RGB format.
-// */
-// void Adafruit_SPITFT::drawPixel(int16_t x, int16_t y, uint16_t color) {
-//   // Clip first...
-//   if ((x >= 0) && (x < _width) && (y >= 0) && (y < _height)) {
-//     // THEN set up transaction (if needed) and draw...
-//     startWrite();
-//     setAddrWindow(x, y, 1, 1);
-//     SPI_WRITE16(color);
-//     endWrite();
-//   }
-// }
+/*!
+    @brief  Draw a single pixel to the display at requested coordinates.
+            Self-contained and provides its own transaction as needed
+            (see writePixel(x,y,color) for a lower-level variant).
+            Edge clipping is performed here.
+    @param  x      Horizontal position (0 = left).
+    @param  y      Vertical position   (0 = top).
+    @param  color  16-bit pixel color in '565' RGB format.
+*/
+void Adafruit_SPITFT::drawPixel(int16_t x, int16_t y, uint16_t color) {
+  // Clip first...
+  if ((x >= 0) && (x < _width) && (y >= 0) && (y < _height)) {
+    // THEN set up transaction (if needed) and draw...
+    startWrite();
+    setAddrWindow(x, y, 1, 1);
+    SPI_WRITE16(color);
+    endWrite();
+  }
+}
 
 /*!
     @brief  Draw a filled rectangle to the display. Self-contained and
@@ -1007,88 +1007,88 @@ void Adafruit_SPITFT::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
   }
 }
 
-// /*!
-//     @brief  Draw a horizontal line on the display. Self-contained and
-//             provides its own transaction as needed (see writeFastHLine() for
-//             a lower-level variant). Edge clipping and rejection is performed
-//             here.
-//     @param  x      Horizontal position of first point.
-//     @param  y      Vertical position of first point.
-//     @param  w      Line width in pixels (positive = right of first point,
-//                    negative = point of first corner).
-//     @param  color  16-bit line color in '565' RGB format.
-//     @note   This repeats the writeFastHLine() function almost in its
-//             entirety, with the addition of a transaction start/end. It's
-//             done this way (rather than starting the transaction and calling
-//             writeFastHLine() to handle clipping and so forth) so that the
-//             transaction isn't performed at all if the line is rejected.
-// */
-// void Adafruit_SPITFT::drawFastHLine(int16_t x, int16_t y, int16_t w,
-//                                     uint16_t color) {
-//   if ((y >= 0) && (y < _height) && w) { // Y on screen, nonzero width
-//     if (w < 0) {                        // If negative width...
-//       x += w + 1;                       //   Move X to left edge
-//       w = -w;                           //   Use positive width
-//     }
-//     if (x < _width) { // Not off right
-//       int16_t x2 = x + w - 1;
-//       if (x2 >= 0) { // Not off left
-//         // Line partly or fully overlaps screen
-//         if (x < 0) {
-//           x = 0;
-//           w = x2 + 1;
-//         } // Clip left
-//         if (x2 >= _width) {
-//           w = _width - x;
-//         } // Clip right
-//         startWrite();
-//         writeFillRectPreclipped(x, y, w, 1, color);
-//         endWrite();
-//       }
-//     }
-//   }
-// }
+/*!
+    @brief  Draw a horizontal line on the display. Self-contained and
+            provides its own transaction as needed (see writeFastHLine() for
+            a lower-level variant). Edge clipping and rejection is performed
+            here.
+    @param  x      Horizontal position of first point.
+    @param  y      Vertical position of first point.
+    @param  w      Line width in pixels (positive = right of first point,
+                   negative = point of first corner).
+    @param  color  16-bit line color in '565' RGB format.
+    @note   This repeats the writeFastHLine() function almost in its
+            entirety, with the addition of a transaction start/end. It's
+            done this way (rather than starting the transaction and calling
+            writeFastHLine() to handle clipping and so forth) so that the
+            transaction isn't performed at all if the line is rejected.
+*/
+void Adafruit_SPITFT::drawFastHLine(int16_t x, int16_t y, int16_t w,
+                                    uint16_t color) {
+  if ((y >= 0) && (y < _height) && w) { // Y on screen, nonzero width
+    if (w < 0) {                        // If negative width...
+      x += w + 1;                       //   Move X to left edge
+      w = -w;                           //   Use positive width
+    }
+    if (x < _width) { // Not off right
+      int16_t x2 = x + w - 1;
+      if (x2 >= 0) { // Not off left
+        // Line partly or fully overlaps screen
+        if (x < 0) {
+          x = 0;
+          w = x2 + 1;
+        } // Clip left
+        if (x2 >= _width) {
+          w = _width - x;
+        } // Clip right
+        startWrite();
+        writeFillRectPreclipped(x, y, w, 1, color);
+        endWrite();
+      }
+    }
+  }
+}
 
-// /*!
-//     @brief  Draw a vertical line on the display. Self-contained and provides
-//             its own transaction as needed (see writeFastHLine() for a lower-
-//             level variant). Edge clipping and rejection is performed here.
-//     @param  x      Horizontal position of first point.
-//     @param  y      Vertical position of first point.
-//     @param  h      Line height in pixels (positive = below first point,
-//                    negative = above first point).
-//     @param  color  16-bit line color in '565' RGB format.
-//     @note   This repeats the writeFastVLine() function almost in its
-//             entirety, with the addition of a transaction start/end. It's
-//             done this way (rather than starting the transaction and calling
-//             writeFastVLine() to handle clipping and so forth) so that the
-//             transaction isn't performed at all if the line is rejected.
-// */
-// void Adafruit_SPITFT::drawFastVLine(int16_t x, int16_t y, int16_t h,
-//                                     uint16_t color) {
-//   if ((x >= 0) && (x < _width) && h) { // X on screen, nonzero height
-//     if (h < 0) {                       // If negative height...
-//       y += h + 1;                      //   Move Y to top edge
-//       h = -h;                          //   Use positive height
-//     }
-//     if (y < _height) { // Not off bottom
-//       int16_t y2 = y + h - 1;
-//       if (y2 >= 0) { // Not off top
-//         // Line partly or fully overlaps screen
-//         if (y < 0) {
-//           y = 0;
-//           h = y2 + 1;
-//         } // Clip top
-//         if (y2 >= _height) {
-//           h = _height - y;
-//         } // Clip bottom
-//         startWrite();
-//         writeFillRectPreclipped(x, y, 1, h, color);
-//         endWrite();
-//       }
-//     }
-//   }
-// }
+/*!
+    @brief  Draw a vertical line on the display. Self-contained and provides
+            its own transaction as needed (see writeFastHLine() for a lower-
+            level variant). Edge clipping and rejection is performed here.
+    @param  x      Horizontal position of first point.
+    @param  y      Vertical position of first point.
+    @param  h      Line height in pixels (positive = below first point,
+                   negative = above first point).
+    @param  color  16-bit line color in '565' RGB format.
+    @note   This repeats the writeFastVLine() function almost in its
+            entirety, with the addition of a transaction start/end. It's
+            done this way (rather than starting the transaction and calling
+            writeFastVLine() to handle clipping and so forth) so that the
+            transaction isn't performed at all if the line is rejected.
+*/
+void Adafruit_SPITFT::drawFastVLine(int16_t x, int16_t y, int16_t h,
+                                    uint16_t color) {
+  if ((x >= 0) && (x < _width) && h) { // X on screen, nonzero height
+    if (h < 0) {                       // If negative height...
+      y += h + 1;                      //   Move Y to top edge
+      h = -h;                          //   Use positive height
+    }
+    if (y < _height) { // Not off bottom
+      int16_t y2 = y + h - 1;
+      if (y2 >= 0) { // Not off top
+        // Line partly or fully overlaps screen
+        if (y < 0) {
+          y = 0;
+          h = y2 + 1;
+        } // Clip top
+        if (y2 >= _height) {
+          h = _height - y;
+        } // Clip bottom
+        startWrite();
+        writeFillRectPreclipped(x, y, 1, h, color);
+        endWrite();
+      }
+    }
+  }
+}
 
 // /*!
 //     @brief  Essentially writePixel() with a transaction around it. I don't
@@ -1170,19 +1170,19 @@ void Adafruit_SPITFT::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 //   endWrite();
 // }
 
-// /*!
-//     @brief   Given 8-bit red, green and blue values, return a 'packed'
-//              16-bit color value in '565' RGB format (5 bits red, 6 bits
-//              green, 5 bits blue). This is just a mathematical operation,
-//              no hardware is touched.
-//     @param   red    8-bit red brightnesss (0 = off, 255 = max).
-//     @param   green  8-bit green brightnesss (0 = off, 255 = max).
-//     @param   blue   8-bit blue brightnesss (0 = off, 255 = max).
-//     @return  'Packed' 16-bit color value (565 format).
-// */
-// uint16_t Adafruit_SPITFT::color565(uint8_t red, uint8_t green, uint8_t blue) {
-//   return ((red & 0xF8) << 8) | ((green & 0xFC) << 3) | (blue >> 3);
-// }
+/*!
+    @brief   Given 8-bit red, green and blue values, return a 'packed'
+             16-bit color value in '565' RGB format (5 bits red, 6 bits
+             green, 5 bits blue). This is just a mathematical operation,
+             no hardware is touched.
+    @param   red    8-bit red brightnesss (0 = off, 255 = max).
+    @param   green  8-bit green brightnesss (0 = off, 255 = max).
+    @param   blue   8-bit blue brightnesss (0 = off, 255 = max).
+    @return  'Packed' 16-bit color value (565 format).
+*/
+uint16_t Adafruit_SPITFT::color565(uint8_t red, uint8_t green, uint8_t blue) {
+  return ((red & 0xF8) << 8) | ((green & 0xFC) << 3) | (blue >> 3);
+}
 
 /*!
 @brief   Adafruit_SPITFT Send Command handles complete sending of commands and
