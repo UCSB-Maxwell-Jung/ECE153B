@@ -299,7 +299,7 @@ void test_graphics() {
   x = tft.readcommand8(ILI9341_RDSELFDIAG);
   printf("Self Diagnostic: %#x\n", x);
   
-  printf("Benchmark                Time (milliseconds)\n");
+  printf("Benchmark                Time (microseconds)\n");
   delay(10);
   printf("Screen fill              %d\n", testFillScreen());
   delay(500);
