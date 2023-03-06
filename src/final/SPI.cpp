@@ -7,12 +7,12 @@ SPI::SPI(SPI_TypeDef* SPIx)
 void SPI::begin(uint32_t desired_freq) {
 	_desired_freq = desired_freq;
 	// calculate prescalar exponent (prescalar = 2^(n+1))
-	_br = floor((log((float)PCLK_FREQ/(float)_desired_freq)/log(2.0))-1);
+	_br = floor((log((float)CLK_FREQ/(float)_desired_freq)/log(2.0))-1);
 	if (_br < 0)
 		_br = 0;
 	else if (_br > 7)
 		_br = 7;
-	_actual_freq = PCLK_FREQ/(2<<(_br+1)); // divide by 2^(n+1)
+	_actual_freq = CLK_FREQ/(2<<(_br+1)); // divide by 2^(n+1)
 
 	configure_GPIO();
 	configure_SPI();

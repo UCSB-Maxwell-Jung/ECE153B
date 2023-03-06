@@ -6,7 +6,6 @@
 
 #include <stddef.h>
 
-#define PCLK_FREQ  80000000 // 80Mhz
 #define SPI_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
 
 class SPI {

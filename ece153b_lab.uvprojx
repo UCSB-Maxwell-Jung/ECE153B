@@ -1956,6 +1956,26 @@
               <FileType>1</FileType>
               <FilePath>.\src\final\retarget.c</FilePath>
             </File>
+            <File>
+              <FileName>UART_Bluetooth.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\UART_Bluetooth.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Bluetooth.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\UART_Bluetooth.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Termite.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\UART_Termite.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Termite.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\UART_Termite.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

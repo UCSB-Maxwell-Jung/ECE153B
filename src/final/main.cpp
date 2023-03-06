@@ -21,8 +21,7 @@
 #include "LED.h"
 #include "SysTick.h"
 #include "SysClock.h"
-#include "UART.h"
-#include "SPI.h"
+#include "UART_Termite.h"
 #include "device.h"
 
 // graphics and lcd library from Adafruit
@@ -32,7 +31,7 @@
 uint32_t testFillScreen();
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341();
-UART Serial = UART(DEV_PRINTER);
+UART_Termite Serial = UART_Termite();
 
 uint32_t testFillScreen() {
   uint32_t start = micros();
@@ -287,6 +286,8 @@ unsigned long testFilledRoundRects() {
 }
 
 void test_graphics() {
+  printf("ILI9341 Test!\n");
+
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
   printf("Display Power Mode: %#x\n", x);
@@ -347,13 +348,8 @@ void setup() {
 	init_LED();
 
   // initialize Serial communication interface
-  Serial.begin(9600);
-
-  printf("ILI9341 Test!\n");
-
+  Serial.begin(UART_DEFAULT_BAUD_RATE);
   tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
-
-  test_graphics();
 }
 
 void loop(void) {
