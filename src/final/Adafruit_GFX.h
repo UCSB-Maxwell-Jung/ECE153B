@@ -5,7 +5,7 @@
 
 // #if ARDUINO >= 100
 // #include "Arduino.h"
-// #include "Print.h"
+#include "Print.h"
 // #else
 // #include "WProgram.h"
 // #endif
@@ -30,7 +30,7 @@
 // / A generic graphics superclass that can handle all sorts of drawing. At a
 // / minimum you can subclass and provide drawPixel(). At a maximum you can do a
 // / ton of overriding to optimize. Used for any/all Adafruit displays!
-class Adafruit_GFX {
+class Adafruit_GFX : public Print {
 public:
   Adafruit_GFX(int16_t w, int16_t h); // Constructor
 
@@ -58,17 +58,17 @@ public:
                          uint16_t color);
   virtual void endWrite(void);
 
-//   // CONTROL API
-//   // These MAY be overridden by the subclass to provide device-specific
-//   // optimized code.  Otherwise 'generic' versions are used.
+  // CONTROL API
+  // These MAY be overridden by the subclass to provide device-specific
+  // optimized code.  Otherwise 'generic' versions are used.
 //   virtual void setRotation(uint8_t r);
 //   virtual void invertDisplay(bool i);
 
-//   // BASIC DRAW API
-//   // These MAY be overridden by the subclass to provide device-specific
-//   // optimized code.  Otherwise 'generic' versions are used.
+  // BASIC DRAW API
+  // These MAY be overridden by the subclass to provide device-specific
+  // optimized code.  Otherwise 'generic' versions are used.
 
-//   // It's good to implement those, even if using transaction API
+  // It's good to implement those, even if using transaction API
   virtual void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
   virtual void fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
@@ -121,62 +121,62 @@ public:
   //                    const uint8_t mask[], int16_t w, int16_t h);
   // void drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, uint8_t *mask,
   //                    int16_t w, int16_t h);
-//   void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color,
-//                 uint16_t bg, uint8_t size);
-//   void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color,
-//                 uint16_t bg, uint8_t size_x, uint8_t size_y);
+  void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color,
+                uint16_t bg, uint8_t size);
+  void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color,
+                uint16_t bg, uint8_t size_x, uint8_t size_y);
 //   // void getTextBounds(const char *string, int16_t x, int16_t y, int16_t *x1,
 //   //                    int16_t *y1, uint16_t *w, uint16_t *h);
 //   // void getTextBounds(const __FlashStringHelper *s, int16_t x, int16_t y,
 //   //                    int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h);
 //   // void getTextBounds(const String &str, int16_t x, int16_t y, int16_t *x1,
 //   //                    int16_t *y1, uint16_t *w, uint16_t *h);
-//   void setTextSize(uint8_t s);
-//   void setTextSize(uint8_t sx, uint8_t sy);
+  void setTextSize(uint8_t s);
+  void setTextSize(uint8_t sx, uint8_t sy);
 //   void setFont(const GFXfont *f = NULL);
 
-//   /**********************************************************************/
-//   /*!
-//     @brief  Set text cursor location
-//     @param  x    X coordinate in pixels
-//     @param  y    Y coordinate in pixels
-//   */
-//   /**********************************************************************/
-//   void setCursor(int16_t x, int16_t y) {
-//     cursor_x = x;
-//     cursor_y = y;
-//   }
+  /**********************************************************************/
+  /*!
+    @brief  Set text cursor location
+    @param  x    X coordinate in pixels
+    @param  y    Y coordinate in pixels
+  */
+  /**********************************************************************/
+  void setCursor(int16_t x, int16_t y) {
+    cursor_x = x;
+    cursor_y = y;
+  }
 
-//   /**********************************************************************/
-//   /*!
-//     @brief   Set text font color with transparant background
-//     @param   c   16-bit 5-6-5 Color to draw text with
-//     @note    For 'transparent' background, background and foreground
-//              are set to same color rather than using a separate flag.
-//   */
-//   /**********************************************************************/
-//   void setTextColor(uint16_t c) { textcolor = textbgcolor = c; }
+  /**********************************************************************/
+  /*!
+    @brief   Set text font color with transparant background
+    @param   c   16-bit 5-6-5 Color to draw text with
+    @note    For 'transparent' background, background and foreground
+             are set to same color rather than using a separate flag.
+  */
+  /**********************************************************************/
+  void setTextColor(uint16_t c) { textcolor = textbgcolor = c; }
 
-//   /**********************************************************************/
-//   /*!
-//     @brief   Set text font color with custom background color
-//     @param   c   16-bit 5-6-5 Color to draw text with
-//     @param   bg  16-bit 5-6-5 Color to draw background/fill with
-//   */
-//   /**********************************************************************/
-//   void setTextColor(uint16_t c, uint16_t bg) {
-//     textcolor = c;
-//     textbgcolor = bg;
-//   }
+  /**********************************************************************/
+  /*!
+    @brief   Set text font color with custom background color
+    @param   c   16-bit 5-6-5 Color to draw text with
+    @param   bg  16-bit 5-6-5 Color to draw background/fill with
+  */
+  /**********************************************************************/
+  void setTextColor(uint16_t c, uint16_t bg) {
+    textcolor = c;
+    textbgcolor = bg;
+  }
 
-//   /**********************************************************************/
-//   /*!
-//   @brief  Set whether text that is too long for the screen width should
-//           automatically wrap around to the next line (else clip right).
-//   @param  w  true for wrapping, false for clipping
-//   */
-//   /**********************************************************************/
-//   void setTextWrap(bool w) { wrap = w; }
+  /**********************************************************************/
+  /*!
+  @brief  Set whether text that is too long for the screen width should
+          automatically wrap around to the next line (else clip right).
+  @param  w  true for wrapping, false for clipping
+  */
+  /**********************************************************************/
+  void setTextWrap(bool w) { wrap = w; }
 
 //   /**********************************************************************/
 //   /*!
@@ -194,12 +194,12 @@ public:
 //   /**********************************************************************/
 //   void cp437(bool x = true) { _cp437 = x; }
 
-// //   using Print::write;
-// // #if ARDUINO >= 100
-// //   virtual size_t write(uint8_t);
-// // #else
-// //   virtual void write(uint8_t);
-// // #endif
+  using Print::write;
+// #if ARDUINO >= 100
+  virtual size_t write(uint8_t);
+// #else
+//   virtual void write(uint8_t);
+// #endif
 
   /************************************************************************/
   /*!

@@ -1976,6 +1976,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\final\UART_Wired.h</FilePath>
             </File>
+            <File>
+              <FileName>Print.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Print.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Print.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Print.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
