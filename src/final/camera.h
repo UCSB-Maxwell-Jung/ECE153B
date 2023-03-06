@@ -3,7 +3,7 @@
     hardware definitions, configuration parameters
     specific to the digital_camera final project
 
-    For example, DEV_PRINTER = TERMITE = USART2
+    For example, DEV_TERMINAL = WIRED = USART2
 */
 
 #ifndef __STM32L476R_NUCLEO_CAMERA_H
@@ -14,14 +14,14 @@
 #define CLK_FREQ  80000000 // 80Mhz
 
 #define BLUETOOTH USART1
-#define TERMITE USART2
+#define WIRED USART2
 #define ILI9341 SPI1
 
-#define DEV_PRINTER TERMITE
+#define DEV_TERMINAL WIRED
 
 
 /*
-    termite
+    WIRED
     UART2_TX = PA2
     UART2_RX = PA3
 */

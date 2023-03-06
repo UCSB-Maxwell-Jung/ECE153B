@@ -21,7 +21,7 @@
 #include "LED.h"
 #include "SysTick.h"
 #include "SysClock.h"
-#include "UART_Termite.h"
+#include "UART_Wired.h"
 #include "camera.h"
 
 // graphics and lcd library from Adafruit
@@ -31,7 +31,7 @@
 uint32_t testFillScreen();
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341();
-UART_Termite Serial = UART_Termite();
+UART_Wired Serial = UART_Wired();
 
 uint32_t testFillScreen() {
   uint32_t start = micros();

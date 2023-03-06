@@ -1,11 +1,11 @@
-#include "UART_Termite.h"
+#include "UART_Wired.h"
 #include "camera.h"
 
-UART_Termite::UART_Termite()
-    : UART(TERMITE) {}
+UART_Wired::UART_Wired()
+    : UART(WIRED) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
-void UART_Termite::configure_GPIO() {
+void UART_Wired::configure_GPIO() {
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; // enable GPIO A
 
 	// 2.a pins set to High speed//
@@ -33,7 +33,7 @@ void UART_Termite::configure_GPIO() {
 }
 
 // Initialize SPI1 peripheral as master
-void UART_Termite::configure_UART() {
+void UART_Wired::configure_UART() {
 	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN; // 1.a enable USART2 clock in peripheral clk reg
 	
 	RCC->CCIPR &= ~RCC_CCIPR_USART2SEL;

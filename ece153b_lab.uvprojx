@@ -1862,11 +1862,6 @@
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
             </File>
             <File>
-              <FileName>device.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\device.h</FilePath>
-            </File>
-            <File>
               <FileName>gfxfont.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\gfxfont.h</FilePath>
@@ -1967,14 +1962,19 @@
               <FilePath>.\src\final\UART_Bluetooth.h</FilePath>
             </File>
             <File>
-              <FileName>UART_Termite.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\UART_Termite.cpp</FilePath>
+              <FileName>camera.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\camera.h</FilePath>
             </File>
             <File>
-              <FileName>UART_Termite.h</FileName>
+              <FileName>UART_Wired.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\UART_Wired.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Wired.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\UART_Termite.h</FilePath>
+              <FilePath>.\src\final\UART_Wired.h</FilePath>
             </File>
           </Files>
         </Group>
