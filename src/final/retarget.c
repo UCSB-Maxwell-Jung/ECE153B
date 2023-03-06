@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "stm32l476xx.h"
-#include "device.h"
+#include "camera.h"
 
 // Implement a dummy __FILE struct, which is called with the FILE structure.
 struct _FILE {

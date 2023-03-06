@@ -25,6 +25,7 @@
         "cmath": "cpp",
         "initializer_list": "cpp",
         "xutility": "cpp",
-        "device.h": "c"
+        "device.h": "c",
+        "camera.h": "c"
     }
 }

@@ -1,7 +1,7 @@
 #ifndef __STM32L476R_NUCLEO_SPI_H
 #define __STM32L476R_NUCLEO_SPI_H
 
-#include "device.h"
+#include "camera.h"
 #include "stm32l476xx.h"
 
 #include <stddef.h>

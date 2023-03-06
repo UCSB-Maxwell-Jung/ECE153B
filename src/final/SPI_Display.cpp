@@ -1,5 +1,5 @@
 #include "SPI_Display.h"
-#include "device.h"
+#include "camera.h"
 
 SPI_Display::SPI_Display()
     : SPI(DISPLAY) {}

@@ -6,8 +6,8 @@
     For example, DEV_TERMINAL = TERMITE = USART2
 */
 
-#ifndef __STM32L476R_NUCLEO_DEVICE_H
-#define __STM32L476R_NUCLEO_DEVICE_H
+#ifndef __STM32L476R_NUCLEO_CAMERA_H
+#define __STM32L476R_NUCLEO_CAMERA_H
 
 #include "stm32l476xx.h"
 

@@ -22,7 +22,7 @@
 #include "SysTick.h"
 #include "SysClock.h"
 #include "UART_Termite.h"
-#include "device.h"
+#include "camera.h"
 
 // graphics and lcd library from Adafruit
 #include "Adafruit_GFX.h"

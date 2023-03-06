@@ -1,5 +1,5 @@
 #include "UART_Bluetooth.h"
-#include "device.h"
+#include "camera.h"
 
 UART_Bluetooth::UART_Bluetooth()
     : UART(BLUETOOTH) {}

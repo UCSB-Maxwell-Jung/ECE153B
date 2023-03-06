@@ -1,5 +1,5 @@
 #include "UART_Termite.h"
-#include "device.h"
+#include "camera.h"
 
 UART_Termite::UART_Termite()
     : UART(TERMITE) {}
