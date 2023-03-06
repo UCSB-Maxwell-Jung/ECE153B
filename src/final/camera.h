@@ -15,9 +15,10 @@
 
 #define BLUETOOTH USART1
 #define TERMITE USART2
+#define ILI9341 SPI1
 
 #define DEV_PRINTER TERMITE
-#define DISPLAY SPI1
+
 
 /*
     termite

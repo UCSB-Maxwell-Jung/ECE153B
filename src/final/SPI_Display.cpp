@@ -2,7 +2,7 @@
 #include "camera.h"
 
 SPI_Display::SPI_Display()
-    : SPI(DISPLAY) {}
+    : SPI(ILI9341) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
 void SPI_Display::configure_GPIO() {
