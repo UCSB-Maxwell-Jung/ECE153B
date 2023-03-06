@@ -135,14 +135,14 @@ work with ILI9340)
 class Adafruit_ILI9341 : public Adafruit_SPITFT {
 public:
   // constructor
-  Adafruit_ILI9341(SPI_TypeDef* SPIx);
+  Adafruit_ILI9341();
 
   // methods
   void begin(uint32_t freq = 0);
-  // void setRotation(uint8_t r);
-  // void invertDisplay(bool i);
-  // void scrollTo(uint16_t y);
-  // void setScrollMargins(uint16_t top, uint16_t bottom);
+  void setRotation(uint8_t r);
+  void invertDisplay(bool i);
+  void scrollTo(uint16_t y);
+  void setScrollMargins(uint16_t top, uint16_t bottom);
 
   // Transaction API not used by GFX
   void setAddrWindow(uint16_t x, uint16_t y, uint16_t w, uint16_t h);
