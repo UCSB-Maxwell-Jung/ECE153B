@@ -1,9 +1,9 @@
 /*
-    This file contains mappings
-    of various pheripherals to their 
-    respective hardware interfaces.
+    This file contains various constants
+    hardware definitions, configuration parameters
+    specific to the digital_camera final project
 
-    For example, DEV_TERMINAL = TERMITE = USART2
+    For example, DEV_PRINTER = TERMITE = USART2
 */
 
 #ifndef __STM32L476R_NUCLEO_CAMERA_H
@@ -16,7 +16,7 @@
 #define BLUETOOTH USART1
 #define TERMITE USART2
 
-#define DEV_TERMINAL TERMITE
+#define DEV_PRINTER TERMITE
 #define DISPLAY SPI1
 
 /*
