@@ -28,6 +28,15 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include "stm32l4xx.h"
+#include "sys.h"
+#include "delay.h"
+#include "usart.h"
+#include "spi.h"
+#include "sccb_bus.h"
+#include "ArduCAM.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
