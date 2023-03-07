@@ -66,10 +66,10 @@ static void MX_USART2_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  uint8_t vid, pid, temp ;
-	uint8_t Camera_WorkMode = 0;
-	uint8_t start_shoot = 0;
-	uint8_t stop = 0;
+  uint8_t vid, pid, temp;
+  uint8_t Camera_WorkMode = 0;
+  uint8_t start_shoot = 0;
+  uint8_t stop = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
