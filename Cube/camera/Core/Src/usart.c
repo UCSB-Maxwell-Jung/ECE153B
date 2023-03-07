@@ -63,17 +63,17 @@ void USART1_UART_Init(uint32_t BaudRate)
 }
 
 
-// void UART1_BulkOut(uint32_t len, uint8_t *p)
-// {
-// 	uint32_t	cnt =0;
+void UART1_BulkOut(uint32_t len, uint8_t *p)
+{
+	uint32_t cnt =0;
 	
-// 	for(cnt=0;cnt!=len;cnt++)
-// 	{	    
-// 		while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
-// 		USART_SendData(USART1, *p);
-// 		p++;    
-// 	}
-// }
+	for(cnt=0;cnt!=len;cnt++)
+	{	    
+		while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
+		USART_SendData(USART1, *p);
+		p++;    
+	}
+}
 
 void USART1_IRQHandler(void)
 {
