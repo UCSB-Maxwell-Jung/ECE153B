@@ -1862,11 +1862,6 @@
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
             </File>
             <File>
-              <FileName>device.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\device.h</FilePath>
-            </File>
-            <File>
               <FileName>gfxfont.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\gfxfont.h</FilePath>
@@ -1932,11 +1927,6 @@
               <FilePath>.\src\final\UART.h</FilePath>
             </File>
             <File>
-              <FileName>UART_printf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\UART_printf.c</FilePath>
-            </File>
-            <File>
               <FileName>SysTick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\SysTick.h</FilePath>
@@ -1945,6 +1935,56 @@
               <FileName>SysTick.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\final\SysTick.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPI_Display.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SPI_Display.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SPI_Display.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\SPI_Display.h</FilePath>
+            </File>
+            <File>
+              <FileName>retarget.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\retarget.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Bluetooth.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\UART_Bluetooth.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Bluetooth.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\UART_Bluetooth.h</FilePath>
+            </File>
+            <File>
+              <FileName>camera.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\camera.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Wired.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\UART_Wired.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Wired.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\UART_Wired.h</FilePath>
+            </File>
+            <File>
+              <FileName>Print.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Print.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Print.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Print.h</FilePath>
             </File>
           </Files>
         </Group>

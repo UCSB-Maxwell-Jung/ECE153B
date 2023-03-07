@@ -1,14 +1,14 @@
 
 #include "SysTick.h"
 
-volatile uint32_t current_ms_elapsed;
+volatile uint32_t us_elapsed;
 
 
 //******************************************************************************************
-// Initialize SysTick	
+// Initialize SysTick
+// generate 1 tick/interrupt every 1us
 //******************************************************************************************	
 void init_SysTick(void){
-	// generate 1ms interrupt
 	// SysTick Control & Status Register
 	SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk; // disable SysTick IRQ and SysTick Counter
 	
@@ -22,7 +22,7 @@ void init_SysTick(void){
 	// If CLKSOURCE = 1, the processor clock is used.
 	SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk; // set to 0 (80Mhz/8 = 10Mhz)
 
-	SysTick->LOAD = 9999; // set auto reload value to (10Mhz * 1ms) - 1
+	SysTick->LOAD = 9; // set auto reload value to (10Mhz * 1us) - 1
 
 	SysTick->VAL = 0; // set starting value to 0
 
@@ -33,27 +33,27 @@ void init_SysTick(void){
 	// Enable SysTick IRQ and SysTick Timer
 	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 
-	// set the starting ms elapsed to 0
-	current_ms_elapsed = 0;
+	// set the starting us elapsed to 0
+	us_elapsed = 0;
 }
 
 //******************************************************************************************
 // SysTick Interrupt Handler
 //******************************************************************************************
 void SysTick_Handler(void){
-	current_ms_elapsed++;
+	us_elapsed++;
 }
 	
 //******************************************************************************************
 // Delay in ms
 //******************************************************************************************
-void delay(uint32_t ms_wait_duration){
-	uint32_t future_ms_elapsed;
+void delay(uint32_t ms){
+	uint32_t future_time;
 
-	future_ms_elapsed = current_ms_elapsed + ms_wait_duration;
-	while (current_ms_elapsed < future_ms_elapsed);
+	future_time = us_elapsed + 1000*ms;
+	while (us_elapsed < future_time);
 }
 
 uint32_t micros(void){
-	return current_ms_elapsed;
+	return us_elapsed;
 }
