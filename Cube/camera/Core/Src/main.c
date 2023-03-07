@@ -106,7 +106,7 @@ int main(void)
 
   	 sccb_bus_init(); //inits the sensor on camera (I2C setup)
 
-  	 //SPI1_Init();
+  	 SPI1_Init();
 
   	while(1)
   	{

@@ -41,7 +41,7 @@ void sccb_bus_init(void)
 
 	/*[TODO] RCC->APB2ER = GPIOB */
 
-	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;				  		//1
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;				  //1 Uses peripheral clk for GPIOB
 
 	GPIO_InitStructure.Pin = GPIO_PIN_6;						//2
  	
@@ -60,7 +60,7 @@ void sccb_bus_init(void)
  	HAL_GPIO_Init(GPIOB, &GPIO_InitStructure);					//9
  	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);  		//10 set pin high
 
- 	SCCB_DATA_OUT;												//11
+ 	SCCB_DATA_OUT;												//11 //sets pin to output data
 
 }
 

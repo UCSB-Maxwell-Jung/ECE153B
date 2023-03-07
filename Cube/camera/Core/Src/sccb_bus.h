@@ -16,17 +16,16 @@
 
 //REFER to Pg 172 for STM32F10x manual
 
-//#define SCCB_DATA_IN     {GPIOB->CRH&=0XFFFF0FFF;GPIOB->CRH|=0X00008000;}//Mode set to 00, CNF = 10
-							//input mode :pull up pull down
+//[TODO] determine equivalent for pull up\/ pull down
+//#define SCCB_DATA_IN {GPIOB->CRH&=0XFFFF0FFF;GPIOB->CRH|=0X00008000;}//Mode set to 00, CNF = 10
+#define SCCB_DATA_IN {GPIOB->MODER &= ~GPIO_MODER_MODE7; GPIOB->PUPDR &= ~GPIO_PUPDR_PUPD7; GPIOB->PUPDR |= ~GPIO_PUPDR_PUPD7_0; } //input mode :pull up / pull down
 
-#define SCCB_DATA_IN {GPIOB->}
+//#define SCCB_DATA_OUT {GPIOB->CRH&=0XFFFF0FFF;GPIOB->CRH|=0X00003000;} //Mode set to 11, CNF = 00
+//Out put mode: general purpose push pull
+#define SCCB_DATA_OUT {GPIOB->OTYPER |= GPIO_OTYPER_IDR_7; GPIOB->MODER &= ~GPIO_MODER_MODE7; GPIOB->MODER |= GPIO_MODER_MODE7_0;}
 
-//#define SCCB_DATA_OUT    {GPIOB->CRH&=0XFFFF0FFF;GPIOB->CRH|=0X00003000;} //Mode set to 11, CNF = 00
-							//Out put mode: general purpose push pull
-
-
-//#define SCCB_SID_STATE	  PBin(11)
-#define SCCB_SID_STATE	  PBin()
+//#define SCCB_SID_STATE  PBin(11)
+#define SCCB_SID_STATE	  PBin(7)
 
 void sccb_bus_init(void);
 void sccb_bus_start(void);

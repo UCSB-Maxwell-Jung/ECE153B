@@ -2,30 +2,30 @@
 #include 
 unsigned char USART1_RecieveData;
 unsigned char NewCMD = 0;
-// //////////////////////////////////////////////////////////////////
-// //Add the below code to support printf 
-// #if 1
-// #pragma import(__use_no_semihosting)                             
-// struct __FILE 
-// { 
-// 	int handle; 
+//////////////////////////////////////////////////////////////////
+//Add the below code to support printf 
+#if 1
+#pragma import(__use_no_semihosting)                             
+struct __FILE 
+{ 
+	int handle; 
 
-// }; 
+}; 
 
-// FILE __stdout;       
-// //define _sys_exit()   
-// void _sys_exit(int x) 
-// { 
-// 	x = x; 
-// } 
-// //Redefine fputc function 
-// int fputc(int ch, FILE *f)
-// {      
-// 	while((USART1->SR&0X40)==0){;}  
-//     USART1->DR = (u8) ch;      
-// 	return ch;
-// }
-// #endif 
+FILE __stdout;       
+//define _sys_exit()   
+void _sys_exit(int x) 
+{ 
+	x = x; 
+} 
+//Redefine fputc function 
+int fputc(int ch, FILE *f)
+{      
+	while((USART1->SR&0X40)==0){;}  
+    USART1->DR = (u8) ch;      
+	return ch;
+}
+#endif 
 
 void USART1_UART_Init(uint32_t BaudRate)
 {
