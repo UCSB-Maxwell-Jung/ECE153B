@@ -122,7 +122,7 @@ CS_HIGH();	*/                                        //6
 GPIO_InitTypeDef GPIO_InitStructure;
                    
 
-RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;				  //1
+RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;				  //1 Uses peripheral clk for GPIOB
 GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;        //2 set to push pull
 GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;      //3 (High range 25 MHz to 50 MHz)
 GPIO_InitStructure.Pin = GPIO_PIN_12;                 //4 select CS pin PB12
