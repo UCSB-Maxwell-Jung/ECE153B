@@ -10,10 +10,9 @@
 #include <Wire.h>
 #include <ArduCAM.h>
 #include <SPI.h>
-#include "memorysaver.h"
 //This demo can only work on OV2640_MINI_2MP platform.
 #if !(defined OV2640_MINI_2MP)
-  #error Please select the hardware platform and camera module in the ../libraries/ArduCAM/memorysaver.h file
+  #error Please select the hardware platform and camera module in the nucleo.h file
 #endif
 #define BMPIMAGEOFFSET 66
 const char bmp_header[BMPIMAGEOFFSET] PROGMEM =
