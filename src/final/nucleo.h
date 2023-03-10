@@ -1,9 +1,7 @@
 /*
-    This file contains various constants
-    hardware definitions, configuration parameters
+    This file contains various hardware definitions, 
+    constants, and comments describing hardware configuration
     specific to the digital_camera final project
-
-    For example, DEV_TERMINAL = WIRED = USART2
 */
 
 #ifndef __STM32L476R_NUCLEO_CAMERA_H
@@ -11,13 +9,13 @@
 
 #include "stm32l476xx.h"
 
+#include <stddef.h>
+
 #define CLK_FREQ  80000000 // 80Mhz
 
 #define BLUETOOTH USART1
 #define WIRED USART2
 #define ILI9341 SPI1
-
-#define DEV_TERMINAL WIRED
 
 
 /*

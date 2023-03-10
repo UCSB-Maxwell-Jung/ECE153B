@@ -1,10 +1,7 @@
 #ifndef __STM32L476R_NUCLEO_SPI_H
 #define __STM32L476R_NUCLEO_SPI_H
 
-#include "camera.h"
-#include "stm32l476xx.h"
-
-#include <stddef.h>
+#include "nucleo.h"
 
 #define SPI_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
 

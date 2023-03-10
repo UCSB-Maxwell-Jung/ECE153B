@@ -16,11 +16,10 @@
 #include "graphicstest.h"
 
 // custom library
-#include "LED.h"
-#include "SysTick.h"
 #include "SysClock.h"
+#include "SysTick.h"
+#include "LED.h"
 #include "UART_Wired.h"
-#include "camera.h"
 
 // graphics and lcd library from Adafruit
 #include "Adafruit_GFX.h"

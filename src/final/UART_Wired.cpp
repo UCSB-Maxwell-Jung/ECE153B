@@ -1,5 +1,4 @@
 #include "UART_Wired.h"
-#include "camera.h"
 
 UART_Wired::UART_Wired()
     : UART(WIRED) {}
