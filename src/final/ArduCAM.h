@@ -100,13 +100,10 @@
 
 #ifndef ArduCAM_H
 #define ArduCAM_H
-#include "memorysaver.h"
-#if defined ( RASPBERRY_PI ) 
-#else
-	#include "Arduino.h"
-	#include <pins_arduino.h>
-	#include "memorysaver.h"
-#endif
+#include "nucleo.h"
+// #include "memorysaver.h"
+// #include "Arduino.h"
+// #include <pins_arduino.h>
 
 #if defined (__AVR__)
 #define cbi(reg, bitmask) *reg &= ~bitmask
@@ -644,9 +641,9 @@ struct sensor_reg {
 class ArduCAM 
 {
 	public:
-	ArduCAM( void );
+	ArduCAM(void); // default constructor
 	ArduCAM(byte model ,int CS);
-	void InitCAM( void );
+	void InitCAM(void);
 	
 	void CS_HIGH(void);
 	void CS_LOW(void);
@@ -765,8 +762,8 @@ class ArduCAM
 	inline void setDataBits(uint16_t bits);
 	
   protected:
-	regtype *P_CS;
-	regsize B_CS;
+	// regtype *P_CS;
+	// regsize B_CS;
 	byte m_fmt;
 	byte sensor_model;
 	byte sensor_addr;

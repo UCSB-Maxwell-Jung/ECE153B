@@ -93,37 +93,36 @@
   2017/07/07  V4.1.0  by Lee	Add support for ArduCAM_ESP32 paltform
   2017/07/25  V4.1.1  by Lee	Add support for MT9V034
   --------------------------------------*/
-#include "memorysaver.h"
-#if defined ( RASPBERRY_PI )
-	#include <string.h>
-	#include <time.h>
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <stdint.h>
-	#include <unistd.h>
-	#include <wiringPiI2C.h>
-	#include <wiringPi.h>
-	#include "ArduCAM.h"
-	#include "arducam_arch_raspberrypi.h"
-#else
-	#include "Arduino.h"
-	#include "ArduCAM.h"
-	#include <Wire.h>
-	#include <SPI.h>
-	#include "HardwareSerial.h"
-	#if defined(__SAM3X8E__)
-		#define Wire  Wire1
-	#endif
-#endif
+#include "ArduCAM.h"
+#include "SysTick.h"
+// #if defined ( RASPBERRY_PI )
+// 	#include <string.h>
+// 	#include <time.h>
+// 	#include <stdio.h>
+// 	#include <stdlib.h>
+// 	#include <stdint.h>
+// 	#include <unistd.h>
+// 	#include <wiringPiI2C.h>
+// 	#include <wiringPi.h>
+// 	#include "ArduCAM.h"
+// 	#include "arducam_arch_raspberrypi.h"
+// #else
+	// #include "Arduino.h
+	// #include <Wire.h> // I2C
+	// #include <SPI.h> // SPI
+	// #include "HardwareSerial.h" // UART
+// 	#if defined(__SAM3X8E__)
+// 		#define Wire  Wire1
+// 	#endif
+// #endif
 
-
-ArduCAM::ArduCAM()
-{
+// default constructor
+ArduCAM::ArduCAM() {
   sensor_model = OV7670;
   sensor_addr = 0x42;
 }
-ArduCAM::ArduCAM(byte model ,int CS)
-{
+
+ArduCAM::ArduCAM(byte model ,int CS) {
 	#if defined (RASPBERRY_PI)
 		if(CS>=0)
 		{
@@ -144,40 +143,39 @@ ArduCAM::ArduCAM(byte model ,int CS)
       sbi(P_CS, B_CS);
 	#endif
 	sensor_model = model;
-	switch (sensor_model)
-	{
+	switch (sensor_model) {
 		case OV7660:
 		case OV7670:
 		case OV7675:
 		case OV7725:
-		#if defined (RASPBERRY_PI)
+			#if defined (RASPBERRY_PI)
 				sensor_addr = 0x21;
-		#else
-		  	sensor_addr = 0x42;
-	    #endif		
-		break;
+			#else
+				sensor_addr = 0x42;
+			#endif		
+			break;
 		case MT9D111_A: //Standard MT9D111 module
-      sensor_addr = 0xba;
-    break;
-    case MT9D111_B: //Flex MT9D111 AF module
-      sensor_addr = 0x90;
-    break;
-    case MT9M112:
-    	#if defined (RASPBERRY_PI)
-    		sensor_addr = 0x5d;
-    	#else
-      	sensor_addr = 0x90;
-      #endif
-    break;
-    case MT9M001:
-      sensor_addr = 0xba;
-    break;
-    case MT9V034:
-      sensor_addr = 0x90;
-    break;
-    case MT9M034:
-      sensor_addr = 0x20;// 7 bits
-    break;
+      		sensor_addr = 0xba;
+    		break;
+		case MT9D111_B: //Flex MT9D111 AF module
+			sensor_addr = 0x90;
+			break;
+		case MT9M112:
+			#if defined (RASPBERRY_PI)
+				sensor_addr = 0x5d;
+			#else
+				sensor_addr = 0x90;
+      		#endif
+    		break;
+		case MT9M001:
+			sensor_addr = 0xba;
+			break;
+		case MT9V034:
+			sensor_addr = 0x90;
+			break;
+		case MT9M034:
+			sensor_addr = 0x20;// 7 bits
+			break;
     case OV3640:
     case OV5640:
     case OV5642:
@@ -186,28 +184,28 @@ ArduCAM::ArduCAM(byte model ,int CS)
     	#if defined (RASPBERRY_PI)
     		sensor_addr = 0x3c;
     	#else
-      	sensor_addr = 0x78;
-       #endif
-   break;
+      		sensor_addr = 0x78;
+       	#endif
+   		break;
     case OV2640:
     case OV9650:
     case OV9655:
     	#if defined (RASPBERRY_PI)
     		sensor_addr = 0x30;
     	#else
-      	sensor_addr = 0x60;
-      #endif
-    break;
-		default:
-			#if defined (RASPBERRY_PI)
-		 		sensor_addr = 0x21;
-		 	#else
-		 		sensor_addr = 0x42;
-      #endif
+      		sensor_addr = 0x60;
+     	#endif
+    	break;
+	default:
+		#if defined (RASPBERRY_PI)
+			sensor_addr = 0x21;
+		#else
+			sensor_addr = 0x42;
+      	#endif
 		break;
-	}	
+	}
 	#if defined (RASPBERRY_PI)
-		// initialize i2c:
+	// initialize i2c:
 	if (!arducam_i2c_init(sensor_addr)) {
 		printf("ERROR: I2C init failed\n");
 	}
@@ -421,7 +419,7 @@ void ArduCAM::InitCAM()
         break;
       }
       
-          case MT9M034:
+	case MT9M034:
       {
 #if defined MT9M034_CAM
         wrSensorRegs16_16(MT9M034_RAW);
@@ -684,9 +682,9 @@ uint32_t ArduCAM::read_fifo_length(void)
 {
 	uint32_t len1,len2,len3,length=0;
 	len1 = read_reg(FIFO_SIZE1);
-  len2 = read_reg(FIFO_SIZE2);
-  len3 = read_reg(FIFO_SIZE3) & 0x7f;
-  length = ((len3 << 16) | (len2 << 8) | len1) & 0x07fffff;
+	len2 = read_reg(FIFO_SIZE2);
+	len3 = read_reg(FIFO_SIZE3) & 0x7f;
+	length = ((len3 << 16) | (len2 << 8) | len1) & 0x07fffff;
 	return length;	
 }
 

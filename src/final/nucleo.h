@@ -11,6 +11,8 @@
 
 #include <stddef.h>
 
+typedef uint8_t byte; // use byte as alias for uint8_t
+
 #define CLK_FREQ  80000000 // 80Mhz
 
 #define BLUETOOTH USART1
