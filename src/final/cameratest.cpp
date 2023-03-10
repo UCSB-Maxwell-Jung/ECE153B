@@ -1,374 +1,561 @@
-/***************************************************
-  This is our GFX example for the Adafruit ILI9341 Breakout and Shield
-  ----> http://www.adafruit.com/products/1651
-
-  Check out the links above for our tutorials and wiring diagrams
-  These displays use SPI to communicate, 4 or 5 pins are required to
-  interface (RST is optional)
-  Adafruit invests time and resources providing this open source code,
-  please support Adafruit and open-source hardware by purchasing
-  products from Adafruit!
-
-  Written by Limor Fried/Ladyada for Adafruit Industries.
-  MIT license, all text above must be included in any redistribution
- ****************************************************/
-
-#include "graphicstest.h"
-
-// custom library
-#include "LED.h"
-#include "SysTick.h"
-#include "SysClock.h"
-#include "UART_Wired.h"
-#include "camera.h"
-
-// graphics and lcd library from Adafruit
-#include "Adafruit_GFX.h"
-#include "Adafruit_ILI9341.h"
-
-Adafruit_ILI9341 tft = Adafruit_ILI9341();
-UART_Wired Serial = UART_Wired();
-
-void init_hardware() {
-  init_system_clock();   // System Clock = 80 MHz
-	init_SysTick();
-	init_LED();
-
-  // initialize Serial communication interface
-  Serial.begin(UART_DEFAULT_BAUD_RATE);
-  tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
-}
-
-void graphics_test_all() {
-  init_hardware();
-  run_all_benchmarks();
-  while(1)
-    test_rotation();
-}
-
-void run_all_benchmarks() {
-  Serial.print("ILI9341 Test!\n");
-
-  // read diagnostics (optional but can help debug problems)
-  uint8_t x = tft.readcommand8(ILI9341_RDMODE);
-  Serial.print("Display Power Mode: 0x"); Serial.println(x, HEX);
-  x = tft.readcommand8(ILI9341_RDMADCTL);
-  Serial.print("MADCTL Mode: 0x"); Serial.println(x, HEX);
-  x = tft.readcommand8(ILI9341_RDPIXFMT);
-  Serial.print("Pixel Format: 0x"); Serial.println(x, HEX);
-  x = tft.readcommand8(ILI9341_RDIMGFMT);
-  Serial.print("Image Format: 0x"); Serial.println(x, HEX);
-  x = tft.readcommand8(ILI9341_RDSELFDIAG);
-  Serial.print("Self Diagnostic: 0x"); Serial.println(x, HEX); 
-  
-  Serial.println("Benchmark                Time (microseconds)");
-  delay(10);
-  Serial.print("Screen fill              ");
-  Serial.println(testFillScreen());
-  delay(500);
-
-  Serial.print("Text                     ");
-  Serial.println(testText());
-  delay(3000);
-
-  Serial.print("Lines                    ");
-  Serial.println(testLines(ILI9341_CYAN));
-  delay(500);
-
-  Serial.print("Horiz/Vert Lines         ");
-  Serial.println(testFastLines(ILI9341_RED, ILI9341_BLUE));
-  delay(500);
-
-  Serial.print("Rectangles (outline)     ");
-  Serial.println(testRects(ILI9341_GREEN));
-  delay(500);
-
-  Serial.print("Rectangles (filled)      ");
-  Serial.println(testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
-  delay(500);
-
-  Serial.print("Circles (filled)         ");
-  Serial.println(testFilledCircles(10, ILI9341_MAGENTA));
-
-  Serial.print("Circles (outline)        ");
-  Serial.println(testCircles(10, ILI9341_WHITE));
-  delay(500);
-
-  Serial.print("Triangles (outline)      ");
-  Serial.println(testTriangles());
-  delay(500);
-
-  Serial.print("Triangles (filled)       ");
-  Serial.println(testFilledTriangles());
-  delay(500);
-
-  Serial.print("Rounded rects (outline)  ");
-  Serial.println(testRoundRects());
-  delay(500);
-
-  Serial.print("Rounded rects (filled)   ");
-  Serial.println(testFilledRoundRects());
-  delay(500);
-
-  Serial.println("Done!");
-}
-
-unsigned long testFillScreen() {
-  unsigned long start = micros();
-  tft.fillScreen(ILI9341_BLACK);
-  tft.fillScreen(ILI9341_RED);
-  tft.fillScreen(ILI9341_GREEN);
-  tft.fillScreen(ILI9341_BLUE);
-  tft.fillScreen(ILI9341_BLACK);
-  return micros() - start;
-}
-
-unsigned long testText() {
-  tft.fillScreen(ILI9341_BLACK);
-  unsigned long start = micros();
-  tft.setCursor(0, 0);
-  tft.setTextColor(ILI9341_WHITE);  tft.setTextSize(1);
-  tft.println("Hello World!");
-  tft.setTextColor(ILI9341_YELLOW); tft.setTextSize(2);
-  tft.println(1234.56);
-  tft.setTextColor(ILI9341_RED);    tft.setTextSize(3);
-  tft.println(0xDEADBEEF, HEX);
-  tft.println();
-  tft.setTextColor(ILI9341_GREEN);
-  tft.setTextSize(5);
-  tft.println("Groop");
-  tft.setTextSize(2);
-  tft.println("I implore thee,");
-  tft.setTextSize(1);
-  tft.println("my foonting turlingdromes.");
-  tft.println("And hooptiously drangle me");
-  tft.println("with crinkly bindlewurdles,");
-  tft.println("Or I will rend thee");
-  tft.println("in the gobberwarts");
-  tft.println("with my blurglecruncheon,");
-  tft.println("see if I don't!");
-  return micros() - start;
-}
-
-unsigned long testLines(uint16_t color) {
-  unsigned long start, t;
-  int           x1, y1, x2, y2,
-                w = tft.width(),
-                h = tft.height();
-
-  tft.fillScreen(ILI9341_BLACK);
-  // yield();
-  
-  x1 = y1 = 0;
-  y2    = h - 1;
-  start = micros();
-  for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
-  x2    = w - 1;
-  for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
-  t     = micros() - start; // fillScreen doesn't count against timing
-
-  // yield();
-  tft.fillScreen(ILI9341_BLACK);
-  // yield();
-
-  x1    = w - 1;
-  y1    = 0;
-  y2    = h - 1;
-  start = micros();
-  for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
-  x2    = 0;
-  for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
-  t    += micros() - start;
-
-  // yield();
-  tft.fillScreen(ILI9341_BLACK);
-  // yield();
-
-  x1    = 0;
-  y1    = h - 1;
-  y2    = 0;
-  start = micros();
-  for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
-  x2    = w - 1;
-  for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
-  t    += micros() - start;
-
-  // yield();
-  tft.fillScreen(ILI9341_BLACK);
-  // yield();
-
-  x1    = w - 1;
-  y1    = h - 1;
-  y2    = 0;
-  start = micros();
-  for(x2=0; x2<w; x2+=6) tft.drawLine(x1, y1, x2, y2, color);
-  x2    = 0;
-  for(y2=0; y2<h; y2+=6) tft.drawLine(x1, y1, x2, y2, color);
-
-  // yield();
-  return micros() - start;
-}
-
-unsigned long testFastLines(uint16_t color1, uint16_t color2) {
-  unsigned long start;
-  int           x, y, w = tft.width(), h = tft.height();
-
-  tft.fillScreen(ILI9341_BLACK);
-  start = micros();
-  for(y=0; y<h; y+=5) tft.drawFastHLine(0, y, w, color1);
-  for(x=0; x<w; x+=5) tft.drawFastVLine(x, 0, h, color2);
-
-  return micros() - start;
-}
-
-unsigned long testRects(uint16_t color) {
-  unsigned long start;
-  int           n, i, i2,
-                cx = tft.width()  / 2,
-                cy = tft.height() / 2;
-
-  tft.fillScreen(ILI9341_BLACK);
-  n     = min(tft.width(), tft.height());
-  start = micros();
-  for(i=2; i<n; i+=6) {
-    i2 = i / 2;
-    tft.drawRect(cx-i2, cy-i2, i, i, color);
+// ArduCAM Mini demo (C)2017 Lee
+// Web: http://www.ArduCAM.com
+// This program is a demo of how to use most of the functions
+// of the library with ArduCAM Mini camera, and can run on any Arduino platform.
+// This demo was made for ArduCAM_Mini_5MP_Plus.
+// It needs to be used in combination with PC software.
+// It can test OV2640 functions
+// This program requires the ArduCAM V4.0.0 (or later) library and ArduCAM_Mini_5MP_Plus
+// and use Arduino IDE 1.6.8 compiler or above
+#include <Wire.h>
+#include <ArduCAM.h>
+#include <SPI.h>
+#include "memorysaver.h"
+//This demo can only work on OV2640_MINI_2MP platform.
+#if !(defined OV2640_MINI_2MP)
+  #error Please select the hardware platform and camera module in the ../libraries/ArduCAM/memorysaver.h file
+#endif
+#define BMPIMAGEOFFSET 66
+const char bmp_header[BMPIMAGEOFFSET] PROGMEM =
+{
+  0x42, 0x4D, 0x36, 0x58, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x28, 0x00,
+  0x00, 0x00, 0x40, 0x01, 0x00, 0x00, 0xF0, 0x00, 0x00, 0x00, 0x01, 0x00, 0x10, 0x00, 0x03, 0x00,
+  0x00, 0x00, 0x00, 0x58, 0x02, 0x00, 0xC4, 0x0E, 0x00, 0x00, 0xC4, 0x0E, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF8, 0x00, 0x00, 0xE0, 0x07, 0x00, 0x00, 0x1F, 0x00,
+  0x00, 0x00
+};
+// set pin 7 as the slave select for the digital pot:
+const int CS = 7;
+bool is_header = false;
+int mode = 0;
+uint8_t start_capture = 0;
+#if defined (OV2640_MINI_2MP)
+  ArduCAM myCAM( OV2640, CS );
+#else
+  ArduCAM myCAM( OV5642, CS );
+#endif
+uint8_t read_fifo_burst(ArduCAM myCAM);
+void setup() {
+// put your setup code here, to run once:
+uint8_t vid, pid;
+uint8_t temp;
+#if defined(__SAM3X8E__)
+  Wire1.begin();
+  Serial.begin(115200);
+#else
+  Wire.begin();
+  Serial.begin(921600);
+#endif
+Serial.println(F("ACK CMD ArduCAM Start! END"));
+// set the CS as an output:
+pinMode(CS, OUTPUT);
+digitalWrite(CS, HIGH);
+// initialize SPI:
+SPI.begin();
+  //Reset the CPLD
+myCAM.write_reg(0x07, 0x80);
+delay(100);
+myCAM.write_reg(0x07, 0x00);
+delay(100);
+while(1){
+  //Check if the ArduCAM SPI bus is OK
+  myCAM.write_reg(ARDUCHIP_TEST1, 0x55);
+  temp = myCAM.read_reg(ARDUCHIP_TEST1);
+  if (temp != 0x55){
+    Serial.println(F("ACK CMD SPI interface Error! END"));
+    delay(1000);continue;
+  }else{
+    Serial.println(F("ACK CMD SPI interface OK. END"));break;
   }
-
-  return micros() - start;
 }
 
-unsigned long testFilledRects(uint16_t color1, uint16_t color2) {
-  unsigned long start, t = 0;
-  int           n, i, i2,
-                cx = tft.width()  / 2 - 1,
-                cy = tft.height() / 2 - 1;
-
-  tft.fillScreen(ILI9341_BLACK);
-  n = min(tft.width(), tft.height());
-  for(i=n; i>0; i-=6) {
-    i2    = i / 2;
-    start = micros();
-    tft.fillRect(cx-i2, cy-i2, i, i, color1);
-    t    += micros() - start;
-    // Outlines are not included in timing results
-    tft.drawRect(cx-i2, cy-i2, i, i, color2);
-    // yield();
+#if defined (OV2640_MINI_2MP)
+  while(1){
+    //Check if the camera module type is OV2640
+    myCAM.wrSensorReg8_8(0xff, 0x01);
+    myCAM.rdSensorReg8_8(OV2640_CHIPID_HIGH, &vid);
+    myCAM.rdSensorReg8_8(OV2640_CHIPID_LOW, &pid);
+    if ((vid != 0x26 ) && (( pid != 0x41 ) || ( pid != 0x42 ))){
+      Serial.println(F("ACK CMD Can't find OV2640 module! END"));
+      delay(1000);continue;
+    }
+    else{
+      Serial.println(F("ACK CMD OV2640 detected. END"));break;
+    } 
   }
-
-  return t;
+#else
+  while(1){
+    //Check if the camera module type is OV5642
+    myCAM.wrSensorReg16_8(0xff, 0x01);
+    myCAM.rdSensorReg16_8(OV5642_CHIPID_HIGH, &vid);
+    myCAM.rdSensorReg16_8(OV5642_CHIPID_LOW, &pid);
+    if((vid != 0x56) || (pid != 0x42)){
+      Serial.println(F("ACK CMD Can't find OV5642 module! END"));
+      delay(1000);continue;
+    }
+    else{
+      Serial.println(F("ACK CMD OV5642 detected. END"));break;
+    } 
+  }
+#endif
+//Change to JPEG capture mode and initialize the OV5642 module
+myCAM.set_format(JPEG);
+myCAM.InitCAM();
+#if defined (OV2640_MINI_2MP)
+  myCAM.OV2640_set_JPEG_size(OV2640_320x240);
+#else
+  myCAM.write_reg(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);   //VSYNC is active HIGH
+  myCAM.OV5642_set_JPEG_size(OV5642_320x240);
+#endif
+delay(1000);
+myCAM.clear_fifo_flag();
+#if !(defined (OV2640_MINI_2MP))
+myCAM.write_reg(ARDUCHIP_FRAMES,0x00);
+#endif
 }
-
-unsigned long testFilledCircles(uint8_t radius, uint16_t color) {
-  unsigned long start;
-  int x, y, w = tft.width(), h = tft.height(), r2 = radius * 2;
-
-  tft.fillScreen(ILI9341_BLACK);
-  start = micros();
-  for(x=radius; x<w; x+=r2) {
-    for(y=radius; y<h; y+=r2) {
-      tft.fillCircle(x, y, radius, color);
+void loop() {
+// put your main code here, to run repeatedly:
+uint8_t temp = 0xff, temp_last = 0;
+bool is_header = false;
+if (Serial.available())
+{
+  temp = Serial.read();
+  switch (temp)
+  {
+    case 0:
+      myCAM.OV2640_set_JPEG_size(OV2640_160x120);delay(1000);
+      Serial.println(F("ACK CMD switch to OV2640_160x120 END"));
+     temp = 0xff;
+    break;
+    case 1:
+      myCAM.OV2640_set_JPEG_size(OV2640_176x144);delay(1000);
+      Serial.println(F("ACK CMD switch to OV2640_176x144 END"));
+    temp = 0xff;
+    break;
+    case 2: 
+      myCAM.OV2640_set_JPEG_size(OV2640_320x240);delay(1000);
+      Serial.println(F("ACK CMD switch to OV2640_320x240 END"));
+    temp = 0xff;
+    break;
+    case 3:
+    myCAM.OV2640_set_JPEG_size(OV2640_352x288);delay(1000);
+    Serial.println(F("ACK CMD switch to OV2640_352x288 END"));
+   temp = 0xff;
+    break;
+    case 4:
+      myCAM.OV2640_set_JPEG_size(OV2640_640x480);delay(1000);
+      Serial.println(F("ACK CMD switch to OV2640_640x480 END"));
+    temp = 0xff;
+    break;
+    case 5:
+    myCAM.OV2640_set_JPEG_size(OV2640_800x600);delay(1000);
+    Serial.println(F("ACK CMD switch to OV2640_800x600 END"));
+    temp = 0xff;
+    break;
+    case 6:
+     myCAM.OV2640_set_JPEG_size(OV2640_1024x768);delay(1000);
+     Serial.println(F("ACK CMD switch to OV2640_1024x768 END"));
+    temp = 0xff;
+    break;
+    case 7:
+    myCAM.OV2640_set_JPEG_size(OV2640_1280x1024);delay(1000);
+    Serial.println(F("ACK CMD switch to OV2640_1280x1024 END"));
+    temp = 0xff;
+    break;
+    case 8:
+    myCAM.OV2640_set_JPEG_size(OV2640_1600x1200);delay(1000);
+    Serial.println(F("ACK CMD switch to OV2640_1600x1200 END"));
+     temp = 0xff;
+    break;
+    case 0x10:
+    mode = 1;
+    temp = 0xff;
+    start_capture = 1;
+    Serial.println(F("ACK CMD CAM start single shoot. END"));
+    break;
+    case 0x11: 
+    temp = 0xff;
+    myCAM.set_format(JPEG);
+    myCAM.InitCAM();
+    #if !(defined (OV2640_MINI_2MP))
+    myCAM.set_bit(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);
+    #endif
+    break;
+    case 0x20:
+    mode = 2;
+    temp = 0xff;
+    start_capture = 2;
+    Serial.println(F("ACK CMD CAM start video streaming. END"));
+    break;
+    case 0x30:
+    mode = 3;
+    temp = 0xff;
+    start_capture = 3;
+    Serial.println(F("ACK CMD CAM start single shoot. END"));
+    break;
+    case 0x31:
+    temp = 0xff;
+    myCAM.set_format(BMP);
+    myCAM.InitCAM();
+    #if !(defined (OV2640_MINI_2MP))        
+    myCAM.clear_bit(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);
+    #endif
+    myCAM.wrSensorReg16_8(0x3818, 0x81);
+    myCAM.wrSensorReg16_8(0x3621, 0xA7);
+    break;
+    case 0x40:
+    myCAM.OV2640_set_Light_Mode(Auto);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Auto END"));break;
+     case 0x41:
+    myCAM.OV2640_set_Light_Mode(Sunny);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Sunny END"));break;
+     case 0x42:
+    myCAM.OV2640_set_Light_Mode(Cloudy);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Cloudy END"));break;
+     case 0x43:
+    myCAM.OV2640_set_Light_Mode(Office);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Office END"));break;
+   case 0x44:
+    myCAM.OV2640_set_Light_Mode(Home);   temp = 0xff;
+   Serial.println(F("ACK CMD Set to Home END"));break;
+   case 0x50:
+    myCAM.OV2640_set_Color_Saturation(Saturation2); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation+2 END"));break;
+   case 0x51:
+     myCAM.OV2640_set_Color_Saturation(Saturation1); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation+1 END"));break;
+   case 0x52:
+    myCAM.OV2640_set_Color_Saturation(Saturation0); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation+0 END"));break;
+    case 0x53:
+    myCAM. OV2640_set_Color_Saturation(Saturation_1); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation-1 END"));break;
+    case 0x54:
+     myCAM.OV2640_set_Color_Saturation(Saturation_2); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation-2 END"));break; 
+   case 0x60:
+    myCAM.OV2640_set_Brightness(Brightness2); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness+2 END"));break;
+   case 0x61:
+     myCAM.OV2640_set_Brightness(Brightness1); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness+1 END"));break;
+   case 0x62:
+    myCAM.OV2640_set_Brightness(Brightness0); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness+0 END"));break;
+    case 0x63:
+    myCAM. OV2640_set_Brightness(Brightness_1); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness-1 END"));break;
+    case 0x64:
+     myCAM.OV2640_set_Brightness(Brightness_2); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness-2 END"));break; 
+    case 0x70:
+      myCAM.OV2640_set_Contrast(Contrast2);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast+2 END"));break; 
+    case 0x71:
+      myCAM.OV2640_set_Contrast(Contrast1);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast+1 END"));break;
+     case 0x72:
+      myCAM.OV2640_set_Contrast(Contrast0);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast+0 END"));break;
+    case 0x73:
+      myCAM.OV2640_set_Contrast(Contrast_1);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast-1 END"));break;
+   case 0x74:
+      myCAM.OV2640_set_Contrast(Contrast_2);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast-2 END"));break;
+   case 0x80:
+    myCAM.OV2640_set_Special_effects(Antique);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Antique END"));break;
+   case 0x81:
+    myCAM.OV2640_set_Special_effects(Bluish);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Bluish END"));break;
+   case 0x82:
+    myCAM.OV2640_set_Special_effects(Greenish);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Greenish END"));break;  
+   case 0x83:
+    myCAM.OV2640_set_Special_effects(Reddish);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Reddish END"));break;  
+   case 0x84:
+    myCAM.OV2640_set_Special_effects(BW);temp = 0xff;
+    Serial.println(F("ACK CMD Set to BW END"));break; 
+  case 0x85:
+    myCAM.OV2640_set_Special_effects(Negative);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Negative END"));break; 
+  case 0x86:
+    myCAM.OV2640_set_Special_effects(BWnegative);temp = 0xff;
+    Serial.println(F("ACK CMD Set to BWnegative END"));break;   
+   case 0x87:
+    myCAM.OV2640_set_Special_effects(Normal);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Normal END"));break;     
+  }
+}
+if (mode == 1)
+{
+  if (start_capture == 1)
+  {
+    myCAM.flush_fifo();
+    myCAM.clear_fifo_flag();
+    //Start capture
+    myCAM.start_capture();
+    start_capture = 0;
+  }
+  if (myCAM.get_bit(ARDUCHIP_TRIG, CAP_DONE_MASK))
+  {
+    Serial.println(F("ACK CMD CAM Capture Done. END"));delay(50);
+    read_fifo_burst(myCAM);
+    //Clear the capture done flag
+    myCAM.clear_fifo_flag();
+  }
+}
+else if (mode == 2)
+{
+  while (1)
+  {
+    temp = Serial.read();
+    if (temp == 0x21)
+    {
+      start_capture = 0;
+      mode = 0;
+      Serial.println(F("ACK CMD CAM stop video streaming. END"));
+      break;
+    }
+    switch (temp)
+    {
+       case 0x40:
+    myCAM.OV2640_set_Light_Mode(Auto);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Auto END"));break;
+     case 0x41:
+    myCAM.OV2640_set_Light_Mode(Sunny);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Sunny END"));break;
+     case 0x42:
+    myCAM.OV2640_set_Light_Mode(Cloudy);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Cloudy END"));break;
+     case 0x43:
+    myCAM.OV2640_set_Light_Mode(Office);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Office END"));break;
+   case 0x44:
+    myCAM.OV2640_set_Light_Mode(Home);   temp = 0xff;
+   Serial.println(F("ACK CMD Set to Home END"));break;
+   case 0x50:
+    myCAM.OV2640_set_Color_Saturation(Saturation2); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation+2 END"));break;
+   case 0x51:
+     myCAM.OV2640_set_Color_Saturation(Saturation1); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation+1 END"));break;
+   case 0x52:
+    myCAM.OV2640_set_Color_Saturation(Saturation0); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation+0 END"));break;
+    case 0x53:
+    myCAM. OV2640_set_Color_Saturation(Saturation_1); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation-1 END"));break;
+    case 0x54:
+     myCAM.OV2640_set_Color_Saturation(Saturation_2); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Saturation-2 END"));break; 
+   case 0x60:
+    myCAM.OV2640_set_Brightness(Brightness2); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness+2 END"));break;
+   case 0x61:
+     myCAM.OV2640_set_Brightness(Brightness1); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness+1 END"));break;
+   case 0x62:
+    myCAM.OV2640_set_Brightness(Brightness0); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness+0 END"));break;
+    case 0x63:
+    myCAM. OV2640_set_Brightness(Brightness_1); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness-1 END"));break;
+    case 0x64:
+     myCAM.OV2640_set_Brightness(Brightness_2); temp = 0xff;
+     Serial.println(F("ACK CMD Set to Brightness-2 END"));break; 
+    case 0x70:
+      myCAM.OV2640_set_Contrast(Contrast2);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast+2 END"));break; 
+    case 0x71:
+      myCAM.OV2640_set_Contrast(Contrast1);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast+1 END"));break;
+     case 0x72:
+      myCAM.OV2640_set_Contrast(Contrast0);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast+0 END"));break;
+    case 0x73:
+      myCAM.OV2640_set_Contrast(Contrast_1);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast-1 END"));break;
+   case 0x74:
+      myCAM.OV2640_set_Contrast(Contrast_2);temp = 0xff;
+     Serial.println(F("ACK CMD Set to Contrast-2 END"));break;
+   case 0x80:
+    myCAM.OV2640_set_Special_effects(Antique);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Antique END"));break;
+   case 0x81:
+    myCAM.OV2640_set_Special_effects(Bluish);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Bluish END"));break;
+   case 0x82:
+    myCAM.OV2640_set_Special_effects(Greenish);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Greenish END"));break;  
+   case 0x83:
+    myCAM.OV2640_set_Special_effects(Reddish);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Reddish END"));break;  
+   case 0x84:
+    myCAM.OV2640_set_Special_effects(BW);temp = 0xff;
+    Serial.println(F("ACK CMD Set to BW END"));break; 
+  case 0x85:
+    myCAM.OV2640_set_Special_effects(Negative);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Negative END"));break; 
+  case 0x86:
+    myCAM.OV2640_set_Special_effects(BWnegative);temp = 0xff;
+    Serial.println(F("ACK CMD Set to BWnegative END"));break;   
+   case 0x87:
+    myCAM.OV2640_set_Special_effects(Normal);temp = 0xff;
+    Serial.println(F("ACK CMD Set to Normal END"));break;     
+  }
+    if (start_capture == 2)
+    {
+      myCAM.flush_fifo();
+      myCAM.clear_fifo_flag();
+      //Start capture
+      myCAM.start_capture();
+      start_capture = 0;
+    }
+    if (myCAM.get_bit(ARDUCHIP_TRIG, CAP_DONE_MASK))
+    {
+      uint32_t length = 0;
+      length = myCAM.read_fifo_length();
+      if ((length >= MAX_FIFO_SIZE) | (length == 0))
+      {
+        myCAM.clear_fifo_flag();
+        start_capture = 2;
+        continue;
+      }
+      myCAM.CS_LOW();
+      myCAM.set_fifo_burst();//Set fifo burst mode
+      temp =  SPI.transfer(0x00);
+      length --;
+      while ( length-- )
+      {
+        temp_last = temp;
+        temp =  SPI.transfer(0x00);
+        if (is_header == true)
+        {
+          Serial.write(temp);
+        }
+        else if ((temp == 0xD8) & (temp_last == 0xFF))
+        {
+          is_header = true;
+          Serial.println(F("ACK IMG END"));
+          Serial.write(temp_last);
+          Serial.write(temp);
+        }
+        if ( (temp == 0xD9) && (temp_last == 0xFF) ) //If find the end ,break while,
+        break;
+        delayMicroseconds(15);
+      }
+      myCAM.CS_HIGH();
+      myCAM.clear_fifo_flag();
+      start_capture = 2;
+      is_header = false;
     }
   }
-
-  return micros() - start;
 }
-
-unsigned long testCircles(uint8_t radius, uint16_t color) {
-  unsigned long start;
-  int           x, y, r2 = radius * 2,
-                w = tft.width()  + radius,
-                h = tft.height() + radius;
-
-  // Screen is not cleared for this one -- this is
-  // intentional and does not affect the reported time.
-  start = micros();
-  for(x=0; x<w; x+=r2) {
-    for(y=0; y<h; y+=r2) {
-      tft.drawCircle(x, y, radius, color);
+else if (mode == 3)
+{
+  if (start_capture == 3)
+  {
+    //Flush the FIFO
+    myCAM.flush_fifo();
+    myCAM.clear_fifo_flag();
+    //Start capture
+    myCAM.start_capture();
+    start_capture = 0;
+  }
+  if (myCAM.get_bit(ARDUCHIP_TRIG, CAP_DONE_MASK))
+  {
+    Serial.println(F("ACK CMD CAM Capture Done. END"));delay(50);
+    uint8_t temp, temp_last;
+    uint32_t length = 0;
+    length = myCAM.read_fifo_length();
+    if (length >= MAX_FIFO_SIZE ) 
+    {
+      Serial.println(F("ACK CMD Over size. END"));
+      myCAM.clear_fifo_flag();
+      return;
     }
+    if (length == 0 ) //0 kb
+    {
+      Serial.println(F("ACK CMD Size is 0. END"));
+      myCAM.clear_fifo_flag();
+      return;
+    }
+    myCAM.CS_LOW();
+    myCAM.set_fifo_burst();//Set fifo burst mode
+    
+    Serial.write(0xFF);
+    Serial.write(0xAA);
+    for (temp = 0; temp < BMPIMAGEOFFSET; temp++)
+    {
+      Serial.write(pgm_read_byte(&bmp_header[temp]));
+    }
+    //for old version, enable it else disable
+   // SPI.transfer(0x00);
+    char VH, VL;
+    int i = 0, j = 0;
+    for (i = 0; i < 240; i++)
+    {
+      for (j = 0; j < 320; j++)
+      {
+        VH = SPI.transfer(0x00);;
+        VL = SPI.transfer(0x00);;
+        Serial.write(VL);
+        delayMicroseconds(12);
+        Serial.write(VH);
+        delayMicroseconds(12);
+      }
+    }
+    Serial.write(0xBB);
+    Serial.write(0xCC);
+    myCAM.CS_HIGH();
+    //Clear the capture done flag
+    myCAM.clear_fifo_flag();
   }
-
-  return micros() - start;
 }
-
-unsigned long testTriangles() {
-  unsigned long start;
-  int           n, i, cx = tft.width()  / 2 - 1,
-                      cy = tft.height() / 2 - 1;
-
-  tft.fillScreen(ILI9341_BLACK);
-  n     = min(cx, cy);
-  start = micros();
-  for(i=0; i<n; i+=5) {
-    tft.drawTriangle(
-      cx    , cy - i, // peak
-      cx - i, cy + i, // bottom left
-      cx + i, cy + i, // bottom right
-      tft.color565(i, i, i));
-  }
-
-  return micros() - start;
 }
-
-unsigned long testFilledTriangles() {
-  unsigned long start, t = 0;
-  int           i, cx = tft.width()  / 2 - 1,
-                   cy = tft.height() / 2 - 1;
-
-  tft.fillScreen(ILI9341_BLACK);
-  start = micros();
-  for(i=min(cx,cy); i>10; i-=5) {
-    start = micros();
-    tft.fillTriangle(cx, cy - i, cx - i, cy + i, cx + i, cy + i,
-      tft.color565(0, i*10, i*10));
-    t += micros() - start;
-    tft.drawTriangle(cx, cy - i, cx - i, cy + i, cx + i, cy + i,
-      tft.color565(i*10, i*10, 0));
-    // yield();
+uint8_t read_fifo_burst(ArduCAM myCAM)
+{
+  uint8_t temp = 0, temp_last = 0;
+  uint32_t length = 0;
+  length = myCAM.read_fifo_length();
+  Serial.println(length, DEC);
+  if (length >= MAX_FIFO_SIZE) //512 kb
+  {
+    Serial.println(F("ACK CMD Over size. END"));
+    return 0;
   }
-
-  return t;
-}
-
-unsigned long testRoundRects() {
-  unsigned long start;
-  int           w, i, i2,
-                cx = tft.width()  / 2 - 1,
-                cy = tft.height() / 2 - 1;
-
-  tft.fillScreen(ILI9341_BLACK);
-  w     = min(tft.width(), tft.height());
-  start = micros();
-  for(i=0; i<w; i+=6) {
-    i2 = i / 2;
-    tft.drawRoundRect(cx-i2, cy-i2, i, i, i/8, tft.color565(i, 0, 0));
+  if (length == 0 ) //0 kb
+  {
+    Serial.println(F("ACK CMD Size is 0. END"));
+    return 0;
   }
-
-  return micros() - start;
-}
-
-unsigned long testFilledRoundRects() {
-  unsigned long start;
-  int           i, i2,
-                cx = tft.width()  / 2 - 1,
-                cy = tft.height() / 2 - 1;
-
-  tft.fillScreen(ILI9341_BLACK);
-  start = micros();
-  for(i=min(tft.width(), tft.height()); i>20; i-=6) {
-    i2 = i / 2;
-    tft.fillRoundRect(cx-i2, cy-i2, i, i, i/8, tft.color565(0, i, 0));
-    // yield();
+  myCAM.CS_LOW();
+  myCAM.set_fifo_burst();//Set fifo burst mode
+  temp =  SPI.transfer(0x00);
+  length --;
+  while ( length-- )
+  {
+    temp_last = temp;
+    temp =  SPI.transfer(0x00);
+    if (is_header == true)
+    {
+      Serial.write(temp);
+    }
+    else if ((temp == 0xD8) & (temp_last == 0xFF))
+    {
+      is_header = true;
+      Serial.println(F("ACK IMG END"));
+      Serial.write(temp_last);
+      Serial.write(temp);
+    }
+    if ( (temp == 0xD9) && (temp_last == 0xFF) ) //If find the end ,break while,
+    break;
+    delayMicroseconds(15);
   }
-
-  return micros() - start;
-}
-
-void test_rotation(void) {
-  for(uint8_t rotation=0; rotation<4; rotation++) {
-    tft.setRotation(rotation);
-    testText();
-    delay(1000);
-  }
+  myCAM.CS_HIGH();
+  is_header = false;
+  return 1;
 }
