@@ -6,6 +6,12 @@
 #define READ_FROM_SLAVE 1
 #define WRITE_TO_SLAVE  0
 
+#define I2C_TIMINGR_PRESC_POS	28
+#define I2C_TIMINGR_SCLDEL_POS	20
+#define I2C_TIMINGR_SDADEL_POS	16
+#define I2C_TIMINGR_SCLH_POS	8
+#define I2C_TIMINGR_SCLL_POS	0
+
 #define I2C_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
 
 class I2C {
