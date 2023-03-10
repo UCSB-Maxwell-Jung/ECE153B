@@ -159,8 +159,8 @@ extern uint8_t is_header;
 #ifndef _SENSOR_
 #define _SENSOR_
 struct sensor_reg {
-	u16 reg;
-	u16 val;
+	uint16_t reg;
+	uint16_t val;
 };
 #endif
 

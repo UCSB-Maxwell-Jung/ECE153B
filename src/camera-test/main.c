@@ -1,9 +1,9 @@
 #include "stm32l476xx.h"
-// #include "delay.h"
-// #include "sccb_bus.h"
-// #include "usart.h"
+#include "delay.h"
+#include "sccb_bus.h"
+#include "usart.h"
 #include "ArduCAM.h"
-// #include "spi.h"
+#include "spi.h"
 
 int main(void)
 {
@@ -12,7 +12,7 @@ int main(void)
 	uint8_t Camera_WorkMode = 0;
 	uint8_t start_shoot = 0;
 	uint8_t stop = 0;
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);	
+	// NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 	delay_init();
 	uart_init(921600);
 	sccb_bus_init();
