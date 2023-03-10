@@ -1947,11 +1947,6 @@
               <FilePath>.\src\final\SPI_Display.h</FilePath>
             </File>
             <File>
-              <FileName>retarget.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\retarget.c</FilePath>
-            </File>
-            <File>
               <FileName>UART_Bluetooth.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\UART_Bluetooth.cpp</FilePath>

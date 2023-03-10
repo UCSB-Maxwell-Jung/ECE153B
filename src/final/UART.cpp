@@ -1,5 +1,4 @@
 #include "UART.h"
-#include <stdio.h>
 
 UART::UART(USART_TypeDef* USARTx) : _USARTx(USARTx) {}
 
