@@ -6,14 +6,16 @@
 #define BufferSize 32
 #define UART_DEFAULT_BAUD_RATE 9600
 
-class UART {
+class UART : public Print {
 public:
   // constructor
   UART(USART_TypeDef* USARTx);
   // methods
   void begin(uint32_t baud_rate=UART_DEFAULT_BAUD_RATE);
-  void print(char* str);
-  void println(char* str);
+  // using Print::write;
+  size_t write(uint8_t);
+  size_t write(const uint8_t *buffer, size_t size);
+  uint8_t read();
 
 protected:
   USART_TypeDef* _USARTx;
