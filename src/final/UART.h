@@ -1,6 +1,8 @@
 #ifndef __STM32L476R_NUCLEO_UART_H
 #define __STM32L476R_NUCLEO_UART_H
 
+#include "Print.h"
+
 #include "stm32l476xx.h"
 
 #define BufferSize 32
@@ -12,7 +14,6 @@ public:
   UART(USART_TypeDef* USARTx);
   // methods
   void begin(uint32_t baud_rate=UART_DEFAULT_BAUD_RATE);
-  // using Print::write;
   size_t write(uint8_t);
   size_t write(const uint8_t *buffer, size_t size);
   uint8_t read();

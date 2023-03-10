@@ -359,9 +359,10 @@ void loop(void) {
 
 int main() {
   setup();
-  test_graphics();
+  // test_graphics();
   while(1)
-    loop();
+    Serial.println("Hello World!");
+    // loop();
 
   return 1; // if program reaches this line, something went wrong
 }
