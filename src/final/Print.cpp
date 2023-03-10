@@ -69,36 +69,36 @@ size_t Print::print(char c)
   return write(c);
 }
 
-// size_t Print::print(unsigned char b, int base)
-// {
-//   return print((unsigned long) b, base);
-// }
+size_t Print::print(unsigned char b, int base)
+{
+  return print((unsigned long) b, base);
+}
 
-// size_t Print::print(int n, int base)
-// {
-//   return print((long) n, base);
-// }
+size_t Print::print(int n, int base)
+{
+  return print((long) n, base);
+}
 
 size_t Print::print(unsigned int n, int base)
 {
   return print((unsigned long) n, base);
 }
 
-// size_t Print::print(long n, int base)
-// {
-//   if (base == 0) {
-//     return write(n);
-//   } else if (base == 10) {
-//     if (n < 0) {
-//       int t = print('-');
-//       n = -n;
-//       return printNumber(n, 10) + t;
-//     }
-//     return printNumber(n, 10);
-//   } else {
-//     return printNumber(n, base);
-//   }
-// }
+size_t Print::print(long n, int base)
+{
+  if (base == 0) {
+    return write(n);
+  } else if (base == 10) {
+    if (n < 0) {
+      int t = print('-');
+      n = -n;
+      return printNumber(n, 10) + t;
+    }
+    return printNumber(n, 10);
+  } else {
+    return printNumber(n, base);
+  }
+}
 
 size_t Print::print(unsigned long n, int base)
 {
@@ -149,19 +149,19 @@ size_t Print::println(char c)
   return n;
 }
 
-// size_t Print::println(unsigned char b, int base)
-// {
-//   size_t n = print(b, base);
-//   n += println();
-//   return n;
-// }
+size_t Print::println(unsigned char b, int base)
+{
+  size_t n = print(b, base);
+  n += println();
+  return n;
+}
 
-// size_t Print::println(int num, int base)
-// {
-//   size_t n = print(num, base);
-//   n += println();
-//   return n;
-// }
+size_t Print::println(int num, int base)
+{
+  size_t n = print(num, base);
+  n += println();
+  return n;
+}
 
 size_t Print::println(unsigned int num, int base)
 {
@@ -170,19 +170,19 @@ size_t Print::println(unsigned int num, int base)
   return n;
 }
 
-// size_t Print::println(long num, int base)
-// {
-//   size_t n = print(num, base);
-//   n += println();
-//   return n;
-// }
+size_t Print::println(long num, int base)
+{
+  size_t n = print(num, base);
+  n += println();
+  return n;
+}
 
-// size_t Print::println(unsigned long num, int base)
-// {
-//   size_t n = print(num, base);
-//   n += println();
-//   return n;
-// }
+size_t Print::println(unsigned long num, int base)
+{
+  size_t n = print(num, base);
+  n += println();
+  return n;
+}
 
 size_t Print::println(double num, int digits)
 {

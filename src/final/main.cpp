@@ -284,59 +284,70 @@ unsigned long testFilledRoundRects() {
 }
 
 void test_graphics() {
-  printf("ILI9341 Test!\n");
+  Serial.print("ILI9341 Test!\n");
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
-  printf("Display Power Mode: %#x\n", x);
+  Serial.print("Display Power Mode: 0x"); Serial.println(x, HEX);
   x = tft.readcommand8(ILI9341_RDMADCTL);
-  printf("MADCTL Mode: %#x\n", x);
+  Serial.print("MADCTL Mode: 0x"); Serial.println(x, HEX);
   x = tft.readcommand8(ILI9341_RDPIXFMT);
-  printf("Pixel Format: %#x\n", x);
+  Serial.print("Pixel Format: 0x"); Serial.println(x, HEX);
   x = tft.readcommand8(ILI9341_RDIMGFMT);
-  printf("Image Format: %#x\n", x);
+  Serial.print("Image Format: 0x"); Serial.println(x, HEX);
   x = tft.readcommand8(ILI9341_RDSELFDIAG);
-  printf("Self Diagnostic: %#x\n", x);
+  Serial.print("Self Diagnostic: 0x"); Serial.println(x, HEX); 
   
-  printf("Benchmark                Time (microseconds)\n");
+  Serial.println("Benchmark                Time (microseconds)");
   delay(10);
-  printf("Screen fill              %d\n", testFillScreen());
+  Serial.print("Screen fill              ");
+  Serial.println(testFillScreen());
   delay(500);
 
-  printf("Text                     %d\n", testText());
+  Serial.print("Text                     ");
+  Serial.println(testText());
   delay(3000);
 
-  printf("Lines                    %d\n", testLines(ILI9341_CYAN));
+  Serial.print("Lines                    ");
+  Serial.println(testLines(ILI9341_CYAN));
   delay(500);
 
-  printf("Horiz/Vert Lines         %d\n", testFastLines(ILI9341_RED, ILI9341_BLUE));
+  Serial.print("Horiz/Vert Lines         ");
+  Serial.println(testFastLines(ILI9341_RED, ILI9341_BLUE));
   delay(500);
 
-  printf("Rectangles (outline)     %d\n", testRects(ILI9341_GREEN));
+  Serial.print("Rectangles (outline)     ");
+  Serial.println(testRects(ILI9341_GREEN));
   delay(500);
 
-  printf("Rectangles (filled)      %d\n", testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
+  Serial.print("Rectangles (filled)      ");
+  Serial.println(testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
   delay(500);
 
-  printf("Circles (filled)         %d\n", testFilledCircles(10, ILI9341_MAGENTA));
+  Serial.print("Circles (filled)         ");
+  Serial.println(testFilledCircles(10, ILI9341_MAGENTA));
+
+  Serial.print("Circles (outline)        ");
+  Serial.println(testCircles(10, ILI9341_WHITE));
   delay(500);
 
-  printf("Circles (outline)        %d\n", testCircles(10, ILI9341_WHITE));
+  Serial.print("Triangles (outline)      ");
+  Serial.println(testTriangles());
   delay(500);
 
-  printf("Triangles (outline)      %d\n", testTriangles());
+  Serial.print("Triangles (filled)       ");
+  Serial.println(testFilledTriangles());
   delay(500);
 
-  // printf("Triangles (filled)       %d\n", testFilledTriangles());
-  // delay(500);
+  Serial.print("Rounded rects (outline)  ");
+  Serial.println(testRoundRects());
+  delay(500);
 
-  // printf("Rounded rects (outline)  %d\n", testRoundRects());
-  // delay(500);
+  Serial.print("Rounded rects (filled)   ");
+  Serial.println(testFilledRoundRects());
+  delay(500);
 
-  // printf("Rounded rects (filled)   %d\n", testFilledRoundRects());
-  // delay(500);
-
-  printf("Done!\n");
+  Serial.println("Done!");
 }
 
 void setup() {
@@ -359,10 +370,9 @@ void loop(void) {
 
 int main() {
   setup();
-  // test_graphics();
+  test_graphics();
   while(1)
-    Serial.println("Hello World!");
-    // loop();
+    loop();
 
   return 1; // if program reaches this line, something went wrong
 }
