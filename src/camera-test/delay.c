@@ -8,11 +8,11 @@ void delay_init()
 {
 	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);	
 	fac_us=SystemCoreClock/8000000;				
-	fac_ms=(uint16_t)fac_us*1000;			
-}								    
+	fac_ms=(uint16_t)fac_us*1000;
+}
 	    								   
 void delay_us(uint32_t nus)
-{		
+{
 	uint32_t temp;	    	 
 	SysTick->LOAD=nus*fac_us; 							 
 	SysTick->VAL=0x00;        					
