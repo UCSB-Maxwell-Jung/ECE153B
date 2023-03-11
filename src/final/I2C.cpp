@@ -8,9 +8,6 @@ void I2C::begin(uint32_t desired_freq) {
 	configure_I2C();
 }
 
-//===============================================================================
-//                           I2C Send Data
-//=============================================================================== 
 int8_t I2C::write(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 	int i;
 	
@@ -47,10 +44,6 @@ int8_t I2C::write(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 	return 0;
 }
 
-
-//===============================================================================
-//                           I2C Receive Data
-//=============================================================================== 
 int8_t I2C::read(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 	int i;
 	
@@ -74,14 +67,6 @@ int8_t I2C::read(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 	return 0;
 }
 
-//===============================================================================
-//                           I2C Start
-// Master generates START condition:
-//    -- Slave address: 7 bits
-//    -- Automatically generate a STOP condition after all bytes have been transmitted 
-// Direction = 0: Master requests a write transfer
-// Direction = 1: Master requests a read transfer
-//=============================================================================== 
 int8_t I2C::beginTransmission(uint32_t DevAddress, uint8_t Size, uint8_t Direction) {	
 	
 	// Direction = 0: Master requests a write transfer
@@ -109,12 +94,23 @@ int8_t I2C::beginTransmission(uint32_t DevAddress, uint8_t Size, uint8_t Directi
    	return 0;  // Success
 }
 
-//===============================================================================
-//                           I2C Stop
-//=============================================================================== 
-void I2C::endTransmission(){
+uint8_t I2C::endTransmission() {
 	// Master: Generate STOP bit after the current byte has been transferred 
 	_I2Cx->CR2 |= I2C_CR2_STOP;
 	// Wait until STOPF flag is reset
-	while((_I2Cx->ISR & I2C_ISR_STOPF) == 0); 
+	while((_I2Cx->ISR & I2C_ISR_STOPF) == 0);
+
+	return 0;
+}
+
+uint8_t I2C::requestFrom(uint8_t address, uint8_t quantity) {
+	// [TODO]
+
+	return 0;
+}
+
+uint8_t I2C::available() {
+	// [TODO]
+	
+	return 0;
 }

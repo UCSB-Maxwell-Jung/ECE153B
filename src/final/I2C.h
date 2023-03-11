@@ -23,7 +23,9 @@ public:
   int8_t beginTransmission(uint32_t DevAddress, uint8_t Size, uint8_t Direction);
   int8_t write(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size);
   int8_t read(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size);
-  void endTransmission();
+  uint8_t endTransmission();
+  uint8_t requestFrom(uint8_t address, uint8_t quantity);
+  uint8_t available();
 
 protected:
   I2C_TypeDef* _I2Cx;
