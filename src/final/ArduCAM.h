@@ -100,6 +100,9 @@
 
 #ifndef ArduCAM_H
 #define ArduCAM_H
+
+#include "ov2640_regs.h"
+
 #include "nucleo.h"
 #include "SPI_Camera.h"
 #include "I2C_Camera.h"
@@ -121,7 +124,7 @@
 /****************************************************/
 #define BMP 	0
 #define JPEG	1
-#define RAW	  2
+#define RAW	  	2
 
 #define OV7670		0	
 #define MT9D111_A	1
@@ -141,7 +144,7 @@
 #define MT9T112		15
 #define MT9D112		16
 #define MT9V034 	17
-#define MT9M034   18
+#define MT9M034   	18
 
 #define OV2640_160x120 		0	//160x120
 #define OV2640_176x144 		1	//176x144
@@ -160,8 +163,8 @@
 #define OV3640_352x288 		2	//352x288
 #define OV3640_640x480		3	//640x480
 #define OV3640_800x600 		4	//800x600
-#define OV3640_1024x768		5 //1024x768
-#define OV3640_1280x960	  6	//1280x960
+#define OV3640_1024x768		5 	//1024x768
+#define OV3640_1280x960	  	6	//1280x960
 #define OV3640_1600x1200	7	//1600x1200
 #define OV3640_2048x1536	8	//2048x1536
 
@@ -173,18 +176,18 @@
 #define OV5642_1600x1200	4	//1600x1200
 #define OV5642_2048x1536	5	//2048x1536
 #define OV5642_2592x1944	6	//2592x1944
-#define OV5642_1920x1080  7
+#define OV5642_1920x1080  	7
 
 
 #define OV5640_320x240 		0	//320x240 
 #define OV5640_352x288		1	//352x288
-#define OV5640_640x480 	  2	//640x480
-#define OV5640_800x480	  3	//800x480
-#define OV5640_1024x768	  4	//1024x768
-#define OV5640_1280x960	  5	//1280x960	
-#define OV5640_1600x1200	6	 //1600x1200
-#define OV5640_2048x1536	7  //2048x1536
-#define OV5640_2592x1944	8	 //2592x1944
+#define OV5640_640x480 	  	2	//640x480
+#define OV5640_800x480	  	3	//800x480
+#define OV5640_1024x768	  	4	//1024x768
+#define OV5640_1280x960	  	5	//1280x960	
+#define OV5640_1600x1200	6	//1600x1200
+#define OV5640_2048x1536	7   //2048x1536
+#define OV5640_2592x1944	8	//2592x1944
 
 
 
@@ -307,7 +310,7 @@
 #define Sharpness6                         5
 #define Sharpness7                         6
 #define Sharpness8                         7
-#define Sharpness_auto                       8
+#define Sharpness_auto                     8
 
 
 
@@ -364,13 +367,7 @@
 #define SENSOR_VAL_TERM_16BIT               0xFFFF
 
 //Define maximum frame buffer size
-#if (defined OV2640_MINI_2MP)
 #define MAX_FIFO_SIZE		0x5FFFF			//384KByte
-#elif (defined OV5642_MINI_5MP || defined OV5642_MINI_5MP_BIT_ROTATION_FIXED || defined ARDUCAM_SHIELD_REVC)
-#define MAX_FIFO_SIZE		0x7FFFF			//512KByte
-#else
-#define MAX_FIFO_SIZE		0x7FFFFF		//8MByte
-#endif 
 
 /****************************************************/
 /* ArduChip registers definition 											*/
@@ -477,7 +474,7 @@ public:
 	uint8_t get_bit(uint8_t addr, uint8_t bit);
 	void set_mode(uint8_t mode);
  
-  uint8_t bus_write(int address, int value);
+  	uint8_t bus_write(int address, int value);
 	uint8_t bus_read(int address);	
  
 	// Write 8 bit values to 8 bit register address
@@ -509,59 +506,20 @@ public:
 	byte rdSensorReg16_16(uint16_t regID, uint16_t* regDat);
 
 	void OV2640_set_JPEG_size(uint8_t size);
-	void OV3640_set_JPEG_size(uint8_t size);
-	void OV5642_set_JPEG_size(uint8_t size);
-	void OV5640_set_JPEG_size(uint8_t size);
-	
-	void OV5642_set_RAW_size (uint8_t size);
-	
+
 	void OV2640_set_Light_Mode(uint8_t Light_Mode);
-  	void OV3640_set_Light_Mode(uint8_t Light_Mode);
-	void OV5642_set_Light_Mode(uint8_t Light_Mode);
-	void OV5640_set_Light_Mode(uint8_t Light_Mode);
 
 	void OV2640_set_Color_Saturation(uint8_t Color_Saturation);
-	void OV3640_set_Color_Saturation(uint8_t Color_Saturation);
-	void OV5642_set_Color_Saturation(uint8_t Color_Saturation);
-	void OV5640_set_Color_Saturation(uint8_t Color_Saturation);
 	
 	void OV2640_set_Brightness(uint8_t Brightness);
-	void OV3640_set_Brightness(uint8_t Brightness);
-	void OV5642_set_Brightness(uint8_t Brightness);
-	void OV5640_set_Brightness(uint8_t Brightness);
 	
 	void OV2640_set_Contrast(uint8_t Contrast);
-	void OV3640_set_Contrast(uint8_t Contrast);
-	void OV5642_set_Contrast(uint8_t Contrast);
-	void OV5640_set_Contrast(uint8_t Contrast);
 	
 	void OV2640_set_Special_effects(uint8_t Special_effect);
-	void OV3640_set_Special_effects(uint8_t Special_effect);
-	void OV5642_set_Special_effects(uint8_t Special_effect);
-	void OV5640_set_Special_effects(uint8_t Special_effect);
-	
-	void OV3640_set_Exposure_level(uint8_t level);
-	void OV3640_set_Sharpness(uint8_t Sharpness);
-	void OV3640_set_Mirror_Flip(uint8_t Mirror_Flip);
-	
-	void OV5642_set_hue(uint8_t degree);
-	void OV5642_set_Exposure_level(uint8_t level);
-	void OV5642_set_Sharpness(uint8_t Sharpness);
-	void OV5642_set_Mirror_Flip(uint8_t Mirror_Flip);
-	void OV5642_set_Compress_quality(uint8_t quality);
-	void OV5642_Test_Pattern(uint8_t Pattern);
-	
-	void OV5640_set_EV(uint8_t EV);
-	void OV5640_set_Night_Mode(uint8_t Night_mode);
-	void OV5640_set_Banding_Filter(uint8_t Banding_Filter);
 	
 	void set_format(byte fmt);
-
-	void transferBytes_(uint8_t * out, uint8_t * in, uint8_t size);
-	void transferBytes(uint8_t * out, uint8_t * in, uint32_t size);
-	inline void setDataBits(uint16_t bits);
 	
-  protected:
+protected:
 	// regtype *P_CS;
 	// regsize B_CS;
 	I2C_Camera _I2C;
@@ -570,67 +528,5 @@ public:
 	byte sensor_model;
 	byte sensor_addr;
 };
-
-#if defined OV7660_CAM	
-	#include "ov7660_regs.h"
-#endif
-
-#if defined OV7725_CAM	
-	#include "ov7725_regs.h"
-#endif
-
-#if defined OV7670_CAM	
-	#include "ov7670_regs.h"
-#endif
-
-#if defined OV7675_CAM
-	#include "ov7675_regs.h"
-#endif
-
-#if ( defined(OV5642_CAM) || defined(OV5642_MINI_5MP) || defined(OV5642_MINI_5MP_BIT_ROTATION_FIXED) || defined(OV5642_MINI_5MP_PLUS) )	
-	#include "ov5642_regs.h"
-#endif
-
-#if (defined(OV3640_CAM) || defined(OV3640_MINI_3MP))	
-	#include "ov3640_regs.h"
-#endif
-
-#if (defined(OV2640_CAM) || defined(OV2640_MINI_2MP) || defined(OV2640_MINI_2MP_PLUS))
-	#include "ov2640_regs.h"
-#endif
-
-#if defined MT9D111A_CAM  || defined MT9D111B_CAM 	
-	#include "mt9d111_regs.h"
-#endif
-
-#if defined MT9M112_CAM	
-	#include "mt9m112_regs.h"
-#endif
-
-#if defined MT9V111_CAM	
-	#include "mt9v111_regs.h"
-#endif
-
-#if ( defined(OV5640_CAM)	|| defined(OV5640_MINI_5MP_PLUS) )
-	#include "ov5640_regs.h"
-#endif
-
-#if defined MT9M001_CAM	
-	#include "mt9m001_regs.h"
-#endif
-
-#if defined MT9T112_CAM	
-	#include "mt9t112_regs.h"
-#endif
-
-#if defined MT9D112_CAM	
-	#include "mt9d112_regs.h"
-#endif
-
-#if defined MT9M034_CAM	
-	#include "mt9m034_regs.h"
-#endif
-
-
 
 #endif

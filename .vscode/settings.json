@@ -27,6 +27,9 @@
         "xutility": "cpp",
         "device.h": "c",
         "camera.h": "c",
-        "cstddef": "cpp"
+        "cstddef": "cpp",
+        "limits": "cpp",
+        "type_traits": "cpp",
+        "xtr1common": "cpp"
     }
 }
