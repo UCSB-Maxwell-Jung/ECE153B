@@ -47,6 +47,16 @@ typedef uint8_t byte; // alias for uint8_t
     SCK = Serial Clock = SPI1 SCK = PB3
     LED = 5V
     SDO(MISO) = Serial Data Out = SPI1 MISO = PB4
+
+
+    OV264  pins 
+    CS (chip select) = SPI2_NSS = PB12 
+    SCK Serial Clk line = SPI2_SCK = PB13   
+    SPI2_MISO = PB14 
+    SPI2_MOSI = PB15 
+    I2C1_SCL = PB6
+    I2C1_SDA = PB7 
+
 */
 
 //Only when using raspberry,enable it
