@@ -3,8 +3,8 @@
 
 #include "I2C.h"
 
-#define I2C_Camera_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
-#define I2C_Camera_MAX_FREQ 20000000 // 20Mhz
+// #define I2C_Camera_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
+// #define I2C_Camera_MAX_FREQ 20000000 // 20Mhz
 
 class I2C_Camera : public I2C { // inherit more general I2C class
 public:
