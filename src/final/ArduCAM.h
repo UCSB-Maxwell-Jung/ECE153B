@@ -453,6 +453,7 @@ public:
 	ArduCAM();
 
 	// methods
+	void begin(void);
 	void InitCAM(void);
 	
 	void CS_HIGH(void);

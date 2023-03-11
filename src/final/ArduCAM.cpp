@@ -132,6 +132,15 @@ ArduCAM::ArduCAM() {
   sensor_addr = 0x60;
 }
 
+void ArduCAM::begin() {
+	// [TODO] set up CS GPIO pin, (unnecessary if spi is configured with hardware slave management)
+
+	_I2C.begin();
+	_SPI.begin();
+
+	// [TODO] move InitCAM logic here
+}
+
 void ArduCAM::InitCAM() {
 	wrSensorReg8_8(0xff, 0x01);
 	wrSensorReg8_8(0x12, 0x80);
