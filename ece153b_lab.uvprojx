@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>6</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -2062,14 +2062,19 @@
               <FilePath>.\src\final\SysTick.h</FilePath>
             </File>
             <File>
-              <FileName>UART.cpp</FileName>
+              <FileName>bitmaptest.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\UART.cpp</FilePath>
+              <FilePath>.\src\final\bitmaptest.cpp</FilePath>
             </File>
             <File>
-              <FileName>UART.h</FileName>
+              <FileName>bitmaptest.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\UART.h</FilePath>
+              <FilePath>.\src\final\bitmaptest.h</FilePath>
+            </File>
+            <File>
+              <FileName>dragon.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\dragon.h</FilePath>
             </File>
           </Files>
         </Group>
