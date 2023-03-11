@@ -11,9 +11,8 @@ public:
   SPI(SPI_TypeDef* SPIx=NULL);
   // methods
   virtual void begin(uint32_t desired_freq=SPI_DEFAULT_FREQ);
-  void enable(void);
-  void disable(void);
-  void transmit(uint8_t write_data);
+  void beginTransaction(void);
+  void endTransaction(void);
   uint8_t transfer(uint8_t write_data);
 
 protected:

@@ -473,7 +473,7 @@ void Adafruit_SPITFT::initSPI(uint32_t freq) {
             for all display types; not an SPI-specific function.
 */
 void Adafruit_SPITFT::startWrite(void) {
-  hwspi.enable();
+  hwspi.beginTransaction();
 }
 
 /*!
@@ -483,7 +483,7 @@ void Adafruit_SPITFT::startWrite(void) {
             for all display types; not an SPI-specific function.
 */
 void Adafruit_SPITFT::endWrite(void) {
-  hwspi.disable();
+  hwspi.endTransaction();
 }
 
 // -------------------------------------------------------------------------
