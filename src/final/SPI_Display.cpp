@@ -1,5 +1,4 @@
 #include "SPI_Display.h"
-#include "camera.h"
 
 SPI_Display::SPI_Display()
     : SPI(ILI9341) {}

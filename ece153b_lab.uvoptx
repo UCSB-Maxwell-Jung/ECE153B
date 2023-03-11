@@ -1924,18 +1924,6 @@
     <File>
       <GroupNumber>14</GroupNumber>
       <FileNumber>123</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\camera.h</PathWithFileName>
-      <FilenameWithoutPath>camera.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>14</GroupNumber>
-      <FileNumber>124</FileNumber>
       <FileType>8</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1947,7 +1935,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>125</FileNumber>
+      <FileNumber>124</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1959,7 +1947,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>126</FileNumber>
+      <FileNumber>125</FileNumber>
       <FileType>8</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1971,7 +1959,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>127</FileNumber>
+      <FileNumber>126</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1983,7 +1971,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>128</FileNumber>
+      <FileNumber>127</FileNumber>
       <FileType>8</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1995,13 +1983,25 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>129</FileNumber>
+      <FileNumber>128</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\src\final\graphicstest.h</PathWithFileName>
       <FilenameWithoutPath>graphicstest.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>14</GroupNumber>
+      <FileNumber>129</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\final\nucleo.h</PathWithFileName>
+      <FilenameWithoutPath>nucleo.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

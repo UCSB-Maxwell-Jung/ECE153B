@@ -1,7 +1,7 @@
 #ifndef __STM32L476R_NUCLEO_LED_H
 #define __STM32L476R_NUCLEO_LED_H
 
-#include "stm32l476xx.h"
+#include "nucleo.h"
 
 void init_LED(void);
 

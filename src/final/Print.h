@@ -20,9 +20,10 @@
 #ifndef Print_h
 #define Print_h
 
-#include <inttypes.h>
+// #include <inttypes.h>
+#include <stdint.h>
 #include <stdio.h> // for size_t
-#include <string.h>
+#include <string.h> // strlen()
 
 // #include "WString.h"
 // #include "Printable.h"

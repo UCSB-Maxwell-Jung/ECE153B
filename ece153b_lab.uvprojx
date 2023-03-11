@@ -1957,11 +1957,6 @@
               <FilePath>.\src\final\UART_Bluetooth.h</FilePath>
             </File>
             <File>
-              <FileName>camera.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\camera.h</FilePath>
-            </File>
-            <File>
               <FileName>UART_Wired.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\UART_Wired.cpp</FilePath>
@@ -1990,6 +1985,11 @@
               <FileName>graphicstest.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\graphicstest.h</FilePath>
+            </File>
+            <File>
+              <FileName>nucleo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\nucleo.h</FilePath>
             </File>
           </Files>
         </Group>

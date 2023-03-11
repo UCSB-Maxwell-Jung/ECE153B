@@ -36,9 +36,9 @@
 #ifndef _ADAFRUIT_ILI9341H_
 #define _ADAFRUIT_ILI9341H_
 
-#include "SPI.h"
+// #include "SPI.h"
 
-#include "Adafruit_GFX.h"
+// #include "Adafruit_GFX.h"
 // #include "Arduino.h"
 // #include "Print.h"
 #include "Adafruit_SPITFT.h"

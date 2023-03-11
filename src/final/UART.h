@@ -3,7 +3,7 @@
 
 #include "Print.h"
 
-#include "stm32l476xx.h"
+#include "nucleo.h"
 
 #define BufferSize 32
 #define UART_DEFAULT_BAUD_RATE 9600

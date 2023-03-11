@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "stm32l476xx.h"
+#include "nucleo.h"
 
 void init_SysTick(void);
 void SysTick_Handler(void);
