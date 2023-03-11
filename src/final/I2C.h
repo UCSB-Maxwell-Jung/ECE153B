@@ -12,20 +12,18 @@
 #define I2C_TIMINGR_SCLH_POS	8
 #define I2C_TIMINGR_SCLL_POS	0
 
-#define I2C_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
-
 class I2C {
 public:
   // constructor
   I2C(I2C_TypeDef* I2Cx=NULL);
   // methods
-  virtual void begin(uint32_t desired_freq=I2C_DEFAULT_FREQ);
-  int8_t beginTransmission(uint32_t DevAddress, uint8_t Size, uint8_t Direction);
-  int8_t write(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size);
-  int8_t read(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size);
-  uint8_t endTransmission();
-  uint8_t requestFrom(uint8_t address, uint8_t quantity);
+  virtual void begin(uint8_t address=0);
+  uint8_t requestFrom(uint8_t address, uint8_t quantity, bool stop=true);
+  void beginTransmission(uint8_t address);
+  uint8_t endTransmission(bool stop=true);
+  int8_t write(uint8_t data[], uint8_t length);
   uint8_t available();
+  int8_t read();
 
 protected:
   I2C_TypeDef* _I2Cx;
