@@ -32,12 +32,11 @@ const int CS = 7;
 bool is_header = false;
 int mode = 0;
 uint8_t start_capture = 0;
-ArduCAM myCAM(OV2640, CS);
+
 uint8_t read_fifo_burst(ArduCAM myCAM);
 
 UART_Wired Serial = UART_Wired();
-I2C_Camera Wire = I2C_Camera();
-SPI_Camera SPI = SPI_Camera();
+ArduCAM myCAM = ArduCAM();
 
 void setup() {
   // put your setup code here, to run once:
@@ -499,7 +498,9 @@ void loop() {
     }
   }
 }
-uint8_t read_fifo_burst(ArduCAM myCAM) {
+
+
+uint8_t read_fifo_burst(ArduCAM& myCAM) { // pass camera object by reference
   uint8_t temp = 0, temp_last = 0;
   uint32_t length = 0;
   length = myCAM.read_fifo_length();
