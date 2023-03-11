@@ -11,7 +11,18 @@
 
 #include <stddef.h>
 
-typedef uint8_t byte; // use byte as alias for uint8_t
+// useful Arduino macros
+#ifndef pgm_read_byte
+#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
+#endif
+#ifndef pgm_read_word
+#define pgm_read_word(addr) (*(const unsigned short *)(addr))
+#endif
+#ifndef pgm_read_dword
+#define pgm_read_dword(addr) (*(const unsigned long *)(addr))
+#endif
+
+typedef uint8_t byte; // alias for uint8_t
 
 #define CLK_FREQ  80000000 // 80Mhz
 
