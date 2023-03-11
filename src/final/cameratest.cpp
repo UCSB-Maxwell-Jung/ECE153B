@@ -14,7 +14,6 @@
 #include <stdint.h>
 #include "ArduCAM.h"
 #include "UART_Wired.h"
-#include "I2C_Camera.h"
 #include "SysTick.h"
 
 //This demo can only work on OV2640_MINI_2MP platform.
@@ -42,14 +41,15 @@ void setup() {
   // put your setup code here, to run once:
   uint8_t vid, pid;
   uint8_t temp;
-  Wire.begin();
+  // Wire.begin();
   Serial.begin(921600);
+  myCAM.begin();
   Serial.println("ACK CMD ArduCAM Start! END");
   // set the CS as an output:
-  pinMode(CS, OUTPUT);
-  digitalWrite(CS, HIGH);
+  // pinMode(CS, OUTPUT);
+  // digitalWrite(CS, HIGH);
   // initialize SPI:
-  SPI.begin();
+  // SPI.begin();
   //Reset the CPLD
   myCAM.write_reg(0x07, 0x80);
   delay(100);

@@ -109,12 +109,22 @@
 // #else
 	// #include "Arduino.h
 	// #include <Wire.h> // I2C
-	// #include <_SPI.h> // SPI
+	// #include <SPI.h> // SPI
 	// #include "HardwareSerial.h" // UART
 // 	#if defined(__SAM3X8E__)
 // 		#define Wire  Wire1
 // 	#endif
 // #endif
+
+#ifndef pgm_read_byte
+#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
+#endif
+#ifndef pgm_read_word
+#define pgm_read_word(addr) (*(const unsigned short *)(addr))
+#endif
+#ifndef pgm_read_dword
+#define pgm_read_dword(addr) (*(const unsigned long *)(addr))
+#endif
 
 // default constructor
 ArduCAM::ArduCAM() {
@@ -242,8 +252,7 @@ void ArduCAM::set_mode(uint8_t mode)
   }
 }
 
-uint8_t ArduCAM::bus_write(int address,int value)
-{	
+uint8_t ArduCAM::bus_write(int address,int value) {
 	CS_LOW();
 	_SPI.transfer(address);
 	_SPI.transfer(value);
@@ -251,8 +260,7 @@ uint8_t ArduCAM::bus_write(int address,int value)
 	return 1;
 }
 
-uint8_t ArduCAM:: bus_read(int address)
-{
+uint8_t ArduCAM:: bus_read(int address) {
 	uint8_t value;
 	CS_LOW();
 	#if defined (RASPBERRY_PI)
@@ -340,7 +348,7 @@ void ArduCAM::OV2640_set_JPEG_size(uint8_t size)
 			wrSensorRegs8_8(OV2640_320x240_JPEG);
 			break;
 		case OV2640_352x288:
-	  	wrSensorRegs8_8(OV2640_352x288_JPEG);
+	  		wrSensorRegs8_8(OV2640_352x288_JPEG);
 			break;
 		case OV2640_640x480:
 			wrSensorRegs8_8(OV2640_640x480_JPEG);
@@ -474,92 +482,89 @@ void ArduCAM::set_format(byte fmt)
     m_fmt = JPEG;
 }
 
-	void ArduCAM::OV2640_set_Light_Mode(uint8_t Light_Mode)
-	{
+void ArduCAM::OV2640_set_Light_Mode(uint8_t Light_Mode) {
  #if (defined (OV2640_CAM)||defined (OV2640_MINI_2MP)||defined (OV2640_MINI_2MP_PLUS))
-		 switch(Light_Mode)
-		 {
-			
-			  case Auto:
-				wrSensorReg8_8(0xff, 0x00);
-				wrSensorReg8_8(0xc7, 0x00); //AWB on
-			  break;
-			  case Sunny:
-				wrSensorReg8_8(0xff, 0x00);
-				wrSensorReg8_8(0xc7, 0x40); //AWB off
-			  wrSensorReg8_8(0xcc, 0x5e);
-				wrSensorReg8_8(0xcd, 0x41);
-				wrSensorReg8_8(0xce, 0x54);
-			  break;
-			  case Cloudy:
-				wrSensorReg8_8(0xff, 0x00);
-				wrSensorReg8_8(0xc7, 0x40); //AWB off
-				wrSensorReg8_8(0xcc, 0x65);
-				wrSensorReg8_8(0xcd, 0x41);
-				wrSensorReg8_8(0xce, 0x4f);  
-			  break;
-			  case Office:
-			  wrSensorReg8_8(0xff, 0x00);
-			  wrSensorReg8_8(0xc7, 0x40); //AWB off
-			  wrSensorReg8_8(0xcc, 0x52);
-			  wrSensorReg8_8(0xcd, 0x41);
-			  wrSensorReg8_8(0xce, 0x66);
-			  break;
-			  case Home:
-			  wrSensorReg8_8(0xff, 0x00);
-			  wrSensorReg8_8(0xc7, 0x40); //AWB off
-			  wrSensorReg8_8(0xcc, 0x42);
-			  wrSensorReg8_8(0xcd, 0x3f);
-			  wrSensorReg8_8(0xce, 0x71);
-			  break;
-			  default :
-				wrSensorReg8_8(0xff, 0x00);
-				wrSensorReg8_8(0xc7, 0x00); //AWB on
-			  break; 
-		 }	
+		switch(Light_Mode)
+		{
+		
+			case Auto:
+			wrSensorReg8_8(0xff, 0x00);
+			wrSensorReg8_8(0xc7, 0x00); //AWB on
+			break;
+			case Sunny:
+			wrSensorReg8_8(0xff, 0x00);
+			wrSensorReg8_8(0xc7, 0x40); //AWB off
+			wrSensorReg8_8(0xcc, 0x5e);
+			wrSensorReg8_8(0xcd, 0x41);
+			wrSensorReg8_8(0xce, 0x54);
+			break;
+			case Cloudy:
+			wrSensorReg8_8(0xff, 0x00);
+			wrSensorReg8_8(0xc7, 0x40); //AWB off
+			wrSensorReg8_8(0xcc, 0x65);
+			wrSensorReg8_8(0xcd, 0x41);
+			wrSensorReg8_8(0xce, 0x4f);  
+			break;
+			case Office:
+			wrSensorReg8_8(0xff, 0x00);
+			wrSensorReg8_8(0xc7, 0x40); //AWB off
+			wrSensorReg8_8(0xcc, 0x52);
+			wrSensorReg8_8(0xcd, 0x41);
+			wrSensorReg8_8(0xce, 0x66);
+			break;
+			case Home:
+			wrSensorReg8_8(0xff, 0x00);
+			wrSensorReg8_8(0xc7, 0x40); //AWB off
+			wrSensorReg8_8(0xcc, 0x42);
+			wrSensorReg8_8(0xcd, 0x3f);
+			wrSensorReg8_8(0xce, 0x71);
+			break;
+			default :
+			wrSensorReg8_8(0xff, 0x00);
+			wrSensorReg8_8(0xc7, 0x00); //AWB on
+			break; 
+		}	
 #endif
-	}
-	void ArduCAM:: OV3640_set_Light_Mode(uint8_t Light_Mode)
-	{
-	 #if (defined (OV3640_CAM)||defined (OV3640_MINI_3MP))
-			 switch(Light_Mode)
-		 {
-			
-			  case Auto:
-				wrSensorReg16_8(0x332b, 0x00);//AWB auto, bit[3]:0,auto
-			  break;
-			  case Sunny:
-				wrSensorReg16_8(0x332b, 0x08); //AWB off
-				wrSensorReg16_8(0x33a7, 0x5e);
-				wrSensorReg16_8(0x33a8, 0x40);
-				wrSensorReg16_8(0x33a9, 0x46);
-			  break;
-			  case Cloudy:
-				wrSensorReg16_8(0x332b, 0x08);
-				wrSensorReg16_8(0x33a7, 0x68);
-				wrSensorReg16_8(0x33a8, 0x40);
-				wrSensorReg16_8(0x33a9, 0x4e);	
-			  break;
-			  case Office:
-			  wrSensorReg16_8(0x332b, 0x08);
-				wrSensorReg16_8(0x33a7, 0x52);
-				wrSensorReg16_8(0x33a8, 0x40);
-				wrSensorReg16_8(0x33a9, 0x58);
-			  break;
-			  case Home:
-			  wrSensorReg16_8(0x332b, 0x08);
-				wrSensorReg16_8(0x33a7, 0x44);
-				wrSensorReg16_8(0x33a8, 0x40);
-				wrSensorReg16_8(0x33a9, 0x70);
-			  break;
-		 }	
+}
+
+void ArduCAM:: OV3640_set_Light_Mode(uint8_t Light_Mode) {
+	#if (defined (OV3640_CAM)||defined (OV3640_MINI_3MP))
+			switch(Light_Mode)
+		{
+		
+			case Auto:
+			wrSensorReg16_8(0x332b, 0x00);//AWB auto, bit[3]:0,auto
+			break;
+			case Sunny:
+			wrSensorReg16_8(0x332b, 0x08); //AWB off
+			wrSensorReg16_8(0x33a7, 0x5e);
+			wrSensorReg16_8(0x33a8, 0x40);
+			wrSensorReg16_8(0x33a9, 0x46);
+			break;
+			case Cloudy:
+			wrSensorReg16_8(0x332b, 0x08);
+			wrSensorReg16_8(0x33a7, 0x68);
+			wrSensorReg16_8(0x33a8, 0x40);
+			wrSensorReg16_8(0x33a9, 0x4e);	
+			break;
+			case Office:
+			wrSensorReg16_8(0x332b, 0x08);
+			wrSensorReg16_8(0x33a7, 0x52);
+			wrSensorReg16_8(0x33a8, 0x40);
+			wrSensorReg16_8(0x33a9, 0x58);
+			break;
+			case Home:
+			wrSensorReg16_8(0x332b, 0x08);
+			wrSensorReg16_8(0x33a7, 0x44);
+			wrSensorReg16_8(0x33a8, 0x40);
+			wrSensorReg16_8(0x33a9, 0x70);
+			break;
+		}	
 #endif
-		 
-	}
+}
 	
 	
-	void ArduCAM::OV5642_set_Light_Mode(uint8_t Light_Mode)
-	{
+void ArduCAM::OV5642_set_Light_Mode(uint8_t Light_Mode) {
 #if defined(OV5642_CAM) || defined(OV5642_CAM_BIT_ROTATION_FIXED)|| defined(OV5642_MINI_5MP) || defined (OV5642_MINI_5MP_PLUS)
 		 switch(Light_Mode)
 		 {
@@ -630,95 +635,94 @@ void ArduCAM::set_format(byte fmt)
 			  break; 
 		 }	
 #endif
-	}
+}
 	
-	void ArduCAM::OV5640_set_Light_Mode(uint8_t Light_Mode)
+void ArduCAM::OV5640_set_Light_Mode(uint8_t Light_Mode) {
+#if (defined (OV5640_CAM)||defined (OV5640_MINI_5MP_PLUS))
+	switch(Light_Mode)
 	{
-	#if (defined (OV5640_CAM)||defined (OV5640_MINI_5MP_PLUS))
-		switch(Light_Mode)
-		{
-			case Auto:
-				wrSensorReg16_8(0x3212, 0x03); // start group 3
-				wrSensorReg16_8(0x3406, 0x00);
-				wrSensorReg16_8(0x3400, 0x04);
-				wrSensorReg16_8(0x3401, 0x00);
-				wrSensorReg16_8(0x3402, 0x04);
-				wrSensorReg16_8(0x3403, 0x00);
-				wrSensorReg16_8(0x3404, 0x04);
-				wrSensorReg16_8(0x3405, 0x00);
-				wrSensorReg16_8(0x3212, 0x13); // end group 3
-				wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
-				wrSensorReg16_8(0x5183 ,0x0 );	
-			  break;
-			case Sunny:
-				wrSensorReg16_8(0x3212, 0x03); // start group 3
-				wrSensorReg16_8(0x3406, 0x01);
-				wrSensorReg16_8(0x3400, 0x06);
-				wrSensorReg16_8(0x3401, 0x1c);
-				wrSensorReg16_8(0x3402, 0x04);
-				wrSensorReg16_8(0x3403, 0x00);
-				wrSensorReg16_8(0x3404, 0x04);
-				wrSensorReg16_8(0x3405, 0xf3);
-				wrSensorReg16_8(0x3212, 0x13); // end group 3
-				wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
-			  break;
-			  case Office:
-				wrSensorReg16_8(0x3212, 0x03); // start group 3
-				wrSensorReg16_8(0x3406, 0x01);
-				wrSensorReg16_8(0x3400, 0x05);
-				wrSensorReg16_8(0x3401, 0x48);
-				wrSensorReg16_8(0x3402, 0x04);
-				wrSensorReg16_8(0x3403, 0x00);
-				wrSensorReg16_8(0x3404, 0x07);
-				wrSensorReg16_8(0x3405, 0xcf);
-				wrSensorReg16_8(0x3212, 0x13); // end group 3
-				wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
-				wrSensorReg16_8(0x3212, 0x03); // start group 3
-				wrSensorReg16_8(0x3406, 0x01);
-				wrSensorReg16_8(0x3400, 0x06);
-				wrSensorReg16_8(0x3401, 0x48);
-				wrSensorReg16_8(0x3402, 0x04);
-				wrSensorReg16_8(0x3403, 0x00);
-				wrSensorReg16_8(0x3404, 0x04);
-				wrSensorReg16_8(0x3405, 0xd3);
-				wrSensorReg16_8(0x3212, 0x13); // end group 3
-				wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
-			  break;
-			  case Cloudy:
-			  wrSensorReg16_8(0x3212, 0x03); // start group 3
-				wrSensorReg16_8(0x3406, 0x01);
-				wrSensorReg16_8(0x3400, 0x06);
-				wrSensorReg16_8(0x3401, 0x48);
-				wrSensorReg16_8(0x3402, 0x04);
-				wrSensorReg16_8(0x3403, 0x00);
-				wrSensorReg16_8(0x3404, 0x04);
-				wrSensorReg16_8(0x3405, 0xd3);
-				wrSensorReg16_8(0x3212, 0x13); // end group 3
-				wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3	
-				break;
-			  case Home:
-			  wrSensorReg16_8(0x3212, 0x03); // start group 3
-				wrSensorReg16_8(0x3406, 0x01);
-				wrSensorReg16_8(0x3400, 0x04);
-				wrSensorReg16_8(0x3401, 0x10);
-				wrSensorReg16_8(0x3402, 0x04);
-				wrSensorReg16_8(0x3403, 0x00);
-				wrSensorReg16_8(0x3404, 0x08);
-				wrSensorReg16_8(0x3405, 0x40);
-				wrSensorReg16_8(0x3212, 0x13); // end group 3
-				wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
-			  break;
-			  default :
-			  break; 
-			}
-	#endif
-	}
+		case Auto:
+			wrSensorReg16_8(0x3212, 0x03); // start group 3
+			wrSensorReg16_8(0x3406, 0x00);
+			wrSensorReg16_8(0x3400, 0x04);
+			wrSensorReg16_8(0x3401, 0x00);
+			wrSensorReg16_8(0x3402, 0x04);
+			wrSensorReg16_8(0x3403, 0x00);
+			wrSensorReg16_8(0x3404, 0x04);
+			wrSensorReg16_8(0x3405, 0x00);
+			wrSensorReg16_8(0x3212, 0x13); // end group 3
+			wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
+			wrSensorReg16_8(0x5183 ,0x0 );	
+			break;
+		case Sunny:
+			wrSensorReg16_8(0x3212, 0x03); // start group 3
+			wrSensorReg16_8(0x3406, 0x01);
+			wrSensorReg16_8(0x3400, 0x06);
+			wrSensorReg16_8(0x3401, 0x1c);
+			wrSensorReg16_8(0x3402, 0x04);
+			wrSensorReg16_8(0x3403, 0x00);
+			wrSensorReg16_8(0x3404, 0x04);
+			wrSensorReg16_8(0x3405, 0xf3);
+			wrSensorReg16_8(0x3212, 0x13); // end group 3
+			wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
+			break;
+			case Office:
+			wrSensorReg16_8(0x3212, 0x03); // start group 3
+			wrSensorReg16_8(0x3406, 0x01);
+			wrSensorReg16_8(0x3400, 0x05);
+			wrSensorReg16_8(0x3401, 0x48);
+			wrSensorReg16_8(0x3402, 0x04);
+			wrSensorReg16_8(0x3403, 0x00);
+			wrSensorReg16_8(0x3404, 0x07);
+			wrSensorReg16_8(0x3405, 0xcf);
+			wrSensorReg16_8(0x3212, 0x13); // end group 3
+			wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
+			wrSensorReg16_8(0x3212, 0x03); // start group 3
+			wrSensorReg16_8(0x3406, 0x01);
+			wrSensorReg16_8(0x3400, 0x06);
+			wrSensorReg16_8(0x3401, 0x48);
+			wrSensorReg16_8(0x3402, 0x04);
+			wrSensorReg16_8(0x3403, 0x00);
+			wrSensorReg16_8(0x3404, 0x04);
+			wrSensorReg16_8(0x3405, 0xd3);
+			wrSensorReg16_8(0x3212, 0x13); // end group 3
+			wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
+			break;
+			case Cloudy:
+			wrSensorReg16_8(0x3212, 0x03); // start group 3
+			wrSensorReg16_8(0x3406, 0x01);
+			wrSensorReg16_8(0x3400, 0x06);
+			wrSensorReg16_8(0x3401, 0x48);
+			wrSensorReg16_8(0x3402, 0x04);
+			wrSensorReg16_8(0x3403, 0x00);
+			wrSensorReg16_8(0x3404, 0x04);
+			wrSensorReg16_8(0x3405, 0xd3);
+			wrSensorReg16_8(0x3212, 0x13); // end group 3
+			wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3	
+			break;
+			case Home:
+			wrSensorReg16_8(0x3212, 0x03); // start group 3
+			wrSensorReg16_8(0x3406, 0x01);
+			wrSensorReg16_8(0x3400, 0x04);
+			wrSensorReg16_8(0x3401, 0x10);
+			wrSensorReg16_8(0x3402, 0x04);
+			wrSensorReg16_8(0x3403, 0x00);
+			wrSensorReg16_8(0x3404, 0x08);
+			wrSensorReg16_8(0x3405, 0x40);
+			wrSensorReg16_8(0x3212, 0x13); // end group 3
+			wrSensorReg16_8(0x3212, 0xa3); // lanuch group 3
+			break;
+			default :
+			break; 
+		}
+#endif
+}
 	
 	
 	
 	
-	void ArduCAM::OV2640_set_Color_Saturation(uint8_t Color_Saturation)
-	{
+void ArduCAM::OV2640_set_Color_Saturation(uint8_t Color_Saturation)
+{
 	#if (defined (OV2640_CAM)||defined (OV2640_MINI_2MP)||defined (OV2640_MINI_2MP_PLUS))
 		switch(Color_Saturation)
 		{
@@ -2501,10 +2505,10 @@ byte ArduCAM::wrSensorReg8_8(int regID, int regDat)
 	#if defined (RASPBERRY_PI)
 		arducam_i2c_write( regID , regDat );
 	#else
-		Wire.beginTransmission(sensor_addr >> 1);
-	  Wire.write(regID & 0x00FF);
-	  Wire.write(regDat & 0x00FF);
-	  if (Wire.endTransmission())
+		_I2C.beginTransmission(sensor_addr >> 1);
+	  _I2C.write(regID & 0x00FF);
+	  _I2C.write(regDat & 0x00FF);
+	  if (_I2C.endTransmission())
 	  {
 	    return 0;
 	  }
@@ -2518,13 +2522,13 @@ byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
 	#if defined (RASPBERRY_PI) 
 		arducam_i2c_read(regID,regDat);
 	#else
-		Wire.beginTransmission(sensor_addr >> 1);
-	  Wire.write(regID & 0x00FF);
-	  Wire.endTransmission();
+		_I2C.beginTransmission(sensor_addr >> 1);
+	  _I2C.write(regID & 0x00FF);
+	  _I2C.endTransmission();
 	
-	  Wire.requestFrom((sensor_addr >> 1), 1);
-	  if (Wire.available())
-	    *regDat = Wire.read();
+	  _I2C.requestFrom((sensor_addr >> 1), 1);
+	  if (_I2C.available())
+	    *regDat = _I2C.read();
 	  delay(1);
 	#endif
 	return 1;
@@ -2536,12 +2540,12 @@ byte ArduCAM::wrSensorReg8_16(int regID, int regDat)
 	#if defined (RASPBERRY_PI) 
 		arducam_i2c_write16(regID, regDat );
 	#else
-	  Wire.beginTransmission(sensor_addr >> 1);
-	  Wire.write(regID & 0x00FF);
+	  _I2C.beginTransmission(sensor_addr >> 1);
+	  _I2C.write(regID & 0x00FF);
 	
-	  Wire.write(regDat >> 8);            // sends data byte, MSB first
-	  Wire.write(regDat & 0x00FF);
-	  if (Wire.endTransmission())
+	  _I2C.write(regDat >> 8);            // sends data byte, MSB first
+	  _I2C.write(regDat & 0x00FF);
+	  if (_I2C.endTransmission())
 	  {
 	    return 0;
 	  }	
@@ -2555,15 +2559,15 @@ byte ArduCAM::rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
   	arducam_i2c_read16(regID, regDat);
   #else
   	uint8_t temp;
-	  Wire.beginTransmission(sensor_addr >> 1);
-	  Wire.write(regID);
-	  Wire.endTransmission();
+	  _I2C.beginTransmission(sensor_addr >> 1);
+	  _I2C.write(regID);
+	  _I2C.endTransmission();
 	
-	  Wire.requestFrom((sensor_addr >> 1), 2);
-	  if (Wire.available())
+	  _I2C.requestFrom((sensor_addr >> 1), 2);
+	  if (_I2C.available())
 	  {
-	    temp = Wire.read();
-	    *regDat = (temp << 8) | Wire.read();
+	    temp = _I2C.read();
+	    *regDat = (temp << 8) | _I2C.read();
 	  }
 	  delay(1);
 	#endif
@@ -2577,11 +2581,11 @@ byte ArduCAM::wrSensorReg16_8(int regID, int regDat)
 		arducam_i2c_word_write(regID, regDat);
 		arducam_delay_ms(1);
 	#else
-		Wire.beginTransmission(sensor_addr >> 1);
-	  Wire.write(regID >> 8);            // sends instruction byte, MSB first
-	  Wire.write(regID & 0x00FF);
-	  Wire.write(regDat & 0x00FF);
-	  if (Wire.endTransmission())
+		_I2C.beginTransmission(sensor_addr >> 1);
+	  _I2C.write(regID >> 8);            // sends instruction byte, MSB first
+	  _I2C.write(regID & 0x00FF);
+	  _I2C.write(regDat & 0x00FF);
+	  if (_I2C.endTransmission())
 	  {
 	    return 0;
 	  }
@@ -2594,14 +2598,14 @@ byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 	#if defined (RASPBERRY_PI) 
 		arducam_i2c_word_read(regID, regDat );
 	#else
-		Wire.beginTransmission(sensor_addr >> 1);
-	  Wire.write(regID >> 8);
-	  Wire.write(regID & 0x00FF);
-	  Wire.endTransmission();
-	  Wire.requestFrom((sensor_addr >> 1), 1);
-	  if (Wire.available())
+		_I2C.beginTransmission(sensor_addr >> 1);
+	  _I2C.write(regID >> 8);
+	  _I2C.write(regID & 0x00FF);
+	  _I2C.endTransmission();
+	  _I2C.requestFrom((sensor_addr >> 1), 1);
+	  if (_I2C.available())
 	  {
-	    *regDat = Wire.read();
+	    *regDat = _I2C.read();
 	  }
 	  delay(1);
 	#endif  
@@ -2613,12 +2617,12 @@ byte ArduCAM::wrSensorReg16_16(int regID, int regDat)
 {
 	#if defined (RASPBERRY_PI)
 	#else
-	  Wire.beginTransmission(sensor_addr >> 1);
-	  Wire.write(regID >> 8);            // sends instruction byte, MSB first
-	  Wire.write(regID & 0x00FF);
-	  Wire.write(regDat >> 8);            // sends data byte, MSB first
-	  Wire.write(regDat & 0x00FF);
-	  if (Wire.endTransmission())
+	  _I2C.beginTransmission(sensor_addr >> 1);
+	  _I2C.write(regID >> 8);            // sends instruction byte, MSB first
+	  _I2C.write(regID & 0x00FF);
+	  _I2C.write(regDat >> 8);            // sends data byte, MSB first
+	  _I2C.write(regDat & 0x00FF);
+	  if (_I2C.endTransmission())
 	  {
 	    return 0;
 	  }
@@ -2633,15 +2637,15 @@ byte ArduCAM::rdSensorReg16_16(uint16_t regID, uint16_t* regDat)
 	#if defined (RASPBERRY_PI)
 	#else
 	  uint16_t temp;
-	  Wire.beginTransmission(sensor_addr >> 1);
-	  Wire.write(regID >> 8);
-	  Wire.write(regID & 0x00FF);
-	  Wire.endTransmission();
-	  Wire.requestFrom((sensor_addr >> 1), 2);
-	  if (Wire.available())
+	  _I2C.beginTransmission(sensor_addr >> 1);
+	  _I2C.write(regID >> 8);
+	  _I2C.write(regID & 0x00FF);
+	  _I2C.endTransmission();
+	  _I2C.requestFrom((sensor_addr >> 1), 2);
+	  if (_I2C.available())
 	  {
-	    temp = Wire.read();
-	    *regDat = (temp << 8) | Wire.read();
+	    temp = _I2C.read();
+	    *regDat = (temp << 8) | _I2C.read();
 	  }
 	  delay(1);
 	#endif 
