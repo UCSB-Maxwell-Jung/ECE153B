@@ -52,6 +52,4 @@ void UART_Wired::configure_UART() {
 	//3.c enable transmitter and receiver 
 	_USARTx->CR1 |= USART_CR1_TE; //enable transmitter
 	_USARTx->CR1 |= USART_CR1_RE; //enable receiver
-
-	_USARTx->CR1 |= USART_CR1_UE; // Enable USART
 }
