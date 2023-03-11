@@ -22,6 +22,12 @@ uint8_t I2C::endTransmission(bool stop) {
 	// [TODO]
 }
 
+int8_t I2C::write(uint8_t value) {
+	// [TODO]
+
+	return 0;
+}
+
 int8_t I2C::write(uint8_t data[], uint8_t length) {
 	// [TODO]
 

@@ -21,6 +21,7 @@ public:
   uint8_t requestFrom(uint8_t address, uint8_t quantity, bool stop=true);
   void beginTransmission(uint8_t address);
   uint8_t endTransmission(bool stop=true);
+  int8_t write(uint8_t value);
   int8_t write(uint8_t data[], uint8_t length);
   uint8_t available();
   int8_t read();

@@ -637,11 +637,11 @@ int ArduCAM::wrSensorRegs16_16(const struct sensor_reg reglist[])
 }
 
 // Read/write 8 bit value to/from 8 bit register address	
-byte ArduCAM::wrSensorReg8_8(int regID, int regDat)
+byte ArduCAM::wrSensorReg8_8(uint8_t regID, uint8_t regDat)
 {
 	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID & 0x00FF);
-	_I2C.write(regDat & 0x00FF);
+	_I2C.write(regID);
+	_I2C.write(regDat);
 	if (_I2C.endTransmission())
 		return 0;
 	delay(1);
@@ -651,7 +651,7 @@ byte ArduCAM::wrSensorReg8_8(int regID, int regDat)
 byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
 {	
 	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID & 0x00FF);
+	_I2C.write(regID);
 	_I2C.endTransmission();
 
 	_I2C.requestFrom((sensor_addr >> 1), 1);
@@ -662,12 +662,12 @@ byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
 	
 }
 // Read/write 16 bit value to/from 8 bit register address
-byte ArduCAM::wrSensorReg8_16(int regID, int regDat)
+byte ArduCAM::wrSensorReg8_16(uint8_t regID, uint16_t regDat)
 {
 	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID & 0x00FF);
+	_I2C.write(regID);
 	_I2C.write(regDat >> 8);            // sends data byte, MSB first
-	_I2C.write(regDat & 0x00FF);
+	_I2C.write(regDat);
 	if (_I2C.endTransmission())
 		return 0;
 	delay(1);
@@ -690,12 +690,12 @@ byte ArduCAM::rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
 }
 
 // Read/write 8 bit value to/from 16 bit register address
-byte ArduCAM::wrSensorReg16_8(int regID, int regDat)
+byte ArduCAM::wrSensorReg16_8(uint16_t regID, uint8_t regDat)
 {
 	_I2C.beginTransmission(sensor_addr >> 1);
 	_I2C.write(regID >> 8);            // sends instruction byte, MSB first
-	_I2C.write(regID & 0x00FF);
-	_I2C.write(regDat & 0x00FF);
+	_I2C.write(regID);
+	_I2C.write(regDat);
 	if (_I2C.endTransmission()) {
 		return 0;
 	}
@@ -706,7 +706,7 @@ byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 {
 	_I2C.beginTransmission(sensor_addr >> 1);
 	_I2C.write(regID >> 8);
-	_I2C.write(regID & 0x00FF);
+	_I2C.write(regID);
 	_I2C.endTransmission();
 	_I2C.requestFrom((sensor_addr >> 1), 1);
 	if (_I2C.available()) {
@@ -717,13 +717,13 @@ byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 }
 
 //I2C Write 16bit address, 16bit data
-byte ArduCAM::wrSensorReg16_16(int regID, int regDat)
+byte ArduCAM::wrSensorReg16_16(uint16_t regID, uint16_t regDat)
 {
 	_I2C.beginTransmission(sensor_addr >> 1);
 	_I2C.write(regID >> 8);            // sends instruction byte, MSB first
-	_I2C.write(regID & 0x00FF);
+	_I2C.write(regID);
 	_I2C.write(regDat >> 8);            // sends data byte, MSB first
-	_I2C.write(regDat & 0x00FF);
+	_I2C.write(regDat);
 	if (_I2C.endTransmission()) {
 		return 0;
 	}
@@ -737,7 +737,7 @@ byte ArduCAM::rdSensorReg16_16(uint16_t regID, uint16_t* regDat)
 	uint16_t temp;
 	_I2C.beginTransmission(sensor_addr >> 1);
 	_I2C.write(regID >> 8);
-	_I2C.write(regID & 0x00FF);
+	_I2C.write(regID);
 	_I2C.endTransmission();
 	_I2C.requestFrom((sensor_addr >> 1), 2);
 	if (_I2C.available()) {
