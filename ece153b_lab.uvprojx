@@ -1981,6 +1981,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\final\Print.h</FilePath>
             </File>
+            <File>
+              <FileName>graphicstest.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\graphicstest.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>graphicstest.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\graphicstest.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
