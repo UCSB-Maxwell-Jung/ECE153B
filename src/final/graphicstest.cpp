@@ -46,7 +46,7 @@ void graphics_test_all() {
 }
 
 void run_all_benchmarks() {
-  Serial.print("ILI9341 Test!\n");
+  Serial.println("ILI9341 Test!");
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
