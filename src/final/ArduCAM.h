@@ -101,208 +101,20 @@
 #ifndef ArduCAM_H
 #define ArduCAM_H
 #include "nucleo.h"
+#include "SPI_Camera.h"
+#include "I2C_Camera.h"
 // #include "memorysaver.h"
 // #include "Arduino.h"
 // #include <pins_arduino.h>
 
-#if defined (__AVR__)
-#define cbi(reg, bitmask) *reg &= ~bitmask
-#define sbi(reg, bitmask) *reg |= bitmask
-#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-#define cport(port, data) port &= data
-#define sport(port, data) port |= data
-#define swap(type, i, j) {type t = i; i = j; j = t;}
-#define fontbyte(x) pgm_read_byte(&cfont.font[x])  
-#define regtype volatile uint8_t
-#define regsize uint8_t
-#endif
-
-#if defined(__SAM3X8E__)
-
-#define cbi(reg, bitmask) *reg &= ~bitmask
-#define sbi(reg, bitmask) *reg |= bitmask
-
-#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-
-#define cport(port, data) port &= data
-#define sport(port, data) port |= data
-
-#define swap(type, i, j) {type t = i; i = j; j = t;}
-#define fontbyte(x) cfont.font[x]  
-
-#define regtype volatile uint32_t
-#define regsize uint32_t
-
-#define PROGMEM
-
-#define pgm_read_byte(x)        (*((char *)x))
-#define pgm_read_word(x)        ( ((*((unsigned char *)x + 1)) << 8) + (*((unsigned char *)x)))
-#define pgm_read_byte_near(x)   (*((char *)x))
-#define pgm_read_byte_far(x)    (*((char *)x))
-#define pgm_read_word_near(x)   ( ((*((unsigned char *)x + 1)) << 8) + (*((unsigned char *)x)))
-#define pgm_read_word_far(x)    ( ((*((unsigned char *)x + 1)) << 8) + (*((unsigned char *)x))))
-#define PSTR(x)  x
-#if defined F
-	#undef F
-#endif
-#define F(X) (X)	
-#endif	
-
-#if defined(ESP8266)
-	#define cbi(reg, bitmask) digitalWrite(bitmask, LOW)
-	#define sbi(reg, bitmask) digitalWrite(bitmask, HIGH)
-	#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-	#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-	
-	#define cport(port, data) port &= data
-	#define sport(port, data) port |= data
-	
-	#define swap(type, i, j) {type t = i; i = j; j = t;}
-	
-	#define fontbyte(x) cfont.font[x]  
-	
-	#define regtype volatile uint32_t
-	#define regsize uint32_t
-#endif	
-
-#if defined(__SAMD51__) || defined(__SAMD21G18A__)
-	#define Serial SERIAL_PORT_USBVIRTUAL
-
-	#define cbi(reg, bitmask) *reg &= ~bitmask
-	#define sbi(reg, bitmask) *reg |= bitmask
-
-	#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-	#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-
-	#define cport(port, data) port &= data
-	#define sport(port, data) port |= data
-
-	#define swap(type, i, j) {type t = i; i = j; j = t;}
-	#define fontbyte(x) cfont.font[x]  
-
-	#define regtype volatile uint32_t
-	#define regsize uint32_t
-#endif
-
-#if defined(ESP32)
-	#define cbi(reg, bitmask) digitalWrite(bitmask, LOW)
-	#define sbi(reg, bitmask) digitalWrite(bitmask, HIGH)
-	#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-	#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-	
-	#define cport(port, data) port &= data
-	#define sport(port, data) port |= data
-	
-	#define swap(type, i, j) {type t = i; i = j; j = t;}
-	
-	#define fontbyte(x) cfont.font[x]  
-	
-	#define regtype volatile uint32_t
-	#define regsize uint32_t
-#endif
-
-#if defined(__CPU_ARC__)
-	#define cbi(reg, bitmask) *reg &= ~bitmask
-	#define sbi(reg, bitmask) *reg |= bitmask
-	#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-	#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-	#define cport(port, data) port &= data
-	#define sport(port, data) port |= data
-	#define swap(type, i, j) {type t = i; i = j; j = t;}
-	#define fontbyte(x) pgm_read_byte(&cfont.font[x])  
-	#define regtype volatile uint32_t
-	#define regsize uint32_t
-#endif
-
-#if defined (RASPBERRY_PI)
-	#define regtype volatile uint32_t
-	#define regsize uint32_t 
-	#define byte uint8_t
-	#define cbi(reg, bitmask) digitalWrite(bitmask, LOW)
-  #define sbi(reg, bitmask) digitalWrite(bitmask, HIGH)
-  #define PROGMEM
-	
-	#define PSTR(x)  x
-	#if defined F
-	#undef F
-	#endif
-	#define F(X) (X)
-#endif
-
-#if defined(ARDUINO_ARCH_NRF52)
-    #define cbi(reg, bitmask) digitalWrite(bitmask, LOW)
-	#define sbi(reg, bitmask) digitalWrite(bitmask, HIGH)
-	#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-	#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-	
-	#define cport(port, data) port &= data
-	#define sport(port, data) port |= data
-	
-	#define swap(type, i, j) {type t = i; i = j; j = t;}
-	
-	#define fontbyte(x) cfont.font[x]  
-	
-	#define regtype volatile uint32_t
-	#define regsize uint32_t
-
-#endif
-
-#if defined(TEENSYDUINO)
- #define cbi(reg, bitmask) digitalWriteFast(bitmask, LOW)
- #define sbi(reg, bitmask) digitalWriteFast(bitmask, HIGH)
-#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
- #define cport(port, data) port &= data
-#define sport(port, data) port |= data
- #define swap(type, i, j) {type t = i; i = j; j = t;}
- #define fontbyte(x) cfont.font[x]  
- #define regtype volatile uint8_t
-#define regsize uint8_t
- #endif
-
-#if defined(NRF52840_XXAA)
-
- #define cbi(reg, bitmask) digitalWrite(bitmask, LOW)
- #define sbi(reg, bitmask) digitalWrite(bitmask, HIGH)
-
-#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-
-#define cport(port, data) port &= data
-#define sport(port, data) port |= data
-
-#define swap(type, i, j) {type t = i; i = j; j = t;}
-#define fontbyte(x) cfont.font[x]  
-
-#define regtype volatile uint32_t
-#define regsize uint32_t
-
-#define PROGMEM
-
-#if defined F
-	#undef F
-#endif
-#define F(X) (X)
-#endif
-
-#if defined (ARDUINO_ARCH_STM32)
-#define cbi(reg, bitmask) *reg &= ~bitmask
-#define sbi(reg, bitmask) *reg |= bitmask
-
-#define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
-#define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
-
-#define cport(port, data) port &= data
-#define sport(port, data) port |= data
-
-#define swap(type, i, j) {type t = i; i = j; j = t;}
-#define fontbyte(x) cfont.font[x]
-#define regtype volatile uint32_t
-#define regsize uint32_t
-#endif
-
+// #define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
+// #define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
+// #define cport(port, data) port &= data
+// #define sport(port, data) port |= data
+// #define swap(type, i, j) {type t = i; i = j; j = t;}
+// #define fontbyte(x) pgm_read_byte(&cfont.font[x])  
+// #define regtype volatile uint8_t
+// #define regsize uint8_t
 
 /****************************************************/
 /* Sensor related definition 												*/
@@ -638,11 +450,12 @@ struct sensor_reg {
 /* define a structure for sensor register initialization values */
 /****************************************************************/
 
-class ArduCAM 
-{
-	public:
-	ArduCAM(void); // default constructor
-	ArduCAM(byte model ,int CS);
+class ArduCAM {
+public:
+	// constructor
+	ArduCAM();
+
+	// methods
 	void InitCAM(void);
 	
 	void CS_HIGH(void);
@@ -702,22 +515,20 @@ class ArduCAM
 	
 	void OV5642_set_RAW_size (uint8_t size);
 	
-	
 	void OV2640_set_Light_Mode(uint8_t Light_Mode);
-  void OV3640_set_Light_Mode(uint8_t Light_Mode);
+  	void OV3640_set_Light_Mode(uint8_t Light_Mode);
 	void OV5642_set_Light_Mode(uint8_t Light_Mode);
 	void OV5640_set_Light_Mode(uint8_t Light_Mode);
-	
+
 	void OV2640_set_Color_Saturation(uint8_t Color_Saturation);
 	void OV3640_set_Color_Saturation(uint8_t Color_Saturation);
 	void OV5642_set_Color_Saturation(uint8_t Color_Saturation);
 	void OV5640_set_Color_Saturation(uint8_t Color_Saturation);
 	
-	
 	void OV2640_set_Brightness(uint8_t Brightness);
 	void OV3640_set_Brightness(uint8_t Brightness);
-  void OV5642_set_Brightness(uint8_t Brightness);
-  void OV5640_set_Brightness(uint8_t Brightness);
+	void OV5642_set_Brightness(uint8_t Brightness);
+	void OV5640_set_Brightness(uint8_t Brightness);
 	
 	void OV2640_set_Contrast(uint8_t Contrast);
 	void OV3640_set_Contrast(uint8_t Contrast);
@@ -729,33 +540,22 @@ class ArduCAM
 	void OV5642_set_Special_effects(uint8_t Special_effect);
 	void OV5640_set_Special_effects(uint8_t Special_effect);
 	
-	
 	void OV3640_set_Exposure_level(uint8_t level);
 	void OV3640_set_Sharpness(uint8_t Sharpness);
 	void OV3640_set_Mirror_Flip(uint8_t Mirror_Flip);
 	
-	
 	void OV5642_set_hue(uint8_t degree);
 	void OV5642_set_Exposure_level(uint8_t level);
 	void OV5642_set_Sharpness(uint8_t Sharpness);
-  void OV5642_set_Mirror_Flip(uint8_t Mirror_Flip);
-  void OV5642_set_Compress_quality(uint8_t quality);
-  void OV5642_Test_Pattern(uint8_t Pattern);
-   
-  
-  void OV5640_set_EV(uint8_t EV);
-  void OV5640_set_Night_Mode(uint8_t Night_mode);
-  void OV5640_set_Banding_Filter(uint8_t Banding_Filter);
+	void OV5642_set_Mirror_Flip(uint8_t Mirror_Flip);
+	void OV5642_set_Compress_quality(uint8_t quality);
+	void OV5642_Test_Pattern(uint8_t Pattern);
 	
-	
-	
+	void OV5640_set_EV(uint8_t EV);
+	void OV5640_set_Night_Mode(uint8_t Night_mode);
+	void OV5640_set_Banding_Filter(uint8_t Banding_Filter);
 	
 	void set_format(byte fmt);
-	
-	#if defined (RASPBERRY_PI)
-    uint8_t transfer(uint8_t data);
-	void transfers(uint8_t *buf, uint32_t size);
-    #endif
 
 	void transferBytes_(uint8_t * out, uint8_t * in, uint8_t size);
 	void transferBytes(uint8_t * out, uint8_t * in, uint32_t size);
@@ -764,6 +564,8 @@ class ArduCAM
   protected:
 	// regtype *P_CS;
 	// regsize B_CS;
+	I2C_Camera _I2C;
+	SPI_Camera _SPI;
 	byte m_fmt;
 	byte sensor_model;
 	byte sensor_addr;

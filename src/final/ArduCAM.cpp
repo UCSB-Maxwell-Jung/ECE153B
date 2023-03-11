@@ -109,7 +109,7 @@
 // #else
 	// #include "Arduino.h
 	// #include <Wire.h> // I2C
-	// #include <SPI.h> // SPI
+	// #include <_SPI.h> // SPI
 	// #include "HardwareSerial.h" // UART
 // 	#if defined(__SAM3X8E__)
 // 		#define Wire  Wire1
@@ -118,98 +118,8 @@
 
 // default constructor
 ArduCAM::ArduCAM() {
-  sensor_model = OV7670;
-  sensor_addr = 0x42;
-}
-
-ArduCAM::ArduCAM(byte model ,int CS) {
-	#if defined (RASPBERRY_PI)
-		if(CS>=0)
-		{
-			B_CS = CS;
-		}
-	#else
-		#if (defined(ESP8266)||defined(ESP32)||defined(TEENSYDUINO) ||defined(NRF52840_XXAA))
-		  B_CS = CS;
-		#else
-		  P_CS  = portOutputRegister(digitalPinToPort(CS));
-		  B_CS  = digitalPinToBitMask(CS);
-		#endif
-	#endif
- #if defined (RASPBERRY_PI)
-  // pinMode(CS, OUTPUT);
- #else
-	  pinMode(CS, OUTPUT);
-      sbi(P_CS, B_CS);
-	#endif
-	sensor_model = model;
-	switch (sensor_model) {
-		case OV7660:
-		case OV7670:
-		case OV7675:
-		case OV7725:
-			#if defined (RASPBERRY_PI)
-				sensor_addr = 0x21;
-			#else
-				sensor_addr = 0x42;
-			#endif		
-			break;
-		case MT9D111_A: //Standard MT9D111 module
-      		sensor_addr = 0xba;
-    		break;
-		case MT9D111_B: //Flex MT9D111 AF module
-			sensor_addr = 0x90;
-			break;
-		case MT9M112:
-			#if defined (RASPBERRY_PI)
-				sensor_addr = 0x5d;
-			#else
-				sensor_addr = 0x90;
-      		#endif
-    		break;
-		case MT9M001:
-			sensor_addr = 0xba;
-			break;
-		case MT9V034:
-			sensor_addr = 0x90;
-			break;
-		case MT9M034:
-			sensor_addr = 0x20;// 7 bits
-			break;
-    case OV3640:
-    case OV5640:
-    case OV5642:
-    case MT9T112:
-    case MT9D112:
-    	#if defined (RASPBERRY_PI)
-    		sensor_addr = 0x3c;
-    	#else
-      		sensor_addr = 0x78;
-       	#endif
-   		break;
-    case OV2640:
-    case OV9650:
-    case OV9655:
-    	#if defined (RASPBERRY_PI)
-    		sensor_addr = 0x30;
-    	#else
-      		sensor_addr = 0x60;
-     	#endif
-    	break;
-	default:
-		#if defined (RASPBERRY_PI)
-			sensor_addr = 0x21;
-		#else
-			sensor_addr = 0x42;
-      	#endif
-		break;
-	}
-	#if defined (RASPBERRY_PI)
-	// initialize i2c:
-	if (!arducam_i2c_init(sensor_addr)) {
-		printf("ERROR: I2C init failed\n");
-	}
-	#endif
+  sensor_model = OV2640;
+  sensor_addr = 0x60;
 }
 
 void ArduCAM::InitCAM() {
@@ -223,8 +133,6 @@ void ArduCAM::InitCAM() {
 		wrSensorReg8_8(0xff, 0x01);
 		wrSensorReg8_8(0x15, 0x00);
 		wrSensorRegs8_8(OV2640_320x240_JPEG);
-		//wrSensorReg8_8(0xff, 0x00);
-		//wrSensorReg8_8(0x44, 0x32);
 	}
 	else {
 		wrSensorRegs8_8(OV2640_QVGA);
@@ -256,38 +164,18 @@ uint32_t ArduCAM::read_fifo_length(void)
 	return length;	
 }
 
-#if defined (RASPBERRY_PI)
-uint8_t ArduCAM::transfer(uint8_t data)
-{
-  uint8_t temp;
-  temp = arducam_spi_transfer(data);
-  return temp;
-}
-
-void ArduCAM::transfers(uint8_t *buf, uint32_t size)
-{
-	arducam_spi_transfers(buf, size);
-}
-
-#endif
-
 void ArduCAM::set_fifo_burst()
 {
-	#if defined (RASPBERRY_PI)
-	transfer(BURST_FIFO_READ);
-	#else
-    SPI.transfer(BURST_FIFO_READ);
-   #endif
-		
+	_SPI.transfer(BURST_FIFO_READ);
 }
 
 void ArduCAM::CS_HIGH(void)
 {
-	 sbi(P_CS, B_CS);	
+	// [TODO] set CS pin high
 }
 void ArduCAM::CS_LOW(void)
 {
-	 cbi(P_CS, B_CS);	
+	// [TODO] set CS pin low
 }
 
 uint8_t ArduCAM::read_fifo(void)
@@ -299,22 +187,12 @@ uint8_t ArduCAM::read_fifo(void)
 
 uint8_t ArduCAM::read_reg(uint8_t addr)
 {
-	uint8_t data;
-	#if defined (RASPBERRY_PI)
-		data = bus_read(addr);	
-	#else
-		data = bus_read(addr & 0x7F);
-	#endif
-	return data;
+	return bus_read(addr & 0x7F);
 }
 
 void ArduCAM::write_reg(uint8_t addr, uint8_t data)
 {
-	#if defined (RASPBERRY_PI)
-		bus_write(addr , data);
-	#else
-	 bus_write(addr | 0x80, data);
-  #endif  
+	bus_write(addr | 0x80, data);
 }
 
 //Set corresponding bit  
@@ -366,47 +244,43 @@ void ArduCAM::set_mode(uint8_t mode)
 
 uint8_t ArduCAM::bus_write(int address,int value)
 {	
-	cbi(P_CS, B_CS);
-	#if defined (RASPBERRY_PI)
-		arducam_spi_write(address | 0x80, value);
-	#else
-		SPI.transfer(address);
-		SPI.transfer(value);
-	#endif
-	sbi(P_CS, B_CS);
+	CS_LOW();
+	_SPI.transfer(address);
+	_SPI.transfer(value);
+	CS_HIGH();
 	return 1;
 }
 
 uint8_t ArduCAM:: bus_read(int address)
 {
 	uint8_t value;
-	cbi(P_CS, B_CS);
+	CS_LOW();
 	#if defined (RASPBERRY_PI)
 		value = arducam_spi_read(address & 0x7F);
-		sbi(P_CS, B_CS);
+		CS_HIGH();
 		return value;	
 	#else
 		#if (defined(ESP8266) || defined(__arm__) ||defined(TEENSYDUINO))
 		#if defined(OV5642_MINI_5MP)
-		  SPI.transfer(address);
-		  value = SPI.transfer(0x00);
+		  _SPI.transfer(address);
+		  value = _SPI.transfer(0x00);
 		  // correction for bit rotation from readback
 		  value = (byte)(value >> 1) | (value << 7);
 		  // take the SS pin high to de-select the chip:
-		  sbi(P_CS, B_CS);
+		  CS_HIGH();
 		  return value;
 		#else
-		  SPI.transfer(address);
-		  value = SPI.transfer(0x00);
+		  _SPI.transfer(address);
+		  value = _SPI.transfer(0x00);
 		  // take the SS pin high to de-select the chip:
-		  sbi(P_CS, B_CS);
+		  CS_HIGH();
 		  return value;
 		#endif
 		#else
-		  SPI.transfer(address);
-		  value = SPI.transfer(0x00);
+		  _SPI.transfer(address);
+		  value = _SPI.transfer(0x00);
 		  // take the SS pin high to de-select the chip:
-		  sbi(P_CS, B_CS);
+		  CS_HIGH();
 		  return value;
 		#endif
 #endif
@@ -2662,7 +2536,7 @@ byte ArduCAM::wrSensorReg8_16(int regID, int regDat)
 	#if defined (RASPBERRY_PI) 
 		arducam_i2c_write16(regID, regDat );
 	#else
-		Wire.beginTransmission(sensor_addr >> 1);
+	  Wire.beginTransmission(sensor_addr >> 1);
 	  Wire.write(regID & 0x00FF);
 	
 	  Wire.write(regDat >> 8);            // sends data byte, MSB first
