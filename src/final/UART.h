@@ -18,6 +18,7 @@ public:
   size_t write(uint8_t);
   size_t write(const uint8_t *buffer, size_t size);
   uint8_t read();
+  uint8_t available();
 
 protected:
   USART_TypeDef* _USARTx;
@@ -26,8 +27,5 @@ protected:
   virtual void configure_GPIO(void) = 0; // must be implemented in derived class
   virtual void configure_UART() = 0; // must be implemented in derived class
 };
-
-// void USART1_IRQHandler(void);
-// void USART2_IRQHandler(void);
 
 #endif
