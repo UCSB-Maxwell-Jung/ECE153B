@@ -478,16 +478,16 @@ public:
 	uint8_t bus_read(int address);	
  
 	// Write 8 bit values to 8 bit register address
-	int wrSensorRegs8_8(const struct sensor_reg*);
+	int wrSensorRegs8_8(const struct sensor_reg[]);
 	
 	// Write 16 bit values to 8 bit register address
-	int wrSensorRegs8_16(const struct sensor_reg*);
+	int wrSensorRegs8_16(const struct sensor_reg[]);
 	
 	// Write 8 bit values to 16 bit register address
-	int wrSensorRegs16_8(const struct sensor_reg*);
+	int wrSensorRegs16_8(const struct sensor_reg[]);
 	
-  // Write 16 bit values to 16 bit register address
-	int wrSensorRegs16_16(const struct sensor_reg*);
+  	// Write 16 bit values to 16 bit register address
+	int wrSensorRegs16_16(const struct sensor_reg[]);
 	
 	// Read/write 8 bit value to/from 8 bit register address	
 	byte wrSensorReg8_8(int regID, int regDat);
