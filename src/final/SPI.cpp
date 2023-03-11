@@ -40,7 +40,7 @@ void SPI::transmit(uint8_t b) {
 }
 
 // transfer data out on output line and in on input line
-uint8_t SPI::transmit_receive(uint8_t b) {
+uint8_t SPI::transfer(uint8_t b) {
 	// wait for Transmit Buffer Empty flag to be set
 	while ((_SPIx->SR & SPI_SR_TXE) != SPI_SR_TXE);
 	// write byte to transfer

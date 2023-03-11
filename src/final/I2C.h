@@ -20,16 +20,16 @@ public:
   I2C(I2C_TypeDef* I2Cx=NULL);
   // methods
   virtual void begin(uint32_t desired_freq=I2C_DEFAULT_FREQ);
-  int8_t transmit(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size);
-  int8_t receive(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size);
+  int8_t beginTransmission(uint32_t DevAddress, uint8_t Size, uint8_t Direction);
+  int8_t write(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size);
+  int8_t read(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size);
+  void endTransmission();
 
 protected:
   I2C_TypeDef* _I2Cx;
 
   virtual void configure_GPIO(void) = 0; // must be implemented in derived class
   virtual void configure_I2C() = 0; // must be implemented in derived class
-  int8_t start(uint32_t DevAddress, uint8_t Size, uint8_t Direction);
-  void stop();
 };
 
 #endif

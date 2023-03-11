@@ -11,14 +11,14 @@ void I2C::begin(uint32_t desired_freq) {
 //===============================================================================
 //                           I2C Send Data
 //=============================================================================== 
-int8_t I2C::transmit(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
+int8_t I2C::write(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 	int i;
 	
 	if (Size <= 0 || pData == NULL) return -1;
 	
 	while((_I2Cx->ISR & I2C_ISR_BUSY) != 0); // wait until not busy
 	
-	if (start(DeviceAddress, Size, WRITE_TO_SLAVE) < 0 ) return -1;
+	if (beginTransmission(DeviceAddress, Size, WRITE_TO_SLAVE) < 0 ) return -1;
 
 	// Send Data
 	// Write the first data in DR register
@@ -43,7 +43,7 @@ int8_t I2C::transmit(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 	
 	if((_I2Cx->ISR & I2C_ISR_NACKF) != 0 ) return -1;
 
-	stop();
+	endTransmission();
 	return 0;
 }
 
@@ -51,14 +51,14 @@ int8_t I2C::transmit(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 //===============================================================================
 //                           I2C Receive Data
 //=============================================================================== 
-int8_t I2C::receive(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
+int8_t I2C::read(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 	int i;
 	
 	if(Size <= 0 || pData == NULL) return -1;
 
 	while((_I2Cx->ISR & I2C_ISR_BUSY) != 0); // wait until not busy
 
-	start(DeviceAddress, Size, READ_FROM_SLAVE); // 0 = sending data to the slave, 1 = receiving data from the slave
+	beginTransmission(DeviceAddress, Size, READ_FROM_SLAVE); // 0 = sending data to the slave, 1 = receiving data from the slave
 						  	
 	for (i = 0; i < Size; i++) {
 		// Wait until RXNE flag is set 	
@@ -69,7 +69,7 @@ int8_t I2C::receive(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 	// Wait until TCR flag is set 
 	while((_I2Cx->ISR & I2C_ISR_TC) == 0);
 	
-	stop();
+	endTransmission();
 	
 	return 0;
 }
@@ -82,7 +82,7 @@ int8_t I2C::receive(uint8_t DeviceAddress, uint8_t *pData, uint8_t Size) {
 // Direction = 0: Master requests a write transfer
 // Direction = 1: Master requests a read transfer
 //=============================================================================== 
-int8_t I2C::start(uint32_t DevAddress, uint8_t Size, uint8_t Direction) {	
+int8_t I2C::beginTransmission(uint32_t DevAddress, uint8_t Size, uint8_t Direction) {	
 	
 	// Direction = 0: Master requests a write transfer
 	// Direction = 1: Master requests a read transfer
@@ -112,7 +112,7 @@ int8_t I2C::start(uint32_t DevAddress, uint8_t Size, uint8_t Direction) {
 //===============================================================================
 //                           I2C Stop
 //=============================================================================== 
-void I2C::stop(){
+void I2C::endTransmission(){
 	// Master: Generate STOP bit after the current byte has been transferred 
 	_I2Cx->CR2 |= I2C_CR2_STOP;
 	// Wait until STOPF flag is reset
