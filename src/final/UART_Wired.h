@@ -16,4 +16,6 @@ private:
   void configure_UART(void);
 };
 
+extern UART_Wired Serial;
+
 #endif // __STM32L476R_NUCLEO_UART_Wired_H

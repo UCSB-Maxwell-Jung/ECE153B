@@ -1,7 +1,19 @@
-#include "graphicstest.h"
+#include "nucleo.h"
+#include "sdcard_list_files_test.h"
+
+UART_Wired Serial;
+
+void init_hardware() {
+  init_system_clock();   // System Clock = 80 MHz
+	init_SysTick();
+	init_LED();
+}
 
 int main() {
-  graphics_test_all(); // this function never returns
+  init_hardware();
+  setup();
+  while(1)
+    loop();
 
   return 1; // if program reaches this line, something went wrong
 }

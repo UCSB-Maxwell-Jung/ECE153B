@@ -1,7 +1,7 @@
 #include "UART_Wired.h"
 
 UART_Wired::UART_Wired()
-    : UART(WIRED) {}
+    : UART(USART2) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
 void UART_Wired::configure_GPIO() {

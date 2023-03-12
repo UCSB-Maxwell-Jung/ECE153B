@@ -1,6 +1,8 @@
 
 #include "SysTick.h"
 
+#include "stm32l476xx.h"
+
 volatile uint32_t us_elapsed;
 
 
@@ -52,6 +54,10 @@ void delay(uint32_t ms){
 
 	future_time = us_elapsed + 1000*ms;
 	while (us_elapsed < future_time);
+}
+
+uint32_t millis(void){
+	return us_elapsed/1000;
 }
 
 uint32_t micros(void){

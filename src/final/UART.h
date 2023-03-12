@@ -1,12 +1,13 @@
 #ifndef __STM32L476R_NUCLEO_UART_H
 #define __STM32L476R_NUCLEO_UART_H
 
-#include "Print.h"
+#include "stm32l476xx.h"
 
-#include "nucleo.h"
+#include "Print.h"
 
 #define BufferSize 32
 #define UART_DEFAULT_BAUD_RATE 9600
+#define CLK_FREQ 80000000
 
 class UART : public Print {
 public:

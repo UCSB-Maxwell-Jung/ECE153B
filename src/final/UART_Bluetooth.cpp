@@ -1,7 +1,7 @@
 #include "UART_Bluetooth.h"
 
 UART_Bluetooth::UART_Bluetooth()
-    : UART(BLUETOOTH) {}
+    : UART(USART1) {}
 
 // Configure Pins for Bluetooth
 void UART_Bluetooth::configure_GPIO() {

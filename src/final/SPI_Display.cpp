@@ -1,7 +1,7 @@
 #include "SPI_Display.h"
 
 SPI_Display::SPI_Display()
-    : SPI(ILI9341) {}
+    : SPI(SPI1) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
 void SPI_Display::configure_GPIO() {
@@ -59,7 +59,7 @@ void SPI_Display::configure_SPI() {
 	// ---------------CR1-----------------
 	// set spi clock prescalar to be the next highest requested freq
 	SPI1->CR1 &= ~SPI_CR1_BR; // reset baud rate control bits to 000
-	SPI1->CR1 |= _br << 3;
+	SPI1->CR1 |= br_ << 3;
 
 	// set clock polarity to low (0)
 	SPI1->CR1 &= ~SPI_CR1_CPOL;
