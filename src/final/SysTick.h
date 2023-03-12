@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 
-void init_SysTick(void);
+void initSysTick(void);
 void SysTick_Handler(void);
 void delay(uint32_t ms);
 uint32_t millis(void);

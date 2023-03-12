@@ -10,7 +10,7 @@ volatile uint32_t us_elapsed;
 // Initialize SysTick
 // generate 1 tick/interrupt every 1us
 //******************************************************************************************	
-void init_SysTick(void){
+void initSysTick(void){
 	// SysTick Control & Status Register
 	SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk; // disable SysTick IRQ and SysTick Counter
 	

@@ -2,14 +2,14 @@
 
 HardwareUsart2 Serial;
 
-void init_hardware() {
-  init_system_clock();   // System Clock = 80 MHz
-	init_SysTick();
-	init_LED();
+void initHardware() {
+  initSystemClock();   // System Clock = 80 MHz
+	initSysTick();
+	initLed();
 }
 
 int main() {
-  init_hardware();
+  initHardware();
   setup();
   while(1)
     loop();
