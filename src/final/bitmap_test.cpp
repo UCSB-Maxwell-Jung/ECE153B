@@ -18,13 +18,7 @@
 //    tft.drawRGBBitmap(0, 0, image_name.pixel_data, image_name.width, image_name.height);
 //  See also https://forum.pjrc.com/threads/35575-Export-for-ILI9341_t3-with-GIMP
 
-#include "bitmaptest.h"
-
-// custom library
-#include "SysClock.h"
-#include "SysTick.h"
-#include "LED.h"
-#include "UART_Wired.h"
+#include "bitmap_test.h"
 
 #include "Adafruit_ILI9341.h"
 #include "dragon.h"
@@ -34,8 +28,8 @@
 //#define TFT_CS 10
 
 // Feather 32u4 or M0 with TFT FeatherWing:
-#define TFT_DC 10
-#define TFT_CS  9
+// #define TFT_DC 10
+// #define TFT_CS  9
 // ESP8266:
 //#define TFT_DC 15
 //#define TFT_CS 0
@@ -43,22 +37,11 @@
 // see learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing/pinouts
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341();
-UART_Wired Serial = UART_Wired();
-
-void test_all() {
-  setup();
-  while(1)
-    loop();
-}
+// If using the breakout, change pins as desired
+//Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
 void setup(void) {
-  init_system_clock();   // System Clock = 80 MHz
-	init_SysTick();
-	init_LED();
-
-  // initialize Serial communication interface
-  Serial.begin(UART_DEFAULT_BAUD_RATE);
-  tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
+  tft.begin(SPI_MAX_FREQ); // run display as fast as possible
 }
 
 void loop(void) {

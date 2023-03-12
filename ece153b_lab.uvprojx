@@ -1862,14 +1862,19 @@
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
             </File>
             <File>
-              <FileName>FatStructs.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\FatStructs.h</FilePath>
+              <FileName>bitmap_test.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\bitmap_test.cpp</FilePath>
             </File>
             <File>
-              <FileName>File.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\File.cpp</FilePath>
+              <FileName>bitmap_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\bitmap_test.h</FilePath>
+            </File>
+            <File>
+              <FileName>dragon.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\dragon.h</FilePath>
             </File>
             <File>
               <FileName>gfxfont.h</FileName>
@@ -1890,16 +1895,6 @@
               <FileName>hardware_spi1.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\hardware_spi1.h</FilePath>
-            </File>
-            <File>
-              <FileName>hardware_spi3.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\hardware_spi3.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>hardware_spi3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\hardware_spi3.h</FilePath>
             </File>
             <File>
               <FileName>hardware_usart1.cpp</FileName>
@@ -1952,66 +1947,6 @@
               <FilePath>.\src\final\Print.h</FilePath>
             </File>
             <File>
-              <FileName>SD.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\SD.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>SD.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\SD.h</FilePath>
-            </File>
-            <File>
-              <FileName>Sd2Card.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\Sd2Card.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Sd2Card.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\Sd2Card.h</FilePath>
-            </File>
-            <File>
-              <FileName>Sd2PinMap.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\Sd2PinMap.h</FilePath>
-            </File>
-            <File>
-              <FileName>sdcard_list_files_test.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\sdcard_list_files_test.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>sdcard_list_files_test.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\sdcard_list_files_test.h</FilePath>
-            </File>
-            <File>
-              <FileName>SdFat.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\SdFat.h</FilePath>
-            </File>
-            <File>
-              <FileName>SdFatUtil.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\SdFatUtil.h</FilePath>
-            </File>
-            <File>
-              <FileName>SdFile.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\SdFile.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>SdInfo.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\SdInfo.h</FilePath>
-            </File>
-            <File>
-              <FileName>SdVolume.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\SdVolume.cpp</FilePath>
-            </File>
-            <File>
               <FileName>SPI.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\SPI.cpp</FilePath>
@@ -2030,16 +1965,6 @@
               <FileName>stm32l476xx.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\stm32l476xx.h</FilePath>
-            </File>
-            <File>
-              <FileName>Stream.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\Stream.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Stream.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\Stream.h</FilePath>
             </File>
             <File>
               <FileName>SysClock.cpp</FileName>
@@ -2062,19 +1987,14 @@
               <FilePath>.\src\final\SysTick.h</FilePath>
             </File>
             <File>
-              <FileName>bitmaptest.cpp</FileName>
+              <FileName>UART.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\bitmaptest.cpp</FilePath>
+              <FilePath>.\src\final\UART.cpp</FilePath>
             </File>
             <File>
-              <FileName>bitmaptest.h</FileName>
+              <FileName>UART.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\bitmaptest.h</FilePath>
-            </File>
-            <File>
-              <FileName>dragon.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\dragon.h</FilePath>
+              <FilePath>.\src\final\UART.h</FilePath>
             </File>
           </Files>
         </Group>
