@@ -1928,8 +1928,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\UART_Wired.cpp</PathWithFileName>
-      <FilenameWithoutPath>UART_Wired.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\hardware_usart2.cpp</PathWithFileName>
+      <FilenameWithoutPath>hardware_usart2.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1940,8 +1940,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\UART_Wired.h</PathWithFileName>
-      <FilenameWithoutPath>UART_Wired.h</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\hardware_usart2.h</PathWithFileName>
+      <FilenameWithoutPath>hardware_usart2.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

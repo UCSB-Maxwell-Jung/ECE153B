@@ -1,6 +1,6 @@
 #include "nucleo.h"
 
-UART_Wired Serial;
+HardwareUsart2 Serial;
 
 void init_hardware() {
   init_system_clock();   // System Clock = 80 MHz

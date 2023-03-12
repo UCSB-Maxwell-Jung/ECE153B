@@ -1,10 +1,10 @@
-#include "UART_Wired.h"
+#include "hardware_usart2.h"
 
-UART_Wired::UART_Wired()
+HardwareUsart2::HardwareUsart2()
     : UART(USART2) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
-void UART_Wired::configure_GPIO() {
+void HardwareUsart2::configure_GPIO() {
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; // enable GPIO A
 
 	// 2.a pins set to High speed//
@@ -32,23 +32,23 @@ void UART_Wired::configure_GPIO() {
 }
 
 // Initialize SPI1 peripheral as master
-void UART_Wired::configure_UART() {
+void HardwareUsart2::configure_UART() {
 	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN; // 1.a enable USART2 clock in peripheral clk reg
 	
 	RCC->CCIPR &= ~RCC_CCIPR_USART2SEL;
 	RCC->CCIPR |= RCC_CCIPR_USART2SEL_0; // 1.b select the sys clk as USART2 clk src
 
-	_USARTx->CR1 &= ~USART_CR1_UE; // disable USART before modifying regs
+	USARTx_->CR1 &= ~USART_CR1_UE; // disable USART before modifying regs
 
-	_USARTx->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); // 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
-	_USARTx->CR1 &= ~USART_CR1_OVER8; // 0 = oversampling by 16
-	_USARTx->CR2 &= ~USART_CR2_STOP; // 00 = 1 stop bit
+	USARTx_->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); // 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
+	USARTx_->CR1 &= ~USART_CR1_OVER8; // 0 = oversampling by 16
+	USARTx_->CR2 &= ~USART_CR2_STOP; // 00 = 1 stop bit
 
 	//3.b set USARTDIV in BRR[3:0] (*note: BRR[3:0] == USARTDIV[3:0] when USARTx->CR1 bit 16 (line 50) is 0)
-	_USARTx->BRR &= ~0xFFFF; //clear [15:0] 
-	_USARTx->BRR = (uint16_t) (CLK_FREQ/_baud_rate); // USARTDIV = f_clk/Baud Rate = 80Mhz/baud_rate
+	USARTx_->BRR &= ~0xFFFF; //clear [15:0] 
+	USARTx_->BRR = (uint16_t) (CLK_FREQ/_baud_rate); // USARTDIV = f_clk/Baud Rate = 80Mhz/baud_rate
 
 	//3.c enable transmitter and receiver 
-	_USARTx->CR1 |= USART_CR1_TE; //enable transmitter
-	_USARTx->CR1 |= USART_CR1_RE; //enable receiver
+	USARTx_->CR1 |= USART_CR1_TE; //enable transmitter
+	USARTx_->CR1 |= USART_CR1_RE; //enable receiver
 }

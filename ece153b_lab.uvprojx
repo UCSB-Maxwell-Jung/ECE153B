@@ -1957,14 +1957,14 @@
               <FilePath>.\src\final\UART_Bluetooth.h</FilePath>
             </File>
             <File>
-              <FileName>UART_Wired.cpp</FileName>
+              <FileName>hardware_usart2.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\UART_Wired.cpp</FilePath>
+              <FilePath>.\src\final\hardware_usart2.cpp</FilePath>
             </File>
             <File>
-              <FileName>UART_Wired.h</FileName>
+              <FileName>hardware_usart2.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\UART_Wired.h</FilePath>
+              <FilePath>.\src\final\hardware_usart2.h</FilePath>
             </File>
             <File>
               <FileName>Print.cpp</FileName>

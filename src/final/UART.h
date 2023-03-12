@@ -21,7 +21,7 @@ public:
   uint8_t read();
 
 protected:
-  USART_TypeDef* _USARTx;
+  USART_TypeDef* USARTx_;
   uint32_t _baud_rate;
 
   virtual void configure_GPIO(void) = 0; // must be implemented in derived class

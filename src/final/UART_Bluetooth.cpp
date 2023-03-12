@@ -39,19 +39,19 @@ void UART_Bluetooth::configure_UART() {
 	RCC->CCIPR &= ~RCC_CCIPR_USART1SEL; 
 	RCC->CCIPR |= RCC_CCIPR_USART1SEL_0; // 1.b select the sys clk as USART1 clk src 
 
-	_USARTx->CR1 &= ~USART_CR1_UE; // disable USART before modifying regs
+	USARTx_->CR1 &= ~USART_CR1_UE; // disable USART before modifying regs
 
-	_USARTx->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); // 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
-	_USARTx->CR1 &= ~USART_CR1_OVER8; // 0 = oversampling by 16
-	_USARTx->CR2 &= ~USART_CR2_STOP; // 00 = 1 stop bit
+	USARTx_->CR1 &= ~(USART_CR1_M1 | USART_CR1_M0); // 3.a M1M0 = 00 = 1 start, 8 data bits, n stop bits
+	USARTx_->CR1 &= ~USART_CR1_OVER8; // 0 = oversampling by 16
+	USARTx_->CR2 &= ~USART_CR2_STOP; // 00 = 1 stop bit
 
 	//3.b set USARTDIV in BRR[3:0] (*note: BRR[3:0] == USARTDIV[3:0] when USARTx->CR1 bit 16 (line 50) is 0)
-	_USARTx->BRR &= ~0xFFFF; //clear [15:0] 
-	_USARTx->BRR = (uint16_t) (CLK_FREQ/_baud_rate); // USARTDIV = f_clk/Baud Rate = 80Mhz/baud_rate
+	USARTx_->BRR &= ~0xFFFF; //clear [15:0] 
+	USARTx_->BRR = (uint16_t) (CLK_FREQ/_baud_rate); // USARTDIV = f_clk/Baud Rate = 80Mhz/baud_rate
 
 	//3.c enable transmitter and receiver 
-	_USARTx->CR1 |= USART_CR1_TE; //enable transmitter
-	_USARTx->CR1 |= USART_CR1_RE; //enable receiver
+	USARTx_->CR1 |= USART_CR1_TE; //enable transmitter
+	USARTx_->CR1 |= USART_CR1_RE; //enable receiver
 
-	_USARTx->CR1 |= USART_CR1_UE; // Enable USART
+	USARTx_->CR1 |= USART_CR1_UE; // Enable USART
 }
