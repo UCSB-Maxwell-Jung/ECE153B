@@ -12,6 +12,7 @@
   Written by Limor Fried/Ladyada for Adafruit Industries.
   MIT license, all text above must be included in any redistribution
  ****************************************************/
+#include "graphics_test.h"
 
 // graphics and lcd library from Adafruit
 // #include "Adafruit_GFX.h"
@@ -39,7 +40,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("ILI9341 Test!");
 
-  tft.begin(SPI1_MAX_FREQ);
+  tft.begin();
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);

@@ -4,7 +4,7 @@
 #include "stm32l476xx.h"
 
 #define CLK_FREQ 80000000
-#define SPI_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
+#define SPI_DEFAULT_FREQ 2500000 // 2.5Mhz equivalent to br=4 80Mhz/2^(5)
 
 class SPI {
 public:

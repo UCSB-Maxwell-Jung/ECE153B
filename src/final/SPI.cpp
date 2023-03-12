@@ -5,13 +5,15 @@ SPI::SPI(SPI_TypeDef* SPIx)
 	: spix_(SPIx) {}
 
 void SPI::begin(uint32_t desired_freq) {
+	int8_t br;
 	desired_freq_ = desired_freq;
-	// calculate prescalar exponent (prescalar = 2^(n+1))
-	br_ = floor((log((float)CLK_FREQ/(float)desired_freq_)/log(2.0))-1);
-	if (br_ < 0)
-		br_ = 0;
-	else if (br_ > 7)
-		br_ = 7;
+	// calculate prescalar that results in the next fastest SPI frequency
+	br = ceil((log((double)CLK_FREQ/(double)desired_freq)/log(2.0))-1);
+	if (br < 0)
+		br = 0;
+	else if (br > 7)
+		br = 7;
+	br_ = br;
 	actual_freq_ = CLK_FREQ/(1<<(br_+1)); // divide by 2^(n+1)
 
 	configure_GPIO();
