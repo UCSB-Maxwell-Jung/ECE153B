@@ -40,7 +40,7 @@ void setup(void) {
   Serial.begin(9600);
   Serial.println("ILI9341 Test!");
 
-  tft.begin();
+  tft.begin(SPI_MAX_FREQ);
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
