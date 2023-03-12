@@ -1977,19 +1977,19 @@
               <FilePath>.\src\final\Print.h</FilePath>
             </File>
             <File>
-              <FileName>graphicstest.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\graphicstest.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>graphicstest.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\graphicstest.h</FilePath>
-            </File>
-            <File>
               <FileName>nucleo.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\nucleo.h</FilePath>
+            </File>
+            <File>
+              <FileName>graphics_test.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\graphics_test.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>graphics_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\graphics_test.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,5 +1,4 @@
 #include "nucleo.h"
-#include "sdcard_list_files_test.h"
 
 UART_Wired Serial;
 

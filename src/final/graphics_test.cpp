@@ -13,40 +13,33 @@
   MIT license, all text above must be included in any redistribution
  ****************************************************/
 
-#include "graphicstest.h"
-
-// custom library
-#include "SysClock.h"
-#include "SysTick.h"
-#include "LED.h"
-#include "UART_Wired.h"
-
 // graphics and lcd library from Adafruit
-#include "Adafruit_GFX.h"
+// #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
 
+unsigned long testFillScreen();
+unsigned long testText();
+unsigned long testLines(uint16_t color);
+unsigned long testFastLines(uint16_t color1, uint16_t color2);
+unsigned long testRects(uint16_t color);
+unsigned long testFilledRects(uint16_t color1, uint16_t color2);
+unsigned long testFilledCircles(uint8_t radius, uint16_t color);
+unsigned long testCircles(uint8_t radius, uint16_t color);
+unsigned long testTriangles();
+unsigned long testFilledTriangles();
+unsigned long testRoundRects();
+unsigned long testFilledRoundRects();
+
+// Use hardware SPI (on Uno, #13, #12, #11) and the above for CS/DC
 Adafruit_ILI9341 tft = Adafruit_ILI9341();
-UART_Wired Serial = UART_Wired();
+// If using the breakout, change pins as desired
+//Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
-void init_hardware() {
-  init_system_clock();   // System Clock = 80 MHz
-	init_SysTick();
-	init_LED();
+void setup() {
+  Serial.begin(9600);
+  Serial.println("ILI9341 Test!");
 
-  // initialize Serial communication interface
-  Serial.begin(UART_DEFAULT_BAUD_RATE);
-  tft.begin(SPI_DISPLAY_MAX_FREQ); // run display as fast as possible
-}
-
-void graphics_test_all() {
-  init_hardware();
-  run_all_benchmarks();
-  while(1)
-    test_rotation();
-}
-
-void run_all_benchmarks() {
-  Serial.print("ILI9341 Test!\n");
+  tft.begin(SPI1_MAX_FREQ);
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
@@ -110,6 +103,14 @@ void run_all_benchmarks() {
   delay(500);
 
   Serial.println("Done!");
+}
+
+void loop(void) {
+  for(uint8_t rotation=0; rotation<4; rotation++) {
+    tft.setRotation(rotation);
+    testText();
+    delay(1000);
+  }
 }
 
 unsigned long testFillScreen() {
@@ -362,12 +363,4 @@ unsigned long testFilledRoundRects() {
   }
 
   return micros() - start;
-}
-
-void test_rotation(void) {
-  for(uint8_t rotation=0; rotation<4; rotation++) {
-    tft.setRotation(rotation);
-    testText();
-    delay(1000);
-  }
 }

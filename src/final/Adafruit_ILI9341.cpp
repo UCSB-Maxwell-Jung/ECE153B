@@ -126,9 +126,6 @@ static const uint8_t initcmd[] = {
 */
 /**************************************************************************/
 void Adafruit_ILI9341::begin(uint32_t freq) {
-
-  if (!freq)
-    freq = SPI_DISPLAY_DEFAULT_FREQ;
   initSPI(freq);
 
   uint8_t cmd, x, numArgs;

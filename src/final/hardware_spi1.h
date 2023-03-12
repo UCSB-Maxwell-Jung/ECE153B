@@ -3,8 +3,8 @@
 
 #include "SPI.h"
 
-#define SPI_DISPLAY_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
-#define SPI_DISPLAY_MAX_FREQ 20000000 // 20Mhz
+#define SPI1_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
+#define SPI1_MAX_FREQ 20000000 // 20Mhz
 
 class HardwareSpi1 : public SPI { // inherit more general SPI class
 public:
