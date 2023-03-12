@@ -3,7 +3,7 @@
 UART::UART(USART_TypeDef* USARTx) : USARTx_(USARTx) {}
 
 void UART::begin(uint32_t baud_rate) {
-	_baud_rate = baud_rate;
+	baud_rate_ = baud_rate;
 	configure_GPIO();
 	configure_UART();
 }

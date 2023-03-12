@@ -47,7 +47,7 @@ void HardwareUsart1::configure_UART() {
 
 	//3.b set USARTDIV in BRR[3:0] (*note: BRR[3:0] == USARTDIV[3:0] when USARTx->CR1 bit 16 (line 50) is 0)
 	USARTx_->BRR &= ~0xFFFF; //clear [15:0] 
-	USARTx_->BRR = (uint16_t) (CLK_FREQ/_baud_rate); // USARTDIV = f_clk/Baud Rate = 80Mhz/baud_rate
+	USARTx_->BRR = (uint16_t) (CLK_FREQ/baud_rate_); // USARTDIV = f_clk/Baud Rate = 80Mhz/baud_rate
 
 	//3.c enable transmitter and receiver 
 	USARTx_->CR1 |= USART_CR1_TE; //enable transmitter

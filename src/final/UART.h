@@ -22,7 +22,7 @@ public:
 
 protected:
   USART_TypeDef* USARTx_;
-  uint32_t _baud_rate;
+  uint32_t baud_rate_;
 
   virtual void configure_GPIO(void) = 0; // must be implemented in derived class
   virtual void configure_UART() = 0; // must be implemented in derived class
