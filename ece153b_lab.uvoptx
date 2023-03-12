@@ -1904,8 +1904,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\UART_Bluetooth.cpp</PathWithFileName>
-      <FilenameWithoutPath>UART_Bluetooth.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\hardware_usart1.cpp</PathWithFileName>
+      <FilenameWithoutPath>hardware_usart1.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1916,8 +1916,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\UART_Bluetooth.h</PathWithFileName>
-      <FilenameWithoutPath>UART_Bluetooth.h</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\hardware_usart1.h</PathWithFileName>
+      <FilenameWithoutPath>hardware_usart1.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -1947,14 +1947,14 @@
               <FilePath>.\src\final\hardware_spi1.h</FilePath>
             </File>
             <File>
-              <FileName>UART_Bluetooth.cpp</FileName>
+              <FileName>hardware_usart1.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\UART_Bluetooth.cpp</FilePath>
+              <FilePath>.\src\final\hardware_usart1.cpp</FilePath>
             </File>
             <File>
-              <FileName>UART_Bluetooth.h</FileName>
+              <FileName>hardware_usart1.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\UART_Bluetooth.h</FilePath>
+              <FilePath>.\src\final\hardware_usart1.h</FilePath>
             </File>
             <File>
               <FileName>hardware_usart2.cpp</FileName>
