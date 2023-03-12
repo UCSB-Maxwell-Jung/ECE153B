@@ -1880,8 +1880,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\SPI_Display.cpp</PathWithFileName>
-      <FilenameWithoutPath>SPI_Display.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\hardware_spi1.cpp</PathWithFileName>
+      <FilenameWithoutPath>hardware_spi1.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1892,8 +1892,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\SPI_Display.h</PathWithFileName>
-      <FilenameWithoutPath>SPI_Display.h</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\hardware_spi1.h</PathWithFileName>
+      <FilenameWithoutPath>hardware_spi1.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

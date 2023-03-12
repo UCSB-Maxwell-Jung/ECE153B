@@ -1937,14 +1937,14 @@
               <FilePath>.\src\final\SysTick.c</FilePath>
             </File>
             <File>
-              <FileName>SPI_Display.cpp</FileName>
+              <FileName>hardware_spi1.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\SPI_Display.cpp</FilePath>
+              <FilePath>.\src\final\hardware_spi1.cpp</FilePath>
             </File>
             <File>
-              <FileName>SPI_Display.h</FileName>
+              <FileName>hardware_spi1.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\SPI_Display.h</FilePath>
+              <FilePath>.\src\final\hardware_spi1.h</FilePath>
             </File>
             <File>
               <FileName>UART_Bluetooth.cpp</FileName>

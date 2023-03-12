@@ -23,7 +23,7 @@
 // #if !defined(__AVR_ATtiny85__) // Not for ATtiny, at all
 
 // maxwell's SPI library
-#include "SPI_Display.h"
+#include "HardwareSpi1.h"
 
 #include "Adafruit_GFX.h"
 
@@ -302,7 +302,7 @@ protected:
 //   uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
 //   // uint32_t _mode; ///< SPI data mode (transactions or no)
 // } hwspi;          ///< Hardware SPI values
-SPI_Display hwspi;
+HardwareSpi1 hwspi;
 
 // #if defined(USE_SPI_DMA) &&                                                    \
 //     (defined(__SAMD51__) ||                                                    \
