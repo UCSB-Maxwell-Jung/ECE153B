@@ -1,5 +1,7 @@
 #include "nucleo.h"
 
+#include "graphics_test.h"
+
 HardwareUsart2 Serial;
 
 void initHardware() {
