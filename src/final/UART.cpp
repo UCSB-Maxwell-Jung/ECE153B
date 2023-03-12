@@ -50,9 +50,9 @@ size_t UART::write(const uint8_t *buffer, size_t size) {
 }
 
 uint8_t UART::read() {
-	// SR_RXNE (Read data register not empty) bit is set by hardware
-	while (!(_USARTx->ISR & USART_ISR_RXNE));  // Wait until RXNE (RX not empty) bit is set
-	// USART resets the RXNE flag automatically after reading DR
-	return ((uint8_t)(_USARTx->RDR & 0xFF));
-	// Reading USART_DR automatically clears the RXNE flag 
+	// [TODO] 
+}
+
+uint8_t UART::available() {
+	// [TODO]
 }

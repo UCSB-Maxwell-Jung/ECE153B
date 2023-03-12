@@ -1,5 +1,5 @@
-#ifndef __STM32L476R_NUCLEO_SPI_Display_H
-#define __STM32L476R_NUCLEO_SPI_Display_H
+#ifndef __STM32L476R_NUCLEO_SPI_DISPLAY_H
+#define __STM32L476R_NUCLEO_SPI_DISPLAY_H
 
 #include "SPI.h"
 

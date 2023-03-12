@@ -26,6 +26,10 @@
         "initializer_list": "cpp",
         "xutility": "cpp",
         "device.h": "c",
-        "camera.h": "c"
+        "camera.h": "c",
+        "cstddef": "cpp",
+        "limits": "cpp",
+        "type_traits": "cpp",
+        "xtr1common": "cpp"
     }
 }
