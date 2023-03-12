@@ -1,10 +1,10 @@
-#include "SPI_Display.h"
+#include "hardware_spi1.h"
 
-SPI_Display::SPI_Display()
-    : SPI(ILI9341) {}
+HardwareSpi1::HardwareSpi1(void)
+    : SPI(SPI1) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
-void SPI_Display::configure_GPIO() {
+void HardwareSpi1::configureGpio(void) {
 	uint8_t af_num;
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; // enable GPIOB
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; // enable GPIOA
@@ -50,7 +50,7 @@ void SPI_Display::configure_GPIO() {
 }
 
 // Initialize SPI1 peripheral as master
-void SPI_Display::configure_SPI() {
+void HardwareSpi1::configureSpi(void) {
 	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN; // enable SPI1 clock
 	RCC->APB2RSTR |= RCC_APB2RSTR_SPI1RST; // set, then reset to clear SPI1
 	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST; 
@@ -59,7 +59,7 @@ void SPI_Display::configure_SPI() {
 	// ---------------CR1-----------------
 	// set spi clock prescalar to be the next highest requested freq
 	SPI1->CR1 &= ~SPI_CR1_BR; // reset baud rate control bits to 000
-	SPI1->CR1 |= _br << 3;
+	SPI1->CR1 |= br_ << 3;
 
 	// set clock polarity to low (0)
 	SPI1->CR1 &= ~SPI_CR1_CPOL;

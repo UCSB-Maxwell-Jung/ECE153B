@@ -30,12 +30,12 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
  */
+#include "Adafruit_GFX.h"
 
 #include <stdint.h>
 // #include <string.h>
 #include <stdlib.h>
 
-#include "Adafruit_GFX.h"
 #include "glcdfont.c"
 // // #ifdef __AVR__
 // // #include <avr/pgmspace.h>

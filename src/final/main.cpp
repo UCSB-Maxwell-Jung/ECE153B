@@ -1,7 +1,20 @@
-#include "graphicstest.h"
+#include "nucleo.h"
+
+#include "graphics_test.h"
+
+HardwareUsart2 Serial;
+
+void initHardware() {
+  initSystemClock();   // System Clock = 80 MHz
+	initSysTick();
+	initLed();
+}
 
 int main() {
-  graphics_test_all(); // this function never returns
+  initHardware();
+  setup();
+  while(1)
+    loop();
 
   return 1; // if program reaches this line, something went wrong
 }
