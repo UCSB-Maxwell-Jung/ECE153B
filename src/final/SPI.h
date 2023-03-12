@@ -1,10 +1,7 @@
 #ifndef __STM32L476R_NUCLEO_SPI_H
 #define __STM32L476R_NUCLEO_SPI_H
 
-#include "camera.h"
-#include "stm32l476xx.h"
-
-#include <stddef.h>
+#include "nucleo.h"
 
 #define SPI_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
 
@@ -14,10 +11,9 @@ public:
   SPI(SPI_TypeDef* SPIx=NULL);
   // methods
   virtual void begin(uint32_t desired_freq=SPI_DEFAULT_FREQ);
-  void enable(void);
-  void disable(void);
-  void transmit(uint8_t write_data);
-  uint8_t transmit_receive(uint8_t write_data);
+  void beginTransaction(void);
+  void endTransaction(void);
+  uint8_t transfer(uint8_t write_data);
 
 protected:
   SPI_TypeDef* _SPIx;

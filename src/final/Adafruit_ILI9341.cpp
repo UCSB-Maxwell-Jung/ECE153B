@@ -46,9 +46,9 @@
  *
  */
 
-#include "SysTick.h"
-
 #include "Adafruit_ILI9341.h"
+
+#include "SysTick.h" // for delay()
 // // #ifndef ARDUINO_STM32_FEATHER
 // // #include "pins_arduino.h"
 // // #ifndef RASPI

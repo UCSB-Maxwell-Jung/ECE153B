@@ -1,15 +1,15 @@
-#ifndef __STM32L476R_NUCLEO_SPI_DISPLAY_H
-#define __STM32L476R_NUCLEO_SPI_DISPLAY_H
+#ifndef __STM32L476R_NUCLEO_SPI_CAMERA_H
+#define __STM32L476R_NUCLEO_SPI_CAMERA_H
 
 #include "SPI.h"
 
 #define SPI_DISPLAY_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
 #define SPI_DISPLAY_MAX_FREQ 20000000 // 20Mhz
 
-class SPI_Display : public SPI { // inherit more general SPI class
+class SPI_Camera : public SPI { // inherit more general SPI class
 public:
   // constructor
-  SPI_Display();
+  SPI_Camera();
 
 private:
   void configure_GPIO(void);

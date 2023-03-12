@@ -54,6 +54,16 @@ void delay(uint32_t ms){
 	while (us_elapsed < future_time);
 }
 
+//******************************************************************************************
+// Delay in us
+//******************************************************************************************
+void delayMicroseconds(uint32_t us){
+	uint32_t future_time;
+
+	future_time = us_elapsed + us;
+	while (us_elapsed < future_time);
+}
+
 uint32_t micros(void){
 	return us_elapsed;
 }

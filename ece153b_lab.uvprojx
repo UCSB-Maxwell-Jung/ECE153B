@@ -1947,11 +1947,6 @@
               <FilePath>.\src\final\SPI_Display.h</FilePath>
             </File>
             <File>
-              <FileName>retarget.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\retarget.c</FilePath>
-            </File>
-            <File>
               <FileName>UART_Bluetooth.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\UART_Bluetooth.cpp</FilePath>
@@ -1960,11 +1955,6 @@
               <FileName>UART_Bluetooth.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\UART_Bluetooth.h</FilePath>
-            </File>
-            <File>
-              <FileName>camera.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\camera.h</FilePath>
             </File>
             <File>
               <FileName>UART_Wired.cpp</FileName>
@@ -1985,6 +1975,21 @@
               <FileName>Print.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\Print.h</FilePath>
+            </File>
+            <File>
+              <FileName>graphicstest.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\graphicstest.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>graphicstest.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\graphicstest.h</FilePath>
+            </File>
+            <File>
+              <FileName>nucleo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\nucleo.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,19 +1,24 @@
 #ifndef __STM32L476R_NUCLEO_UART_H
 #define __STM32L476R_NUCLEO_UART_H
 
-#include "stm32l476xx.h"
+#include "Print.h"
+
+#include "nucleo.h"
 
 #define BufferSize 32
 #define UART_DEFAULT_BAUD_RATE 9600
 
-class UART {
+class UART : public Print {
 public:
   // constructor
   UART(USART_TypeDef* USARTx);
   // methods
   void begin(uint32_t baud_rate=UART_DEFAULT_BAUD_RATE);
-  void print(char* str);
-  void println(char* str);
+  using Print::write;
+  size_t write(uint8_t);
+  size_t write(const uint8_t *buffer, size_t size);
+  uint8_t read();
+  uint8_t available();
 
 protected:
   USART_TypeDef* _USARTx;
@@ -22,8 +27,5 @@ protected:
   virtual void configure_GPIO(void) = 0; // must be implemented in derived class
   virtual void configure_UART() = 0; // must be implemented in derived class
 };
-
-// void USART1_IRQHandler(void);
-// void USART2_IRQHandler(void);
 
 #endif

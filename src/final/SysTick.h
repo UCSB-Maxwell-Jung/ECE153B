@@ -5,11 +5,12 @@
 extern "C" {
 #endif
 
-#include "stm32l476xx.h"
+#include "nucleo.h"
 
 void init_SysTick(void);
 void SysTick_Handler(void);
 void delay(uint32_t ms);
+void delayMicroseconds(uint32_t us);
 uint32_t micros(void);
 
 #ifdef __cplusplus
