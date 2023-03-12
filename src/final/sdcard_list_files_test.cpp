@@ -26,18 +26,13 @@
   This example code is in the public domain.
 
 */
-#include "sdcard_list_files_test.h"
-#include "nucleo.h"
-#include "Adafruit_ILI9341.h"
+#include "SD.h"
 
-// #include "SD.h"
+void printDirectory(File dir, int numTabs);
 
 File root;
 
-Adafruit_ILI9341 tft;
-
 void setup() {
-  tft.begin();
  // Open serial communications and wait for port to open:
   Serial.begin(9600);
   // wait for Serial Monitor to connect. Needed for native USB port boards only:

@@ -164,7 +164,7 @@ uint32_t Sd2Card::cardSize(void) {
 static uint8_t chip_select_asserted = 0;
 
 void Sd2Card::chipSelectHigh(void) {
-  GPIOA->ODR |= GPIO_ODR_OD4; // Set CS (PA4) to High
+  spi_.CsHigh();
   if (chip_select_asserted) {
     chip_select_asserted = 0;
     spi_.endTransaction();
@@ -176,7 +176,7 @@ void Sd2Card::chipSelectLow(void) {
     chip_select_asserted = 1;
     spi_.beginTransaction();
   }
-  GPIOA->ODR &= ~GPIO_ODR_OD4; // Set CS (PA4) to Low
+  spi_.CsLow();
 }
 //------------------------------------------------------------------------------
 /** Erase a range of blocks.
@@ -244,21 +244,6 @@ uint8_t Sd2Card::init(uint32_t freq) {
   // 16-bit init start time allows over a minute
   unsigned int t0 = millis();
   uint32_t arg;
-
-  // set pin modes
-  // pinMode(chipSelectPin_, OUTPUT);
-  // digitalWrite(chipSelectPin_, HIGH);
-  // #ifndef USE_SPI_LIB
-  // pinMode(SPI_MISO_PIN, INPUT);
-  // pinMode(SPI_MOSI_PIN, OUTPUT);
-  // pinMode(SPI_SCK_PIN, OUTPUT);
-  // #endif
-
-  // init CS (chip select) pin to PA4 Output
-	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
-	GPIOA->MODER &= ~GPIO_MODER_MODE4_1;
-  GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR4;
-  GPIOA->ODR |= GPIO_ODR_OD4; // Set to High
 
   spi_.begin(freq);
   // settings = SPISettings(250000, MSBFIRST, SPI_MODE0);

@@ -15,7 +15,7 @@
 #ifndef __SD_H__
 #define __SD_H__
 
-// #include <Arduino.h>
+#include "nucleo.h"
 #include "Stream.h"
 
 #include "SdFat.h"
@@ -69,7 +69,7 @@ namespace SDLib {
     public:
       // This needs to be called to set up the connection to the SD card
       // before other methods are used.
-      bool begin(uint32_t frequency = HardwareSPI1_DEFAULT_FREQ);
+      bool begin(uint32_t frequency=SPI_DEFAULT_FREQ);
 
       //call this when a card is removed. It will allow you to insert and initialise a new card.
       void end();

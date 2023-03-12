@@ -25,7 +25,7 @@
 */
 // #include "Sd2PinMap.h"
 #include "SdInfo.h"
-#include "HardwareSPI1.h"
+#include "hardware_spi3.h"
 /** Set SCK to max rate of F_CPU/2. See Sd2Card::setSckRate(). */
 uint8_t const SPI_FULL_SPEED = 0;
 /** Set SCK rate to F_CPU/4. See Sd2Card::setSckRate(). */
@@ -196,7 +196,7 @@ class Sd2Card {
        (or default clock rate if unspecified) and the default SD chip select pin.
        See sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin).
     */
-    uint8_t init(uint32_t freq=HardwareSPI1_DEFAULT_FREQ);
+    uint8_t init(uint32_t freq=SPI_DEFAULT_FREQ);
     void partialBlockRead(uint8_t value);
     /** Returns the current value, true or false, for partial block read. */
     uint8_t partialBlockRead(void) const {
@@ -231,7 +231,7 @@ class Sd2Card {
     uint8_t writeStop(void);
     uint8_t isBusy(void);
   private:
-    HardwareSPI1 spi_;
+    HardwareSpi3 spi_;
     uint32_t block_;
     uint8_t chipSelectPin_;
     uint8_t errorCode_;
