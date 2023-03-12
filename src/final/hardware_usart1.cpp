@@ -1,10 +1,10 @@
 #include "hardware_usart1.h"
 
-HardwareUsart1::HardwareUsart1()
+HardwareUsart1::HardwareUsart1(void)
     : UART(USART1) {}
 
 // Configure Pins for Bluetooth
-void HardwareUsart1::configure_GPIO() {
+void HardwareUsart1::configureGpio(void) {
 	// part a 2.3 (step 2)
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; //clk enabled
 
@@ -33,7 +33,7 @@ void HardwareUsart1::configure_GPIO() {
 }
 
 // Initialize UART for Bluetooth
-void HardwareUsart1::configure_UART() {
+void HardwareUsart1::configureUsart(void) {
 	RCC->APB2ENR |= RCC_APB2ENR_USART1EN; // enable USART1 clock in peripheral clk reg
 	
 	RCC->CCIPR &= ~RCC_CCIPR_USART1SEL; 

@@ -9,11 +9,11 @@
 class HardwareUsart2 : public UART { // inherit more general SPI class
 public:
   // constructor
-  HardwareUsart2();
+  HardwareUsart2(void);
 
 private:
-  void configure_GPIO(void);
-  void configure_UART(void);
+  void configureGpio(void);
+  void configureUsart(void);
 };
 
 extern HardwareUsart2 Serial;

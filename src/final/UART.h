@@ -18,14 +18,14 @@ public:
   using Print::write;
   size_t write(uint8_t);
   size_t write(const uint8_t *buffer, size_t size);
-  uint8_t read();
+  uint8_t read(void);
 
 protected:
   USART_TypeDef* USARTx_;
   uint32_t baud_rate_;
 
-  virtual void configure_GPIO(void) = 0; // must be implemented in derived class
-  virtual void configure_UART() = 0; // must be implemented in derived class
+  virtual void configureGpio(void) = 0; // must be implemented in derived class
+  virtual void configureUsart(void) = 0; // must be implemented in derived class
 };
 
 // void USART1_IRQHandler(void);

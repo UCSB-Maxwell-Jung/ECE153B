@@ -9,11 +9,11 @@
 class HardwareUsart1 : public UART { // inherit more general SPI class
 public:
   // constructor
-  HardwareUsart1();
+  HardwareUsart1(void);
 
 private:
-  void configure_GPIO(void);
-  void configure_UART(void);
+  void configureGpio(void);
+  void configureUsart(void);
 };
 
 #endif // __STM32L476R_NUCLEO_USART1_H

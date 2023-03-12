@@ -6,11 +6,11 @@
 class HardwareSpi1 : public SPI { // inherit more general SPI class
 public:
   // constructor
-  HardwareSpi1();
+  HardwareSpi1(void);
 
 private:
-  void configure_GPIO(void);
-  void configure_SPI(void);
+  void configureGpio(void);
+  void configureSpi(void);
 };
 
 #endif // __STM32L476R_NUCLEO_SPI1_H

@@ -16,8 +16,8 @@ void SPI::begin(uint32_t desired_freq) {
 	br_ = br;
 	actual_freq_ = CLK_FREQ/(1<<(br_+1)); // divide by 2^(n+1)
 
-	configure_GPIO();
-	configure_SPI();
+	configureGpio();
+	configureSpi();
 }
 
 void SPI::beginTransaction(void) {

@@ -4,8 +4,8 @@ UART::UART(USART_TypeDef* USARTx) : USARTx_(USARTx) {}
 
 void UART::begin(uint32_t baud_rate) {
 	baud_rate_ = baud_rate;
-	configure_GPIO();
-	configure_UART();
+	configureGpio();
+	configureUsart();
 }
 
 size_t UART::write(uint8_t c) {
@@ -49,7 +49,7 @@ size_t UART::write(const uint8_t *buffer, size_t size) {
 	return n;
 }
 
-uint8_t UART::read() {
+uint8_t UART::read(void) {
 	// SR_RXNE (Read data register not empty) bit is set by hardware
 	while (!(USARTx_->ISR & USART_ISR_RXNE));  // Wait until RXNE (RX not empty) bit is set
 	// USART resets the RXNE flag automatically after reading DR

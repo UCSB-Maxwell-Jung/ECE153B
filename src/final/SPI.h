@@ -22,8 +22,8 @@ protected:
   uint32_t desired_freq_;
   uint32_t actual_freq_;
 
-  virtual void configure_GPIO(void) = 0; // must be implemented in derived class
-  virtual void configure_SPI() = 0; // must be implemented in derived class
+  virtual void configureGpio(void) = 0; // must be implemented in derived class
+  virtual void configureSpi(void) = 0; // must be implemented in derived class
 };
 
 #endif

@@ -1,10 +1,10 @@
 #include "hardware_spi1.h"
 
-HardwareSpi1::HardwareSpi1()
+HardwareSpi1::HardwareSpi1(void)
     : SPI(SPI1) {}
 
 // Configure PB3(SPI1_SCK), PB4(SPI1_MISO), PB5(SPI1_MOSI), PA4(SPI1_NSS)
-void HardwareSpi1::configure_GPIO() {
+void HardwareSpi1::configureGpio(void) {
 	uint8_t af_num;
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; // enable GPIOB
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; // enable GPIOA
@@ -50,7 +50,7 @@ void HardwareSpi1::configure_GPIO() {
 }
 
 // Initialize SPI1 peripheral as master
-void HardwareSpi1::configure_SPI() {
+void HardwareSpi1::configureSpi(void) {
 	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN; // enable SPI1 clock
 	RCC->APB2RSTR |= RCC_APB2RSTR_SPI1RST; // set, then reset to clear SPI1
 	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST; 
