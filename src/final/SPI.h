@@ -24,8 +24,6 @@ protected:
 
   virtual void configure_GPIO(void) = 0; // must be implemented in derived class
   virtual void configure_SPI() = 0; // must be implemented in derived class
-  // void init_SPI2(void);
-  // void init_SPI2_GPIO(void);
 };
 
 #endif
