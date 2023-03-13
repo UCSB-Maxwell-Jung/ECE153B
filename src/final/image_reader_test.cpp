@@ -57,7 +57,7 @@ void setup(void) {
 //   while(!Serial);       // Wait for Serial Monitor before continuing
 // #endif
 
-  tft.begin();          // Initialize screen
+  tft.begin(SPI_MAX_FREQ);          // Initialize screen
 
   // The Adafruit_ImageReader constructor call (above, before setup())
   // accepts an uninitialized SdFat or FatVolume object. This MUST
