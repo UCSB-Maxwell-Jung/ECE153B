@@ -8,6 +8,14 @@ void UART::begin(uint32_t baud_rate) {
 	configureUsart();
 }
 
+int UART::available(void) {
+  return BufferSize; // [TODO] properly implement in the future
+}
+
+int UART::peek(void) {
+  return -1; // [TODO] properly implement in the future
+}
+
 size_t UART::write(uint8_t c) {
 	USARTx_->CR1 |= USART_CR1_UE; // Enable USART
 
@@ -49,7 +57,7 @@ size_t UART::write(const uint8_t *buffer, size_t size) {
 	return n;
 }
 
-uint8_t UART::read(void) {
+int UART::read(void) {
 	// SR_RXNE (Read data register not empty) bit is set by hardware
 	while (!(USARTx_->ISR & USART_ISR_RXNE));  // Wait until RXNE (RX not empty) bit is set
 	// USART resets the RXNE flag automatically after reading DR

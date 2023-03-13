@@ -37,6 +37,7 @@
  */
 
 #include "Adafruit_ImageReader.h"
+#include <stdlib.h> // for malloc and free
 
 // Buffers in BMP draw function (to screen) require 5 bytes/pixel: 3 bytes
 // for each BMP pixel (R+G+B), 2 bytes for each TFT pixel (565 color).
@@ -48,11 +49,11 @@
 // (Maybe to do: make non-AVR loader dynamically allocate buffer based
 // on screen or image size.)
 
-#ifdef __AVR__
-#define BUFPIXELS 24 ///<  24 * 5 =  120 bytes
-#else
+// #ifdef __AVR__
+// #define BUFPIXELS 24 ///<  24 * 5 =  120 bytes
+// #else
 #define BUFPIXELS 200 ///< 200 * 5 = 1000 bytes
-#endif
+// #endif
 
 // ADAFRUIT_IMAGE CLASS ****************************************************
 // This has been created as a class here rather than in Adafruit_GFX because
@@ -214,7 +215,7 @@ void Adafruit_Image::draw(Adafruit_SPITFT &tft, int16_t x, int16_t y) {
              often be in pre-setup() declaration, but DOES need initializing
              before any of the image loading or size functions are called!
 */
-Adafruit_ImageReader::Adafruit_ImageReader(FatVolume &fs) { filesys = &fs; }
+Adafruit_ImageReader::Adafruit_ImageReader(SDClass &fs) { filesys = &fs; }
 
 /*!
     @brief   Destructor.
@@ -248,7 +249,7 @@ Adafruit_ImageReader::~Adafruit_ImageReader(void) {
 */
 ImageReturnCode Adafruit_ImageReader::drawBMP(const char *filename,
                                               Adafruit_SPITFT &tft, int16_t x,
-                                              int16_t y, boolean transact) {
+                                              int16_t y, bool transact) {
   uint16_t tftbuf[BUFPIXELS]; // Temp space for buffering TFT data
   // Call core BMP-reading function, passing address to TFT object,
   // TFT working buffer, and X & Y position of top-left corner (image
@@ -314,8 +315,7 @@ ImageReturnCode Adafruit_ImageReader::coreBMP(
     int16_t x,            // Position if loading to TFT (else ignored)
     int16_t y,
     Adafruit_Image *img, // NULL if load-to-screen
-    boolean transact) {  // SD & TFT sharing bus, use transactions
-
+    bool transact) {  // SD & TFT sharing bus, use transactions
   ImageReturnCode status = IMAGE_ERR_FORMAT; // IMAGE_SUCCESS on valid file
   uint32_t offset;                           // Start of image data in file
   uint32_t headerSize;                       // Indicates BMP version
@@ -326,7 +326,8 @@ ImageReturnCode Adafruit_ImageReader::coreBMP(
   uint32_t colors = 0;                       // Number of colors in palette
   uint16_t *quantized = NULL;                // 16-bit 5/6/5 color palette
   uint32_t rowSize;                          // >bmpWidth if scanline padding
-  uint8_t sdbuf[3 * BUFPIXELS];              // BMP read buf (R+G+B/pixel)
+  // temporary fix for stack overflow (increase stack size or allocate in static memory)
+  static uint8_t sdbuf[3 * BUFPIXELS];       // BMP read buf (R+G+B/pixel)
 #if ((3 * BUFPIXELS) <= 255)
   uint8_t srcidx = sizeof sdbuf; // Current position in sdbuf
 #else
@@ -334,7 +335,7 @@ ImageReturnCode Adafruit_ImageReader::coreBMP(
 #endif
   uint32_t destidx = 0;
   uint8_t *dest1 = NULL;     // Dest ptr for 1-bit BMPs to img
-  boolean flip = true;       // BMP is stored bottom-to-top
+  bool flip = true;       // BMP is stored bottom-to-top
   uint32_t bmpPos = 0;       // Next pixel position in file
   int loadWidth, loadHeight, // Region being loaded (clipped)
       loadX, loadY;          // "
@@ -465,7 +466,7 @@ ImageReturnCode Adafruit_ImageReader::coreBMP(
 
               for (row = 0; row < loadHeight; row++) { // For each scanline...
 
-                yield(); // Keep ESP8266 happy
+                // yield(); // Keep ESP8266 happy
 
                 // Seek to start of scan line.  It might seem labor-intensive
                 // to be doing this on every line, but this method covers a
@@ -643,16 +644,16 @@ ImageReturnCode Adafruit_ImageReader::bmpDimensions(const char *filename,
     @return  Unsigned 16-bit value, native endianism.
 */
 uint16_t Adafruit_ImageReader::readLE16(void) {
-#if !defined(ESP32) && !defined(ESP8266) &&                                    \
-    (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
-  // Read directly into result -- BMP data and variable both little-endian.
-  uint16_t result;
-  file.read(&result, sizeof result);
-  return result;
-#else
+// #if !defined(ESP32) && !defined(ESP8266) &&                                    \
+//     (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+//   // Read directly into result -- BMP data and variable both little-endian.
+//   uint16_t result;
+//   file.read(&result, sizeof result);
+//   return result;
+// #else
   // Big-endian or unknown. Byte-by-byte read will perform reversal if needed.
   return file.read() | ((uint16_t)file.read() << 8);
-#endif
+// #endif
 }
 
 /*!
@@ -662,17 +663,17 @@ uint16_t Adafruit_ImageReader::readLE16(void) {
     @return  Unsigned 32-bit value, native endianism.
 */
 uint32_t Adafruit_ImageReader::readLE32(void) {
-#if !defined(ESP32) && !defined(ESP8266) &&                                    \
-    (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
-  // Read directly into result -- BMP data and variable both little-endian.
-  uint32_t result;
-  file.read(&result, sizeof result);
-  return result;
-#else
+// #if !defined(ESP32) && !defined(ESP8266) &&                                    \
+//     (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+//   // Read directly into result -- BMP data and variable both little-endian.
+//   uint32_t result;
+//   file.read(&result, sizeof result);
+//   return result;
+// #else
   // Big-endian or unknown. Byte-by-byte read will perform reversal if needed.
   return file.read() | ((uint32_t)file.read() << 8) |
          ((uint32_t)file.read() << 16) | ((uint32_t)file.read() << 24);
-#endif
+// #endif
 }
 
 /*!
@@ -686,11 +687,11 @@ uint32_t Adafruit_ImageReader::readLE32(void) {
 */
 void Adafruit_ImageReader::printStatus(ImageReturnCode stat, Stream &stream) {
   if (stat == IMAGE_SUCCESS)
-    stream.println(F("Success!"));
+    stream.println("Success!");
   else if (stat == IMAGE_ERR_FILE_NOT_FOUND)
-    stream.println(F("File not found."));
+    stream.println("File not found.");
   else if (stat == IMAGE_ERR_FORMAT)
-    stream.println(F("Not a supported BMP variant."));
+    stream.println("Not a supported BMP variant.");
   else if (stat == IMAGE_ERR_MALLOC)
-    stream.println(F("Malloc failed (insufficient RAM)."));
+    stream.println("Malloc failed (insufficient RAM).");
 }
