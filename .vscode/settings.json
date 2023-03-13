@@ -51,6 +51,10 @@
         "xlocnum": "cpp",
         "xmemory": "cpp",
         "xstring": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "xlocmes": "cpp",
+        "istream": "cpp",
+        "sstream": "cpp",
+        "xiosbase": "cpp"
     }
 }

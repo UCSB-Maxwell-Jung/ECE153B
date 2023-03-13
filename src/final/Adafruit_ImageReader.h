@@ -15,8 +15,9 @@
 #ifndef __ADAFRUIT_IMAGE_READER_H__
 #define __ADAFRUIT_IMAGE_READER_H__
 
-#include "Adafruit_SPIFlash.h"
+// #include "Adafruit_SPIFlash.h"
 #include "Adafruit_SPITFT.h"
+#include "SD.h"
 
 /** Status codes returned by drawBMP() and loadBMP() */
 enum ImageReturnCode {
@@ -94,20 +95,20 @@ protected:
 */
 class Adafruit_ImageReader {
 public:
-  Adafruit_ImageReader(FatVolume &fs);
+  Adafruit_ImageReader(SDClass &fs);
   ~Adafruit_ImageReader(void);
   ImageReturnCode drawBMP(const char *filename, Adafruit_SPITFT &tft, int16_t x,
-                          int16_t y, boolean transact = true);
+                          int16_t y, bool transact = true);
   ImageReturnCode loadBMP(const char *filename, Adafruit_Image &img);
   ImageReturnCode bmpDimensions(const char *filename, int32_t *w, int32_t *h);
   void printStatus(ImageReturnCode stat, Stream &stream = Serial);
 
 protected:
-  FatVolume *filesys; ///< FAT FileSystem Object
-  File32 file;        ///< Current Open file
+  SDClass *filesys; ///< FAT FileSystem Object
+  File file;        ///< Current Open file
   ImageReturnCode coreBMP(const char *filename, Adafruit_SPITFT *tft,
                           uint16_t *dest, int16_t x, int16_t y,
-                          Adafruit_Image *img, boolean transact);
+                          Adafruit_Image *img, bool transact);
   uint16_t readLE16(void);
   uint32_t readLE32(void);
 };
