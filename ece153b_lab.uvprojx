@@ -1877,6 +1877,16 @@
               <FilePath>.\src\final\dragon.h</FilePath>
             </File>
             <File>
+              <FileName>FatStructs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\FatStructs.h</FilePath>
+            </File>
+            <File>
+              <FileName>File.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\File.cpp</FilePath>
+            </File>
+            <File>
               <FileName>gfxfont.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\gfxfont.h</FilePath>
@@ -1895,6 +1905,16 @@
               <FileName>hardware_spi1.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\hardware_spi1.h</FilePath>
+            </File>
+            <File>
+              <FileName>hardware_spi3.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\hardware_spi3.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>hardware_spi3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\hardware_spi3.h</FilePath>
             </File>
             <File>
               <FileName>hardware_usart1.cpp</FileName>
@@ -1947,6 +1967,56 @@
               <FilePath>.\src\final\Print.h</FilePath>
             </File>
             <File>
+              <FileName>SD.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SD.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SD.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\SD.h</FilePath>
+            </File>
+            <File>
+              <FileName>Sd2Card.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Sd2Card.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Sd2Card.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Sd2Card.h</FilePath>
+            </File>
+            <File>
+              <FileName>Sd2PinMap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Sd2PinMap.h</FilePath>
+            </File>
+            <File>
+              <FileName>SdFat.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\SdFat.h</FilePath>
+            </File>
+            <File>
+              <FileName>SdFatUtil.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\SdFatUtil.h</FilePath>
+            </File>
+            <File>
+              <FileName>SdFile.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SdFile.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SdInfo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\SdInfo.h</FilePath>
+            </File>
+            <File>
+              <FileName>SdVolume.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\SdVolume.cpp</FilePath>
+            </File>
+            <File>
               <FileName>SPI.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\SPI.cpp</FilePath>
@@ -1965,6 +2035,16 @@
               <FileName>stm32l476xx.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\stm32l476xx.h</FilePath>
+            </File>
+            <File>
+              <FileName>Stream.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Stream.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Stream.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Stream.h</FilePath>
             </File>
             <File>
               <FileName>SysClock.cpp</FileName>
