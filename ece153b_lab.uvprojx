@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>6</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1862,6 +1862,21 @@
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
             </File>
             <File>
+              <FileName>bitmap_test.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\bitmap_test.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>bitmap_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\bitmap_test.h</FilePath>
+            </File>
+            <File>
+              <FileName>dragon.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\dragon.h</FilePath>
+            </File>
+            <File>
               <FileName>FatStructs.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\FatStructs.h</FilePath>
@@ -1975,16 +1990,6 @@
               <FileName>Sd2PinMap.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\Sd2PinMap.h</FilePath>
-            </File>
-            <File>
-              <FileName>sdcard_list_files_test.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\sdcard_list_files_test.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>sdcard_list_files_test.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\sdcard_list_files_test.h</FilePath>
             </File>
             <File>
               <FileName>SdFat.h</FileName>
