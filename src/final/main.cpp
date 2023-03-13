@@ -1,8 +1,5 @@
 #include "nucleo.h"
 
-// #include "graphics_test.h"
-#include "sdcard_list_files_test.h"
-
 HardwareUsart2 Serial;
 
 void initHardware() {

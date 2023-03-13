@@ -3,22 +3,23 @@
 
 #include "stm32l476xx.h"
 
-#include "Print.h"
+#include "Stream.h"
 
 #define BufferSize 32
 #define UART_DEFAULT_BAUD_RATE 9600
 #define CLK_FREQ 80000000
 
-class UART : public Print {
+class UART : public Stream {
 public:
   // constructor
   UART(USART_TypeDef* USARTx);
   // methods
   void begin(uint32_t baud_rate=UART_DEFAULT_BAUD_RATE);
-  using Print::write;
-  size_t write(uint8_t);
+  virtual int available(void);
+  virtual int peek(void);
+  size_t write(uint8_t c);
   size_t write(const uint8_t *buffer, size_t size);
-  uint8_t read(void);
+  virtual int read(void);
 
 protected:
   USART_TypeDef* USARTx_;
