@@ -29,8 +29,8 @@ public:
 protected:
   I2C_TypeDef* _I2Cx;
 
-  virtual void configure_GPIO(void) = 0; // must be implemented in derived class
-  virtual void configure_I2C() = 0; // must be implemented in derived class
+  virtual void configureGpio(void) = 0; // must be implemented in derived class
+  virtual void configureI2c(void) = 0; // must be implemented in derived class
 };
 
 #endif

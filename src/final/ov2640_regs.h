@@ -6,6 +6,14 @@
 #define OV2640_CHIPID_HIGH 	0x0A
 #define OV2640_CHIPID_LOW 	0x0B
 
+/****************************************************************/
+/* define a structure for sensor register initialization values */
+/****************************************************************/
+struct sensor_reg {
+	uint16_t reg;
+	uint16_t val;
+};
+
 const struct sensor_reg OV2640_QVGA[] =
 {
 	{0xff, 0x0}, 

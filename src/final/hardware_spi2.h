@@ -1,12 +1,12 @@
-#ifndef __STM32L476R_NUCLEO_SPI3_H
-#define __STM32L476R_NUCLEO_SPI3_H
+#ifndef __STM32L476R_NUCLEO_SPI2_H
+#define __STM32L476R_NUCLEO_SPI2_H
 
 #include "SPI.h"
 
-class HardwareSpi3 : public SPI { // inherit more general SPI class
+class HardwareSpi2 : public SPI { // inherit more general SPI class
 public:
   // constructor
-  HardwareSpi3();
+  HardwareSpi2();
 
   // methods
   void setCsLow();

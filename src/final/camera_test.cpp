@@ -8,15 +8,13 @@
 // This program requires the ArduCAM V4.0.0 (or later) library and ArduCAM_Mini_5MP_Plus
 // and use Arduino IDE 1.6.8 compiler or above
 // #include <Wire.h>
-// #include <ArduCAM.h>
-// #include <SPI.h>
-
-#include <stdint.h>
 #include "ArduCAM.h"
-#include "UART_Wired.h"
-#include "SysTick.h"
-
+// #include <SPI.h>
+#include "memorysaver.h"
 //This demo can only work on OV2640_MINI_2MP platform.
+// #if !(defined OV2640_MINI_2MP)
+//   #error Please select the hardware platform and camera module in the ../libraries/ArduCAM/memorysaver.h file
+// #endif
 #define BMPIMAGEOFFSET 66
 const char bmp_header[BMPIMAGEOFFSET] =
 {
@@ -31,25 +29,25 @@ const int CS = 7;
 bool is_header = false;
 int mode = 0;
 uint8_t start_capture = 0;
-
-uint8_t read_fifo_burst(ArduCAM myCAM);
-
-UART_Wired Serial = UART_Wired();
-ArduCAM myCAM = ArduCAM();
+// #if defined (OV2640_MINI_2MP)
+ArduCAM myCAM(OV2640);
+// #else
+//   ArduCAM myCAM( OV5642, CS );
+// #endif
+uint8_t read_fifo_burst(ArduCAM& myCAM);
 
 void setup() {
   // put your setup code here, to run once:
   uint8_t vid, pid;
   uint8_t temp;
-  // Wire.begin();
+  myCAM.i2c_.begin();
   Serial.begin(921600);
-  myCAM.begin();
   Serial.println("ACK CMD ArduCAM Start! END");
   // set the CS as an output:
   // pinMode(CS, OUTPUT);
   // digitalWrite(CS, HIGH);
   // initialize SPI:
-  // SPI.begin();
+  myCAM.spi_.begin();
   //Reset the CPLD
   myCAM.write_reg(0x07, 0x80);
   delay(100);
@@ -61,14 +59,13 @@ void setup() {
     temp = myCAM.read_reg(ARDUCHIP_TEST1);
     if (temp != 0x55){
       Serial.println("ACK CMD SPI interface Error! END");
-      delay(1000);
-      continue;
+      delay(1000);continue;
     }else{
-      Serial.println("ACK CMD SPI interface OK. END");
-      break;
+      Serial.println("ACK CMD SPI interface OK. END");break;
     }
   }
 
+  // #if defined (OV2640_MINI_2MP)
   while(1){
     //Check if the camera module type is OV2640
     myCAM.wrSensorReg8_8(0xff, 0x01);
@@ -76,24 +73,41 @@ void setup() {
     myCAM.rdSensorReg8_8(OV2640_CHIPID_LOW, &pid);
     if ((vid != 0x26 ) && (( pid != 0x41 ) || ( pid != 0x42 ))){
       Serial.println("ACK CMD Can't find OV2640 module! END");
-      delay(1000);
-      continue;
+      delay(1000);continue;
     }
     else{
-      Serial.println("ACK CMD OV2640 detected. END");
-      break;
+      Serial.println("ACK CMD OV2640 detected. END");break;
     } 
   }
-
-  //Change to JPEG capture mode and initialize the OV2640 module
+  // #else
+  //   while(1){
+  //   //   //Check if the camera module type is OV5642
+  //   //   myCAM.wrSensorReg16_8(0xff, 0x01);
+  //   //   myCAM.rdSensorReg16_8(OV5642_CHIPID_HIGH, &vid);
+  //   //   myCAM.rdSensorReg16_8(OV5642_CHIPID_LOW, &pid);
+  //   //   if((vid != 0x56) || (pid != 0x42)){
+  //   //     Serial.println("ACK CMD Can't find OV5642 module! END");
+  //   //     delay(1000);continue;
+  //   //   }
+  //   //   else{
+  //   //     Serial.println("ACK CMD OV5642 detected. END");break;
+  //   //   } 
+  //   }
+  // #endif
+  //Change to JPEG capture mode and initialize the OV5642 module
   myCAM.set_format(JPEG);
   myCAM.InitCAM();
+  // #if defined (OV2640_MINI_2MP)
   myCAM.OV2640_set_JPEG_size(OV2640_320x240);
+  // #else
+  //   myCAM.write_reg(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);   //VSYNC is active HIGH
+  //   myCAM.OV5642_set_JPEG_size(OV5642_320x240);
+  // #endif
   delay(1000);
   myCAM.clear_fifo_flag();
-  #if !(defined (OV2640_MINI_2MP))
-  myCAM.write_reg(ARDUCHIP_FRAMES,0x00);
-  #endif
+  // #if !(defined (OV2640_MINI_2MP))
+  // myCAM.write_reg(ARDUCHIP_FRAMES,0x00);
+  // #endif
 }
 void loop() {
   // put your main code here, to run repeatedly:
@@ -408,12 +422,12 @@ void loop() {
         }
         myCAM.CS_LOW();
         myCAM.set_fifo_burst();//Set fifo burst mode
-        temp =  SPI.transfer(0x00);
+        temp =  myCAM.spi_.transfer(0x00);
         length --;
         while ( length-- )
         {
           temp_last = temp;
-          temp =  SPI.transfer(0x00);
+          temp =  myCAM.spi_.transfer(0x00);
           if (is_header == true)
           {
             Serial.write(temp);
@@ -475,15 +489,15 @@ void loop() {
         Serial.write(pgm_read_byte(&bmp_header[temp]));
       }
       //for old version, enable it else disable
-    // SPI.transfer(0x00);
+    // myCAM.spi_.transfer(0x00);
       char VH, VL;
       int i = 0, j = 0;
       for (i = 0; i < 240; i++)
       {
         for (j = 0; j < 320; j++)
         {
-          VH = SPI.transfer(0x00);;
-          VL = SPI.transfer(0x00);;
+          VH = myCAM.spi_.transfer(0x00);;
+          VL = myCAM.spi_.transfer(0x00);;
           Serial.write(VL);
           delayMicroseconds(12);
           Serial.write(VH);
@@ -499,8 +513,8 @@ void loop() {
   }
 }
 
-
-uint8_t read_fifo_burst(ArduCAM& myCAM) { // pass camera object by reference
+uint8_t read_fifo_burst(ArduCAM& myCAM)
+{
   uint8_t temp = 0, temp_last = 0;
   uint32_t length = 0;
   length = myCAM.read_fifo_length();
@@ -517,12 +531,12 @@ uint8_t read_fifo_burst(ArduCAM& myCAM) { // pass camera object by reference
   }
   myCAM.CS_LOW();
   myCAM.set_fifo_burst();//Set fifo burst mode
-  temp =  SPI.transfer(0x00);
+  temp =  myCAM.spi_.transfer(0x00);
   length --;
   while ( length-- )
   {
     temp_last = temp;
-    temp =  SPI.transfer(0x00);
+    temp =  myCAM.spi_.transfer(0x00);
     if (is_header == true)
     {
       Serial.write(temp);

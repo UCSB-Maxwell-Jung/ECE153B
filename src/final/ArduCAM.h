@@ -101,14 +101,23 @@
 #ifndef ArduCAM_H
 #define ArduCAM_H
 
+#include "memorysaver.h"
+#include "nucleo.h"
+// #include <pins_arduino.h>
 #include "ov2640_regs.h"
 
-#include "nucleo.h"
-#include "SPI_Camera.h"
-#include "I2C_Camera.h"
-// #include "memorysaver.h"
-// #include "Arduino.h"
-// #include <pins_arduino.h>
+#include "hardware_spi2.h"
+#include "hardware_i2c1.h"
+
+#ifndef pgm_read_byte
+#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
+#endif
+#ifndef pgm_read_word
+#define pgm_read_word(addr) (*(const unsigned short *)(addr))
+#endif
+#ifndef pgm_read_dword
+#define pgm_read_dword(addr) (*(const unsigned long *)(addr))
+#endif
 
 // #define pulse_high(reg, bitmask) sbi(reg, bitmask); cbi(reg, bitmask);
 // #define pulse_low(reg, bitmask) cbi(reg, bitmask); sbi(reg, bitmask);
@@ -429,31 +438,13 @@
 #define FIFO_SIZE2				0x43  //Camera write FIFO size[15:8]
 #define FIFO_SIZE3				0x44  //Camera write FIFO size[18:16]
 
-
 /****************************************************/
-
-
-/****************************************************************/
-/* define a structure for sensor register initialization values */
-/****************************************************************/
-struct sensor_reg {
-	uint16_t reg;
-	uint16_t val;
-};
-
-
-
-/****************************************************************/
-/* define a structure for sensor register initialization values */
-/****************************************************************/
-
 class ArduCAM {
 public:
 	// constructor
-	ArduCAM();
+	ArduCAM(byte sensor_model=OV2640);
 
 	// methods
-	void begin(void);
 	void InitCAM(void);
 	
 	void CS_HIGH(void);
@@ -519,15 +510,17 @@ public:
 	void OV2640_set_Special_effects(uint8_t Special_effect);
 	
 	void set_format(byte fmt);
+
+public:
+	HardwareI2c1 i2c_;
+	HardwareSpi2 spi_;
 	
 protected:
 	// regtype *P_CS;
 	// regsize B_CS;
-	I2C_Camera _I2C;
-	SPI_Camera _SPI;
-	byte m_fmt;
-	byte sensor_model;
-	byte sensor_addr;
+	byte m_fmt_;
+	byte sensor_model_;
+	byte sensor_addr_;
 };
 
 #endif

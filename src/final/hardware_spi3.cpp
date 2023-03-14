@@ -3,13 +3,6 @@
 HardwareSpi3::HardwareSpi3()
     : SPI(SPI3) {}
 
-void HardwareSpi3::CsLow() {
-	GPIOA->ODR &= ~GPIO_ODR_OD15; // Set CS (PA15) to Low
-}
-void HardwareSpi3::CsHigh() {
-	GPIOA->ODR |= GPIO_ODR_OD15; // Set CS (PA15) to High
-}
-
 // Configure PC10(SPI3_SCK), PC11(SPI3_MISO), PC12(SPI3_MOSI), PA15(SPI3_NSS)
 void HardwareSpi3::configureGpio() {
 	uint8_t af_num;
@@ -20,9 +13,9 @@ void HardwareSpi3::configureGpio() {
 	GPIOC->MODER &= ~(GPIO_MODER_MODER10 | // PC10
 					  GPIO_MODER_MODER11 | // PC11
 					  GPIO_MODER_MODER12); // PC12
-	GPIOC->MODER |=  (GPIO_MODER_MODER10_1 | // set to Alternate function mode
+	GPIOC->MODER |=  (GPIO_MODER_MODER10_1 | 
 					  GPIO_MODER_MODER11_1 | 
-					  GPIO_MODER_MODER12_1);
+					  GPIO_MODER_MODER12_1); // set to Alternate function mode
 	GPIOA->MODER &=  ~GPIO_MODER_MODE15;   // PA15
 	GPIOA->MODER |=   GPIO_MODER_MODE15_0; // set to General purpose output mode
 
@@ -61,6 +54,7 @@ void HardwareSpi3::configureSpi() {
 	RCC->APB1ENR1 |= RCC_APB1ENR1_SPI3EN; // enable SPI3 clock
 	RCC->APB1RSTR1 |= RCC_APB1RSTR1_SPI3RST; // set, then reset to clear SPI3
 	RCC->APB1RSTR1 &= ~RCC_APB1RSTR1_SPI3RST; 
+	
 	spix_->CR1 &= ~SPI_CR1_SPE; // disable SPI
 
 	// ---------------CR1-----------------
@@ -111,4 +105,11 @@ void HardwareSpi3::configureSpi() {
 
 	// disable NSS pulse generation (0)
 	spix_->CR2 &= ~SPI_CR2_NSSP;
+}
+
+void HardwareSpi3::setCsLow() {
+	GPIOA->ODR &= ~GPIO_ODR_OD15; // Set CS (PA15) to Low
+}
+void HardwareSpi3::setCsHigh() {
+	GPIOA->ODR |= GPIO_ODR_OD15; // Set CS (PA15) to High
 }

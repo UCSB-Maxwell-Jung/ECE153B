@@ -117,42 +117,59 @@
 // #endif
 
 // default constructor
-ArduCAM::ArduCAM() {
-  sensor_model = OV2640;
-  sensor_addr = 0x60;
-}
-
-void ArduCAM::begin() {
-	// [TODO] set up CS GPIO pin, (unnecessary if spi is configured with hardware slave management)
+ArduCAM::ArduCAM(byte sensor_model) {
+	sensor_model_ = sensor_model;
+	switch (sensor_model_) {
+		case OV7660:
+		case OV7670:
+		case OV7675:
+		case OV7725:
+			sensor_addr_ = 0x42;
+			break;
+		case MT9D111_A: //Standard MT9D111 module
+      		sensor_addr_ = 0xba;
+			break;
+		case MT9D111_B: //Flex MT9D111 AF module
+			sensor_addr_ = 0x90;
+    		break;
+		case MT9M112:
+			sensor_addr_ = 0x90;
+			break;
+		case MT9M001:
+			sensor_addr_ = 0xba;
+			break;
+		case MT9V034:
+			sensor_addr_ = 0x90;
+			break;
+		case MT9M034:
+			sensor_addr_ = 0x20;// 7 bits
+			break;
+		case OV3640:
+		case OV5640:
+		case OV5642:
+		case MT9T112:
+		case MT9D112:
+			sensor_addr_ = 0x78;
+			break;
+		case OV2640:
+		case OV9650:
+		case OV9655:
+			sensor_addr_ = 0x60;
+			break;
+		default:
+			sensor_addr_ = 0x42;
+			break;
+		}
 	
-	// set to alternate function mode (10)
-	GPIOB->MODER &= ~(GPIO_MODER_MODER12_0); // PB12
-	//set AF to pin PB12
-	GPIOB->AFR[1] &= ~(GPIO_AFRH_AFSEL12);
-	
-	//af number= 5
-	GPIOB->AFR[1] |= (5 << (12*4));  
-
-	//set to push-pull (0)
-	GPIOB->OTYPER &= ~(GPIO_OTYPER_OT12)
-
-	//set to very high (11)	
-	GPIOB->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR12)
-
-	GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD12);
-
-	_I2C.begin();
-	_SPI.begin();
-
-	// [TODO] move InitCAM logic here
-
+	i2c_.begin();
+	spi_.begin();
 }
 
 void ArduCAM::InitCAM() {
 	wrSensorReg8_8(0xff, 0x01);
 	wrSensorReg8_8(0x12, 0x80);
 	delay(100);
-	if (m_fmt == JPEG) {
+	if (m_fmt_ == JPEG) {
 		wrSensorRegs8_8(OV2640_JPEG_INIT);
 		wrSensorRegs8_8(OV2640_YUV422);
 		wrSensorRegs8_8(OV2640_JPEG);
@@ -187,14 +204,16 @@ uint32_t ArduCAM::read_fifo_length(void) {
 }
 
 void ArduCAM::set_fifo_burst() {
-	_SPI.transfer(BURST_FIFO_READ);
+	spi_.transfer(BURST_FIFO_READ);
 }
 
 void ArduCAM::CS_HIGH(void) {
-	// [TODO] set CS pin high
+	spi_.setCsHigh();
+	spi_.beginTransaction();
 }
 void ArduCAM::CS_LOW(void) {
-	// [TODO] set CS pin low
+	spi_.endTransaction();
+	spi_.setCsLow();
 }
 
 uint8_t ArduCAM::read_fifo(void) {
@@ -256,8 +275,8 @@ void ArduCAM::set_mode(uint8_t mode) {
 
 uint8_t ArduCAM::bus_write(int address,int value) {
 	CS_LOW();
-	_SPI.transfer(address);
-	_SPI.transfer(value);
+	spi_.transfer(address);
+	spi_.transfer(value);
 	CS_HIGH();
 	return 1;
 }
@@ -265,8 +284,8 @@ uint8_t ArduCAM::bus_write(int address,int value) {
 uint8_t ArduCAM:: bus_read(int address) {
 	uint8_t value;
 	CS_LOW();
-	_SPI.transfer(address);
-	value = _SPI.transfer(0x00);
+	spi_.transfer(address);
+	value = spi_.transfer(0x00);
 	CS_HIGH();
 	return value;
 }
@@ -309,11 +328,11 @@ void ArduCAM::OV2640_set_JPEG_size(uint8_t size)
 
 void ArduCAM::set_format(byte fmt) {
   if (fmt == BMP)
-    m_fmt = BMP;
+    m_fmt_ = BMP;
   else if(fmt == RAW)
-    m_fmt = RAW;
+    m_fmt_ = RAW;
   else
-    m_fmt = JPEG;
+    m_fmt_ = JPEG;
 }
 
 void ArduCAM::OV2640_set_Light_Mode(uint8_t Light_Mode) {
@@ -646,10 +665,10 @@ int ArduCAM::wrSensorRegs16_16(const struct sensor_reg reglist[])
 // Read/write 8 bit value to/from 8 bit register address	
 byte ArduCAM::wrSensorReg8_8(uint8_t regID, uint8_t regDat)
 {
-	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID);
-	_I2C.write(regDat);
-	if (_I2C.endTransmission())
+	i2c_.beginTransmission(sensor_addr_ >> 1);
+	i2c_.write(regID);
+	i2c_.write(regDat);
+	if (i2c_.endTransmission())
 		return 0;
 	delay(1);
 	return 1;
@@ -657,13 +676,13 @@ byte ArduCAM::wrSensorReg8_8(uint8_t regID, uint8_t regDat)
 }
 byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
 {	
-	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID);
-	_I2C.endTransmission();
+	i2c_.beginTransmission(sensor_addr_ >> 1);
+	i2c_.write(regID);
+	i2c_.endTransmission();
 
-	_I2C.requestFrom((sensor_addr >> 1), 1);
-	if (_I2C.available())
-		*regDat = _I2C.read();
+	i2c_.requestFrom((sensor_addr_ >> 1), 1);
+	if (i2c_.available())
+		*regDat = i2c_.read();
 	delay(1);
 	return 1;
 	
@@ -671,11 +690,11 @@ byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
 // Read/write 16 bit value to/from 8 bit register address
 byte ArduCAM::wrSensorReg8_16(uint8_t regID, uint16_t regDat)
 {
-	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID);
-	_I2C.write(regDat >> 8);            // sends data byte, MSB first
-	_I2C.write(regDat);
-	if (_I2C.endTransmission())
+	i2c_.beginTransmission(sensor_addr_ >> 1);
+	i2c_.write(regID);
+	i2c_.write(regDat >> 8);            // sends data byte, MSB first
+	i2c_.write(regDat);
+	if (i2c_.endTransmission())
 		return 0;
 	delay(1);
 	return 1;
@@ -683,14 +702,14 @@ byte ArduCAM::wrSensorReg8_16(uint8_t regID, uint16_t regDat)
 byte ArduCAM::rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
 {
   	uint8_t temp;
-	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID);
-	_I2C.endTransmission();
+	i2c_.beginTransmission(sensor_addr_ >> 1);
+	i2c_.write(regID);
+	i2c_.endTransmission();
 
-	_I2C.requestFrom((sensor_addr >> 1), 2);
-	if (_I2C.available()) {
-		temp = _I2C.read();
-		*regDat = (temp << 8) | _I2C.read();
+	i2c_.requestFrom((sensor_addr_ >> 1), 2);
+	if (i2c_.available()) {
+		temp = i2c_.read();
+		*regDat = (temp << 8) | i2c_.read();
 	}
 	delay(1);
   	return 1;
@@ -699,11 +718,11 @@ byte ArduCAM::rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
 // Read/write 8 bit value to/from 16 bit register address
 byte ArduCAM::wrSensorReg16_8(uint16_t regID, uint8_t regDat)
 {
-	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID >> 8);            // sends instruction byte, MSB first
-	_I2C.write(regID);
-	_I2C.write(regDat);
-	if (_I2C.endTransmission()) {
+	i2c_.beginTransmission(sensor_addr_ >> 1);
+	i2c_.write(regID >> 8);            // sends instruction byte, MSB first
+	i2c_.write(regID);
+	i2c_.write(regDat);
+	if (i2c_.endTransmission()) {
 		return 0;
 	}
 	delay(1);
@@ -711,13 +730,13 @@ byte ArduCAM::wrSensorReg16_8(uint16_t regID, uint8_t regDat)
 }
 byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 {
-	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID >> 8);
-	_I2C.write(regID);
-	_I2C.endTransmission();
-	_I2C.requestFrom((sensor_addr >> 1), 1);
-	if (_I2C.available()) {
-		*regDat = _I2C.read();
+	i2c_.beginTransmission(sensor_addr_ >> 1);
+	i2c_.write(regID >> 8);
+	i2c_.write(regID);
+	i2c_.endTransmission();
+	i2c_.requestFrom((sensor_addr_ >> 1), 1);
+	if (i2c_.available()) {
+		*regDat = i2c_.read();
 	}
 	delay(1);
 	return 1;
@@ -726,12 +745,12 @@ byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 //I2C Write 16bit address, 16bit data
 byte ArduCAM::wrSensorReg16_16(uint16_t regID, uint16_t regDat)
 {
-	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID >> 8);            // sends instruction byte, MSB first
-	_I2C.write(regID);
-	_I2C.write(regDat >> 8);            // sends data byte, MSB first
-	_I2C.write(regDat);
-	if (_I2C.endTransmission()) {
+	i2c_.beginTransmission(sensor_addr_ >> 1);
+	i2c_.write(regID >> 8);            // sends instruction byte, MSB first
+	i2c_.write(regID);
+	i2c_.write(regDat >> 8);            // sends data byte, MSB first
+	i2c_.write(regDat);
+	if (i2c_.endTransmission()) {
 		return 0;
 	}
 	delay(1);
@@ -742,14 +761,14 @@ byte ArduCAM::wrSensorReg16_16(uint16_t regID, uint16_t regDat)
 byte ArduCAM::rdSensorReg16_16(uint16_t regID, uint16_t* regDat)
 {
 	uint16_t temp;
-	_I2C.beginTransmission(sensor_addr >> 1);
-	_I2C.write(regID >> 8);
-	_I2C.write(regID);
-	_I2C.endTransmission();
-	_I2C.requestFrom((sensor_addr >> 1), 2);
-	if (_I2C.available()) {
-		temp = _I2C.read();
-		*regDat = (temp << 8) | _I2C.read();
+	i2c_.beginTransmission(sensor_addr_ >> 1);
+	i2c_.write(regID >> 8);
+	i2c_.write(regID);
+	i2c_.endTransmission();
+	i2c_.requestFrom((sensor_addr_ >> 1), 2);
+	if (i2c_.available()) {
+		temp = i2c_.read();
+		*regDat = (temp << 8) | i2c_.read();
 	}
 	delay(1);
   	return (1);

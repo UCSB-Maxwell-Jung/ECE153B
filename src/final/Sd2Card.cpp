@@ -164,7 +164,7 @@ uint32_t Sd2Card::cardSize(void) {
 static uint8_t chip_select_asserted = 0;
 
 void Sd2Card::chipSelectHigh(void) {
-  spi_.CsHigh();
+  spi_.setCsHigh();
   if (chip_select_asserted) {
     chip_select_asserted = 0;
     spi_.endTransaction();
@@ -176,7 +176,7 @@ void Sd2Card::chipSelectLow(void) {
     chip_select_asserted = 1;
     spi_.beginTransaction();
   }
-  spi_.CsLow();
+  spi_.setCsLow();
 }
 //------------------------------------------------------------------------------
 /** Erase a range of blocks.

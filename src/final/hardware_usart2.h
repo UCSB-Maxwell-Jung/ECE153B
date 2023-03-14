@@ -16,6 +16,4 @@ private:
   void configureUsart(void);
 };
 
-extern HardwareUsart2 Serial;
-
 #endif // __STM32L476R_NUCLEO_UART_Wired_H
