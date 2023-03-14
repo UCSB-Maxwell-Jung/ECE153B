@@ -684,7 +684,7 @@ byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
 // Read/write 16 bit value to/from 8 bit register address
 byte ArduCAM::wrSensorReg8_16(uint8_t regID, uint16_t regDat)
 {
-	uint8_t buffer[3] = {regID, regDat>>8, regDat}; // 3 bytes of data
+	uint8_t buffer[3] = {regID, (uint8_t)(regDat>>8), (uint8_t)(regDat)}; // 3 bytes of data
 	if (i2c_.transmit(sensor_addr_>>1, buffer, 3) != 3) // send 3 bytes
 		return 0; // transmit failed
 	delay(1);
@@ -705,7 +705,7 @@ byte ArduCAM::rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
 // Read/write 8 bit value to/from 16 bit register address
 byte ArduCAM::wrSensorReg16_8(uint16_t regID, uint8_t regDat)
 {
-	uint8_t data[3] = {regID>>8, regID, regDat}; // 3 bytes of data
+	uint8_t data[3] = {(uint8_t)(regID>>8), (uint8_t)(regID), regDat}; // 3 bytes of data
 	if (i2c_.transmit(sensor_addr_>>1, data, 3) != 3) // send 3 bytes
 		return 0; // transmit failed
 	delay(1);
@@ -713,7 +713,7 @@ byte ArduCAM::wrSensorReg16_8(uint16_t regID, uint8_t regDat)
 }
 byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 {
-	uint8_t data[2] = {regID>>8, regID}; // 2 bytes of data
+	uint8_t data[2] = {(uint8_t)(regID>>8), (uint8_t)(regID)}; // 2 bytes of data
 	i2c_.transmit(sensor_addr_>>1, data, 2); // send 2 bytes
 
 	if (i2c_.receive(sensor_addr_>>1, regDat, 1) != 1) // read 1 byte
@@ -725,7 +725,7 @@ byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 //I2C Write 16bit address, 16bit data
 byte ArduCAM::wrSensorReg16_16(uint16_t regID, uint16_t regDat)
 {
-	uint8_t data[4] = {regID>>8, regID, regDat>>8, regDat}; // 4 bytes of data
+	uint8_t data[4] = {(uint8_t)(regID>>8), (uint8_t)(regID), (uint8_t)(regDat>>8), (uint8_t)(regDat)}; // 4 bytes of data
 	if (i2c_.transmit(sensor_addr_>>1, data, 4) != 4) // send 4 bytes
 		return 0; // transmit failed
 	delay(1);
@@ -735,7 +735,7 @@ byte ArduCAM::wrSensorReg16_16(uint16_t regID, uint16_t regDat)
 //I2C Read 16bit address, 16bit data
 byte ArduCAM::rdSensorReg16_16(uint16_t regID, uint16_t* regDat)
 {
-	uint8_t data[2] = {regID>>8, regID}; // 2 bytes of data
+	uint8_t data[2] = {(uint8_t)(regID>>8), (uint8_t)(regID)}; // 2 bytes of data
 	i2c_.transmit(sensor_addr_>>1, data, 2); // send 2 bytes
 
 	if (i2c_.receive(sensor_addr_>>1, data, 2) != 2) // read 2 bytes
