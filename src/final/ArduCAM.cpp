@@ -665,52 +665,39 @@ int ArduCAM::wrSensorRegs16_16(const struct sensor_reg reglist[])
 // Read/write 8 bit value to/from 8 bit register address	
 byte ArduCAM::wrSensorReg8_8(uint8_t regID, uint8_t regDat)
 {
-	i2c_.beginTransmission(sensor_addr_ >> 1);
-	i2c_.write(regID);
-	i2c_.write(regDat);
-	if (i2c_.endTransmission())
-		return 0;
+	uint8_t buffer[2] = {regID, regDat}; // 2 bytes of data
+	if (i2c_.transmit(sensor_addr_>>1, buffer, 2) != 2) // send 2 bytes
+		return 0; // transmit failed
 	delay(1);
 	return 1;
 	
 }
 byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
 {	
-	i2c_.beginTransmission(sensor_addr_ >> 1);
-	i2c_.write(regID);
-	i2c_.endTransmission();
+	i2c_.transmit(sensor_addr_>>1, &regID, 1); // send 1 byte
 
-	i2c_.requestFrom((sensor_addr_ >> 1), 1);
-	if (i2c_.available())
-		*regDat = i2c_.read();
+	if (i2c_.receive(sensor_addr_>>1, regDat, 1) != 1) // read 1 byte
+		return 0; // receive failed
 	delay(1);
 	return 1;
-	
 }
 // Read/write 16 bit value to/from 8 bit register address
 byte ArduCAM::wrSensorReg8_16(uint8_t regID, uint16_t regDat)
 {
-	i2c_.beginTransmission(sensor_addr_ >> 1);
-	i2c_.write(regID);
-	i2c_.write(regDat >> 8);            // sends data byte, MSB first
-	i2c_.write(regDat);
-	if (i2c_.endTransmission())
-		return 0;
+	uint8_t buffer[3] = {regID, regDat>>8, regDat}; // 3 bytes of data
+	if (i2c_.transmit(sensor_addr_>>1, buffer, 3) != 3) // send 3 bytes
+		return 0; // transmit failed
 	delay(1);
 	return 1;
 }
 byte ArduCAM::rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
 {
-  	uint8_t temp;
-	i2c_.beginTransmission(sensor_addr_ >> 1);
-	i2c_.write(regID);
-	i2c_.endTransmission();
+  	uint8_t buffer[2]; // array for temporarily storing 2 bytes received from I2C
+	i2c_.transmit(sensor_addr_>>1, &regID, 1); // send 1 byte
 
-	i2c_.requestFrom((sensor_addr_ >> 1), 2);
-	if (i2c_.available()) {
-		temp = i2c_.read();
-		*regDat = (temp << 8) | i2c_.read();
-	}
+	if (i2c_.receive(sensor_addr_>>1, buffer, 2) != 2) // read 2 bytes
+		return 0; // receive failed
+	*regDat = (((uint16_t) buffer[0]) << 8) | buffer[1]; // concat 2 bytes into short
 	delay(1);
   	return 1;
 }
@@ -718,26 +705,19 @@ byte ArduCAM::rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
 // Read/write 8 bit value to/from 16 bit register address
 byte ArduCAM::wrSensorReg16_8(uint16_t regID, uint8_t regDat)
 {
-	i2c_.beginTransmission(sensor_addr_ >> 1);
-	i2c_.write(regID >> 8);            // sends instruction byte, MSB first
-	i2c_.write(regID);
-	i2c_.write(regDat);
-	if (i2c_.endTransmission()) {
-		return 0;
-	}
+	uint8_t data[3] = {regID>>8, regID, regDat}; // 3 bytes of data
+	if (i2c_.transmit(sensor_addr_>>1, data, 3) != 3) // send 3 bytes
+		return 0; // transmit failed
 	delay(1);
 	return 1;
 }
 byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 {
-	i2c_.beginTransmission(sensor_addr_ >> 1);
-	i2c_.write(regID >> 8);
-	i2c_.write(regID);
-	i2c_.endTransmission();
-	i2c_.requestFrom((sensor_addr_ >> 1), 1);
-	if (i2c_.available()) {
-		*regDat = i2c_.read();
-	}
+	uint8_t data[2] = {regID>>8, regID}; // 2 bytes of data
+	i2c_.transmit(sensor_addr_>>1, data, 2); // send 2 bytes
+
+	if (i2c_.receive(sensor_addr_>>1, regDat, 1) != 1) // read 1 byte
+		return 0; // receive failed
 	delay(1);
 	return 1;
 }
@@ -745,14 +725,9 @@ byte ArduCAM::rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 //I2C Write 16bit address, 16bit data
 byte ArduCAM::wrSensorReg16_16(uint16_t regID, uint16_t regDat)
 {
-	i2c_.beginTransmission(sensor_addr_ >> 1);
-	i2c_.write(regID >> 8);            // sends instruction byte, MSB first
-	i2c_.write(regID);
-	i2c_.write(regDat >> 8);            // sends data byte, MSB first
-	i2c_.write(regDat);
-	if (i2c_.endTransmission()) {
-		return 0;
-	}
+	uint8_t data[4] = {regID>>8, regID, regDat>>8, regDat}; // 4 bytes of data
+	if (i2c_.transmit(sensor_addr_>>1, data, 4) != 4) // send 4 bytes
+		return 0; // transmit failed
 	delay(1);
   	return (1);
 }
@@ -760,16 +735,12 @@ byte ArduCAM::wrSensorReg16_16(uint16_t regID, uint16_t regDat)
 //I2C Read 16bit address, 16bit data
 byte ArduCAM::rdSensorReg16_16(uint16_t regID, uint16_t* regDat)
 {
-	uint16_t temp;
-	i2c_.beginTransmission(sensor_addr_ >> 1);
-	i2c_.write(regID >> 8);
-	i2c_.write(regID);
-	i2c_.endTransmission();
-	i2c_.requestFrom((sensor_addr_ >> 1), 2);
-	if (i2c_.available()) {
-		temp = i2c_.read();
-		*regDat = (temp << 8) | i2c_.read();
-	}
+	uint8_t data[2] = {regID>>8, regID}; // 2 bytes of data
+	i2c_.transmit(sensor_addr_>>1, data, 2); // send 2 bytes
+
+	if (i2c_.receive(sensor_addr_>>1, data, 2) != 2) // read 2 bytes
+		return 0; // receive failed
+	*regDat = (((uint16_t) data[0]) << 8) | data[1]; // concat 2 bytes into short
 	delay(1);
   	return (1);
 }
