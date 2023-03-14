@@ -39,7 +39,7 @@
 // #include "SPI.h"
 
 // #include "Adafruit_GFX.h"
-// #include "Arduino.h"
+#include "nucleo.h"
 // #include "Print.h"
 #include "Adafruit_SPITFT.h"
 
@@ -138,7 +138,7 @@ public:
   Adafruit_ILI9341();
 
   // methods
-  void begin(uint32_t freq = 0);
+  void begin(uint32_t freq = SPI_DEFAULT_FREQ);
   void setRotation(uint8_t r);
   void invertDisplay(bool i);
   void scrollTo(uint16_t y);

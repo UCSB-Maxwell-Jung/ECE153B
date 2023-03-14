@@ -1,10 +1,11 @@
 #include "SysClock.h"
 
+#include "stm32l476xx.h"
+
 // ******************************************************************************************
 // Switch the PLL source from MSI to HSI, and select the PLL as SYSCLK source.
 // ******************************************************************************************
-void init_system_clock(void){
-	
+void initSystemClock(void){
 	uint32_t HSITrim;
 
 	// To correctly read data from FLASH memory, the number of wait states (LATENCY)

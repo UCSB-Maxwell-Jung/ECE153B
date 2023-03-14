@@ -23,7 +23,7 @@
 // #if !defined(__AVR_ATtiny85__) // Not for ATtiny, at all
 
 // maxwell's SPI library
-#include "SPI_Display.h"
+#include "hardware_spi1.h"
 
 #include "Adafruit_GFX.h"
 
@@ -156,7 +156,7 @@ public:
   // values defined in SPI.h, which are NOT the same as 0 for SPI_MODE0,
   // 1 for SPI_MODE1, etc...use ONLY the SPI_MODEn defines! Only!
   // Name is outdated (interface may be parallel) but for compatibility:
-  void initSPI(uint32_t freq = 0);
+  void initSPI(uint32_t freq = SPI_DEFAULT_FREQ);
   // void setSPISpeed(uint32_t freq);
   // Chip select and/or hardware SPI transaction start as needed:
   void startWrite(void);
@@ -178,8 +178,8 @@ public:
   // before ending the transaction. It's more efficient than starting a
   // transaction every time.
   void writePixel(int16_t x, int16_t y, uint16_t color);
-  // void writePixels(uint16_t *colors, uint32_t len, bool block = true,
-  //                  bool bigEndian = false);
+  void writePixels(uint16_t *colors, uint32_t len, bool block = true,
+                   bool bigEndian = false);
   void writeColor(uint16_t color, uint32_t len);
   void writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
                      uint16_t color);
@@ -194,11 +194,11 @@ public:
                                       int16_t h, uint16_t color);
   // Another new function, companion to the new non-blocking
   // writePixels() variant.
-  // void dmaWait(void);
+  void dmaWait(void);
   // Used by writePixels() in some situations, but might have rare need in
   // user code, so it's public...
-  // bool dmaBusy(void) const; // true if DMA is used and busy, false otherwise
-  // void swapBytes(uint16_t *src, uint32_t len, uint16_t *dest = NULL);
+  bool dmaBusy(void) const; // true if DMA is used and busy, false otherwise
+  void swapBytes(uint16_t *src, uint32_t len, uint16_t *dest = NULL);
 
   // These functions are similar to the 'write' functions above, but with
   // a chip-select and/or SPI transaction built-in. They're typically used
@@ -302,7 +302,7 @@ protected:
 //   uint32_t _freq; ///< SPI bitrate (if no SPI transactions)
 //   // uint32_t _mode; ///< SPI data mode (transactions or no)
 // } hwspi;          ///< Hardware SPI values
-SPI_Display hwspi;
+HardwareSpi1 spi_;
 
 // #if defined(USE_SPI_DMA) &&                                                    \
 //     (defined(__SAMD51__) ||                                                    \
