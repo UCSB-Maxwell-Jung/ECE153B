@@ -101,4 +101,8 @@ void initSystemClock(void){
 	RCC->CCIPR &= ~RCC_CCIPR_SAI1SEL;
 
 	RCC->APB2ENR |= RCC_APB2ENR_SAI1EN;
+
+	//set sys clk as src for I2C1
+	RCC->CCIPR &= ~RCC_CCIPR_I2C1SEL;
+	RCC->CCIPR |=  RCC_CCIPR_I2C1SEL_0;
 }
