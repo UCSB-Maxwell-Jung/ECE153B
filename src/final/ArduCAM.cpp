@@ -124,11 +124,28 @@ ArduCAM::ArduCAM() {
 
 void ArduCAM::begin() {
 	// [TODO] set up CS GPIO pin, (unnecessary if spi is configured with hardware slave management)
+	
+	// set to alternate function mode (10)
+	GPIOB->MODER &= ~(GPIO_MODER_MODER12_0); // PB12
+	//set AF to pin PB12
+	GPIOB->AFR[1] &= ~(GPIO_AFRH_AFSEL12);
+	
+	//af number= 5
+	GPIOB->AFR[1] |= (5 << (12*4));  
+
+	//set to push-pull (0)
+	GPIOB->OTYPER &= ~(GPIO_OTYPER_OT12)
+
+	//set to very high (11)	
+	GPIOB->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR12)
+
+	GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD12);
 
 	_I2C.begin();
 	_SPI.begin();
 
 	// [TODO] move InitCAM logic here
+
 }
 
 void ArduCAM::InitCAM() {
