@@ -1,6 +1,6 @@
 #include "nucleo.h"
 
-HardwareUsart2 Serial;
+HardwareUsart2 Serial; // global Serial object accessible from any file
 
 void initHardware() {
   initSystemClock();   // System Clock = 80 MHz
