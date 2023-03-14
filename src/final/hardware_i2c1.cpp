@@ -44,6 +44,7 @@ void HardwareI2c1::configureI2c() {
 	I2Cx_->CR1 &= ~I2C_CR1_NOSTRETCH; // enable clock stretching
 
 	I2Cx_->CR2 &= ~I2C_CR2_ADD10; // set to 7-bit addressing mode
+	I2Cx_->CR2 &= ~I2C_CR2_AUTOEND; // set to software end mode (manual end control)
 
 
 	// enable I2C1
