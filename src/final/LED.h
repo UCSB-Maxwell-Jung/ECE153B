@@ -3,10 +3,10 @@
 
 #include "nucleo.h"
 
-void init_LED(void);
+void initLed(void);
 
-void Green_LED_Off(void);
-void Green_LED_On(void);
-void Green_LED_Toggle(void);
+void ledOff(void);
+void ledOn(void);
+void ledToggle(void);
 
 #endif

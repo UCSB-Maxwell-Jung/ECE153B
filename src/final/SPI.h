@@ -1,14 +1,16 @@
 #ifndef __STM32L476R_NUCLEO_SPI_H
 #define __STM32L476R_NUCLEO_SPI_H
 
-#include "nucleo.h"
+#include "stm32l476xx.h"
 
-#define SPI_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
+#define CLK_FREQ 80000000
+#define SPI_DEFAULT_FREQ 2500000 // 2.5Mhz equivalent to br=4 80Mhz/2^(5)
+#define SPI_MAX_FREQ 40000000 // 4Mhz
 
 class SPI {
 public:
   // constructor
-  SPI(SPI_TypeDef* SPIx=NULL);
+  SPI(SPI_TypeDef* SPIx);
   // methods
   virtual void begin(uint32_t desired_freq=SPI_DEFAULT_FREQ);
   void beginTransaction(void);
@@ -16,15 +18,13 @@ public:
   uint8_t transfer(uint8_t write_data);
 
 protected:
-  SPI_TypeDef* _SPIx;
-  uint8_t _br;
-  uint32_t _desired_freq;
-  uint32_t _actual_freq;
+  SPI_TypeDef* spix_;
+  uint8_t br_;
+  uint32_t desired_freq_;
+  uint32_t actual_freq_;
 
-  virtual void configure_GPIO(void) = 0; // must be implemented in derived class
-  virtual void configure_SPI() = 0; // must be implemented in derived class
-  // void init_SPI2(void);
-  // void init_SPI2_GPIO(void);
+  virtual void configureGpio(void) = 0; // must be implemented in derived class
+  virtual void configureSpi(void) = 0; // must be implemented in derived class
 };
 
 #endif

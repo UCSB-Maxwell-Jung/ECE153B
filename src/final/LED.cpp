@@ -1,6 +1,6 @@
 #include "LED.h"
 
-void init_LED(void)
+void initLed(void)
 {
 	// Enable GPIO Clock
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
@@ -8,20 +8,20 @@ void init_LED(void)
 	//GPIO mode for green LED
 	GPIOA->MODER &= ~GPIO_MODER_MODE5_1;
 
-	Green_LED_On();
+	ledOn();
 }
 
-void Green_LED_Off(void)
+void ledOff(void)
 {
 	GPIOA->ODR &= ~GPIO_ODR_OD5;
 }
 
-void Green_LED_On(void)
+void ledOn(void)
 {
 	GPIOA->ODR |= GPIO_ODR_OD5;
 }
 
-void Green_LED_Toggle(void)
+void ledToggle(void)
 {
 	GPIOA->ODR ^= GPIO_ODR_OD5;
 }
