@@ -39,37 +39,59 @@ void HardwareI2c1::configureI2c() {
 	I2Cx_->CR1 &= ~I2C_CR1_ANFOFF; // enable analog noise filter
 	I2Cx_->CR1 &= ~I2C_CR1_DNF; // disable digital noise filter
 
-	// [TODO] configure timings
-	// //2.a
-	// //enable error interrupts
-	// I2C1->CR1 |= I2C_CR1_ERRIE;	
+	// configure timings
 
-	// //2.b
-	// /*
-	// Min Low clk per. = 4.7us
-	// Min Hi clk per. = 4.0us
-	// Min data setup time = 1000ns = 1us
-	// Min data hold time = 1250ns = 1.25us
+	//set sys clk (80Mhz) as src clock for I2C1
+	RCC->CCIPR &= ~RCC_CCIPR_I2C1SEL;
+	RCC->CCIPR |=  RCC_CCIPR_I2C1SEL_0;
+
+	/*
+	Min data setup time = 100ns = 0.1us
+	Min data hold time			= 0 us
+	Min clk Low per.		 	= 1.3us
+	Min clk Hi per.  	= 600ns = 0.6us
 	
-	// PRESC = 7
-	// f_PRESC = 80MHz/(1+7) = 10MHz (t_PRESC = 0.1us)
-	// SCLDEL = 0
-	// t_SCLDEL = (SCLDEL + 1) * t_PRESC = (10 + 1)*0.1us = 1.1us Condition: [t_SCLDEL > 1us] 
-	// SDADEL = 0
-	// t_SDADEL = (SDADEL + 1) * t_PRESC = (12 + 1)*0.1us = 1.3us	     	 [t_SDADEL > 1.25us]
-	// SCLL = 	0
-	// t_SCLL = (SCLL + 1) * t_PRESC = (47 + 1)*0.1us = 4.8us		         [t_SCLL > 4.7us]
-	// SCLH = 	0
-	// t_SCLH = (SCLH + 1) * t_PRESC = (40 + 1)*0.1us = 4.1us		         [t_SCLH > 4.0us]
+	Choose this prescalar value to make subsequent calculations easier:
+	PRESC = 7
+	f_PRESC = f_i2cclk/(1+PRESC) = 80MHz/(1+7) = 10MHz (t_PRESC = 0.1us)
 
-	
-	// */
+	Find minimum possible delay values that fit [requirements]:
+	SCLDEL = 1
+	t_SCLDEL = (SCLDEL + 1) * t_PRESC = (1 + 1)*0.1us = 0.2us			[t_SCLDEL > 0.1us] 
+	SDADEL = 0
+	t_SDADEL = (SDADEL + 1) * t_PRESC = (0 + 1)*0.1us = 0.1us	     	[t_SDADEL > 0us]
+	SCLL = 	13
+	t_SCLL = (SCLL + 1) * t_PRESC = (13 + 1)*0.1us = 1.4us		        [t_SCLL > 1.3us]
+	SCLH = 	6
+	t_SCLH = (SCLH + 1) * t_PRESC = (6 + 1)*0.1us = 0.7us		        [t_SCLH > 0.6us]
 
-	// I2C1->TIMINGR |= ((7<<I2C_TIMINGR_PRESC_POS) 
-	// 				 |(10<<I2C_TIMINGR_SCLDEL_POS)
-	// 				 |(12<<I2C_TIMINGR_SDADEL_POS)
-	// 				 |(47<<I2C_TIMINGR_SCLH_POS)
-	// 				 |(40<<I2C_TIMINGR_SCLL_POS));
+	clock frequency must be below 400kHz, 
+	meaning each clock cycle must be longer than 2.5us (1/400kHz).
+	Period of each cycle consists of the time clock stays low + the time clock stays high
+	or mathematically, t_clk = t_scll + t_sclh > 2.5us
+	with above configuration, t_scll + t_sclh = 2.1us which is too fast
+	so we need to add 0.4us of delay to either SCLL or SCLH
+
+	I will decide to add to SCLH since it's the lower of the two.
+
+	This brings the final delay values as:
+	SCLDEL = 1  = 0.2us
+	SDADEL = 0  = 0.1us
+	SCLL   = 13 = 1.4us
+	SCLH   = 6+4 = 1.1us
+
+	Period of each clock is 1.4us + 1.1us = 2.5us = 400kHz
+
+	In reality, the actual clock frequency will be even lower 
+	because the above calculation excludes the time it takes to
+	transition from LOW to HIGH (t_R) or HIGH to LOW (t_F).
+	*/
+
+	I2C1->TIMINGR |=  ((7<<I2C_TIMINGR_PRESC_POS) 
+					  |(1<<I2C_TIMINGR_SCLDEL_POS)
+					  |(0<<I2C_TIMINGR_SDADEL_POS)
+					  |(10<<I2C_TIMINGR_SCLH_POS)
+					  |(13<<I2C_TIMINGR_SCLL_POS));
 
 	I2Cx_->CR1 &= ~I2C_CR1_NOSTRETCH; // enable clock stretching
 
