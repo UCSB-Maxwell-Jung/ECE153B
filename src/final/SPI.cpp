@@ -36,13 +36,24 @@ void SPI::endTransaction(void) {
 
 // transfer data out on output line and in on input line
 uint8_t SPI::transfer(uint8_t b) {
+	uint8_t timeout;
+	timeout = 0;
 	// wait for Transmit Buffer Empty flag to be set
-	while ((spix_->SR & SPI_SR_TXE) != SPI_SR_TXE);
+	while ((spix_->SR & SPI_SR_TXE) != SPI_SR_TXE) {
+		timeout++;
+		if (timeout>200)
+			return 0;
+	}
 	// write byte to transfer
 	*(volatile uint8_t*)(&spix_->DR) = b;
 
+	timeout = 0;
 	// wait for data from slave
-	while ((spix_->SR & SPI_SR_RXNE) != SPI_SR_RXNE);
+	while ((spix_->SR & SPI_SR_RXNE) != SPI_SR_RXNE) {
+		timeout++;
+		if (timeout>200)
+			return 0;
+	}
 	// read received byte
 	return *(volatile uint8_t*)(&spix_->DR);
 }
