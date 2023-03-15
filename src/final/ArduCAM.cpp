@@ -211,10 +211,8 @@ void ArduCAM::set_fifo_burst() {
 
 void ArduCAM::CS_HIGH(void) {
 	spi_.setCsHigh();
-	spi_.beginTransaction();
 }
 void ArduCAM::CS_LOW(void) {
-	spi_.endTransaction();
 	spi_.setCsLow();
 }
 
@@ -277,8 +275,10 @@ void ArduCAM::set_mode(uint8_t mode) {
 
 uint8_t ArduCAM::bus_write(int address,int value) {
 	CS_LOW();
+	spi_.beginTransaction();
 	spi_.transfer(address);
 	spi_.transfer(value);
+	spi_.endTransaction();
 	CS_HIGH();
 	return 1;
 }
@@ -286,8 +286,10 @@ uint8_t ArduCAM::bus_write(int address,int value) {
 uint8_t ArduCAM:: bus_read(int address) {
 	uint8_t value;
 	CS_LOW();
+	spi_.beginTransaction();
 	spi_.transfer(address);
 	value = spi_.transfer(0x00);
+	spi_.endTransaction();
 	CS_HIGH();
 	return value;
 }
