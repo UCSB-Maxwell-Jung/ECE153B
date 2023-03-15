@@ -34,7 +34,7 @@ uint8_t I2C::receive(uint8_t address, uint8_t data[], uint8_t quantity, uint8_t 
 // rd_wrn = 0 = write request
 // rd_wrn = 1 = read request
 void I2C::beginTransaction(uint8_t address, uint8_t quantity, bool rd_wrn) {
-	while ((I2Cx_->ISR & I2C_ISR_BUSY) == I2C_ISR_BUSY); // wait if bus in use
+	I2Cx_->CR1 |= I2C_CR1_PE; // enable I2C
 
 	I2Cx_->CR2 &= ~I2C_CR2_SADD; // clear address
 	I2Cx_->CR2 |= address << 1; // set address of targeted slave
@@ -46,8 +46,6 @@ void I2C::beginTransaction(uint8_t address, uint8_t quantity, bool rd_wrn) {
 
 	I2Cx_->CR2 &= ~I2C_CR2_NBYTES;
 	I2Cx_->CR2 |= quantity << 16; // set number of bytes to transfer
-
-	I2Cx_->CR1 |= I2C_CR1_PE; // enable I2C
 
 	I2Cx_->CR2 |= I2C_CR2_START; // start I2C
 }
