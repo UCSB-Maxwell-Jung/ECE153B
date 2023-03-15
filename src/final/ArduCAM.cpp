@@ -160,9 +160,11 @@ ArduCAM::ArduCAM(byte sensor_model) {
 			sensor_addr_ = 0x42;
 			break;
 		}
-	
+}
+
+void ArduCAM::begin(uint32_t freq) {
 	i2c_.begin();
-	spi_.begin(8000000); // 8 Mhz
+	spi_.begin(freq); // 8 Mhz
 }
 
 void ArduCAM::InitCAM() {
@@ -209,10 +211,8 @@ void ArduCAM::set_fifo_burst() {
 
 void ArduCAM::CS_HIGH(void) {
 	spi_.setCsHigh();
-	spi_.beginTransaction();
 }
 void ArduCAM::CS_LOW(void) {
-	spi_.endTransaction();
 	spi_.setCsLow();
 }
 
@@ -223,11 +223,11 @@ uint8_t ArduCAM::read_fifo(void) {
 }
 
 uint8_t ArduCAM::read_reg(uint8_t addr) {
-	return bus_read(addr & 0x7F);
+	return bus_read(addr & 0x7F); // reset first bit to indicate read command
 }
 
 void ArduCAM::write_reg(uint8_t addr, uint8_t data) {
-	bus_write(addr | 0x80, data);
+	bus_write(addr | 0x80, data); // set first bit to indicate write command
 }
 
 //Set corresponding bit  
@@ -273,19 +273,23 @@ void ArduCAM::set_mode(uint8_t mode) {
   }
 }
 
-uint8_t ArduCAM::bus_write(int address,int value) {
+uint8_t ArduCAM::bus_write(int address, int value) {
 	CS_LOW();
+	spi_.beginTransaction();
 	spi_.transfer(address);
 	spi_.transfer(value);
+	spi_.endTransaction();
 	CS_HIGH();
 	return 1;
 }
 
-uint8_t ArduCAM:: bus_read(int address) {
+uint8_t ArduCAM::bus_read(int address) {
 	uint8_t value;
 	CS_LOW();
+	spi_.beginTransaction();
 	spi_.transfer(address);
 	value = spi_.transfer(0x00);
+	spi_.endTransaction();
 	CS_HIGH();
 	return value;
 }
@@ -672,8 +676,7 @@ byte ArduCAM::wrSensorReg8_8(uint8_t regID, uint8_t regDat)
 	return 1;
 	
 }
-byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
-{	
+byte ArduCAM::rdSensorReg8_8(uint8_t regID, uint8_t* regDat) {
 	i2c_.transmit(sensor_addr_>>1, &regID, 1); // send 1 byte
 
 	if (i2c_.receive(sensor_addr_>>1, regDat, 1) != 1) // read 1 byte

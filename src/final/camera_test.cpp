@@ -25,7 +25,7 @@ const char bmp_header[BMPIMAGEOFFSET] =
   0x00, 0x00
 };
 // set pin 7 as the slave select for the digital pot:
-const int CS = 7;
+// const int CS = 7;
 bool is_header = false;
 int mode = 0;
 uint8_t start_capture = 0;
@@ -40,14 +40,9 @@ void setup() {
   // put your setup code here, to run once:
   uint8_t vid, pid;
   uint8_t temp;
-  myCAM.i2c_.begin();
   Serial.begin(921600);
   Serial.println("ACK CMD ArduCAM Start! END");
-  // set the CS as an output:
-  // pinMode(CS, OUTPUT);
-  // digitalWrite(CS, HIGH);
-  // initialize SPI:
-  myCAM.spi_.begin();
+  myCAM.begin();
   //Reset the CPLD
   myCAM.write_reg(0x07, 0x80);
   delay(100);
