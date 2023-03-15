@@ -102,7 +102,15 @@ void initSystemClock(void){
 
 	RCC->APB2ENR |= RCC_APB2ENR_SAI1EN;
 
-	//set sys clk as src for I2C1
+	//set APB1 (PCLK1) as src for I2C1 
 	RCC->CCIPR &= ~RCC_CCIPR_I2C1SEL;
-	RCC->CCIPR |=  RCC_CCIPR_I2C1SEL_0;
+	//RCC->CCIPR |=  RCC_CCIPR_I2C1SEL_0; 
+	
+	//[FIXED] refer to pg. 198 in STM32 manual for I2C1 clk src
+	/*
+	00: PCLK selected as I2C1 clock
+	01: System clock (SYSCLK) selected as I2C1 clock
+	10: HSI16 clock selected as I2C1 clock
+	11: reserved	
+	*/
 }
