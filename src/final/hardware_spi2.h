@@ -6,11 +6,11 @@
 class HardwareSpi2 : public SPI { // inherit more general SPI class
 public:
   // constructor
-  HardwareSpi2();
+  HardwareSpi2(void);
 
   // methods
-  void setCsLow();
-  void setCsHigh();
+  void setCsLow(void);
+  void setCsHigh(void);
 
 private:
   void configureGpio(void);

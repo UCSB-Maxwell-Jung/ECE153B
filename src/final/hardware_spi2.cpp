@@ -1,9 +1,9 @@
 #include "hardware_spi2.h"
 
-HardwareSpi2::HardwareSpi2()
+HardwareSpi2::HardwareSpi2(void)
     : SPI(SPI2) {}
 
-void HardwareSpi2::configureGpio() {
+void HardwareSpi2::configureGpio(void) {
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; // enable GPIOB
 
 	// set to alternate function mode (10)
@@ -46,7 +46,7 @@ void HardwareSpi2::configureGpio() {
 	GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD12);
 }
 
-void HardwareSpi2::configureSpi() {
+void HardwareSpi2::configureSpi(void) {
 	RCC->APB1ENR1 |= RCC_APB1ENR1_SPI2EN; // enable SPI2 clock
 	RCC->APB1RSTR1 |= RCC_APB1RSTR1_SPI2RST; // set, then reset to clear SPI2
 	RCC->APB1RSTR1 &= ~RCC_APB1RSTR1_SPI2RST; 
@@ -73,7 +73,7 @@ void HardwareSpi2::configureSpi() {
 	// MSB first (0)
 	spix_->CR1 &= ~SPI_CR1_LSBFIRST;
 
-	// disable SSM (Hardware NSS management) (0)
+	// enable SSM (software NSS management) (0)
 	spix_->CR1 |= SPI_CR1_SSM;
 	// set internal slave select to 1
 	spix_->CR1 |= SPI_CR1_SSI;
@@ -103,9 +103,9 @@ void HardwareSpi2::configureSpi() {
 	spix_->CR2 &= ~SPI_CR2_NSSP;
 }
 
-void HardwareSpi2::setCsLow() {
+void HardwareSpi2::setCsLow(void) {
 	GPIOB->ODR &= ~GPIO_ODR_OD12; // Set CS (PB12) to Low
 }
-void HardwareSpi2::setCsHigh() {
+void HardwareSpi2::setCsHigh(void) {
 	GPIOB->ODR |= GPIO_ODR_OD12; // Set CS (PB12) to High
 }
