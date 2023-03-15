@@ -48,15 +48,15 @@ void HardwareSpi2::configureGpio() {
 
 void HardwareSpi2::configureSpi() {
 	RCC->APB1ENR1 |= RCC_APB1ENR1_SPI2EN; // enable SPI2 clock
-	RCC->APB1RSTR1 |= RCC_APB1RSTR1_I2C2RST; // set, then reset to clear SPI2
-	RCC->APB1RSTR1 &= ~RCC_APB1RSTR1_I2C2RST; 
+	RCC->APB1RSTR1 |= RCC_APB1RSTR1_SPI2RST; // set, then reset to clear SPI2
+	RCC->APB1RSTR1 &= ~RCC_APB1RSTR1_SPI2RST; 
 	
 	spix_->CR1 &= ~SPI_CR1_SPE; // disable SPI2	
 
 	// ---------------CR1-----------------
 	// set spi clock prescalar to be the next highest requested freq
 	spix_->CR1 &= ~SPI_CR1_BR; // reset baud rate control bits to 000
-	spix_->CR1 |= 0b110 << 3;
+	spix_->CR1 |= br_ << 3;
 
 	// set clock polarity to low (0)
 	spix_->CR1 &= ~SPI_CR1_CPOL;
