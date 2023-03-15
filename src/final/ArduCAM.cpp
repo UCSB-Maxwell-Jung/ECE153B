@@ -162,7 +162,7 @@ ArduCAM::ArduCAM(byte sensor_model) {
 		}
 	
 	i2c_.begin();
-	spi_.begin();
+	spi_.begin(8000000); // 8 Mhz
 }
 
 void ArduCAM::InitCAM() {

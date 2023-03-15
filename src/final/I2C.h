@@ -32,7 +32,7 @@ private:
   uint8_t endTransaction(uint8_t sendStop);
 
   size_t read(uint8_t *data, size_t quantity);
-  size_t write(const uint8_t *data, size_t quantity);
+  size_t write(uint8_t *data, size_t quantity);
 };
 
 #endif

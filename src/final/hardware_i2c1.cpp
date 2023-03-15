@@ -40,22 +40,9 @@ void HardwareI2c1::configureI2c() {
 	I2Cx_->CR1 &= ~I2C_CR1_DNF; // disable digital noise filter
 
 	// [TODO] configure timings
-
-	I2Cx_->CR1 &= ~I2C_CR1_NOSTRETCH; // enable clock stretching
-
-	I2Cx_->CR2 &= ~I2C_CR2_ADD10; // set to 7-bit addressing mode
-
-
-	// enable I2C1
-
 	// //2.a
 	// //enable error interrupts
 	// I2C1->CR1 |= I2C_CR1_ERRIE;	
-	
-	// //set master to operate in 7-bit addressing
-	// I2C1->CR2 &= ~I2C_CR2_ADD10;
-	// //enable auto-end mode, enable NACK generation
-	// I2C1->CR2 |= (I2C_CR2_AUTOEND | I2C_CR2_NACK);
 
 	// //2.b
 	// /*
@@ -83,20 +70,8 @@ void HardwareI2c1::configureI2c() {
 	// 				 |(12<<I2C_TIMINGR_SDADEL_POS)
 	// 				 |(47<<I2C_TIMINGR_SCLH_POS)
 	// 				 |(40<<I2C_TIMINGR_SCLL_POS));
-	
-	// // part 3 disable own address
-	// I2C1->OAR1 &= ~I2C_OAR1_OA1EN; 
-	// I2C1->OAR2 &= ~I2C_OAR2_OA2EN;
-	
-	// //address set to 7 bit mode
-	// I2C1->OAR1 &= ~I2C_OAR1_OA1MODE; //3.a
-	
-	// // Set Address to OwnAddr
-	// I2C1->OAR1 |= OwnAddr; //3.b
-	
-	// // Enable Own1 Address
-	// I2C1->OAR1 |= I2C_OAR1_OA1EN; //3.c
-	
-	// // Enable I2C1
-	// I2C1->CR1 |= I2C_CR1_PE; //4
+
+	I2Cx_->CR1 &= ~I2C_CR1_NOSTRETCH; // enable clock stretching
+
+	I2Cx_->CR2 &= ~I2C_CR2_ADD10; // set to 7-bit addressing mode
 }
