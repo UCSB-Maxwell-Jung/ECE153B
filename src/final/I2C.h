@@ -18,19 +18,21 @@ public:
   I2C(I2C_TypeDef* I2Cx=NULL);
   // methods
   virtual void begin(uint8_t address=0);
-  uint8_t requestFrom(uint8_t address, uint8_t quantity, bool stop=true);
-  void beginTransmission(uint8_t address);
-  uint8_t endTransmission(bool stop=true);
-  int8_t write(uint8_t value);
-  int8_t write(uint8_t data[], uint8_t length);
-  uint8_t available();
-  int8_t read();
+  uint8_t transmit(uint8_t address, uint8_t data[], uint8_t quantity, uint8_t sendStop=true);
+  uint8_t receive(uint8_t address, uint8_t data[], uint8_t quantity, uint8_t sendStop=true);
 
 protected:
-  I2C_TypeDef* _I2Cx;
+  I2C_TypeDef* I2Cx_;
 
   virtual void configureGpio(void) = 0; // must be implemented in derived class
   virtual void configureI2c(void) = 0; // must be implemented in derived class
+
+private:
+  void beginTransaction(uint8_t address, uint8_t quantity, bool rd_wrn);
+  uint8_t endTransaction(uint8_t sendStop);
+
+  size_t read(uint8_t *data, size_t quantity);
+  size_t write(const uint8_t *data, size_t quantity);
 };
 
 #endif
