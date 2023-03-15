@@ -40,14 +40,9 @@ void setup() {
   // put your setup code here, to run once:
   uint8_t vid, pid;
   uint8_t temp;
-  // myCAM.i2c_.begin();
   Serial.begin(921600);
   Serial.println("ACK CMD ArduCAM Start! END");
-  // set the CS as an output:
-  // pinMode(CS, OUTPUT);
-  // digitalWrite(CS, HIGH);
-  // initialize SPI:
-  // myCAM.spi_.begin();
+  myCAM.begin();
   //Reset the CPLD
   myCAM.write_reg(0x07, 0x80);
   delay(100);

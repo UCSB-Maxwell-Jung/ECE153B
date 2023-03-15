@@ -160,9 +160,11 @@ ArduCAM::ArduCAM(byte sensor_model) {
 			sensor_addr_ = 0x42;
 			break;
 		}
-	
+}
+
+void ArduCAM::begin(uint32_t freq) {
 	i2c_.begin();
-	spi_.begin(8000000); // 8 Mhz
+	spi_.begin(freq); // 8 Mhz
 }
 
 void ArduCAM::InitCAM() {

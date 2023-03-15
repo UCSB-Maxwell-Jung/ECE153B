@@ -438,6 +438,8 @@
 #define FIFO_SIZE2				0x43  //Camera write FIFO size[15:8]
 #define FIFO_SIZE3				0x44  //Camera write FIFO size[18:16]
 
+#define ARDUCAM_SPI_MAX_FREQ	8000000 // 8Mhz
+
 /****************************************************/
 class ArduCAM {
 public:
@@ -445,6 +447,7 @@ public:
 	ArduCAM(byte sensor_model=OV2640);
 
 	// methods
+	void begin(uint32_t freq=ARDUCAM_SPI_MAX_FREQ);
 	void InitCAM(void);
 	
 	void CS_HIGH(void);
