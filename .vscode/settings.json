@@ -67,6 +67,7 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "xtr1common": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "mutex": "cpp"
     }
 }
