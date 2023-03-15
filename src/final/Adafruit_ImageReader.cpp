@@ -326,8 +326,7 @@ ImageReturnCode Adafruit_ImageReader::coreBMP(
   uint32_t colors = 0;                       // Number of colors in palette
   uint16_t *quantized = NULL;                // 16-bit 5/6/5 color palette
   uint32_t rowSize;                          // >bmpWidth if scanline padding
-  // temporary fix for stack overflow (increase stack size or allocate in static memory)
-  static uint8_t sdbuf[3 * BUFPIXELS];       // BMP read buf (R+G+B/pixel)
+  uint8_t sdbuf[3 * BUFPIXELS];              // BMP read buf (R+G+B/pixel)
 #if ((3 * BUFPIXELS) <= 255)
   uint8_t srcidx = sizeof sdbuf; // Current position in sdbuf
 #else
