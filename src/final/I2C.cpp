@@ -34,9 +34,11 @@ uint8_t I2C::receive(uint8_t address, uint8_t data[], uint8_t quantity, uint8_t 
 // rd_wrn = 0 = write request
 // rd_wrn = 1 = read request
 void I2C::beginTransaction(uint8_t address, uint8_t quantity, bool rd_wrn) {
-	I2Cx_->CR1 |= I2C_CR1_PE; // enable I2C
+	while ((I2Cx_->ISR & I2C_ISR_BUSY) == I2C_ISR_BUSY); // wait if bus in use
+
 	I2Cx_->CR2 &= ~I2C_CR2_SADD; // clear address
 	I2Cx_->CR2 |= address << 1; // set address of targeted slave
+
 	if (rd_wrn)
 		I2Cx_->CR2 |=  I2C_CR2_RD_WRN; // request read transfer (1)
 	else
@@ -44,6 +46,8 @@ void I2C::beginTransaction(uint8_t address, uint8_t quantity, bool rd_wrn) {
 
 	I2Cx_->CR2 &= ~I2C_CR2_NBYTES;
 	I2Cx_->CR2 |= quantity << 16; // set number of bytes to transfer
+
+	I2Cx_->CR1 |= I2C_CR1_PE; // enable I2C
 
 	I2Cx_->CR2 |= I2C_CR2_START; // start I2C
 }
@@ -56,7 +60,7 @@ uint8_t I2C::endTransaction(uint8_t sendStop) {
 		return 0;
 	}
 
-	I2Cx_->CR2 |= I2C_CR2_STOP;  // generate STOP after current byte transfer
+	I2Cx_->CR2 |= I2C_CR2_STOP;  // stop I2C
 	while((I2Cx_->ISR & I2C_ISR_STOPF) == 0); // Wait until STOP flag is set
 	I2Cx_->CR1 &= ~I2C_CR1_PE; // disable I2C
 
@@ -67,29 +71,28 @@ size_t I2C::read(uint8_t *data, size_t quantity) {
 	size_t bytes_received;
     for (bytes_received = 0; bytes_received < quantity; bytes_received++) {
 		while ((I2Cx_->ISR & I2C_ISR_RXNE) == 0) { // wait for receive to complete
-			if ((I2Cx_->ISR & I2C_ISR_NACKF) != 0)
+			if ((I2Cx_->ISR & I2C_ISR_NACKF) == I2C_ISR_NACKF)
 				return bytes_received; // exit if receive is incomplete due to NACK
 		}
 		data[bytes_received] = I2Cx_->RXDR;  // save received data
 	}
 
+	while((I2Cx_->ISR & I2C_ISR_TC) == 0); // wait until transfer complete
+
 	return bytes_received; // this value should match quantity if everything worked
 }
 
-size_t I2C::write(const uint8_t *data, size_t quantity) {
+size_t I2C::write(uint8_t *data, size_t quantity) {
 	size_t bytes_transmitted;
-	// // wait for any previous data to finish transferring
-	// while ((I2Cx_->ISR & I2C_ISR_TXIS) == 0) {
-	// 	if ((I2Cx_->ISR & I2C_ISR_NACKF) == I2C_ISR_NACKF)
-	// 		return -1; // address not transferred properly
-	// }
     for (bytes_transmitted = 0; bytes_transmitted < quantity; bytes_transmitted++) {
-		I2Cx_->TXDR = data[bytes_transmitted];  // queue next byte to transmit
+		I2Cx_->TXDR = data[bytes_transmitted];  // write byte to transmit data register
 		while ((I2Cx_->ISR & I2C_ISR_TXIS) == 0) { // wait for transmit to complete
 			if ((I2Cx_->ISR & I2C_ISR_NACKF) == I2C_ISR_NACKF)
 				return bytes_transmitted; // exit if transmit is incomplete due to NACK
 		}
 	}
+
+	while((I2Cx_->ISR & I2C_ISR_TC) == 0); // wait until transfer complete
 
 	return bytes_transmitted; // this value should match quantity if everything worked
 }

@@ -51,11 +51,6 @@ void HardwareI2c1::configureI2c() {
 	// //2.a
 	// //enable error interrupts
 	// I2C1->CR1 |= I2C_CR1_ERRIE;	
-	
-	// //set master to operate in 7-bit addressing
-	// I2C1->CR2 &= ~I2C_CR2_ADD10;
-	// //enable auto-end mode, enable NACK generation
-	// I2C1->CR2 |= (I2C_CR2_AUTOEND | I2C_CR2_NACK);
 
 	// //2.b
 	// /*
