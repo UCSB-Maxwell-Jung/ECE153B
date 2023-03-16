@@ -223,11 +223,11 @@ uint8_t ArduCAM::read_fifo(void) {
 }
 
 uint8_t ArduCAM::read_reg(uint8_t addr) {
-	return bus_read(addr & 0x7F); // reset first bit to indicate read command
+	return bus_read(addr & ~RWBIT); // reset first bit to indicate read command
 }
 
 void ArduCAM::write_reg(uint8_t addr, uint8_t data) {
-	bus_write(addr | 0x80, data); // set first bit to indicate write command
+	bus_write(addr | RWBIT, data); // set first bit to indicate write command
 }
 
 //Set corresponding bit  
