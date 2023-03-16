@@ -43,6 +43,11 @@ void setup() {
   Serial.begin(921600);
   Serial.println("ACK CMD ArduCAM Start! END");
   myCAM.begin(4000000);
+  //Reset the CPLD
+  myCAM.write_reg(0x07, 0x80);
+  delay(100);
+  myCAM.write_reg(0x07, 0x00);
+  delay(100);
   while(1){
     //Check if the ArduCAM SPI bus is OK
     myCAM.write_reg(ARDUCHIP_TEST1, 0x55);
