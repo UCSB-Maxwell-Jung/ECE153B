@@ -274,23 +274,24 @@ void ArduCAM::set_mode(uint8_t mode) {
 }
 
 uint8_t ArduCAM::bus_write(int address, int value) {
-	CS_LOW();
 	spi_.beginTransaction();
-	spi_.transfer(address);
-	spi_.transfer(value);
-	spi_.endTransaction();
+	CS_LOW();
+	Serial.println(spi_.transfer(address));
+	// delayMicroseconds(15);
+	Serial.println(spi_.transfer(value));
 	CS_HIGH();
+	spi_.endTransaction();
 	return 1;
 }
 
 uint8_t ArduCAM::bus_read(int address) {
 	uint8_t value;
-	CS_LOW();
 	spi_.beginTransaction();
-	spi_.transfer(address);
+	CS_LOW();
+	Serial.println(spi_.transfer(address));
 	value = spi_.transfer(0x00);
-	spi_.endTransaction();
 	CS_HIGH();
+	spi_.endTransaction();
 	return value;
 }
 
