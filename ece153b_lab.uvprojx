@@ -1977,16 +1977,6 @@
               <FilePath>.\src\final\I2C.h</FilePath>
             </File>
             <File>
-              <FileName>image_reader_test.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\image_reader_test.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>image_reader_test.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\image_reader_test.h</FilePath>
-            </File>
-            <File>
               <FileName>LED.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\LED.cpp</FilePath>
@@ -2135,6 +2125,11 @@
               <FileName>UART.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\UART.h</FilePath>
+            </File>
+            <File>
+              <FileName>camera_test.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\camera_test.cpp</FilePath>
             </File>
           </Files>
         </Group>
