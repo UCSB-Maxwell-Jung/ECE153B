@@ -53,7 +53,8 @@ void HardwareSpi1::configureGpio(void) {
 void HardwareSpi1::configureSpi(void) {
 	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN; // enable SPI1 clock
 	RCC->APB2RSTR |= RCC_APB2RSTR_SPI1RST; // set, then reset to clear SPI1
-	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST; 
+	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST;
+	
 	SPI1->CR1 &= ~SPI_CR1_SPE; // disable SPI1
 
 	// ---------------CR1-----------------

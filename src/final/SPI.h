@@ -17,6 +17,9 @@ public:
   void endTransaction(void);
   uint8_t transfer(uint8_t write_data);
 
+  virtual void setCsLow(){}; // override in subclass for manual CS pin
+  virtual void setCsHigh(){}; // override in subclass for manual CS pin
+
 protected:
   SPI_TypeDef* spix_;
   uint8_t br_;

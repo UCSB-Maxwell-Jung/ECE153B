@@ -29,7 +29,4 @@ protected:
   virtual void configureUsart(void) = 0; // must be implemented in derived class
 };
 
-// void USART1_IRQHandler(void);
-// void USART2_IRQHandler(void);
-
 #endif
