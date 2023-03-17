@@ -18,6 +18,8 @@
 
 #define CLK_FREQ  80000000 // 80Mhz
 
+extern HardwareUsart2 Serial;
+
 typedef uint8_t byte;
 
 #define BLUETOOTH USART1
@@ -44,6 +46,15 @@ void loop(void);
     SCK = Serial Clock = SPI1 SCK = PB3
     LED = 5V
     SDO(MISO) = Serial Data Out = SPI1 MISO = PB4
-*/
 
+
+    OV264  pins 
+    CS (chip select) = SPI2_NSS = PB12 
+    SCK Serial Clk line = SPI2_SCK = PB13   
+    SPI2_MISO = PB14 
+    SPI2_MOSI = PB15 
+    I2C1_SCL = PB6
+    I2C1_SDA = PB7 
+
+*/
 #endif

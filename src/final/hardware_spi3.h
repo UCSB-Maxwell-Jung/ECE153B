@@ -8,9 +8,9 @@ public:
   // constructor
   HardwareSpi3();
 
-  // method
-  void CsLow();
-  void CsHigh();
+  // methods
+  void setCsLow();
+  void setCsHigh();
 
 private:
   void configureGpio(void);

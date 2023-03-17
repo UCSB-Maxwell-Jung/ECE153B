@@ -3,6 +3,8 @@
 
 #include "stm32l476xx.h"
 
+#include "stm32l476xx.h"
+
 volatile uint32_t us_elapsed;
 
 
@@ -53,6 +55,16 @@ void delay(uint32_t ms){
 	uint32_t future_time;
 
 	future_time = us_elapsed + 1000*ms;
+	while (us_elapsed < future_time);
+}
+
+//******************************************************************************************
+// Delay in us
+//******************************************************************************************
+void delayMicroseconds(uint32_t us){
+	uint32_t future_time;
+
+	future_time = us_elapsed + us;
 	while (us_elapsed < future_time);
 }
 
