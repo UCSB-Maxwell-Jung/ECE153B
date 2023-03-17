@@ -315,6 +315,7 @@
           <Cads>
             <interw>1</interw>
             <Optim>6</Optim>
+            <Optim>6</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1862,6 +1863,16 @@
               <FilePath>.\src\final\Adafruit_ImageReader.h</FilePath>
             </File>
             <File>
+              <FileName>Adafruit_ImageReader.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Adafruit_ImageReader.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Adafruit_ImageReader.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Adafruit_ImageReader.h</FilePath>
+            </File>
+            <File>
               <FileName>Adafruit_SPITFT.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\Adafruit_SPITFT.cpp</FilePath>
@@ -1980,10 +1991,13 @@
               <FileName>LED.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\LED.cpp</FilePath>
+              <FilePath>.\src\final\LED.cpp</FilePath>
             </File>
             <File>
               <FileName>LED.h</FileName>
+              <FileName>LED.h</FileName>
               <FileType>5</FileType>
+              <FilePath>.\src\final\LED.h</FilePath>
               <FilePath>.\src\final\LED.h</FilePath>
             </File>
             <File>
