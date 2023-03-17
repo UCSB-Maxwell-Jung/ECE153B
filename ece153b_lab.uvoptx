@@ -152,56 +152,107 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>33</LineNumber>
+          <LineNumber>1330</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134218902</Address>
+          <Address>134234264</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\camera_test.cpp</Filename>
+          <Filename>.\src\final\SdFile.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/camera_test.cpp\33</Expression>
+          <Expression>\\ece153b_lab\src/final/SdFile.cpp\1330</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>45</LineNumber>
+          <LineNumber>258</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134222816</Address>
+          <Address>134230964</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\camera_test.cpp</Filename>
+          <Filename>.\src\final\Adafruit_ImageReader.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/camera_test.cpp\45</Expression>
+          <Expression>\\ece153b_lab\src/final/Adafruit_ImageReader.cpp\258</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>53</LineNumber>
+          <LineNumber>346</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134222838</Address>
+          <Address>134229602</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\camera_test.cpp</Filename>
+          <Filename>.\src\final\Adafruit_ImageReader.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/camera_test.cpp\53</Expression>
+          <Expression>\\ece153b_lab\src/final/Adafruit_ImageReader.cpp\346</Expression>
+        </Bp>
+      </Breakpoint>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>1330</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134234264</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\src\final\SdFile.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\ece153b_lab\src/final/SdFile.cpp\1330</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>258</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134230964</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\src\final\Adafruit_ImageReader.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\ece153b_lab\src/final/Adafruit_ImageReader.cpp\258</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>346</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134229602</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\src\final\Adafruit_ImageReader.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\ece153b_lab\src/final/Adafruit_ImageReader.cpp\346</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
+          <ItemText>SD</ItemText>
           <ItemText>SD</ItemText>
         </Ww>
       </WatchWindow1>
@@ -257,12 +308,28 @@
       <pMultCmdsp></pMultCmdsp>
       <SystemViewers>
         <Entry>
+          <Name>System Viewer\GPIOA</Name>
+          <WinId>35903</WinId>
+        </Entry>
+        <Entry>
           <Name>System Viewer\GPIOB</Name>
-          <WinId>35904</WinId>
+          <WinId>35902</WinId>
+        </Entry>
+        <Entry>
+          <Name>System Viewer\GPIOC</Name>
+          <WinId>35900</WinId>
         </Entry>
         <Entry>
           <Name>System Viewer\SPI2</Name>
           <WinId>35905</WinId>
+        </Entry>
+        <Entry>
+          <Name>System Viewer\SPI3</Name>
+          <WinId>35901</WinId>
+        </Entry>
+        <Entry>
+          <Name>System Viewer\USART2</Name>
+          <WinId>35904</WinId>
         </Entry>
       </SystemViewers>
       <DebugDescription>
@@ -1628,6 +1695,30 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+      <PathWithFileName>.\src\final\Adafruit_ImageReader.cpp</PathWithFileName>
+      <FilenameWithoutPath>Adafruit_ImageReader.cpp</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>14</GroupNumber>
+      <FileNumber>103</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\final\Adafruit_ImageReader.h</PathWithFileName>
+      <FilenameWithoutPath>Adafruit_ImageReader.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>14</GroupNumber>
+      <FileNumber>104</FileNumber>
+      <FileType>8</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
       <PathWithFileName>.\src\final\Adafruit_SPITFT.cpp</PathWithFileName>
       <FilenameWithoutPath>Adafruit_SPITFT.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -1635,6 +1726,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
+      <FileNumber>105</FileNumber>
       <FileNumber>105</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
@@ -1714,6 +1806,8 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\src\final\gfxfont.h</PathWithFileName>
       <FilenameWithoutPath>gfxfont.h</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\gfxfont.h</PathWithFileName>
+      <FilenameWithoutPath>gfxfont.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1724,6 +1818,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+      <PathWithFileName>.\src\final\glcdfont.c</PathWithFileName>
+      <FilenameWithoutPath>glcdfont.c</FilenameWithoutPath>
       <PathWithFileName>.\src\final\glcdfont.c</PathWithFileName>
       <FilenameWithoutPath>glcdfont.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -1906,6 +2002,8 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\src\final\LED.cpp</PathWithFileName>
       <FilenameWithoutPath>LED.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\LED.cpp</PathWithFileName>
+      <FilenameWithoutPath>LED.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1918,6 +2016,8 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\src\final\LED.h</PathWithFileName>
       <FilenameWithoutPath>LED.h</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\LED.h</PathWithFileName>
+      <FilenameWithoutPath>LED.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1928,6 +2028,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+      <PathWithFileName>.\src\final\main.cpp</PathWithFileName>
+      <FilenameWithoutPath>main.cpp</FilenameWithoutPath>
       <PathWithFileName>.\src\final\main.cpp</PathWithFileName>
       <FilenameWithoutPath>main.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
