@@ -1852,6 +1852,16 @@
               <FilePath>.\src\final\Adafruit_ILI9341.h</FilePath>
             </File>
             <File>
+              <FileName>Adafruit_ImageReader.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\Adafruit_ImageReader.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Adafruit_ImageReader.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Adafruit_ImageReader.h</FilePath>
+            </File>
+            <File>
               <FileName>Adafruit_SPITFT.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\Adafruit_SPITFT.cpp</FilePath>
@@ -1860,16 +1870,6 @@
               <FileName>Adafruit_SPITFT.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
-            </File>
-            <File>
-              <FileName>bitmap_test.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\bitmap_test.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>bitmap_test.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\bitmap_test.h</FilePath>
             </File>
             <File>
               <FileName>dragon.h</FileName>
@@ -1938,12 +1938,16 @@
             </File>
             <File>
               <FileName>LED.cpp</FileName>
+              <FileName>LED.cpp</FileName>
               <FileType>8</FileType>
+              <FilePath>.\src\final\LED.cpp</FilePath>
               <FilePath>.\src\final\LED.cpp</FilePath>
             </File>
             <File>
               <FileName>LED.h</FileName>
+              <FileName>LED.h</FileName>
               <FileType>5</FileType>
+              <FilePath>.\src\final\LED.h</FilePath>
               <FilePath>.\src\final\LED.h</FilePath>
             </File>
             <File>
@@ -2075,6 +2079,16 @@
               <FileName>UART.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\UART.h</FilePath>
+            </File>
+            <File>
+              <FileName>image_reader_test.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\image_reader_test.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>image_reader_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\image_reader_test.h</FilePath>
             </File>
           </Files>
         </Group>
