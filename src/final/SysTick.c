@@ -3,6 +3,8 @@
 
 #include "stm32l476xx.h"
 
+#include "stm32l476xx.h"
+
 volatile uint32_t us_elapsed;
 
 
