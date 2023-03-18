@@ -206,7 +206,7 @@ uint32_t ArduCAM::read_fifo_length(void) {
 }
 
 void ArduCAM::set_fifo_burst() {
-	spi_.transfer(BURST_FIFO_READ);
+	spi_.transferByte(BURST_FIFO_READ);
 }
 
 void ArduCAM::CS_HIGH(void) {
@@ -276,9 +276,7 @@ void ArduCAM::set_mode(uint8_t mode) {
 uint8_t ArduCAM::bus_write(int address, int value) {
 	spi_.beginTransaction();
 	CS_LOW();
-	Serial.println(spi_.transfer(address));
-	// delayMicroseconds(15);
-	Serial.println(spi_.transfer(value));
+	spi_.transferHalfWord((value<<8)|address);
 	CS_HIGH();
 	spi_.endTransaction();
 	return 1;
@@ -286,10 +284,13 @@ uint8_t ArduCAM::bus_write(int address, int value) {
 
 uint8_t ArduCAM::bus_read(int address) {
 	uint8_t value;
+	uint16_t half_word_value;
 	spi_.beginTransaction();
 	CS_LOW();
-	Serial.println(spi_.transfer(address));
-	value = spi_.transfer(0x00);
+	// Serial.println(spi_.transferByte(address));
+	// value = spi_.transferByte(0x00);
+	half_word_value = spi_.transferHalfWord((0x0<<8)|address);
+	value = half_word_value>>8; // get upper 8 bits
 	CS_HIGH();
 	spi_.endTransaction();
 	return value;

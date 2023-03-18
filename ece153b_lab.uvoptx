@@ -154,7 +154,7 @@
           <Type>0</Type>
           <LineNumber>1330</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134234264</Address>
+          <Address>134229484</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,98 +168,50 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>258</LineNumber>
+          <LineNumber>281</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230964</Address>
+          <Address>134233930</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\Adafruit_ImageReader.cpp</Filename>
+          <Filename>.\src\final\ArduCAM.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/Adafruit_ImageReader.cpp\258</Expression>
+          <Expression>\\ece153b_lab\src/final/ArduCAM.cpp\281</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>346</LineNumber>
+          <LineNumber>294</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134229602</Address>
+          <Address>134233832</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\Adafruit_ImageReader.cpp</Filename>
+          <Filename>.\src\final\ArduCAM.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/Adafruit_ImageReader.cpp\346</Expression>
+          <Expression>\\ece153b_lab\src/final/ArduCAM.cpp\294</Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
           <Type>0</Type>
-          <LineNumber>38</LineNumber>
+          <LineNumber>70</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134228126</Address>
+          <Address>134227642</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\UART.cpp</Filename>
+          <Filename>.\src\final\SPI.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/UART.cpp\38</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>43</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134228182</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\UART.cpp</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/UART.cpp\43</Expression>
-        </Bp>
-        <Bp>
-          <Number>5</Number>
-          <Type>0</Type>
-          <LineNumber>149</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\src\final\Adafruit_GFX.cpp</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>6</Number>
-          <Type>0</Type>
-          <LineNumber>331</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\src\final\Adafruit_GFX.cpp</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\ece153b_lab\src/final/SPI.cpp\70</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -327,10 +279,6 @@
         <Entry>
           <Name>System Viewer\GPIOB</Name>
           <WinId>35902</WinId>
-        </Entry>
-        <Entry>
-          <Name>System Viewer\GPIOC</Name>
-          <WinId>35900</WinId>
         </Entry>
         <Entry>
           <Name>System Viewer\GPIOC</Name>

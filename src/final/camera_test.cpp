@@ -42,7 +42,7 @@ void setup() {
   uint8_t temp;
   Serial.begin(921600);
   Serial.println("ACK CMD ArduCAM Start! END");
-  myCAM.begin(4000000);
+  myCAM.begin(400000);
   //Reset the CPLD
   myCAM.write_reg(0x07, 0x80);
   delay(100);
@@ -394,12 +394,12 @@ void loop() {
         }
         myCAM.CS_LOW();
         myCAM.set_fifo_burst();//Set fifo burst mode
-        temp =  myCAM.spi_.transfer(0x00);
+        temp =  myCAM.spi_.transferByte(0x00);
         length --;
         while ( length-- )
         {
           temp_last = temp;
-          temp =  myCAM.spi_.transfer(0x00);
+          temp =  myCAM.spi_.transferByte(0x00);
           if (is_header == true)
           {
             Serial.write(temp);
@@ -468,8 +468,8 @@ void loop() {
       {
         for (j = 0; j < 320; j++)
         {
-          VH = myCAM.spi_.transfer(0x00);;
-          VL = myCAM.spi_.transfer(0x00);;
+          VH = myCAM.spi_.transferByte(0x00);;
+          VL = myCAM.spi_.transferByte(0x00);;
           Serial.write(VL);
           delayMicroseconds(12);
           Serial.write(VH);
@@ -503,12 +503,12 @@ uint8_t read_fifo_burst(ArduCAM& myCAM)
   }
   myCAM.CS_LOW();
   myCAM.set_fifo_burst();//Set fifo burst mode
-  temp =  myCAM.spi_.transfer(0x00);
+  temp =  myCAM.spi_.transferByte(0x00);
   length --;
   while ( length-- )
   {
     temp_last = temp;
-    temp =  myCAM.spi_.transfer(0x00);
+    temp =  myCAM.spi_.transferByte(0x00);
     if (is_header == true)
     {
       Serial.write(temp);

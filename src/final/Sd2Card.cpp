@@ -35,11 +35,11 @@
 // functions for hardware SPI
 /** Send a byte to the card */
 void Sd2Card::spiSend(uint8_t b) {
-  spi_.transfer(b);
+  spi_.transferByte(b);
 }
 /** Receive a byte from the card */
 uint8_t Sd2Card::spiRec(void) {
-  return spi_.transfer(0xFF);
+  return spi_.transferByte(0xFF);
 }
 // #else  // SOFTWARE_SPI
 // //------------------------------------------------------------------------------
