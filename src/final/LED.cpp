@@ -23,7 +23,7 @@ void ledOn(void)
 	GPIOA->ODR |= GPIO_ODR_OD5;
 }
 
-void ledToggle(void)
+void toggleLed(void)
 {
 	GPIOA->ODR ^= GPIO_ODR_OD5;
 }
