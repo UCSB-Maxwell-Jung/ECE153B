@@ -3,7 +3,7 @@
 #include "DAC.h"
 // Step 3.2 Interrupt .1
 // CODE TAKEN FROM LAB2
-void EXTI_Init(void) {
+void extiInit(void) {
     // Connect External Line to the GPIO
 	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
 	SYSCFG->EXTICR[3] &= ~SYSCFG_EXTICR4_EXTI13;

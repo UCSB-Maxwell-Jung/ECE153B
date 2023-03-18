@@ -16,4 +16,6 @@ private:
   void configureUsart(void);
 };
 
+extern HardwareUsart1 camera;
+
 #endif // __STM32L476R_NUCLEO_USART1_H

@@ -39,7 +39,7 @@
 // #include "SPI.h"
 
 // #include "Adafruit_GFX.h"
-#include "nucleo.h"
+// #include "nucleo.h"
 // #include "Print.h"
 #include "Adafruit_SPITFT.h"
 

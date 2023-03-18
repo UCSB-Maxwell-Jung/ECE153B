@@ -6,10 +6,25 @@
  * Lab: 2A
  */
 
-#include "EXTI.h"
-#include "LED.h"
+#include "Button.h"
+#include "camera_controls.h"
+#include "stm32l476xx.h"
 
-void extiInit(void) {
+void initButton(void)
+{
+    // Enable GPIO Clock
+    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN;
+    
+    // GPIO Mode: Input(00), Output (01),
+    // AF(10), Analog (11)
+    GPIOC->MODER &= ~3U << 26; // Reset to 00
+    GPIOC->MODER |= 0U << 26; // set to Input (00)
+
+    // GPIO Push-Pull: No pull-up, pull-down (00),
+    // Pull-up (01), Pull-down (10), Reserved (11)
+    GPIOC->PUPDR &= ~3U << 26; // Reset to 00
+    GPIOC->PUPDR |= 0U << 26; // set to no pull-up/down (00)
+
 	// Connect External Line to the GPIO
 	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
 	SYSCFG->EXTICR[3] &= ~SYSCFG_EXTICR4_EXTI13;
@@ -27,14 +42,10 @@ void extiInit(void) {
 	NVIC_SetPriority(EXTI15_10_IRQn, 0); // set interrupt to highest priority
 }
 
-// [TODO] Write Interrupt Handlers (look in startup_stm32l476xx.s to find the 
-// interrupt handler names that you should use)
-
 void EXTI15_10_IRQHandler(void) {
 	// Clear interrupt pending bit
 	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0) {
-		// PC13 button is default HIGH for some reason
-		Green_LED_Toggle();
+		capture_photo();
 		// Cleared flag by writing 1
  		EXTI->PR1 |= EXTI_PR1_PIF13;
 	}

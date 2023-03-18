@@ -17,7 +17,7 @@ int main(void) {
 	System_Clock_Init();
 	LED_Init();
 	Button_Init();
-	EXTI_Init();
+	extiInit();
 	
 	while(1);
 	

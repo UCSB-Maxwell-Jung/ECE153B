@@ -3,6 +3,6 @@
 
 #include "stm32l476xx.h"
 
-void EXTI_Init(void);
+void extiInit(void);
 
 #endif

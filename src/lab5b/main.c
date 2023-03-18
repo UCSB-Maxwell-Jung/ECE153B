@@ -27,7 +27,7 @@ int main(void) {
     ADC_Init();
     DAC_Init();
 	Button_Init();
-    EXTI_Init();
+    extiInit();
 
     // Initialize PWM
     PWM_Init();

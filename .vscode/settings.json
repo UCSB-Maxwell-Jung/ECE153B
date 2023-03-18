@@ -55,6 +55,14 @@
         "xlocmes": "cpp",
         "istream": "cpp",
         "sstream": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "iomanip": "cpp",
+        "atomic": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp",
+        "xlocbuf": "cpp",
+        "hardware_usart2.h": "c",
+        "hardware_usart1.h": "c",
+        "camera_controls.h": "c"
     }
 }

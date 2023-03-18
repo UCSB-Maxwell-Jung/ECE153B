@@ -1872,16 +1872,6 @@
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
             </File>
             <File>
-              <FileName>ArduCAM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\ArduCAM.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ArduCAM.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\ArduCAM.h</FilePath>
-            </File>
-            <File>
               <FileName>dragon.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\dragon.h</FilePath>
@@ -1995,11 +1985,6 @@
               <FileName>memorysaver.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\memorysaver.h</FilePath>
-            </File>
-            <File>
-              <FileName>nucleo.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\nucleo.h</FilePath>
             </File>
             <File>
               <FileName>ov2640_regs.h</FileName>
@@ -2127,9 +2112,24 @@
               <FilePath>.\src\final\UART.h</FilePath>
             </File>
             <File>
-              <FileName>camera.cpp</FileName>
+              <FileName>Button.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Button.h</FilePath>
+            </File>
+            <File>
+              <FileName>button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\button.c</FilePath>
+            </File>
+            <File>
+              <FileName>camera_controls.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\camera.cpp</FilePath>
+              <FilePath>.\src\final\camera_controls.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>camera_controls.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\camera_controls.h</FilePath>
             </File>
           </Files>
         </Group>
