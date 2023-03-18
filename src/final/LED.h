@@ -5,6 +5,6 @@ void initLed(void);
 
 void ledOff(void);
 void ledOn(void);
-void ledToggle(void);
+void toggleLed(void);
 
 #endif

@@ -2122,14 +2122,14 @@
               <FilePath>.\src\final\button.c</FilePath>
             </File>
             <File>
-              <FileName>camera_controls.cpp</FileName>
+              <FileName>intrpt_handler.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\camera_controls.cpp</FilePath>
+              <FilePath>.\src\final\intrpt_handler.cpp</FilePath>
             </File>
             <File>
-              <FileName>camera_controls.h</FileName>
+              <FileName>intrpt_handler.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\camera_controls.h</FilePath>
+              <FilePath>.\src\final\intrpt_handler.h</FilePath>
             </File>
           </Files>
         </Group>

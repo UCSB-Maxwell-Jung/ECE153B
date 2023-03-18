@@ -6,6 +6,7 @@
 #include "SysTick.h"
 #include "LED.h"
 #include "Button.h"
+// #include "intrpt_handler.h"
 
 #include "Adafruit_ILI9341.h"       // LCD display library
 #include "SD.h"                     // SD card & FAT filesystem library
@@ -21,7 +22,7 @@ int32_t              width  = 0,    // BMP image dimensions
                      height = 0;
 
 HardwareUsart2 console;             // UART console
-HardwareUsart1 camera;              // UART camera
+HardwareUsart1 camera_serial_interface;              // UART camera
 
 void setup(void);
 void loop(void);
@@ -34,31 +35,30 @@ void initHardware() {
 }
 
 void setup(void) {
-    ImageReturnCode stat; // Status from image-reading functions
+  ImageReturnCode stat; // Status from image-reading functions
 
-    console.begin(9600); // begin console output
+  console.begin(9600); // begin console output
 
-    tft.begin(SPI_MAX_FREQ); // begin LCD
-    console.println("Initializing filesystem...");
-    if (!SD.begin()) { // begin SD card
-        console.println("SD begin() failed");
-        while (1); // Fatal error, do not continue
-    }
-    
-    camera.begin(9600); // begin camera UART communication
+  tft.begin(SPI_MAX_FREQ); // begin LCD
+  console.println("Initializing filesystem...");
+  if (!SD.begin()) { // begin SD card
+      console.println("SD begin() failed");
+      while (1); // Fatal error, do not continue
+  }
+  
+  // Fill screen black. Not a required step, this just shows that we're
+  // successfully communicating with the screen.
+  tft.fillScreen(ILI9341_BLACK);
 
-    console.println("Camera initialized");
+  camera_serial_interface.begin(9600); // begin camera UART communication
 
-    // Fill screen black. Not a required step, this just shows that we're
-    // successfully communicating with the screen.
-    tft.fillScreen(ILI9341_BLACK);
-
-    console.println("Done");
+  console.println("Camera initialized");
 }
 
 void loop(void) {
-    console.println(camera.read());
-    ledToggle();
+  delay(500);
+  // console.println(camera_serial_interface.read());
+  toggleLed();
 }
 
 int main() {

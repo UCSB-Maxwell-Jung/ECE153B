@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 
-void capture_photo(void);
+void capturePhoto(void);
+void saveCameraByte(void);
 
 #ifdef __cplusplus
 }
