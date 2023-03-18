@@ -36,14 +36,39 @@ void SPI::endTransaction(void) {
 }
 
 // transfer data out on output line and in on input line
-uint8_t SPI::transfer(uint8_t b) {
+uint8_t SPI::transferByte(uint8_t byte) {
 	// wait for Transmit Buffer Empty flag to be set
 	while ((spix_->SR & SPI_SR_TXE) != SPI_SR_TXE);
 	// write byte to transfer
-	*(volatile uint8_t*)(&spix_->DR) = b;
+	*(volatile uint8_t*)(&spix_->DR) = byte;
 
 	// wait for data from slave
 	while ((spix_->SR & SPI_SR_RXNE) != SPI_SR_RXNE);
 	// read received byte
 	return *(volatile uint8_t*)(&spix_->DR);
+}
+
+// transfer data out on output line and in on input line
+uint16_t SPI::transferHalfWord(uint16_t half_word) {
+	// wait for Transmit Buffer Empty flag to be set
+	while ((spix_->SR & SPI_SR_TXE) != SPI_SR_TXE);
+	// write half word to transfer
+	*(volatile uint16_t*)(&spix_->DR) = half_word;
+
+	uint8_t first_received_byte;
+	uint8_t second_received_byte;
+	uint16_t received_half_word;
+	// wait for first byte from slave
+	while ((spix_->SR & SPI_SR_RXNE) != SPI_SR_RXNE);
+	// read first received byte
+	first_received_byte = *(volatile uint8_t*)(&spix_->DR);
+	received_half_word = (uint16_t) first_received_byte;
+
+	// wait for second byte from slave
+	while ((spix_->SR & SPI_SR_RXNE) != SPI_SR_RXNE);
+	// read second received byte
+	second_received_byte = *(volatile uint8_t*)(&spix_->DR);
+	received_half_word |= ((uint16_t) second_received_byte) << 8;
+
+	return received_half_word;
 }
