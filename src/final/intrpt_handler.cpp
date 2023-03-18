@@ -9,8 +9,13 @@ int8_t camera_serial_buffer[CAMERA_BUFFER_CAPACITY];
 uint32_t buffer_position;
 
 void capturePhoto(void) {
-    console.println("Sending request to capture photo");
+    console.println("Request to Capture Photo");
     camera_serial_interface.write(0x10); // send capture photo request to Arduino
+
+    uint32_t image_size = camera_serial_interface.read(); // the first byte sent 
+    for (int i = 0; i < 1000; i++) {
+        console.println(camera_serial_interface.read());
+    }
 }
 
 void saveCameraByte(void) {
