@@ -614,6 +614,6 @@ namespace SDLib {
     }
   }
 
-  SDClass SD;
+  // SDClass SD;
 
 };

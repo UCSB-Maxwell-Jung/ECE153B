@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1882,11 +1882,6 @@
               <FilePath>.\src\final\ArduCAM.h</FilePath>
             </File>
             <File>
-              <FileName>camera_test.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\camera_test.cpp</FilePath>
-            </File>
-            <File>
               <FileName>dragon.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\dragon.h</FilePath>
@@ -2130,6 +2125,11 @@
               <FileName>UART.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\UART.h</FilePath>
+            </File>
+            <File>
+              <FileName>camera.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\camera.cpp</FilePath>
             </File>
           </Files>
         </Group>
