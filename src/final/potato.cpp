@@ -35,7 +35,7 @@ void setup(void) {
   console.begin(9600); // begin console output
 
   // begin serial communication with Arduino+Camera subsystem
-  camera.begin(7200);
+  camera.begin(9000);
   // reset global vars/flags
   image_size = 0;
   pending_save = false;
@@ -136,7 +136,6 @@ bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap) 
 void drawImage(void) {
   // Draw the image, top left at 0,0
   TJpgDec.drawJpg(0, 0, image_buffer, image_size);
-  Serial.println("Done!");
 }
 
 void saveImage(void) {
