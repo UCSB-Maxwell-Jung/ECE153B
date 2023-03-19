@@ -8,8 +8,7 @@
 #include "LED.h"
 #include "Button.h"
 
-void setup(void);
-void loop(void);
+#include "potato.h"
 
 void initHardware() {
   initSystemClock();   // System Clock = 80 MHz

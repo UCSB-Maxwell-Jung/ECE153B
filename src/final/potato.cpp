@@ -1,13 +1,23 @@
+#include "potato.h"
+
 #include "Adafruit_ILI9341.h"       // LCD display library
 #include "SD.h"                     // SD card & FAT filesystem library
 #include "hardware_usart1.h"
 #include "hardware_usart2.h"
-#include "camera_interface.h"
 #include "TJpg_Decoder.h"
-#include "camera_interface.h"
-
 #include "SysTick.h"
 #include "LED.h"
+
+#include "SysTick.h"
+#include "hardware_usart1.h"
+#include "hardware_usart2.h"
+
+#define MAX_IMAGE_SIZE 16384 // assume max image size is 16kB (2^14)
+#define IMAGE_BUFFER_CAPACITY MAX_IMAGE_SIZE
+
+uint8_t image_buffer[IMAGE_BUFFER_CAPACITY];
+volatile uint32_t image_size;
+volatile bool pending_save;
 
 #define console Serial
 #define camera Serial1
@@ -19,29 +29,26 @@ int32_t              width  = 0,    // BMP image dimensions
 
 uint32_t loop_count = 0;
 
-bool drawImage(void);
-void saveImage(void);
 bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap);
 
 void setup(void) {
   console.begin(9600); // begin console output
 
   // begin serial communication with Arduino+Camera subsystem
-  camera.begin(9600);
-  // reset global vars
+  camera.begin(7200);
+  // reset global vars/flags
   image_size = 0;
-  new_image = false;
+  pending_save = false;
 
-  tft.begin(SPI_MAX_FREQ); // begin LCD
   while (1) {
-    Serial.println("Initializing filesystem...");
     if (SD.begin()) { // begin SD card
       break;
     }
-    // retry after half a second if SD card fails
-    Serial.println("SD begin() failed");
+    Serial.println("SD Card Error!");
     delay(500);
   }
+
+  tft.begin(SPI_MAX_FREQ); // begin LCD
 
   tft.fillScreen(ILI9341_BLACK);
   tft.setRotation(1);
@@ -56,28 +63,66 @@ void setup(void) {
 }
 
 void loop(void) {
-  if (((loop_count++) % 1000000) == 0) {
-    toggleLed(); // blink LED every 100000 loop
-  }
-  capturePhoto();
-  if (new_image) {
-    if (drawImage()) { // attempt to draw new image
-      Serial.println("Image displayed!");
-      // saveImage(); // save if drawing successful
+  toggleLed(); // blink LED every loop
+
+  if (captureImage()) {
+    drawImage();
+    Serial.println("Painted new image");
+    if (pending_save) { // flag set to true on button press
+      saveImage();
+      pending_save = false;
     }
-    else { // 
-      Serial.println("Image corrupted :(");
-      Serial.println("Trying again after some delay");
-    }
-    new_image = false;
   }
+
+  resetCamera();
 }
 
-// This next function will be called during decoding of the jpeg file to
+// command Arduino to capture image over USART1 TX
+// read image sent by Arduino on USART1 RX
+// return true if captured image is valid
+// false if captured image is corrupted
+bool captureImage(void) {
+  image_size = 0;
+  Serial.println("Capturing new image...");
+  Serial1.write(0x10); // send capture photo request to Arduino
+
+  // assume image bytes start coming in immediately
+  int camera_byte;
+  while (image_size < IMAGE_BUFFER_CAPACITY) {
+    camera_byte = Serial1.read();
+    if (camera_byte >= 0) { // valid bytes are non-negative
+      image_buffer[image_size++] = camera_byte;
+      continue;
+    }
+    else { // exit loop on timeout (assume timeout = end of image)
+      goto checkImage;
+    }
+  }
+
+  // if loop was exited naturally, the image was too large
+  Serial.print("Image larger than buffer size of ");
+  Serial.print(IMAGE_BUFFER_CAPACITY);
+  Serial.println(" bytes");
+
+checkImage: 
+  // Get the width and height in pixels of the jpeg if you wish
+  uint16_t image_width = 0, image_height = 0;
+  TJpgDec.getJpgSize(&image_width, &image_height, image_buffer, image_size);
+  bool image_corrupted = (image_width == 0) || (image_height == 0);
+  if (image_corrupted)
+    return false;
+
+  Serial.print("Captured ");
+  Serial.print(image_width); Serial.print(" x "); Serial.print(image_height);
+  Serial.print(" image ");
+  Serial.print("("); Serial.print(image_size); Serial.println(" bytes)");
+  return true;
+}
+
+// This function will be called during decoding of the jpeg file to
 // render each block to the TFT.  If you use a different TFT library
 // you will need to adapt this function to suit.
-bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap)
-{
+bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap) {
    // Stop further decoding as image is running off bottom of screen
   if ( y >= tft.height() ) return 0;
 
@@ -88,17 +133,10 @@ bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap)
   return 1;
 }
 
-bool drawImage(void) {
-  // Get the width and height in pixels of the jpeg if you wish
-  uint16_t w = 0, h = 0;
-  TJpgDec.getJpgSize(&w, &h, image_buffer, image_size);
-  Serial.print("width x height = "); Serial.print(w); Serial.print(" x "); Serial.println(h);
-
+void drawImage(void) {
   // Draw the image, top left at 0,0
   TJpgDec.drawJpg(0, 0, image_buffer, image_size);
-
-  // return false if image is 0 dimension (corrupted)
-  return (w != 0) && (h != 0);
+  Serial.println("Done!");
 }
 
 void saveImage(void) {
@@ -136,4 +174,9 @@ void saveImage(void) {
     Serial.print("error opening ");
     Serial.println(filename);
   }
+}
+
+void resetCamera(void) {
+  // send reset camera signal
+  // delay(500);
 }

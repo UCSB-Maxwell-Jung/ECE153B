@@ -1882,16 +1882,6 @@
               <FilePath>.\src\final\button.h</FilePath>
             </File>
             <File>
-              <FileName>camera_interface.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\camera_interface.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>camera_interface.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\camera_interface.h</FilePath>
-            </File>
-            <File>
               <FileName>dragon.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\dragon.h</FilePath>
@@ -2172,9 +2162,14 @@
               <FilePath>.\src\final\User_Config.h</FilePath>
             </File>
             <File>
-              <FileName>potato_cam.cpp</FileName>
+              <FileName>potato.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\potato_cam.cpp</FilePath>
+              <FilePath>.\src\final\potato.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>potato.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\potato.h</FilePath>
             </File>
           </Files>
         </Group>
