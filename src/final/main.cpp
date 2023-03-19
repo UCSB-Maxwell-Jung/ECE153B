@@ -27,7 +27,8 @@ HardwareUsart1 camera_serial_interface;              // UART camera
 
 void setup(void);
 void loop(void);
-void saveImage(uint32_t i);
+void drawImage(void);
+void saveImage(void);
 
 void initHardware() {
   initSystemClock();   // System Clock = 80 MHz
@@ -51,61 +52,70 @@ void setup(void) {
     delay(500);
   }
   
-  
   // Fill screen black. Not a required step, this just shows that we're
   // successfully communicating with the screen.
   tft.fillScreen(ILI9341_BLACK);
 
   camera_serial_interface.begin(9600); // begin camera UART communication
   image_size = 0;
-  pending_save = false;
+  new_image = false;
 
-  console.println("Camera initialized");
+  console.println("Potato Cam Ready!");
 }
 
-void loop(uint32_t i) {
+void loop(void) {
   delay(500);
   toggleLed();
-  if (pending_save) {
-    saveImage(i);
+  if (new_image) {
+    drawImage();
+    saveImage();
+    new_image = false;
   }
 }
 
-void saveImage(uint32_t i) {
+void drawImage(void) {
+
+}
+
+void saveImage(void) {
   console.println("Saving captured image...");
 
-  char filename[20];
-  snprintf(filename, 20, "image_%d.jpg", i);
+  // Create a name for the new file in the format IMAGExy.JPG
+  char filename[15];
+  strcpy(filename, "IMAGE_00.JPG");
+  for(int i = 0; i < 100; i++) {
+    filename[6] = '0' + i/10;
+    filename[7] = '0' + i%10;
+    if(!SD.exists(filename)) {
+      break;
+    }
+  }
 
-  File image_file = SD.open(filename, O_READ | O_WRITE | O_CREAT);
+  File image_file = SD.open(filename, FILE_WRITE);
 
-  // if the file opened okay, write to it:
-  if (image_file) {
-    console.print("Writing to ");
+  if (image_file) { // if the file opened okay, write to it:
+    console.print("Writing ");
+    console.print(image_size);
+    console.print(" bytes into ");
     console.print(filename);
     console.println("...");
     image_file.write(image_buffer, image_size);
-    // close the file:
     image_file.close();
     console.print("Saved ");
     console.print(filename);
     console.println("!");
-  } else {
-    // if the file didn't open, print an error:
+  }
+  else { // if the file didn't open, print an error:
     console.print("error opening ");
     console.println(filename);
   }
-
-  pending_save = false;
 }
 
 int main() {
   initHardware();
   setup();
-  uint32_t i = 0;
   while(1) {
-    loop(i);
-    i++;
+    loop();
   }
 
   console.println("Critical Error!!!");
