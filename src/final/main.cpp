@@ -27,6 +27,7 @@ HardwareUsart1 camera_serial_interface;              // UART camera
 
 void setup(void);
 void loop(void);
+void saveImage(uint32_t i);
 
 void initHardware() {
   initSystemClock();   // System Clock = 80 MHz
@@ -41,17 +42,23 @@ void setup(void) {
   console.begin(9600); // begin console output
 
   tft.begin(SPI_MAX_FREQ); // begin LCD
-  console.println("Initializing filesystem...");
-  if (!SD.begin()) { // begin SD card
-      console.println("SD begin() failed");
-      while (1); // Fatal error, do not continue
+  while (1) {
+    console.println("Initializing filesystem...");
+    if (SD.begin()) { // begin SD card
+      break;
+    }
+    console.println("SD begin() failed");
+    delay(500);
   }
+  
   
   // Fill screen black. Not a required step, this just shows that we're
   // successfully communicating with the screen.
   tft.fillScreen(ILI9341_BLACK);
 
   camera_serial_interface.begin(9600); // begin camera UART communication
+  image_size = 0;
+  pending_save = false;
 
   console.println("Camera initialized");
 }
@@ -59,9 +66,37 @@ void setup(void) {
 void loop(uint32_t i) {
   delay(500);
   toggleLed();
-  console.print("Last captured image size: ");
-  console.print(image_size);
-  console.println(" bytes");
+  if (pending_save) {
+    saveImage(i);
+  }
+}
+
+void saveImage(uint32_t i) {
+  console.println("Saving captured image...");
+
+  char filename[20];
+  snprintf(filename, 20, "image_%d.jpg", i);
+
+  File image_file = SD.open(filename, O_READ | O_WRITE | O_CREAT);
+
+  // if the file opened okay, write to it:
+  if (image_file) {
+    console.print("Writing to ");
+    console.print(filename);
+    console.println("...");
+    image_file.write(image_buffer, image_size);
+    // close the file:
+    image_file.close();
+    console.print("Saved ");
+    console.print(filename);
+    console.println("!");
+  } else {
+    // if the file didn't open, print an error:
+    console.print("error opening ");
+    console.println(filename);
+  }
+
+  pending_save = false;
 }
 
 int main() {

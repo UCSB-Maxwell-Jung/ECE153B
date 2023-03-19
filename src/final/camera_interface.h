@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
 
 void capturePhoto(void);
 // void saveCameraByte(void);
@@ -14,6 +15,7 @@ void capturePhoto(void);
 #define IMAGE_BUFFER_CAPACITY MAX_IMAGE_SIZE
 extern uint8_t image_buffer[IMAGE_BUFFER_CAPACITY];
 extern volatile uint32_t image_size;
+extern volatile bool pending_save;
 
 #ifdef __cplusplus
 }

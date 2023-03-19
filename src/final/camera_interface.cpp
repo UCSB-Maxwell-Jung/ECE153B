@@ -5,12 +5,14 @@
 
 uint8_t image_buffer[IMAGE_BUFFER_CAPACITY];
 volatile uint32_t image_size;
+volatile bool pending_save;
 
 void capturePhoto(void) {
+    image_size = 0;
+    pending_save = false;
     console.println("Capturing image...");
     camera_serial_interface.write(0x10); // send capture photo request to Arduino
     // assume image bytes start coming in immediately
-    image_size = 0;
     int camera_byte;
     while (image_size < IMAGE_BUFFER_CAPACITY) {
         camera_byte = camera_serial_interface.read(); // returns negative value on timeout
@@ -22,10 +24,11 @@ void capturePhoto(void) {
             console.print("Captured image of size ");
             console.print(image_size);
             console.println(" bytes");
+            pending_save = true;
             return;
         }
     }
-
+    
     console.print("Image too large (image size larger than ");
     console.print(IMAGE_BUFFER_CAPACITY);
     console.println(" bytes)");

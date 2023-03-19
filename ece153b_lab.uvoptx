@@ -152,41 +152,30 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>23</LineNumber>
+          <LineNumber>70</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134231722</Address>
+          <Address>134221136</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\camera_interface.cpp</Filename>
+          <Filename>.\src\final\main.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/camera_interface.cpp\23</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>30</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134231696</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\camera_interface.cpp</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/camera_interface.cpp\30</Expression>
+          <Expression>\\ece153b_lab\src/final/main.cpp\70</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>msTicks</ItemText>
+          <ItemText>us_elapsed</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>future_time</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
