@@ -3,12 +3,13 @@
 #include "Adafruit_ImageReader.h"   // Image-reading library
 #include "hardware_usart1.h"
 #include "camera_interface.h"
+#include "TJpg_Decoder.h"
 
 #include "SysTick.h"
 #include "LED.h"
 
 #define console Serial
-#define camera_serial_interface Serial1
+#define camera Serial1
 
 // declare hardware objects
 Adafruit_ImageReader reader(SD);    // Image-reader object, pass in SD filesys
@@ -40,8 +41,13 @@ void setup(void) {
 
   tft.fillScreen(ILI9341_BLACK);
 
+  // The jpeg image can be scaled by a factor of 1, 2, 4, or 8
+  TJpgDec.setJpgScale(1);
+  // The decoder must be given the exact name of the rendering function above
+  TJpgDec.setCallback(tft_output);
+
   // begin serial communication with Arduino+Camera subsystem
-  camera_serial_interface.begin(9600);
+  camera.begin(9600);
 
   // reset global vars
   image_size = 0;
@@ -62,8 +68,24 @@ void loop(void) {
   }
 }
 
-void drawImage(void) {
+// This next function will be called during decoding of the jpeg file to
+// render each block to the TFT.  If you use a different TFT library
+// you will need to adapt this function to suit.
+bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap)
+{
+   // Stop further decoding as image is running off bottom of screen
+  if ( y >= tft.height() ) return 0;
 
+  // In ILI9341 library this function clips the image block at TFT boundaries
+  tft.drawRGBBitmap(x, y, bitmap, w, h);
+
+  // Return 1 to decode next block
+  return 1;
+}
+
+void drawImage(void) {
+  // Draw the image, top left at 0,0
+  TJpgDec.drawJpg(0, 0, image_buffer, image_size);
 }
 
 void saveImage(void) {

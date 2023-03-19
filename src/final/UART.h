@@ -29,6 +29,4 @@ protected:
   virtual void configureUsart(void) = 0; // must be implemented in derived class
 };
 
-extern volatile bool usart_timeout;
-
 #endif
