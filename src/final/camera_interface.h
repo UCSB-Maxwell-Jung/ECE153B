@@ -15,7 +15,7 @@ void capturePhoto(void);
 #define IMAGE_BUFFER_CAPACITY MAX_IMAGE_SIZE
 extern uint8_t image_buffer[IMAGE_BUFFER_CAPACITY];
 extern volatile uint32_t image_size;
-extern volatile bool pending_save;
+extern volatile bool new_image;
 
 #ifdef __cplusplus
 }
