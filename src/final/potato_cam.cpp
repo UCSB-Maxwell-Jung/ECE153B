@@ -33,18 +33,21 @@ void setup(void) {
     if (SD.begin()) { // begin SD card
       break;
     }
+    // retry after half a second if SD card fails
     console.println("SD begin() failed");
     delay(500);
   }
-  
-  // Fill screen black. Not a required step, this just shows that we're
-  // successfully communicating with the screen.
+
   tft.fillScreen(ILI9341_BLACK);
 
-  camera_serial_interface.begin(9600); // begin camera UART communication
+  // begin serial communication with Arduino+Camera subsystem
+  camera_serial_interface.begin(9600);
+
+  // reset global vars
   image_size = 0;
   new_image = false;
 
+  // indicate Potato Cam is ready
   console.println("Potato Cam Ready!");
 }
 
@@ -66,7 +69,7 @@ void drawImage(void) {
 void saveImage(void) {
   console.println("Saving captured image...");
 
-  // Create a name for the new file in the format IMAGExy.JPG
+  // Create a name for the new file in the format IMAGE_##.JPG
   char filename[15];
   strcpy(filename, "IMAGE_00.JPG");
   for(int i = 0; i < 100; i++) {
@@ -77,6 +80,7 @@ void saveImage(void) {
     }
   }
 
+  // create new image file in SD card
   File image_file = SD.open(filename, FILE_WRITE);
 
   if (image_file) { // if the file opened okay, write to it:
@@ -85,8 +89,10 @@ void saveImage(void) {
     console.print(" bytes into ");
     console.print(filename);
     console.println("...");
+
     image_file.write(image_buffer, image_size);
     image_file.close();
+    
     console.print("Saved ");
     console.print(filename);
     console.println("!");
