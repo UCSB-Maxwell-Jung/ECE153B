@@ -59,7 +59,7 @@ void setup(void) {
 void loop(void) {
   delay(500);
   toggleLed();
-  console.print("Last image size: ");
+  console.print("Last captured image size: ");
   console.print(image_size);
   console.println(" bytes");
 }
