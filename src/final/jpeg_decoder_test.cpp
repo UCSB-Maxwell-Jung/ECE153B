@@ -12,9 +12,9 @@
 
 //ESP32 example setup
 //*
-#define TFT_CS  27
-#define TFT_DC  26
-#define TFT_RST  5
+// #define TFT_CS  27
+// #define TFT_DC  26
+// #define TFT_RST  5
 //#define SD_CS   4
 //*/
 
@@ -26,13 +26,16 @@
 //#define SD_CS   4
 //*/
 
+#include "SysTick.h"
+#include "hardware_usart2.h"
+
 #define TFT_BLACK       0x0000
 #define TFT_RED         0xF800
 
 // Include the TFT library
 #include "SPI.h"
 #include <Adafruit_ILI9341.h>
-Adafruit_ILI9341 tft(TFT_CS, TFT_DC, TFT_RST);
+Adafruit_ILI9341 tft;
 
 // This next function will be called during decoding of the jpeg file to
 // render each block to the TFT.  If you use a different TFT library

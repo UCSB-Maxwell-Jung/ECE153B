@@ -14,7 +14,6 @@ Adafruit_Image       img;           // An image loaded into RAM
 int32_t              width  = 0,    // BMP image dimensions
                      height = 0;
 
-HardwareUsart2 console;             // UART console
 HardwareUsart1 camera_serial_interface;              // UART camera
 
 uint32_t loop_count = 0;
