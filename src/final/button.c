@@ -37,7 +37,7 @@ void initButton(void)
 	EXTI->IMR1 |= EXTI_IMR1_IM13;
 
 	NVIC_EnableIRQ(EXTI15_10_IRQn); // Enable
-	NVIC_SetPriority(EXTI15_10_IRQn, 0); // set interrupt to highest priority
+	NVIC_SetPriority(EXTI15_10_IRQn, 1); // set interrupt to highest priority
 }
 
 void EXTI15_10_IRQHandler(void) {

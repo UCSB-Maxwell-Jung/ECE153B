@@ -57,6 +57,6 @@ void HardwareUsart1::configureUsart(void) {
 
 	USARTx_->CR1 |= USART_CR1_UE; // Enable USART
 
-	NVIC_EnableIRQ(USART1_IRQn); // Enable USART1 interrupt
-	NVIC_SetPriority(USART1_IRQn, 1); // set interrupt to second highest priority
+	// NVIC_EnableIRQ(USART1_IRQn); // Enable USART1 interrupt
+	// NVIC_SetPriority(USART1_IRQn, 1); // set interrupt to second highest priority
 }
