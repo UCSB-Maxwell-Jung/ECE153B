@@ -10,28 +10,28 @@ volatile bool new_image;
 void capturePhoto(void) {
     image_size = 0;
     new_image = false;
-    console.println("Capturing image...");
-    camera_serial_interface.write(0x10); // send capture photo request to Arduino
+    Serial.println("Capturing image...");
+    Serial1.write(0x10); // send capture photo request to Arduino
     // assume image bytes start coming in immediately
     int camera_byte;
     while (image_size < IMAGE_BUFFER_CAPACITY) {
-        camera_byte = camera_serial_interface.read(); // returns negative value on timeout
+        camera_byte = Serial1.read(); // returns negative value on timeout
         if (camera_byte >= 0) {
             image_buffer[image_size++] = camera_byte;
             continue;
         }
         else { // if USART times out, assume end of image
-            console.print("Captured image of size ");
-            console.print(image_size);
-            console.println(" bytes");
+            Serial.print("Captured image of size ");
+            Serial.print(image_size);
+            Serial.println(" bytes");
             new_image = true;
             return;
         }
     }
     
-    console.print("Image too large (image size larger than ");
-    console.print(IMAGE_BUFFER_CAPACITY);
-    console.println(" bytes)");
+    Serial.print("Image too large (image size larger than ");
+    Serial.print(IMAGE_BUFFER_CAPACITY);
+    Serial.println(" bytes)");
 }
 
 // void saveCameraByte(void) {
@@ -40,7 +40,7 @@ void capturePhoto(void) {
 //         camera_serial_buffer[buffer_position++] = c;
 //     }
 //     else {
-//         console.println("camera buffer full!");
+//         Serial.println("camera buffer full!");
 //     }
 // }
 

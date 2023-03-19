@@ -7,14 +7,15 @@
 #include "SysTick.h"
 #include "LED.h"
 
+#define console Serial
+#define camera_serial_interface Serial1
+
 // declare hardware objects
 Adafruit_ImageReader reader(SD);    // Image-reader object, pass in SD filesys
 Adafruit_ILI9341 tft;               // LCD object
 Adafruit_Image       img;           // An image loaded into RAM
 int32_t              width  = 0,    // BMP image dimensions
                      height = 0;
-
-HardwareUsart1 camera_serial_interface;              // UART camera
 
 uint32_t loop_count = 0;
 
@@ -28,12 +29,12 @@ void setup(void) {
 
   tft.begin(SPI_MAX_FREQ); // begin LCD
   while (1) {
-    console.println("Initializing filesystem...");
+    Serial.println("Initializing filesystem...");
     if (SD.begin()) { // begin SD card
       break;
     }
     // retry after half a second if SD card fails
-    console.println("SD begin() failed");
+    Serial.println("SD begin() failed");
     delay(500);
   }
 
@@ -47,7 +48,7 @@ void setup(void) {
   new_image = false;
 
   // indicate Potato Cam is ready
-  console.println("Potato Cam Ready!");
+  Serial.println("Potato Cam Ready!");
 }
 
 void loop(void) {
@@ -66,7 +67,7 @@ void drawImage(void) {
 }
 
 void saveImage(void) {
-  console.println("Saving captured image...");
+  Serial.println("Saving captured image...");
 
   // Create a name for the new file in the format IMAGE_##.JPG
   char filename[15];
@@ -83,21 +84,21 @@ void saveImage(void) {
   File image_file = SD.open(filename, FILE_WRITE);
 
   if (image_file) { // if the file opened okay, write to it:
-    console.print("Writing ");
-    console.print(image_size);
-    console.print(" bytes into ");
-    console.print(filename);
-    console.println("...");
+    Serial.print("Writing ");
+    Serial.print(image_size);
+    Serial.print(" bytes into ");
+    Serial.print(filename);
+    Serial.println("...");
 
     image_file.write(image_buffer, image_size);
     image_file.close();
     
-    console.print("Saved ");
-    console.print(filename);
-    console.println("!");
+    Serial.print("Saved ");
+    Serial.print(filename);
+    Serial.println("!");
   }
   else { // if the file didn't open, print an error:
-    console.print("error opening ");
-    console.println(filename);
+    Serial.print("error opening ");
+    Serial.println(filename);
   }
 }

@@ -251,7 +251,7 @@ void SdFile::ls(uint8_t flags, uint8_t indent) {
 
     // print any indent spaces
     for (int8_t i = 0; i < indent; i++) {
-      console.print(' ');
+      Serial.print(' ');
     }
 
     // print file name with possible blank fill
@@ -260,15 +260,15 @@ void SdFile::ls(uint8_t flags, uint8_t indent) {
     // print modify date/time if requested
     if (flags & LS_DATE) {
       printFatDate(p->lastWriteDate);
-      console.print(' ');
+      Serial.print(' ');
       printFatTime(p->lastWriteTime);
     }
     // print size if requested
     if (!DIR_IS_SUBDIR(p) && (flags & LS_SIZE)) {
-      console.print(' ');
-      console.print(p->fileSize);
+      Serial.print(' ');
+      Serial.print(p->fileSize);
     }
-    console.println();
+    Serial.println();
 
     // list subdirectory content if requested
     if ((flags & LS_R) && DIR_IS_SUBDIR(p)) {
@@ -696,18 +696,18 @@ void SdFile::printDirName(const dir_t& dir, uint8_t width) {
       continue;
     }
     if (i == 8) {
-      console.print('.');
+      Serial.print('.');
       w++;
     }
-    console.write(dir.name[i]);
+    Serial.write(dir.name[i]);
     w++;
   }
   if (DIR_IS_SUBDIR(&dir)) {
-    console.print('/');
+    Serial.print('/');
     w++;
   }
   while (w < width) {
-    console.print(' ');
+    Serial.print(' ');
     w++;
   }
 }
@@ -719,10 +719,10 @@ void SdFile::printDirName(const dir_t& dir, uint8_t width) {
    \param[in] fatDate The date field from a directory entry.
 */
 void SdFile::printFatDate(uint16_t fatDate) {
-  console.print(FAT_YEAR(fatDate));
-  console.print('-');
+  Serial.print(FAT_YEAR(fatDate));
+  Serial.print('-');
   printTwoDigits(FAT_MONTH(fatDate));
-  console.print('-');
+  Serial.print('-');
   printTwoDigits(FAT_DAY(fatDate));
 }
 //------------------------------------------------------------------------------
@@ -734,9 +734,9 @@ void SdFile::printFatDate(uint16_t fatDate) {
 */
 void SdFile::printFatTime(uint16_t fatTime) {
   printTwoDigits(FAT_HOUR(fatTime));
-  console.print(':');
+  Serial.print(':');
   printTwoDigits(FAT_MINUTE(fatTime));
-  console.print(':');
+  Serial.print(':');
   printTwoDigits(FAT_SECOND(fatTime));
 }
 //------------------------------------------------------------------------------
@@ -749,7 +749,7 @@ void SdFile::printTwoDigits(uint8_t v) {
   str[0] = '0' + v / 10;
   str[1] = '0' + v % 10;
   str[2] = 0;
-  console.print(str);
+  Serial.print(str);
 }
 //------------------------------------------------------------------------------
 /**

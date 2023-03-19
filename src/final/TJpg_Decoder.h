@@ -33,7 +33,7 @@ https://github.com/Bodmer/TJpg_Decoder
   #endif
 
 #if defined (TJPGD_LOAD_SD_LIBRARY)
-  #include <SD.h>
+  #include "SD.h"
 #endif
 
 enum {
