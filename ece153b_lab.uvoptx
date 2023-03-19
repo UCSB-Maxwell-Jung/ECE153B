@@ -152,34 +152,34 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>1330</LineNumber>
+          <LineNumber>23</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134228732</Address>
+          <Address>134231722</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\src\final\SdFile.cpp</Filename>
+          <Filename>.\src\final\camera_interface.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/SdFile.cpp\1330</Expression>
+          <Expression>\\ece153b_lab\src/final/camera_interface.cpp\23</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>43</LineNumber>
+          <LineNumber>30</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134220486</Address>
+          <Address>134231696</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>c:\Users\maxwelljung\ece153b\src\final\camera.cpp</Filename>
+          <Filename>.\src\final\camera_interface.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\ece153b_lab\src/final/camera.cpp\43</Expression>
+          <Expression>\\ece153b_lab\src/final/camera_interface.cpp\30</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

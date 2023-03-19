@@ -56,7 +56,7 @@ void setup(void) {
   console.println("Camera initialized");
 }
 
-void loop(void) {
+void loop(uint32_t i) {
   delay(500);
   toggleLed();
   console.print("Last captured image size: ");
@@ -67,8 +67,12 @@ void loop(void) {
 int main() {
   initHardware();
   setup();
-  while(1)
-    loop();
+  uint32_t i = 0;
+  while(1) {
+    loop(i);
+    i++;
+  }
 
+  console.println("Critical Error!!!");
   return 1; // if program reaches this line, something went wrong
 }
