@@ -11,7 +11,7 @@ extern "C" {
 void capturePhoto(void);
 // void saveCameraByte(void);
 
-#define MAX_IMAGE_SIZE 10000 // assume max image size is 10kB
+#define MAX_IMAGE_SIZE 20000 // assume max image size is 20kB
 #define IMAGE_BUFFER_CAPACITY MAX_IMAGE_SIZE
 extern uint8_t image_buffer[IMAGE_BUFFER_CAPACITY];
 extern volatile uint32_t image_size;
