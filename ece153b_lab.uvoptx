@@ -2361,8 +2361,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\jpeg_decoder_test.cpp</PathWithFileName>
-      <FilenameWithoutPath>jpeg_decoder_test.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\potato_cam.cpp</PathWithFileName>
+      <FilenameWithoutPath>potato_cam.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

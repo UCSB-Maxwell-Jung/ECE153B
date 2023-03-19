@@ -2172,9 +2172,9 @@
               <FilePath>.\src\final\User_Config.h</FilePath>
             </File>
             <File>
-              <FileName>jpeg_decoder_test.cpp</FileName>
+              <FileName>potato_cam.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\jpeg_decoder_test.cpp</FilePath>
+              <FilePath>.\src\final\potato_cam.cpp</FilePath>
             </File>
           </Files>
         </Group>

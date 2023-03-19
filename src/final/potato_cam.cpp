@@ -1,7 +1,7 @@
 #include "Adafruit_ILI9341.h"       // LCD display library
 #include "SD.h"                     // SD card & FAT filesystem library
-#include "Adafruit_ImageReader.h"   // Image-reading library
 #include "hardware_usart1.h"
+#include "hardware_usart2.h"
 #include "camera_interface.h"
 #include "TJpg_Decoder.h"
 
@@ -12,21 +12,24 @@
 #define camera Serial1
 
 // declare hardware objects
-Adafruit_ImageReader reader(SD);    // Image-reader object, pass in SD filesys
-Adafruit_ILI9341 tft;               // LCD object
-Adafruit_Image       img;           // An image loaded into RAM
+Adafruit_ILI9341     tft;           // LCD object
 int32_t              width  = 0,    // BMP image dimensions
                      height = 0;
 
 uint32_t loop_count = 0;
 
-void drawImage(void);
+bool drawImage(void);
 void saveImage(void);
+bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap);
 
 void setup(void) {
-  ImageReturnCode stat; // Status from image-reading functions
-
   console.begin(9600); // begin console output
+
+  // begin serial communication with Arduino+Camera subsystem
+  camera.begin(9600);
+  // reset global vars
+  image_size = 0;
+  new_image = false;
 
   tft.begin(SPI_MAX_FREQ); // begin LCD
   while (1) {
@@ -40,18 +43,12 @@ void setup(void) {
   }
 
   tft.fillScreen(ILI9341_BLACK);
+  tft.setRotation(1);
 
   // The jpeg image can be scaled by a factor of 1, 2, 4, or 8
   TJpgDec.setJpgScale(1);
   // The decoder must be given the exact name of the rendering function above
   TJpgDec.setCallback(tft_output);
-
-  // begin serial communication with Arduino+Camera subsystem
-  camera.begin(9600);
-
-  // reset global vars
-  image_size = 0;
-  new_image = false;
 
   // indicate Potato Cam is ready
   Serial.println("Potato Cam Ready!");
@@ -62,8 +59,12 @@ void loop(void) {
     toggleLed(); // blink LED every 100000 loop
   }
   if (new_image) {
-    drawImage();
-    saveImage();
+    // save image if it's drawable (aka not corrupted)
+    if (drawImage())
+      saveImage();
+    else {
+      Serial.println("Image corrupted :(");
+    }
     new_image = false;
   }
 }
@@ -83,9 +84,18 @@ bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap)
   return 1;
 }
 
-void drawImage(void) {
+bool drawImage(void) {
+  // Get the width and height in pixels of the jpeg if you wish
+  uint16_t w = 0, h = 0;
+  TJpgDec.getJpgSize(&w, &h, image_buffer, image_size);
+  Serial.print("width = "); Serial.print(w); Serial.print(", height = "); Serial.println(h);
+
   // Draw the image, top left at 0,0
   TJpgDec.drawJpg(0, 0, image_buffer, image_size);
+  Serial.println("Image displayed on LCD!");
+
+  // return false if image is 0 dimension (corrupted)
+  return (w != 0) && (h != 0);
 }
 
 void saveImage(void) {
