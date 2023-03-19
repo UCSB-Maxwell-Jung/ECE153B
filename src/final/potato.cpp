@@ -67,7 +67,7 @@ void loop(void) {
 
   if (captureImage()) {
     drawImage();
-    Serial.println("Painted new image");
+    Serial.println("Painted captured image");
     if (pending_save) { // flag set to true on button press
       saveImage();
       pending_save = false;
