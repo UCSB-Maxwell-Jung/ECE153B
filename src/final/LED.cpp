@@ -1,5 +1,7 @@
 #include "LED.h"
 
+#include "stm32l476xx.h"
+
 void initLed(void)
 {
 	// Enable GPIO Clock

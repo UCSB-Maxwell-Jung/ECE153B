@@ -1,7 +1,8 @@
 #ifndef __STM32L476R_NUCLEO_I2C_H
 #define __STM32L476R_NUCLEO_I2C_H
 
-#include "nucleo.h"
+#include "stm32l476xx.h"
+#include <stddef.h>
 
 #define READ_FROM_SLAVE 1
 #define WRITE_TO_SLAVE  0
