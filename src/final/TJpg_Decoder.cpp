@@ -8,6 +8,7 @@ https://github.com/Bodmer/TJpg_Decoder
 */
 
 #include "TJpg_Decoder.h"
+#include "hardware_usart2.h"
 
 // Create a class instance to be used by the sketch (defined as extern in header)
 TJpg_Decoder TJpgDec;
@@ -184,21 +185,21 @@ JRESULT TJpg_Decoder::drawJpg(int32_t x, int32_t y, const char *pFilename){
 ** Description:             Draw a named jpg file at x,y (name in String)
 ***************************************************************************************/
 // Generic file call for SD or SPIFFS, uses leading / to distinguish SPIFFS files
-JRESULT TJpg_Decoder::drawJpg(int32_t x, int32_t y, const String& pFilename){
+// JRESULT TJpg_Decoder::drawJpg(int32_t x, int32_t y, const String& pFilename){
 
-#if defined (ARDUINO_ARCH_ESP8266) || defined (ESP32)
-#if defined (TJPGD_LOAD_SD_LIBRARY)
-    if (pFilename.charAt(0) == '/')
-#endif
-    return drawFsJpg(x, y, pFilename);
-#endif
+// #if defined (ARDUINO_ARCH_ESP8266) || defined (ESP32)
+// #if defined (TJPGD_LOAD_SD_LIBRARY)
+//     if (pFilename.charAt(0) == '/')
+// #endif
+//     return drawFsJpg(x, y, pFilename);
+// #endif
 
-#if defined (TJPGD_LOAD_SD_LIBRARY)
-    return drawSdJpg(x, y, pFilename);
-#endif
+// #if defined (TJPGD_LOAD_SD_LIBRARY)
+//     return drawSdJpg(x, y, pFilename);
+// #endif
 
-    return JDR_INP;
-}
+//     return JDR_INP;
+// }
 
 /***************************************************************************************
 ** Function name:           getJpgSize
@@ -226,21 +227,21 @@ JRESULT TJpg_Decoder::getJpgSize(uint16_t *w, uint16_t *h, const char *pFilename
 ** Description:             Get width and height of a jpg file (name in String)
 ***************************************************************************************/
 // Generic file call for SD or SPIFFS, uses leading / to distinguish SPIFFS files
-JRESULT TJpg_Decoder::getJpgSize(uint16_t *w, uint16_t *h, const String& pFilename){
+// JRESULT TJpg_Decoder::getJpgSize(uint16_t *w, uint16_t *h, const String& pFilename){
 
-#if defined (ARDUINO_ARCH_ESP8266) || defined (ESP32)
-#if defined (TJPGD_LOAD_SD_LIBRARY)
-    if (pFilename.charAt(0) == '/')
-#endif
-    return getFsJpgSize(w, h, pFilename);
-#endif
+// #if defined (ARDUINO_ARCH_ESP8266) || defined (ESP32)
+// #if defined (TJPGD_LOAD_SD_LIBRARY)
+//     if (pFilename.charAt(0) == '/')
+// #endif
+//     return getFsJpgSize(w, h, pFilename);
+// #endif
 
-#if defined (TJPGD_LOAD_SD_LIBRARY)
-    return getSdJpgSize(w, h, pFilename);
-#endif
+// #if defined (TJPGD_LOAD_SD_LIBRARY)
+//     return getSdJpgSize(w, h, pFilename);
+// #endif
 
-    return JDR_INP;
-}
+//     return JDR_INP;
+// }
 
 #endif
 
@@ -255,7 +256,7 @@ JRESULT TJpg_Decoder::drawFsJpg(int32_t x, int32_t y, const char *pFilename, fs:
   // Check if file exists
   if ( !fs.exists(pFilename) )
   {
-    Serial.println(F("Jpeg file not found"));
+    console.prinln("Jpeg file not found"));
     return JDR_INP;
   }
 
@@ -270,7 +271,7 @@ JRESULT TJpg_Decoder::drawFsJpg(int32_t x, int32_t y, const String& pFilename, f
   // Check if file exists
   if ( !fs.exists(pFilename) )
   {
-    Serial.println(F("Jpeg file not found"));
+    console.prinln("Jpeg file not found"));
     return JDR_INP;
   }
   return drawFsJpg(x, y, fs.open( pFilename, "r"));
@@ -315,7 +316,7 @@ JRESULT TJpg_Decoder::getFsJpgSize(uint16_t *w, uint16_t *h, const char *pFilena
   // Check if file exists
   if ( !fs.exists(pFilename) )
   {
-    Serial.println(F("Jpeg file not found"));
+    console.prinln("Jpeg file not found"));
     return JDR_INP;
   }
 
@@ -330,7 +331,7 @@ JRESULT TJpg_Decoder::getFsJpgSize(uint16_t *w, uint16_t *h, const String& pFile
   // Check if file exists
   if ( !fs.exists(pFilename) )
   {
-    Serial.println(F("Jpeg file not found"));
+    console.prinln("Jpeg file not found"));
     return JDR_INP;
   }
 
@@ -380,7 +381,7 @@ JRESULT TJpg_Decoder::drawSdJpg(int32_t x, int32_t y, const char *pFilename) {
   // Check if file exists
   if ( !SD.exists(pFilename) )
   {
-    Serial.println(F("Jpeg file not found"));
+    console.println("Jpeg file not found");
     return JDR_INP;
   }
 
@@ -391,17 +392,17 @@ JRESULT TJpg_Decoder::drawSdJpg(int32_t x, int32_t y, const char *pFilename) {
 ** Function name:           drawSdJpg
 ** Description:             Draw a named jpg SD file at x,y (name in String)
 ***************************************************************************************/
-JRESULT TJpg_Decoder::drawSdJpg(int32_t x, int32_t y, const String& pFilename) {
+// JRESULT TJpg_Decoder::drawSdJpg(int32_t x, int32_t y, const String& pFilename) {
 
-  // Check if file exists
-  if ( !SD.exists(pFilename) )
-  {
-    Serial.println(F("Jpeg file not found"));
-    return JDR_INP;
-  }
+//   // Check if file exists
+//   if ( !SD.exists(pFilename) )
+//   {
+//     console.prinln("Jpeg file not found"));
+//     return JDR_INP;
+//   }
 
-    return drawSdJpg(x, y, SD.open( pFilename, FILE_READ));
-}
+//     return drawSdJpg(x, y, SD.open( pFilename, FILE_READ));
+// }
 
 /***************************************************************************************
 ** Function name:           drawSdJpg
@@ -443,7 +444,7 @@ JRESULT TJpg_Decoder::getSdJpgSize(uint16_t *w, uint16_t *h, const char *pFilena
   // Check if file exists
   if ( !SD.exists(pFilename) )
   {
-    Serial.println(F("Jpeg file not found"));
+    console.println("Jpeg file not found");
     return JDR_INP;
   }
 
@@ -454,17 +455,17 @@ JRESULT TJpg_Decoder::getSdJpgSize(uint16_t *w, uint16_t *h, const char *pFilena
 ** Function name:           getSdJpgSize
 ** Description:             Get width and height of a jpg saved in  SPIFFS
 ***************************************************************************************/
-JRESULT TJpg_Decoder::getSdJpgSize(uint16_t *w, uint16_t *h, const String& pFilename) {
+// JRESULT TJpg_Decoder::getSdJpgSize(uint16_t *w, uint16_t *h, const String& pFilename) {
 
-  // Check if file exists
-  if ( !SD.exists(pFilename) )
-  {
-    Serial.println(F("Jpeg file not found"));
-    return JDR_INP;
-  }
+//   // Check if file exists
+//   if ( !SD.exists(pFilename) )
+//   {
+//     console.prinln("Jpeg file not found"));
+//     return JDR_INP;
+//   }
 
-    return getSdJpgSize(w, h, SD.open( pFilename, FILE_READ));
-}
+//     return getSdJpgSize(w, h, SD.open( pFilename, FILE_READ));
+// }
 
 /***************************************************************************************
 ** Function name:           getSdJpgSize

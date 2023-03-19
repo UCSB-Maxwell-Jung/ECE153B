@@ -14,7 +14,7 @@ https://github.com/Bodmer/TJpg_Decoder
   #define TJpg_Decoder_H
 
   #include "User_Config.h"
-  #include "Arduino.h"
+  // #include "Arduino.h"
   #include "tjpgd.h"
 
   #if defined (ARDUINO_ARCH_ESP8266) || defined (ESP32)
@@ -71,19 +71,19 @@ public:
 
 #if defined (TJPGD_LOAD_SD_LIBRARY) || defined (TJPGD_LOAD_FFS)
   JRESULT drawJpg (int32_t x, int32_t y, const char *pFilename);
-  JRESULT drawJpg (int32_t x, int32_t y, const String& pFilename);
+  // JRESULT drawJpg (int32_t x, int32_t y, const String& pFilename);
 
   JRESULT getJpgSize(uint16_t *w, uint16_t *h, const char *pFilename);
-  JRESULT getJpgSize(uint16_t *w, uint16_t *h, const String& pFilename);
+  // JRESULT getJpgSize(uint16_t *w, uint16_t *h, const String& pFilename);
 #endif
 
 #if defined (TJPGD_LOAD_SD_LIBRARY)
   JRESULT drawSdJpg (int32_t x, int32_t y, const char *pFilename);
-  JRESULT drawSdJpg (int32_t x, int32_t y, const String& pFilename);
+  // JRESULT drawSdJpg (int32_t x, int32_t y, const String& pFilename);
   JRESULT drawSdJpg (int32_t x, int32_t y, File inFile);
 
   JRESULT getSdJpgSize(uint16_t *w, uint16_t *h, const char *pFilename);
-  JRESULT getSdJpgSize(uint16_t *w, uint16_t *h, const String& pFilename);
+  // JRESULT getSdJpgSize(uint16_t *w, uint16_t *h, const String& pFilename);
   JRESULT getSdJpgSize(uint16_t *w, uint16_t *h, File inFile);
 #endif
 
