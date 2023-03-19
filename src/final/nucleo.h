@@ -15,6 +15,7 @@
 #include "SysTick.h"
 #include "LED.h"
 #include "hardware_usart2.h"
+#include "hardware_usart1.h"
 
 #define CLK_FREQ  80000000 // 80Mhz
 

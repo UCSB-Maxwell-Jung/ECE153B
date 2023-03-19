@@ -16,6 +16,7 @@
 #define __ADAFRUIT_IMAGE_READER_H__
 
 // #include "Adafruit_SPIFlash.h"
+#include "hardware_usart2.h"
 #include "Adafruit_SPITFT.h"
 #include "SD.h"
 
@@ -101,7 +102,7 @@ public:
                           int16_t y, bool transact = true);
   ImageReturnCode loadBMP(const char *filename, Adafruit_Image &img);
   ImageReturnCode bmpDimensions(const char *filename, int32_t *w, int32_t *h);
-  void printStatus(ImageReturnCode stat, Stream &stream = Serial);
+  void printStatus(ImageReturnCode stat, Stream &stream = console);
 
 protected:
   SDClass *filesys; ///< FAT FileSystem Object

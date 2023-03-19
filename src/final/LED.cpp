@@ -1,5 +1,7 @@
 #include "LED.h"
 
+#include "stm32l476xx.h"
+
 void initLed(void)
 {
 	// Enable GPIO Clock
@@ -21,7 +23,7 @@ void ledOn(void)
 	GPIOA->ODR |= GPIO_ODR_OD5;
 }
 
-void ledToggle(void)
+void toggleLed(void)
 {
 	GPIOA->ODR ^= GPIO_ODR_OD5;
 }

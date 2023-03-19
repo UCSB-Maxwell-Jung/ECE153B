@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1872,21 +1872,6 @@
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
             </File>
             <File>
-              <FileName>ArduCAM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\ArduCAM.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ArduCAM.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\ArduCAM.h</FilePath>
-            </File>
-            <File>
-              <FileName>camera_test.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\camera_test.cpp</FilePath>
-            </File>
-            <File>
               <FileName>dragon.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\dragon.h</FilePath>
@@ -2000,11 +1985,6 @@
               <FileName>memorysaver.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\memorysaver.h</FilePath>
-            </File>
-            <File>
-              <FileName>nucleo.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\nucleo.h</FilePath>
             </File>
             <File>
               <FileName>ov2640_regs.h</FileName>
@@ -2130,6 +2110,31 @@
               <FileName>UART.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\UART.h</FilePath>
+            </File>
+            <File>
+              <FileName>Button.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Button.h</FilePath>
+            </File>
+            <File>
+              <FileName>button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\button.c</FilePath>
+            </File>
+            <File>
+              <FileName>camera_interface.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\camera_interface.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>camera_interface.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\camera_interface.h</FilePath>
+            </File>
+            <File>
+              <FileName>potato_cam.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\potato_cam.cpp</FilePath>
             </File>
           </Files>
         </Group>

@@ -18,7 +18,6 @@
    <http://www.gnu.org/licenses/>.
 */
 // #define USE_SPI_LIB
-#include "nucleo.h"
 #include "Sd2Card.h"
 #include "SysTick.h"
 //------------------------------------------------------------------------------
@@ -729,7 +728,7 @@ fail:
 */
 uint8_t Sd2Card::isBusy(void) {
   chipSelectLow();
-  byte b = spiRec();
+  uint8_t b = spiRec();
   chipSelectHigh();
 
   return (b != 0XFF);

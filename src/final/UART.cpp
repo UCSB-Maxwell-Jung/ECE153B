@@ -1,4 +1,5 @@
 #include "UART.h"
+#define USART_TIMEOUT 0xfffff // some large value
 
 UART::UART(USART_TypeDef* USARTx) : USARTx_(USARTx) {}
 
@@ -58,9 +59,16 @@ size_t UART::write(const uint8_t *buffer, size_t size) {
 }
 
 int UART::read(void) {
+	uint32_t i = 0;
+	USARTx_->CR1 |= USART_CR1_UE; // Enable USART
 	// SR_RXNE (Read data register not empty) bit is set by hardware
-	while (!(USARTx_->ISR & USART_ISR_RXNE));  // Wait until RXNE (RX not empty) bit is set
-	// USART resets the RXNE flag automatically after reading DR
-	return ((uint8_t)(USARTx_->RDR & 0xFF));
-	// Reading USART_DR automatically clears the RXNE flag 
+	while ((USARTx_->ISR & USART_ISR_RXNE) == 0) { // Wait until RXNE (RX not empty) bit is set
+		if (i++ > USART_TIMEOUT) {
+			return -1;
+		}
+	} 
+	uint8_t received = USARTx_->RDR; // Reading USART_DR automatically clears the RXNE flag 
+	USARTx_->CR1 &= ~USART_CR1_UE; // Disable USART
+
+	return received;
 }
