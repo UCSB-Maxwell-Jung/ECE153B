@@ -119,7 +119,7 @@ namespace SDLib {
       // friend bool callback_openPath(SdFile&, const char *, bool, void *);
   };
 
-  // extern SDClass SD;
+  extern SDClass SD;
 
 };
 

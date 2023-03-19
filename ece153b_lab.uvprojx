@@ -2131,6 +2131,11 @@
               <FileType>5</FileType>
               <FilePath>.\src\final\camera_interface.h</FilePath>
             </File>
+            <File>
+              <FileName>potato_cam.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\potato_cam.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
