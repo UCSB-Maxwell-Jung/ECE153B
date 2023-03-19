@@ -49,8 +49,8 @@ void setup(void) {
 }
 
 void loop(void) {
-  if (((loop_count++) % 100) == 0) {
-    toggleLed(); // blink LED every 100 loop
+  if (((loop_count++) % 1000000) == 0) {
+    toggleLed(); // blink LED every 100000 loop
   }
   if (new_image) {
     drawImage();
