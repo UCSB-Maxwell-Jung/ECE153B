@@ -1872,16 +1872,6 @@
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
             </File>
             <File>
-              <FileName>ArduCAM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\ArduCAM.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ArduCAM.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\ArduCAM.h</FilePath>
-            </File>
-            <File>
               <FileName>button.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\final\button.c</FilePath>
@@ -2180,6 +2170,11 @@
               <FileName>User_Config.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\User_Config.h</FilePath>
+            </File>
+            <File>
+              <FileName>jpeg_decoder_test.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\jpeg_decoder_test.cpp</FilePath>
             </File>
           </Files>
         </Group>

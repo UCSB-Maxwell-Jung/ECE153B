@@ -8,7 +8,7 @@
 #include "panda.h"
 
 // Include the jpeg decoder library
-#include <TJpg_Decoder.h>
+#include "TJpg_Decoder.h"
 
 //ESP32 example setup
 //*
@@ -34,7 +34,7 @@
 
 // Include the TFT library
 #include "SPI.h"
-#include <Adafruit_ILI9341.h>
+#include "Adafruit_ILI9341.h"
 Adafruit_ILI9341 tft;
 
 // This next function will be called during decoding of the jpeg file to
