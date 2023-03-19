@@ -89,7 +89,7 @@ unsigned int TJpg_Decoder::jd_input(JDEC* jdec, uint8_t* buf, unsigned int len)
     }
 
     // If buf is valid then copy len bytes to buffer
-    if (buf) memcpy_P(buf, (const uint8_t *)(thisPtr->array_data + thisPtr->array_index), len);
+    if (buf) memcpy(buf, (const uint8_t *)(thisPtr->array_data + thisPtr->array_index), len);
 
     // Move pointer
     thisPtr->array_index += len;
@@ -381,7 +381,7 @@ JRESULT TJpg_Decoder::drawSdJpg(int32_t x, int32_t y, const char *pFilename) {
   // Check if file exists
   if ( !SD.exists(pFilename) )
   {
-    console.println("Jpeg file not found");
+    Serial.println("Jpeg file not found");
     return JDR_INP;
   }
 
@@ -444,7 +444,7 @@ JRESULT TJpg_Decoder::getSdJpgSize(uint16_t *w, uint16_t *h, const char *pFilena
   // Check if file exists
   if ( !SD.exists(pFilename) )
   {
-    console.println("Jpeg file not found");
+    Serial.println("Jpeg file not found");
     return JDR_INP;
   }
 
