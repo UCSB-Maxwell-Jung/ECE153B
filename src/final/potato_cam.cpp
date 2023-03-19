@@ -17,6 +17,8 @@ int32_t              width  = 0,    // BMP image dimensions
 HardwareUsart2 console;             // UART console
 HardwareUsart1 camera_serial_interface;              // UART camera
 
+uint32_t loop_count = 0;
+
 void drawImage(void);
 void saveImage(void);
 
@@ -47,8 +49,9 @@ void setup(void) {
 }
 
 void loop(void) {
-  delay(500);
-  toggleLed();
+  if (((loop_count++) % 100) == 0) {
+    toggleLed(); // blink LED every 100 loop
+  }
   if (new_image) {
     drawImage();
     saveImage();
