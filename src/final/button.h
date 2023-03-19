@@ -15,7 +15,7 @@ extern "C" {
 
 void initButton(void);
 void EXTI15_10_IRQHandler(void);
-void USART1_IRQHandler(void);
+// void USART1_IRQHandler(void);
 
 #ifdef __cplusplus
 }

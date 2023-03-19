@@ -12,6 +12,7 @@
 #include "SD.h"                     // SD card & FAT filesystem library
 #include "Adafruit_ImageReader.h"   // Image-reading library
 #include "hardware_usart1.h"
+#include "camera_interface.h"
 
 // declare hardware objects
 SDClass SD;                         // SD card object
@@ -57,8 +58,10 @@ void setup(void) {
 
 void loop(void) {
   delay(500);
-  // console.println(camera_serial_interface.read());
   toggleLed();
+  console.print("Last image size: ");
+  console.print(image_size);
+  console.println(" bytes");
 }
 
 int main() {
