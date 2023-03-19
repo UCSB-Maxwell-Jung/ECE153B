@@ -105,7 +105,7 @@ bool captureImage(void) {
   Serial.println(" bytes");
 
 checkImage: 
-  // Get the width and height in pixels of the jpeg if you wish
+  // Get the width and height in pixels of the jpeg to check for corruption
   uint16_t image_width = 0, image_height = 0;
   TJpgDec.getJpgSize(&image_width, &image_height, image_buffer, image_size);
   bool image_corrupted = (image_width == 0) || (image_height == 0);
