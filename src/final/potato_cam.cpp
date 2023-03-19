@@ -4,6 +4,7 @@
 #include "hardware_usart2.h"
 #include "camera_interface.h"
 #include "TJpg_Decoder.h"
+#include "camera_interface.h"
 
 #include "SysTick.h"
 #include "LED.h"
@@ -58,12 +59,15 @@ void loop(void) {
   if (((loop_count++) % 1000000) == 0) {
     toggleLed(); // blink LED every 100000 loop
   }
+  capturePhoto();
   if (new_image) {
-    // save image if it's drawable (aka not corrupted)
-    if (drawImage())
-      saveImage();
-    else {
+    if (drawImage()) { // attempt to draw new image
+      Serial.println("Image displayed!");
+      // saveImage(); // save if drawing successful
+    }
+    else { // 
       Serial.println("Image corrupted :(");
+      Serial.println("Trying again after some delay");
     }
     new_image = false;
   }
@@ -88,11 +92,10 @@ bool drawImage(void) {
   // Get the width and height in pixels of the jpeg if you wish
   uint16_t w = 0, h = 0;
   TJpgDec.getJpgSize(&w, &h, image_buffer, image_size);
-  Serial.print("width = "); Serial.print(w); Serial.print(", height = "); Serial.println(h);
+  Serial.print("width x height = "); Serial.print(w); Serial.print(" x "); Serial.println(h);
 
   // Draw the image, top left at 0,0
   TJpgDec.drawJpg(0, 0, image_buffer, image_size);
-  Serial.println("Image displayed on LCD!");
 
   // return false if image is 0 dimension (corrupted)
   return (w != 0) && (h != 0);
