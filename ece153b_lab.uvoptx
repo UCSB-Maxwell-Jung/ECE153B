@@ -2252,8 +2252,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\intrpt_handler.cpp</PathWithFileName>
-      <FilenameWithoutPath>intrpt_handler.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\camera_interface.cpp</PathWithFileName>
+      <FilenameWithoutPath>camera_interface.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -2264,8 +2264,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\intrpt_handler.h</PathWithFileName>
-      <FilenameWithoutPath>intrpt_handler.h</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\camera_interface.h</PathWithFileName>
+      <FilenameWithoutPath>camera_interface.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

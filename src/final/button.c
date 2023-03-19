@@ -8,7 +8,7 @@
 
 #include "Button.h"
 #include "stm32l476xx.h"
-#include "intrpt_handler.h"
+#include "camera_interface.h"
 
 void initButton(void)
 {
@@ -49,9 +49,9 @@ void EXTI15_10_IRQHandler(void) {
 	}
 }
 
-void USART1_IRQHandler(void) {
-	// Clear interrupt pending bit
-	if ((USART1->ISR & USART_ISR_RXNE) != 0) {
-		saveCameraByte();
-	}
-}
+// void USART1_IRQHandler(void) {
+// 	// Clear interrupt pending bit
+// 	if ((USART1->ISR & USART_ISR_RXNE) != 0) {
+// 		saveCameraByte();
+// 	}
+// }

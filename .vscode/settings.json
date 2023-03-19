@@ -65,6 +65,7 @@
         "hardware_usart1.h": "c",
         "camera_controls.h": "c",
         "cpp_intrpt_handler.h": "c",
-        "intrpt_handler.h": "c"
+        "intrpt_handler.h": "c",
+        "mutex": "cpp"
     }
 }
