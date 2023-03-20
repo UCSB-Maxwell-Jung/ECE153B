@@ -52,3 +52,5 @@ void HardwareUsart2::configureUsart(void) {
 	USARTx_->CR1 |= USART_CR1_TE; //enable transmitter
 	USARTx_->CR1 |= USART_CR1_RE; //enable receiver
 }
+
+HardwareUsart2 Serial; // USART console (viewable in PuTTY or other serial terminal)

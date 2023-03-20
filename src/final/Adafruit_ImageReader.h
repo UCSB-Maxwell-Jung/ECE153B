@@ -102,7 +102,7 @@ public:
                           int16_t y, bool transact = true);
   ImageReturnCode loadBMP(const char *filename, Adafruit_Image &img);
   ImageReturnCode bmpDimensions(const char *filename, int32_t *w, int32_t *h);
-  void printStatus(ImageReturnCode stat, Stream &stream = console);
+  void printStatus(ImageReturnCode stat, Stream &stream = Serial);
 
 protected:
   SDClass *filesys; ///< FAT FileSystem Object

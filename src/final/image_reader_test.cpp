@@ -25,7 +25,7 @@
 #define TFT_DC  9 // TFT display/command pin
 
 #if defined(USE_SD_CARD)
-  SDClass                SD;         // SD card filesystem
+  // SDClass                SD;         // SD card filesystem
   Adafruit_ImageReader reader(SD); // Image-reader object, pass in SD filesys
 #else
   // // SPI or QSPI flash filesystem (i.e. CIRCUITPY drive)
@@ -53,7 +53,7 @@ void setup(void) {
 
   ImageReturnCode stat; // Status from image-reading functions
 
-  console.begin(9600);
+  Serial.begin(9600);
 // #if !defined(ESP32)
 //   while(!Serial);       // Wait for Serial Monitor before continuing
 // #endif
@@ -63,13 +63,13 @@ void setup(void) {
   // The Adafruit_ImageReader constructor call (above, before setup())
   // accepts an uninitialized SdFat or FatVolume object. This MUST
   // BE INITIALIZED before using any of the image reader functions!
-  console.print("Initializing filesystem...");
+  Serial.print("Initializing filesystem...");
   // SD card is pretty straightforward, a single call...
   if(!SD.begin()) { // ESP32 requires 25 MHz limit
-    console.println("SD begin() failed");
+    Serial.println("SD begin() failed");
     for(;;); // Fatal error, do not continue
   }
-  console.println("OK!");
+  Serial.println("OK!");
 
   // Fill screen blue. Not a required step, this just shows that we're
   // successfully communicating with the screen.
@@ -77,26 +77,26 @@ void setup(void) {
 
   // Load full-screen BMP file 'purple.bmp' at position (0,0) (top left).
   // Notice the 'reader' object performs this, with 'tft' as an argument.
-  console.print("Loading purple.bmp to screen...");
+  Serial.print("Loading purple.bmp to screen...");
   stat = reader.drawBMP("/purple.bmp", tft, 0, 0);
   reader.printStatus(stat);   // How'd we do?
 
   // Query the dimensions of image 'parrot.bmp' WITHOUT loading to screen:
-  console.print("Querying parrot.bmp image size...");
+  Serial.print("Querying parrot.bmp image size...");
   stat = reader.bmpDimensions("/parrot.bmp", &width, &height);
   reader.printStatus(stat);   // How'd we do?
   if(stat == IMAGE_SUCCESS) { // If it worked, print image size...
-    console.print("Image dimensions: ");
-    console.print(width);
-    console.write('x');
-    console.println(height);
+    Serial.print("Image dimensions: ");
+    Serial.print(width);
+    Serial.write('x');
+    Serial.println(height);
   }
 
   // Load small BMP 'wales.bmp' into a GFX canvas in RAM. This should fail
   // gracefully on Arduino Uno and other small devices, meaning the image
   // will not load, but this won't make the program stop or crash, it just
   // continues on without it. Should work on Arduino Mega, Zero, etc.
-  console.print("Loading wales.bmp to canvas...");
+  Serial.print("Loading wales.bmp to canvas...");
   stat = reader.loadBMP("/wales.bmp", img);
   reader.printStatus(stat); // How'd we do?
 

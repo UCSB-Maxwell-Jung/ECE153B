@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>release</TargetName>
+      <TargetName>STM32L476</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
@@ -1872,6 +1872,16 @@
               <FilePath>.\src\final\Adafruit_SPITFT.h</FilePath>
             </File>
             <File>
+              <FileName>button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\button.c</FilePath>
+            </File>
+            <File>
+              <FileName>button.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\button.h</FilePath>
+            </File>
+            <File>
               <FileName>dragon.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\dragon.h</FilePath>
@@ -1987,9 +1997,19 @@
               <FilePath>.\src\final\memorysaver.h</FilePath>
             </File>
             <File>
+              <FileName>nucleo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\nucleo.h</FilePath>
+            </File>
+            <File>
               <FileName>ov2640_regs.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\ov2640_regs.h</FilePath>
+            </File>
+            <File>
+              <FileName>panda.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\panda.h</FilePath>
             </File>
             <File>
               <FileName>Print.cpp</FileName>
@@ -2102,6 +2122,31 @@
               <FilePath>.\src\final\SysTick.h</FilePath>
             </File>
             <File>
+              <FileName>TJpg_Decoder.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\TJpg_Decoder.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>TJpg_Decoder.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\TJpg_Decoder.h</FilePath>
+            </File>
+            <File>
+              <FileName>tjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\final\tjpgd.c</FilePath>
+            </File>
+            <File>
+              <FileName>tjpgd.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\tjpgd.h</FilePath>
+            </File>
+            <File>
+              <FileName>tjpgdcnf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\tjpgdcnf.h</FilePath>
+            </File>
+            <File>
               <FileName>UART.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\UART.cpp</FilePath>
@@ -2112,29 +2157,19 @@
               <FilePath>.\src\final\UART.h</FilePath>
             </File>
             <File>
-              <FileName>Button.h</FileName>
+              <FileName>User_Config.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\Button.h</FilePath>
+              <FilePath>.\src\final\User_Config.h</FilePath>
             </File>
             <File>
-              <FileName>button.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\final\button.c</FilePath>
-            </File>
-            <File>
-              <FileName>camera_interface.cpp</FileName>
+              <FileName>potato.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\camera_interface.cpp</FilePath>
+              <FilePath>.\src\final\potato.cpp</FilePath>
             </File>
             <File>
-              <FileName>camera_interface.h</FileName>
+              <FileName>potato.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\final\camera_interface.h</FilePath>
-            </File>
-            <File>
-              <FileName>potato_cam.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\potato_cam.cpp</FilePath>
+              <FilePath>.\src\final\potato.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -2151,7 +2186,7 @@
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.6.0" condition="ARMv6_7_8-M Device">
         <package name="CMSIS" schemaVersion="1.7.7" url="http://www.keil.com/pack/" vendor="ARM" version="5.9.0"/>
         <targetInfos>
-          <targetInfo name="release"/>
+          <targetInfo name="STM32L476"/>
         </targetInfos>
       </component>
     </components>

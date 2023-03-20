@@ -60,3 +60,5 @@ void HardwareUsart1::configureUsart(void) {
 	// NVIC_EnableIRQ(USART1_IRQn); // Enable USART1 interrupt
 	// NVIC_SetPriority(USART1_IRQn, 1); // set interrupt to second highest priority
 }
+
+HardwareUsart1 Serial1; // Declare Serial1 as USART1 object

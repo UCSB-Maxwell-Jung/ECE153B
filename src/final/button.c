@@ -8,7 +8,7 @@
 
 #include "Button.h"
 #include "stm32l476xx.h"
-#include "camera_interface.h"
+#include "potato.h"
 
 void initButton(void)
 {
@@ -40,10 +40,11 @@ void initButton(void)
 	NVIC_SetPriority(EXTI15_10_IRQn, 1); // set interrupt to highest priority
 }
 
+// save buffered image in memory to disk on button press
 void EXTI15_10_IRQHandler(void) {
 	// Clear interrupt pending bit
 	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0) {
-		capturePhoto();
+		pending_save = true;
 		// Cleared flag by writing 1
  		EXTI->PR1 |= EXTI_PR1_PIF13;
 	}
