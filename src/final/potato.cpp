@@ -68,8 +68,6 @@ void setup(void) {
 }
 
 void loop(void) {
-  toggleLed(); // blink LED every loop
-
   bool new_image = captureImage();
 
   if (pending_save) { // flag set to true on button press
@@ -89,6 +87,7 @@ void loop(void) {
 // return true if captured image is valid
 // false if captured image is corrupted
 bool captureImage(void) {
+  ledOn();
   image_size[buffer_index] = 0;
   Serial.println("Capturing new image...");
   Serial1.write(0x10); // send capture photo request to Arduino
@@ -97,6 +96,7 @@ bool captureImage(void) {
   int camera_byte;
   while (image_size[buffer_index] < IMAGE_BUFFER_CAPACITY) {
     camera_byte = Serial1.read();
+    ledOff();
     if (camera_byte >= 0) { // valid bytes are non-negative
       image_buffer[buffer_index][image_size[buffer_index]++] = camera_byte;
       continue;
