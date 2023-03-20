@@ -1852,16 +1852,6 @@
               <FilePath>.\src\final\Adafruit_ILI9341.h</FilePath>
             </File>
             <File>
-              <FileName>Adafruit_ImageReader.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\final\Adafruit_ImageReader.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Adafruit_ImageReader.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\Adafruit_ImageReader.h</FilePath>
-            </File>
-            <File>
               <FileName>Adafruit_SPITFT.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\Adafruit_SPITFT.cpp</FilePath>
@@ -1880,11 +1870,6 @@
               <FileName>button.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\final\button.h</FilePath>
-            </File>
-            <File>
-              <FileName>dragon.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\dragon.h</FilePath>
             </File>
             <File>
               <FileName>FatStructs.h</FileName>
