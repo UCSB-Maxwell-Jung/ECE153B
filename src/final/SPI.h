@@ -28,6 +28,7 @@ protected:
 
   virtual void configureGpio(void) = 0; // must be implemented in derived class
   virtual void configureSpi(void) = 0; // must be implemented in derived class
+  virtual void configureDMA(void){}; // override in subclass
 };
 
 #endif

@@ -103,6 +103,11 @@ void HardwareSpi2::configureSpi(void) {
 	spix_->CR2 &= ~SPI_CR2_NSSP;
 }
 
+
+void HardwareSpi2::configureDMA(void) {
+	
+}
+
 void HardwareSpi2::setCsLow(void) {
 	GPIOB->ODR &= ~GPIO_ODR_OD12; // Set CS (PB12) to Low
 }
