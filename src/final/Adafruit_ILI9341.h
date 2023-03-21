@@ -138,7 +138,7 @@ public:
   Adafruit_ILI9341();
 
   // methods
-  void begin(uint32_t freq = SPI_DEFAULT_FREQ);
+  void begin(uint32_t freq = SPI_MAX_FREQ);
   void setRotation(uint8_t r);
   void invertDisplay(bool i);
   void scrollTo(uint16_t y);

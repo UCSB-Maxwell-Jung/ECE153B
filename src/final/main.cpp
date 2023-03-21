@@ -10,6 +10,9 @@
 
 #include "potato.h"
 
+void setup(void);
+void loop(void);
+
 void initHardware() {
   initSystemClock();   // System Clock = 80 MHz
 	initSysTick();

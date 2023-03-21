@@ -10,8 +10,6 @@ extern "C" {
 
 extern volatile bool pending_save;
 
-void setup(void);
-void loop(void);
 bool captureImage(void);
 void drawImage(void);
 void saveImage(void);
