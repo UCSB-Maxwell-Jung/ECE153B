@@ -143,7 +143,7 @@ bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap) 
 void drawImage(void) {
   // Draw the image, top left at 0,0
   TJpgDec.drawJpg(0, 0, image_buffer[buffer_index], image_size[buffer_index]);
-  Serial.println("Painted captured image");
+  Serial.println("Displayed captured image");
 }
 
 void saveImage(void) {
