@@ -150,16 +150,15 @@ void saveImage(void) {
   Serial.println("Saving displayed image...");
 
   // Create a name for the new file in the format IMAGE_##.JPG
-  char filename[15];
-  strcpy(filename, "IMAGE_00.JPG");
-  for(int i = 0; i < 100; i++) {
-    filename[6] = '0' + i/10;
-    filename[7] = '0' + i%10;
+  char filename[20];
+  for(int i = 0; true; i++) {
+    sprintf(filename, "IMAGE_%d.JPG", i);
     if(!SD.exists(filename)) {
       break;
     }
   }
 
+  Serial.print("Opening "); Serial.print(filename); Serial.println("...");
   // create new image file in SD card
   File image_file = SD.open(filename, FILE_WRITE);
 
