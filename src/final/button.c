@@ -1,14 +1,6 @@
-/*
- * ECE 153B - Winter 2021
- *
- * Name(s): Maxwell Jung, Baron Young
- * Section: Wed 7pm
- * Lab: 2A
- */
-
 #include "Button.h"
+
 #include "stm32l476xx.h"
-#include "potato.h"
 
 void initButton(void)
 {
@@ -44,11 +36,13 @@ void initButton(void)
 void EXTI15_10_IRQHandler(void) {
 	// Clear interrupt pending bit
 	if ((EXTI->PR1 & EXTI_PR1_PIF13) != 0) {
-		pending_save = true;
+		button_pressed = true;
 		// Cleared flag by writing 1
  		EXTI->PR1 |= EXTI_PR1_PIF13;
 	}
 }
+
+volatile bool button_pressed;
 
 // void USART1_IRQHandler(void) {
 // 	// Clear interrupt pending bit

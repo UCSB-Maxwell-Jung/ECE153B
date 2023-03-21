@@ -3,10 +3,7 @@
 
 #include "UART.h"
 
-// #define SPI_DISPLAY_DEFAULT_FREQ 5000000 // equivalent to 80Mhz/16
-// #define SPI_DISPLAY_MAX_FREQ 20000000 // 20Mhz
-
-class HardwareUsart2 : public UART { // inherit more general SPI class
+class HardwareUsart2 : public UART { // inherit more general UART class
 public:
   // constructor
   HardwareUsart2(void);
