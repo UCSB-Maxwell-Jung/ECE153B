@@ -11,6 +11,7 @@ public:
 private:
   void configureGpio(void);
   void configureSpi(void);
+  void configureDma(void);
 };
 
 #endif // __STM32L476R_NUCLEO_SPI1_H

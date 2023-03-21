@@ -104,3 +104,82 @@ void HardwareSpi1::configureSpi(void) {
 	// disable NSS pulse generation (0)
 	SPI1->CR2 &= ~SPI_CR2_NSSP;
 }
+
+void HardwareSpi1::configureDma(void) {
+	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN; // enable DMA1 controller
+
+	DMA1_Channel2->CCR &= ~DMA_CCR_EN; // deactivate channel
+
+	// DMA1_Channel2->CNDTR = ??; 
+
+	// DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
+	DMA1_Channel2->CPAR = (uint32_t)&SPI2->DR;
+	// DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+	DMA1_Channel2->CCR &= ~DMA_CCR_DIR; // read from peripheral
+	// DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	DMA1_Channel2->CCR &= ~DMA_CCR_PINC; // disable peripheral increment mode
+	// DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	DMA1_Channel2->CCR |= DMA_CCR_MINC; // enable memory increment mode
+	// DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	DMA1_Channel2->CCR &= ~DMA_CCR_PSIZE; // set peripheral size to 8-bits
+	// DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	DMA1_Channel2->CCR &= ~DMA_CCR_MSIZE; // set memory size to 8-bits
+	// DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+	DMA1_Channel2->CCR &= ~DMA_CCR_CIRC; // disable circular mode
+	// DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+	DMA1_Channel2->CCR &= ~DMA_CCR_PL; // reset channel priority level
+	DMA1_Channel2->CCR |= DMA_CCR_PL_1; // set channel priority level to high (10)
+	// DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+	DMA1_Channel2->CCR &= ~DMA_CCR_MEM2MEM; // disable memory to memory
+	// DMA_Init(PB_SPI_RX_DMA_Channel, &DMA_InitStructure);
+	DMA1_Channel2->CCR |= DMA_CCR_EN; // activate channel
+
+	// NVIC_InitStructure.NVIC_IRQChannel = PB_SPI_DMA_IRQ;
+	// NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	// NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	// NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	// NVIC_Init(&NVIC_InitStructure);
+	NVIC_EnableIRQ(DMA1_Channel2_IRQn); // Enable
+	NVIC_SetPriority(DMA1_Channel2_IRQn, 0); // set interrupt to highest priority
+
+
+	// DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
+	// DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+	// DMA_Init(DMA1_Channel5, &DMA_InitStructure);
+	
+	// DMA_ITConfig(PB_SPI_RX_DMA_Channel, DMA_IT_TC, ENABLE);
+
+	DMA1_Channel3->CCR &= ~DMA_CCR_EN; // deactivate channel
+	// DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
+	DMA1_Channel3->CPAR = (uint32_t)&SPI2->DR;
+
+	// DMA1_Channel2->CNDTR = ??; 
+	
+	// DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+	DMA1_Channel3->CCR |= DMA_CCR_DIR; // read from memory
+	// DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	DMA1_Channel3->CCR &= ~DMA_CCR_PINC; // disable peripheral increment mode
+	// DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	DMA1_Channel3->CCR |= DMA_CCR_MINC; // enable memory increment mode
+	// DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	DMA1_Channel3->CCR &= ~DMA_CCR_PSIZE; // set peripheral size to 8-bits
+	// DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	DMA1_Channel3->CCR &= ~DMA_CCR_MSIZE; // set memory size to 8-bits
+	// DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+	DMA1_Channel3->CCR &= ~DMA_CCR_CIRC; // disable circular mode
+	// DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+	DMA1_Channel3->CCR &= ~DMA_CCR_PL; // reset channel priority level
+	DMA1_Channel3->CCR |= DMA_CCR_PL_1; // set channel priority level to high (10)
+	// DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+	DMA1_Channel3->CCR &= ~DMA_CCR_MEM2MEM; // disable memory to memory
+	// DMA_Init(PB_SPI_RX_DMA_Channel, &DMA_InitStructure);
+	DMA1_Channel3->CCR |= DMA_CCR_EN; // activate channel
+
+	// NVIC_InitStructure.NVIC_IRQChannel = PB_SPI_DMA_IRQ;
+	// NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	// NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	// NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	// NVIC_Init(&NVIC_InitStructure);
+	NVIC_EnableIRQ(DMA1_Channel3_IRQn); // Enable
+	NVIC_SetPriority(DMA1_Channel3_IRQn, 0); // set interrupt to highest priority
+}

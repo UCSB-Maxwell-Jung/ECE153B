@@ -18,7 +18,7 @@ void SPI::begin(uint32_t desired_freq) {
 
 	configureGpio();
 	configureSpi();
-	configureDMA();
+	configureDma();
 	setCsHigh();
 }
 

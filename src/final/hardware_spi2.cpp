@@ -101,11 +101,9 @@ void HardwareSpi2::configureSpi(void) {
 
 	// disable NSS pulse generation (0)
 	spix_->CR2 &= ~SPI_CR2_NSSP;
-}
 
-
-void HardwareSpi2::configureDMA(void) {
-	
+	spix_->CR2 |= SPI_CR2_TXDMAEN; // enable TX DMA
+	spix_->CR2 |= SPI_CR2_RXDMAEN; // enable RX DMA
 }
 
 void HardwareSpi2::setCsLow(void) {
