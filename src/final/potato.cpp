@@ -95,12 +95,12 @@ bool captureImage(void) {
   image_size[buffer_index] = 0;
   Serial.println("Capturing new image...");
   Serial1.write(0x10); // send capture photo request to Arduino
-
+  ledOff();
+  
   // immediately start listening for image data from Arduino
   int camera_byte;
   while (image_size[buffer_index] < MAX_IMAGE_SIZE) {
     camera_byte = Serial1.read(); // negative value on timeout
-    ledOff();
     if (camera_byte >= 0) { // save byte to buffer sequentially
       image_buffer[buffer_index][image_size[buffer_index]++] = camera_byte;
       continue;
