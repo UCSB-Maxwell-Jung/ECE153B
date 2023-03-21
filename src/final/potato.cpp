@@ -30,6 +30,9 @@ Adafruit_ILI9341     tft; // TFT LCD object
 
 // rendering function for JPEG decoder libray
 bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap);
+void drawCaptureMessage(void);
+void drawSdWarningMessage(void);
+void drawHelpMessage(void);
 
 void setup(void) {
   console.begin(9600); // begin console output
@@ -68,6 +71,7 @@ void setup(void) {
 // capture new image, save old image currently on display
 // before drawing the new image
 void loop(void) {
+  drawCaptureMessage();
   bool new_image = captureImage(); // returns false when image is corrupted
                                    // This function is the greatest bottleneck
                                    // returning after ~8 seconds
@@ -78,6 +82,7 @@ void loop(void) {
 
   if (new_image) {
     drawImage();
+    drawHelpMessage();
     buffer_index = (buffer_index + 1) % BUFFER_COUNT; // use next buffer
   }
 }
@@ -168,6 +173,7 @@ void saveImage(void) {
   else { // if the file didn't open, print an error:
     Serial.print("error opening ");
     Serial.println(filename);
+    drawSdWarningMessage();
   }
 }
 
@@ -182,4 +188,31 @@ bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap) 
 
   // Return 1 to decode next block
   return 1;
+}
+
+void drawCaptureMessage(void) {
+  tft.setTextSize(2);
+  tft.setCursor(0, ILI9341_TFTWIDTH-16);
+  tft.setTextColor(ILI9341_WHITE);
+  tft.println("Capturing new image...");
+}
+
+void drawSdWarningMessage(void) {
+  // show warning text on display
+  tft.setTextSize(3);
+  tft.setCursor(0, ILI9341_TFTWIDTH/2);
+  tft.setTextColor(ILI9341_RED);
+  tft.println("SD card Error!!!");
+  delay(1000);
+}
+
+void drawHelpMessage(void) {
+  tft.setTextSize(2);
+  tft.setCursor(0, 0);
+  tft.setTextColor(ILI9341_ORANGE);
+  tft.print("Press ");
+  tft.setTextColor(ILI9341_BLUE);
+  tft.print("Blue Button ");
+  tft.setTextColor(ILI9341_ORANGE);
+  tft.println("to save this image");
 }
