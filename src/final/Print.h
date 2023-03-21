@@ -22,6 +22,7 @@
 
 #include <string.h> // strlen()
 #include <stdint.h>
+#include <stdio.h>
 
 #define DEC 10
 #define HEX 16
