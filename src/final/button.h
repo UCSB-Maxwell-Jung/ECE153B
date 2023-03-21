@@ -13,9 +13,12 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
+
 void initButton(void);
 void EXTI15_10_IRQHandler(void);
-// void USART1_IRQHandler(void);
+
+extern volatile bool button_pressed;
 
 #ifdef __cplusplus
 }
