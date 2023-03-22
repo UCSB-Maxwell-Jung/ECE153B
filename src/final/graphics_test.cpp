@@ -12,11 +12,13 @@
   Written by Limor Fried/Ladyada for Adafruit Industries.
   MIT license, all text above must be included in any redistribution
  ****************************************************/
-#include "graphics_test.h"
 
 // graphics and lcd library from Adafruit
 // #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
+
+#include "hardware_usart2.h"
+#include "SysTick.h"
 
 unsigned long testFillScreen();
 unsigned long testText();

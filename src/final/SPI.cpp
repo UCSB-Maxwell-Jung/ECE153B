@@ -36,7 +36,7 @@ void SPI::endTransaction(void) {
 }
 
 // transfer data out on output line and in on input line
-uint8_t SPI::transferByte(uint8_t byte) {
+uint8_t SPI::transfer(uint8_t byte) {
 	// wait for Transmit Buffer Empty flag to be set
 	while ((spix_->SR & SPI_SR_TXE) != SPI_SR_TXE);
 	// write byte to transfer
@@ -49,7 +49,7 @@ uint8_t SPI::transferByte(uint8_t byte) {
 }
 
 // transfer data out on output line and in on input line
-uint16_t SPI::transferHalfWord(uint16_t half_word) {
+uint16_t SPI::transfer(uint16_t half_word) {
 	// wait for Transmit Buffer Empty flag to be set
 	while ((spix_->SR & SPI_SR_TXE) != SPI_SR_TXE);
 	// write half word to transfer

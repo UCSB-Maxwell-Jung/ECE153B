@@ -15,8 +15,8 @@ public:
   virtual void begin(uint32_t desired_freq=SPI_DEFAULT_FREQ);
   void beginTransaction(void);
   void endTransaction(void);
-  uint8_t transferByte(uint8_t byte);
-  uint16_t transferHalfWord(uint16_t half_word);
+  uint8_t transfer(uint8_t byte);
+  uint16_t transfer(uint16_t half_word);
 
   virtual void setCsLow(){}; // override in subclass for manual CS pin
   virtual void setCsHigh(){}; // override in subclass for manual CS pin

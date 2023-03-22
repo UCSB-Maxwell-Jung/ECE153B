@@ -1992,11 +1992,6 @@
               <FilePath>.\src\final\ov2640_regs.h</FilePath>
             </File>
             <File>
-              <FileName>panda.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\panda.h</FilePath>
-            </File>
-            <File>
               <FileName>Print.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\final\Print.cpp</FilePath>
@@ -2147,14 +2142,9 @@
               <FilePath>.\src\final\User_Config.h</FilePath>
             </File>
             <File>
-              <FileName>potato.cpp</FileName>
+              <FileName>graphics_test.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\potato.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>potato.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\final\potato.h</FilePath>
+              <FilePath>.\src\final\graphics_test.cpp</FilePath>
             </File>
           </Files>
         </Group>
