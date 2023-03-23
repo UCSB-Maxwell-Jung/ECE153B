@@ -2289,8 +2289,32 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\final\graphics_test.cpp</PathWithFileName>
-      <FilenameWithoutPath>graphics_test.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\src\final\Adafruit_ImageReader.cpp</PathWithFileName>
+      <FilenameWithoutPath>Adafruit_ImageReader.cpp</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>14</GroupNumber>
+      <FileNumber>161</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\final\Adafruit_ImageReader.h</PathWithFileName>
+      <FilenameWithoutPath>Adafruit_ImageReader.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>14</GroupNumber>
+      <FileNumber>162</FileNumber>
+      <FileType>8</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\final\image_reader_test.cpp</PathWithFileName>
+      <FilenameWithoutPath>image_reader_test.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

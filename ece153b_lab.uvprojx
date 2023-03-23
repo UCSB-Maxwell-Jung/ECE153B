@@ -2142,9 +2142,19 @@
               <FilePath>.\src\final\User_Config.h</FilePath>
             </File>
             <File>
-              <FileName>graphics_test.cpp</FileName>
+              <FileName>Adafruit_ImageReader.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\final\graphics_test.cpp</FilePath>
+              <FilePath>.\src\final\Adafruit_ImageReader.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Adafruit_ImageReader.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\final\Adafruit_ImageReader.h</FilePath>
+            </File>
+            <File>
+              <FileName>image_reader_test.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\final\image_reader_test.cpp</FilePath>
             </File>
           </Files>
         </Group>
